@@ -23,9 +23,9 @@ const Hero = () => {
           className="pointer-events-none absolute -right-24 top-auto bottom-10 z-0 w-[360px] animate-rise object-contain mask-fade-left sm:w-[460px] md:-right-10 md:bottom-auto md:-top-[70px] md:h-[640px] md:w-[640px]"
         />
         <div className="relative z-10 h-full px-5 pb-28 pt-9 md:px-14 md:pt-11">
-          <h1 className="max-w-[860px] animate-rise font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] sm:text-[64px] lg:text-[88px] text-center">
+          <h1 className="max-w-[860px] animate-rise font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] sm:text-[64px] lg:text-[88px] text-left">
             Продвижение ресторана{" "}
-            <span className="block pl-[1.62em]">в Яндекс.Еде</span>
+            <span className="block px-0">в Яндекс Еде</span>
           </h1>
           <div className="mt-[34px] flex animate-rise-delay flex-col items-start gap-6 md:flex-row md:items-end md:gap-10">
             <p className="max-w-[430px] text-[1.15em] leading-[1.2] md:text-[1.3em]">
