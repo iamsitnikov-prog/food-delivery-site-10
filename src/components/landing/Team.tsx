@@ -46,20 +46,23 @@ const Team = () => {
           <article
             key={p.name}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className="reveal overflow-hidden rounded-xl border border-primary/25 bg-pale"
+            className="reveal rounded-xl border border-primary/25 bg-pale p-6 md:p-9"
           >
-            <div className="flex items-end justify-center overflow-hidden bg-primary/15 pt-6">
+            <div className="flex items-center gap-5">
               <img
                 src={p.photo}
                 alt={p.name}
                 loading="lazy"
-                className="h-[280px] w-auto object-contain object-bottom md:h-[340px]"
+                className="h-20 w-20 shrink-0 rounded-full border border-primary/30 object-cover object-top md:h-24 md:w-24"
               />
-            </div>
-            <div className="p-6 md:p-9">
-            <h3 className="font-display text-[1.8em] font-semibold tracking-[-0.03em] md:text-[2.3em]">{p.name}</h3>
-            <div className="mt-2 inline-flex rounded-full bg-primary px-4 py-2 text-[0.85em] font-medium text-primary-foreground">
-              {p.exp}
+              <div>
+                <h3 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.03em] md:text-[2.1em]">
+                  {p.name}
+                </h3>
+                <div className="mt-2 inline-flex rounded-full bg-primary px-4 py-2 text-[0.85em] font-medium text-primary-foreground">
+                  {p.exp}
+                </div>
+              </div>
             </div>
             <ul className="mt-7 space-y-3.5 border-t border-primary/25 pt-7">
               {p.facts.map((f) => (
@@ -69,7 +72,6 @@ const Team = () => {
                 </li>
               ))}
             </ul>
-            </div>
           </article>
         ))}
       </div>
