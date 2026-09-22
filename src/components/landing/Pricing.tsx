@@ -5,6 +5,7 @@ import CountUp from "./CountUp";
 const PLANS = [
   {
     name: "для действующих",
+    tag: "уже на сервисе",
     price: "от 25 000 ₽",
     period: "в месяц*",
     text: "Для тех партнёров, которые уже работают на сервисе и им требуется помощь",
@@ -20,6 +21,7 @@ const PLANS = [
   },
   {
     name: "для новичков",
+    tag: "запуск с нуля",
     price: "от 35 000 ₽",
     period: "в месяц*",
     text: "Для тех, кто только хочет запустить доставку на агрегаторах. Полное введение в работу и поддержка на всех этапах",
@@ -58,26 +60,47 @@ const Pricing = () => {
           <article
             key={p.name}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className={`reveal tilt flex flex-col rounded-xl border p-6 md:p-9 ${
-              p.accent ? "border-primary bg-primary/10" : "border-primary/25 bg-pale hover:border-primary"
+            className={`reveal flex flex-col rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 md:p-10 ${
+              p.accent ? "bg-pale text-foreground" : "bg-surface text-cream"
             }`}
           >
-            <h3 className="font-display text-[1.7em] font-semibold tracking-[-0.02em] md:text-[2em]">{p.name}</h3>
-            <div className="mt-4 flex items-baseline gap-2">
+            <span
+              className={`inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-[0.82em] font-semibold ${
+                p.accent ? "bg-foreground text-brand" : "bg-brand text-foreground"
+              }`}
+            >
+              <Icon name={p.accent ? "Rocket" : "TrendingUp"} size={16} />
+              {p.tag}
+            </span>
+
+            <h3 className="mt-6 font-display text-[1.9em] font-semibold leading-[.95] tracking-[-0.03em] md:text-[2.4em]">
+              {p.name}
+            </h3>
+            <div className="mt-5 flex items-baseline gap-2">
               <CountUp
                 value={p.price}
                 className="font-display text-[2.2em] font-semibold leading-none tracking-[-0.03em] md:text-[2.8em]"
               />
-              <span className="text-[0.9em] text-muted-foreground">{p.period}</span>
+              <span className={`text-[0.9em] ${p.accent ? "text-foreground/70" : "text-cream-muted"}`}>
+                {p.period}
+              </span>
             </div>
-            <p className="mt-4 max-w-[380px] leading-snug text-muted-foreground">{p.text}</p>
+            <p className={`mt-4 max-w-[400px] leading-snug ${p.accent ? "text-foreground/80" : "text-cream-muted"}`}>
+              {p.text}
+            </p>
 
-            <ul className="mt-7 space-y-3 border-t border-primary/25 pt-7">
+            <ul
+              className={`mt-8 flex-1 space-y-3 border-t pt-7 leading-snug ${
+                p.accent ? "border-foreground/20" : "border-cream/20"
+              }`}
+            >
               {p.items.map((t) => (
-                <li key={t} className="flex items-start gap-3 leading-snug">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                    <Icon name="Check" size={14} />
-                  </span>
+                <li key={t} className="flex items-start gap-3">
+                  <Icon
+                    name="Check"
+                    size={18}
+                    className={`mt-0.5 shrink-0 ${p.accent ? "text-foreground" : "text-brand"}`}
+                  />
                   {t}
                 </li>
               ))}
@@ -85,7 +108,9 @@ const Pricing = () => {
 
             <a
               href="#lead"
-              className="mt-8 inline-flex h-14 items-center justify-center rounded-xl bg-primary font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
+              className={`mt-8 inline-flex h-14 items-center justify-center rounded-xl font-medium transition-transform hover:-translate-y-0.5 ${
+                p.accent ? "bg-foreground text-brand" : "bg-brand text-foreground"
+              }`}
             >
               выбрать тариф
             </a>
