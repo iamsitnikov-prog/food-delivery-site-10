@@ -7,9 +7,9 @@ type Props = {
 };
 
 const parse = (v: string) => {
-  const m = v.match(/-?[\d\s.,]+/);
+  const m = v.match(/-?\d[\d\s.,]*/);
   if (!m) return null;
-  const raw = m[0];
+  const raw = m[0].replace(/[\s.,]+$/, "");
   const num = parseFloat(raw.replace(/\s/g, "").replace(",", "."));
   if (Number.isNaN(num)) return null;
   const decimals = (raw.replace(/\s/g, "").split(/[.,]/)[1] || "").length;
