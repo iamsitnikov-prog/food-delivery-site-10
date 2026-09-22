@@ -3,10 +3,13 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 import Icon from "@/components/ui/icon";
 
 export const NAV = [
-  { href: "#steps", label: "как работаем" },
   { href: "#services", label: "услуги" },
+  { href: "#advantages", label: "преимущества" },
   { href: "#results", label: "результаты" },
-  { href: "#faq", label: "вопросы" },
+  { href: "#pricing", label: "стоимость" },
+  { href: "#extra", label: "дополнительно" },
+  { href: "#team", label: "кто мы" },
+  { href: "#reviews", label: "отзывы" },
   { href: "#contacts", label: "контакты" },
 ];
 

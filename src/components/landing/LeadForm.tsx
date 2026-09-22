@@ -7,7 +7,16 @@ import { toast } from "@/hooks/use-toast";
 import useReveal from "@/hooks/use-reveal";
 import { ROBOT } from "./Hero";
 
-const STATUSES = ["ещё не в агрегаторах", "уже работаю, хочу больше заказов", "сеть, несколько точек"];
+const STATUSES = [
+  "тариф для действующих",
+  "тариф для новичков",
+  "консультация",
+  "аудит",
+  "курс по работе с агрегатором",
+  "другое",
+];
+
+const CHANNELS = ["Телефон", "Telegram", "WhatsApp"];
 
 type Errors = Partial<Record<"name" | "phone" | "agree", string>>;
 
@@ -32,6 +41,7 @@ const LeadForm = () => {
   const [phone, setPhone] = useState("");
   const [place, setPlace] = useState("");
   const [status, setStatus] = useState(STATUSES[0]);
+  const [channel, setChannel] = useState(CHANNELS[0]);
   const [comment, setComment] = useState("");
   const [agree, setAgree] = useState(true);
   const [errors, setErrors] = useState<Errors>({});
@@ -64,6 +74,7 @@ const LeadForm = () => {
     setPlace("");
     setComment("");
     setStatus(STATUSES[0]);
+    setChannel(CHANNELS[0]);
     setErrors({});
     setSent(false);
   };
@@ -76,14 +87,14 @@ const LeadForm = () => {
       <div className="grid items-start gap-12 lg:grid-cols-[1fr_1.05fr]">
         <div className="reveal relative">
           <h2 className="font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[80px]">
-            бесплатная
-            <span className="block pl-[1.2em]">консультация</span>
+            оставьте
+            <span className="block pl-[1.2em]">заявку</span>
           </h2>
           <p className="mt-6 max-w-[420px] text-[1.15em] leading-[1.25]">
-            Расскажем, сколько заказов вы&nbsp;можете получать из&nbsp;агрегаторов и&nbsp;с&nbsp;чего начать. Созвон — 20&nbsp;минут.
+            Заполните поля и&nbsp;выберите услугу. Увеличьте свою выручку уже&nbsp;в&nbsp;первую неделю.
           </p>
           <ul className="mt-8 space-y-3">
-            {["перезвоним в течение рабочего дня", "бесплатный экспресс-аудит карточки", "без навязчивых продаж"].map((t) => (
+            {["свяжемся в течение рабочего дня", "разберём вашу ситуацию на созвоне", "владеете сетью — индивидуальные условия"].map((t) => (
               <li key={t} className="flex items-center gap-3">
                 <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                   <Icon name="Check" size={16} />
@@ -110,7 +121,7 @@ const LeadForm = () => {
                 спасибо, {name.trim().split(" ")[0]}!
               </h3>
               <p className="mt-4 max-w-[380px] text-muted-foreground">
-                Заявка у&nbsp;нас. Менеджер позвонит на&nbsp;{phone} в&nbsp;течение рабочего дня.
+                Заявка у&nbsp;нас. Свяжемся с&nbsp;вами по&nbsp;номеру {phone} в&nbsp;течение рабочего дня.
               </p>
               <button onClick={reset} className="mt-8 rounded-xl border border-primary/40 px-5 py-3 font-medium hover:bg-primary hover:text-primary-foreground transition-colors">
                 отправить ещё одну
@@ -147,7 +158,7 @@ const LeadForm = () => {
               />
 
               <div>
-                <p className="mb-2 text-[0.86em] text-muted-foreground">Сейчас вы…</p>
+                <p className="mb-2 text-[0.86em] text-muted-foreground">Выберите услугу</p>
                 <div className="flex flex-wrap gap-2">
                   {STATUSES.map((s) => (
                     <button
@@ -161,6 +172,26 @@ const LeadForm = () => {
                       }`}
                     >
                       {s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="mb-2 text-[0.86em] text-muted-foreground">Как с вами связаться?</p>
+                <div className="flex flex-wrap gap-2">
+                  {CHANNELS.map((c) => (
+                    <button
+                      type="button"
+                      key={c}
+                      onClick={() => setChannel(c)}
+                      className={`rounded-full border px-4 py-2 text-[0.88em] transition-colors ${
+                        channel === c
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-primary/25 bg-cream hover:border-primary"
+                      }`}
+                    >
+                      {c}
                     </button>
                   ))}
                 </div>

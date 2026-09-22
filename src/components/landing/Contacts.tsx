@@ -2,9 +2,9 @@ import Icon from "@/components/ui/icon";
 import { NAV } from "./Header";
 
 const CONTACTS = [
-  { icon: "Phone", label: "телефон", value: "+7 (900) 000-00-00", href: "tel:+79000000000" },
-  { icon: "Mail", label: "почта", value: "hello@agregatory.pro", href: "mailto:hello@agregatory.pro" },
-  { icon: "Send", label: "телеграм", value: "@agregatory_pro", href: "https://t.me/agregatory_pro" },
+  { icon: "Phone", label: "телефон", value: "+7 931 378-22-24", href: "tel:+79313782224" },
+  { icon: "Send", label: "телеграм", value: "@agregatory", href: "https://t.me/agregatory" },
+  { icon: "MessageCircle", label: "whatsapp", value: "+7 931 378-22-24", href: "https://wa.me/79313782224" },
 ];
 
 const Contacts = () => {
@@ -17,14 +17,17 @@ const Contacts = () => {
             <span className="block pl-[1.2em] text-brand">каждый день</span>
           </h2>
           <p className="mt-6 max-w-[380px] text-cream-muted">
-            Ежедневно с&nbsp;9:00 до&nbsp;21:00 по&nbsp;Москве. Работаем с&nbsp;ресторанами по&nbsp;всей России.
+            Увеличьте свою выручку уже&nbsp;в&nbsp;первую неделю — просто оставьте заявку. Работаем с&nbsp;ресторанами по&nbsp;всей России.
           </p>
           <a
             href="#lead"
             className="mt-8 inline-flex items-center gap-2 rounded-xl bg-brand px-7 py-4 font-medium text-foreground transition-transform hover:-translate-y-0.5"
           >
-            оставить заявку <Icon name="ArrowRight" size={18} />
+            начать сотрудничать <Icon name="ArrowRight" size={18} />
           </a>
+          <p className="mt-6 max-w-[380px] text-[0.86em] text-cream-muted">
+            Владеете сетью? Для&nbsp;вас индивидуальные условия.
+          </p>
         </div>
 
         <ul className="border-t border-cream/25">
@@ -64,6 +67,13 @@ const Contacts = () => {
           ))}
         </nav>
         <span>© {new Date().getFullYear()} agregatory.pro</span>
+      </div>
+
+      <div className="mt-6 space-y-2 text-[0.78em] leading-relaxed text-cream-muted/80">
+        <p>ИП Ситников Юрий Сергеевич, ИНН 632509481120 · ИП Ковальчук Лилия Максимовна, ИНН 681601399981</p>
+        <p>
+          При создании сайта все партнёры дали согласие на размещение и публикацию персональных и коммерческих данных.
+        </p>
       </div>
     </footer>
   );

@@ -3,13 +3,13 @@ import Header from "./Header";
 export const ROBOT = "/robot.webp";
 
 const STEPS = [
-  { n: "шаг 1", t: "аудит", d: "разбираем кухню, район, цены и карточки конкурентов" },
-  { n: "шаг 2", t: "подключение", d: "договор с площадками, меню, фото, зоны доставки" },
-  { n: "шаг 3", t: "продвижение", d: "реклама, акции и рейтинг внутри агрегаторов" },
-  { n: "шаг 4", t: "отчёты", d: "цифры по продажам и план роста каждый месяц" },
+  { n: "шаг 1", t: "регистрация", d: "анкета, акцепт оферты, личный кабинет и его настройка" },
+  { n: "шаг 2", t: "контент и вендор", d: "SEO, теги, титульное фото и все параметры меню" },
+  { n: "шаг 3", t: "обучение", d: "учим весь персонал, который участвует в доставке" },
+  { n: "шаг 4", t: "продвижение", d: "ставки на аукционе, акции и контроль рейтинга" },
 ];
 
-const TAGS = ["рестораны и кафе", "сети общепита", "дарк-китчены"];
+const TAGS = ["первые результаты за 7 дней", "рейтинг выше 4.8", "поддержка 24/7"];
 
 const Hero = () => {
   return (
@@ -24,21 +24,21 @@ const Hero = () => {
         />
         <div className="relative z-10 h-full px-5 pb-28 pt-9 md:px-14 md:pt-11">
           <h1 className="max-w-[860px] animate-rise font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] sm:text-[64px] lg:text-[88px]">
-            Ваш ресторан в&nbsp;агрегаторах{" "}
-            <span className="block pl-[1.62em]">под ключ</span>
+            Продвижение ресторана{" "}
+            <span className="block pl-[1.62em]">в&nbsp;агрегаторах</span>
           </h1>
           <div className="mt-[34px] flex animate-rise-delay flex-col items-start gap-6 md:flex-row md:items-end md:gap-10">
             <p className="max-w-[430px] text-[1.15em] leading-[1.2] md:text-[1.3em]">
-              выводим в&nbsp;Яндекс Еду и&nbsp;Деливери, продвигаем и&nbsp;ведём аккаунт, пока вы&nbsp;готовите
+              увеличиваем в&nbsp;первую неделю заказы и&nbsp;выручку ресторана на&nbsp;Яндекс Еде и&nbsp;Деливери. Настраиваем вендор, акции и&nbsp;продвижение, обучаем персонал
             </p>
             <div className="flex flex-col items-start gap-2.5">
               <a
                 href="#lead"
                 className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary px-[30px] py-[18px] text-[1.06em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
               >
-                оставить заявку
+                начать сотрудничать
               </a>
-              <span className="text-[0.82em] text-muted-foreground">консультация бесплатно</span>
+              <span className="text-[0.82em] text-muted-foreground">первый заказ — максимум через 7 дней</span>
             </div>
           </div>
         </div>
