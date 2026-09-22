@@ -1,5 +1,6 @@
 import Icon from "@/components/ui/icon";
 import useReveal from "@/hooks/use-reveal";
+import CountUp from "./CountUp";
 
 const ITEMS = [
   {
@@ -68,13 +69,13 @@ const Extra = () => {
           <article
             key={item.title}
             style={{ transitionDelay: `${i * 110}ms` }}
-            className="reveal flex flex-col rounded-xl border border-primary/25 bg-pale p-6 md:p-8"
+            className="reveal tilt group flex flex-col rounded-xl border border-primary/25 bg-pale p-6 hover:border-primary md:p-8"
           >
-            <span className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+            <span className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110">
               <Icon name={item.icon} size={24} />
             </span>
             <h3 className="font-display text-[1.45em] font-semibold leading-tight tracking-[-0.02em]">{item.title}</h3>
-            <div className="mt-3 font-display text-[1.3em] font-semibold text-foreground">{item.price}</div>
+            <CountUp value={item.price} className="mt-3 block font-display text-[1.3em] font-semibold text-foreground" />
             <ul className="mt-6 flex-1 space-y-3 border-t border-primary/25 pt-6 text-[0.92em] leading-snug text-muted-foreground">
               {item.points.map((p) => (
                 <li key={p} className="flex gap-2.5">

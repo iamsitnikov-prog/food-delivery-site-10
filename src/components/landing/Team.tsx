@@ -46,14 +46,14 @@ const Team = () => {
           <article
             key={p.name}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className="reveal rounded-xl border border-primary/25 bg-pale p-6 md:p-9"
+            className="reveal tilt group rounded-xl border border-primary/25 bg-pale p-6 hover:border-primary md:p-9"
           >
             <div className="flex items-center gap-5">
               <img
                 src={p.photo}
                 alt={p.name}
                 loading="lazy"
-                className="h-20 w-20 shrink-0 rounded-full border border-primary/30 object-cover object-top md:h-24 md:w-24"
+                className="h-20 w-20 shrink-0 rounded-full border border-primary/30 object-cover object-top grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0 md:h-24 md:w-24"
               />
               <div>
                 <h3 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.03em] md:text-[2.1em]">

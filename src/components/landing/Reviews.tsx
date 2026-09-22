@@ -52,9 +52,9 @@ const Reviews = () => {
           <article
             key={r.author}
             style={{ transitionDelay: `${i * 110}ms` }}
-            className="reveal flex flex-col rounded-xl border border-cream/20 p-6 transition-colors hover:border-brand md:p-8"
+            className="reveal tilt group flex flex-col rounded-xl border border-cream/20 p-6 hover:border-brand hover:bg-brand/5 md:p-8"
           >
-            <Icon name="Quote" size={28} className="mb-5 text-brand" />
+            <Icon name="Quote" size={28} className="mb-5 text-brand transition-transform duration-500 group-hover:scale-125" />
             <h3 className="font-display text-[1.35em] font-semibold tracking-[-0.02em] text-brand">{r.title}</h3>
             <p className="mt-4 flex-1 text-[0.95em] leading-relaxed text-cream-muted">{r.text}</p>
             <div className="mt-6 border-t border-cream/20 pt-5">

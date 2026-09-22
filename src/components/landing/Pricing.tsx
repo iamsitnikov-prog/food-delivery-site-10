@@ -1,5 +1,6 @@
 import Icon from "@/components/ui/icon";
 import useReveal from "@/hooks/use-reveal";
+import CountUp from "./CountUp";
 
 const PLANS = [
   {
@@ -57,15 +58,16 @@ const Pricing = () => {
           <article
             key={p.name}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className={`reveal flex flex-col rounded-xl border p-6 md:p-9 ${
-              p.accent ? "border-primary bg-primary/10" : "border-primary/25 bg-pale"
+            className={`reveal tilt shine flex flex-col rounded-xl border p-6 md:p-9 ${
+              p.accent ? "border-primary bg-primary/10" : "border-primary/25 bg-pale hover:border-primary"
             }`}
           >
             <h3 className="font-display text-[1.7em] font-semibold tracking-[-0.02em] md:text-[2em]">{p.name}</h3>
             <div className="mt-4 flex items-baseline gap-2">
-              <span className="font-display text-[2.2em] font-semibold leading-none tracking-[-0.03em] md:text-[2.8em]">
-                {p.price}
-              </span>
+              <CountUp
+                value={p.price}
+                className="font-display text-[2.2em] font-semibold leading-none tracking-[-0.03em] md:text-[2.8em]"
+              />
               <span className="text-[0.9em] text-muted-foreground">{p.period}</span>
             </div>
             <p className="mt-4 max-w-[380px] leading-snug text-muted-foreground">{p.text}</p>

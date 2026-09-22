@@ -89,7 +89,11 @@ const Services = () => {
                       : "border-primary/30"
                   }`}
                 >
-                  <Icon name="ArrowUpRight" size={20} />
+                  <Icon
+                    name="ArrowUpRight"
+                    size={20}
+                    className={`transition-transform duration-500 ${active === i ? "rotate-45" : ""}`}
+                  />
                 </span>
               </button>
             </li>
@@ -98,7 +102,7 @@ const Services = () => {
 
         <div className="reveal flex">
         <div key={active} className="flex w-full animate-fade-in flex-col rounded-xl bg-surface p-7 text-cream md:p-10">
-          <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-xl bg-brand text-foreground">
+          <div className="mb-8 flex h-14 w-14 animate-scale-in items-center justify-center rounded-xl bg-brand text-foreground">
             <Icon name={s.icon} size={28} />
           </div>
           <h3 className="font-display text-[2em] font-semibold leading-none tracking-[-0.02em]">{s.title}</h3>

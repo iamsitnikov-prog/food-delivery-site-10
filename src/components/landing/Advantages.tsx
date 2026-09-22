@@ -48,9 +48,9 @@ const Advantages = () => {
           <article
             key={item.title}
             style={{ transitionDelay: `${i * 100}ms` }}
-            className="reveal rounded-xl border border-cream/20 p-6 transition-colors hover:border-brand md:p-8"
+            className="reveal tilt shine group rounded-xl border border-cream/20 p-6 hover:border-brand hover:bg-brand/5 md:p-8"
           >
-            <span className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-brand text-foreground">
+            <span className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-brand text-foreground transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110">
               <Icon name={item.icon} size={24} />
             </span>
             <h3 className="font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.6em]">

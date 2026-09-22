@@ -1,4 +1,5 @@
 import useReveal from "@/hooks/use-reveal";
+import CountUp from "./CountUp";
 
 const STATS = [
   { v: "7,81%", l: "доля рекламных расходов в сети кавказской кухни" },
@@ -58,10 +59,11 @@ const Results = () => {
 
         <div className="reveal grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
           {STATS.map((s) => (
-            <div key={s.v} className="border-t border-cream/25 pt-4">
-              <div className="font-display text-[48px] font-semibold leading-none tracking-[-0.04em] text-brand md:text-[72px]">
-                {s.v}
-              </div>
+            <div key={s.v} className="group border-t border-cream/25 pt-4 transition-colors hover:border-brand">
+              <CountUp
+                value={s.v}
+                className="block font-display text-[48px] font-semibold leading-none tracking-[-0.04em] text-brand transition-transform duration-500 group-hover:-translate-y-1 md:text-[72px]"
+              />
               <p className="mt-3 max-w-[220px] text-[0.9em] leading-snug text-cream-muted">{s.l}</p>
             </div>
           ))}
@@ -72,7 +74,7 @@ const Results = () => {
             <article
               key={c.name}
               style={{ transitionDelay: `${i * 120}ms` }}
-              className="reveal group rounded-xl border border-cream/20 p-6 transition-colors hover:border-brand"
+              className="reveal group rounded-xl border border-cream/20 p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-brand hover:bg-brand/5"
             >
               <div className="flex items-center justify-between text-[0.82em] font-semibold text-brand">
                 <span>{c.tag}</span>
@@ -82,7 +84,7 @@ const Results = () => {
               <div className="mt-6 flex items-center gap-3 text-[0.92em]">
                 <span className="text-cream-muted line-through decoration-cream/40">{c.before}</span>
               </div>
-              <div className="mt-1 font-display text-[1.5em] font-semibold text-cream">{c.after}</div>
+              <CountUp value={c.after} className="mt-1 block font-display text-[1.5em] font-semibold text-cream" />
               <p className="mt-5 border-t border-cream/20 pt-4 text-[0.88em] leading-snug text-cream-muted">{c.what}</p>
             </article>
           ))}

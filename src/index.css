@@ -2,14 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face{font-family:'YS Text';src:url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/ec236c8b5e8261e6.woff2) format('woff2');font-weight:300;font-style:normal;font-display:swap;}
-@font-face{font-family:'YS Text';src:url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/6a5b80acb33d3a12.woff2) format('woff2');font-weight:300;font-style:italic;font-display:swap;}
-@font-face{font-family:'YS Text';src:url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/2138d7f2c1cbbca3.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap;}
-@font-face{font-family:'YS Text';src:url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/595f1651d3ef76de.woff2) format('woff2');font-weight:400;font-style:italic;font-display:swap;}
-@font-face{font-family:'YS Text';src:url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/709d949bd520e607.woff2) format('woff2');font-weight:500;font-style:normal;font-display:swap;}
-@font-face{font-family:'YS Text';src:url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/9217dfebae9e0458.woff2) format('woff2');font-weight:500;font-style:italic;font-display:swap;}
-@font-face{font-family:'YS Text';src:url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/78630d36a4fc82a8.woff2) format('woff2');font-weight:600;font-style:normal;font-display:swap;}
-@font-face{font-family:'YS Text';src:url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/61707ae235206349.woff2) format('woff2');font-weight:600;font-style:italic;font-display:swap;}
+@font-face {
+  font-family: "YS Text";
+  src: url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/ec236c8b5e8261e6.woff2)
+    format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "YS Text";
+  src: url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/6a5b80acb33d3a12.woff2)
+    format("woff2");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "YS Text";
+  src: url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/2138d7f2c1cbbca3.woff2)
+    format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "YS Text";
+  src: url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/595f1651d3ef76de.woff2)
+    format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "YS Text";
+  src: url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/709d949bd520e607.woff2)
+    format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "YS Text";
+  src: url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/9217dfebae9e0458.woff2)
+    format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "YS Text";
+  src: url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/78630d36a4fc82a8.woff2)
+    format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "YS Text";
+  src: url(https://storage.yandexcloud.net/poehali-cdn/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/fonts/61707ae235206349.woff2)
+    format("woff2");
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
 
 @layer base {
   :root {
@@ -117,16 +173,64 @@
   .reveal {
     opacity: 0;
     transform: translateY(40px);
-    transition: opacity 0.9s ease, transform 0.9s ease;
+    transition:
+      opacity 0.9s ease,
+      transform 0.9s ease;
   }
   .reveal.is-visible {
     opacity: 1;
     transform: none;
   }
+  .marquee {
+    animation: marquee-scroll 32s linear infinite;
+  }
+  .marquee:hover {
+    animation-play-state: paused;
+  }
+  @keyframes marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  .tilt {
+    transition:
+      transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.5s ease,
+      border-color 0.4s ease;
+  }
+  .tilt:hover {
+    transform: translateY(-6px);
+  }
+  .shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .shine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 35%,
+      hsl(var(--brand-yellow) / 0.35) 50%,
+      transparent 65%
+    );
+    transform: translateX(-120%);
+    transition: transform 0.75s ease;
+    pointer-events: none;
+  }
+  .shine:hover::after {
+    transform: translateX(120%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation: none !important;
     transition: none !important;
   }
