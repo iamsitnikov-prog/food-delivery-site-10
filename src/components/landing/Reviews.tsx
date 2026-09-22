@@ -7,24 +7,28 @@ const REVIEWS = [
     text: "Юрий, благодарю, честно говоря мы не ожидали заказов сразу! Мы немного накосячили, но ничего — так сказать, боевое крещение! Пока не будем подключать второй тип доставки, пусть справляются с тем объёмом, который есть. Ещё раз спасибо за оперативность и что всегда на связи. До завтра!",
     author: "Иван и Ольга Шалютины",
     place: "кафе «Череда», г. Самара",
+    link: "#",
   },
   {
     title: "результат",
     text: "Хочу выразить благодарность Лилии Ковальчук за её вклад в развитие нашей службы доставки! За последние 6 месяцев работы мы увидели взрывной рост выручки на 40%. Когда Лиля пришла к нам, мы слегка буксовали: кабинет в Яндекс Еде был настроен не оптимально, а продвижение было скорее хаотичным. Она провела нас за руку через все настройки кабинета, научила анализировать данные и оптимизировать предложения для гостей.",
     author: "Ольга Самойлова",
     place: "компания «Морсен», г. Череповец",
+    link: "#",
   },
   {
     title: "спасибо за обучение!",
     text: "Ура! У нас первый заказ. Мы сидим, телефон как начал пищать! Спасибо за обучение, ребятам зашло. Очень приятно с тобой работать — как будешь проезжать нас, заезжай на обед!",
     author: "Ибрагим Зоров",
     place: "г. Санкт-Петербург",
+    link: "#",
   },
   {
     title: "новые горизонты",
     text: "Мы обратились к Лилии с просьбой помочь с развитием кафе — не могли понять, что именно нужно улучшить. На первый взгляд всё было в порядке, но заказов не поступало. Лилия сразу выявила скрытые проблемы, определила целевую аудиторию и составила детальный план действий. Регулярные созвоны и разборы ошибок стали источником инсайтов, а сотрудничество открыло перед нами перспективы для роста.",
     author: "Владимир Фролов",
     place: "кафе «Зарина», г. Москва",
+    link: "#",
   },
 ];
 
@@ -57,9 +61,20 @@ const Reviews = () => {
             <Icon name="Quote" size={28} className="mb-5 text-brand transition-transform duration-500 group-hover:scale-125" />
             <h3 className="font-display text-[1.35em] font-semibold tracking-[-0.02em] text-brand">{r.title}</h3>
             <p className="mt-4 flex-1 text-[0.95em] leading-relaxed text-cream-muted">{r.text}</p>
-            <div className="mt-6 border-t border-cream/20 pt-5">
-              <div className="font-display text-[1.15em] font-semibold">{r.author}</div>
-              <div className="text-[0.88em] text-cream-muted">{r.place}</div>
+            <div className="mt-6 flex flex-wrap items-end justify-between gap-4 border-t border-cream/20 pt-5">
+              <div>
+                <div className="font-display text-[1.15em] font-semibold">{r.author}</div>
+                <div className="text-[0.88em] text-cream-muted">{r.place}</div>
+              </div>
+              <a
+                href={r.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl border border-cream/30 px-4 py-2.5 text-[0.88em] font-medium transition-colors hover:bg-brand hover:text-foreground"
+              >
+                открыть оригинал
+                <Icon name="ArrowUpRight" size={16} />
+              </a>
             </div>
           </article>
         ))}

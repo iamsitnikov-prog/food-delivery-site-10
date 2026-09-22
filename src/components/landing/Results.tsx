@@ -2,10 +2,16 @@ import useReveal from "@/hooks/use-reveal";
 import CountUp from "./CountUp";
 
 const STATS = [
-  { v: "7,81%", l: "доля рекламных расходов в сети кавказской кухни" },
   { v: "×13", l: "рублей выручки на каждый рубль продвижения" },
-  { v: "+15%", l: "выручки за месяц без продвижения и акций" },
   { v: "5", l: "дней от старта проекта до первого заказа" },
+];
+
+const FACTS = [
+  { v: "17", l: "городов ведения проектов по России" },
+  { v: "5", l: "городов международного формата" },
+  { v: "+30%", l: "выручки за месяц без продвижения и акций" },
+  { v: "124", l: "проекта" },
+  { v: "2,6 млрд ₽", l: "выручки проектов, которые ведём" },
 ];
 
 const CASES = [
@@ -33,6 +39,30 @@ const CASES = [
     after: "ДРР снижен до 7,81%",
     what: "Разобрались в рекомендованных ставках, соотнесли их с конкурентными, привели контент в порядок. 470 заказов, 62 335 433 ₽ выручки от рекламы при затратах 4 868 697 ₽. Каждый рубль продвижения приносит до 13 рублей выручки.",
   },
+  {
+    tag: "кейс 4",
+    name: "Кейс 4",
+    city: "результат",
+    before: "исходная ситуация",
+    after: "результат проекта",
+    what: "Текст кейса скоро появится.",
+  },
+  {
+    tag: "кейс 5",
+    name: "Кейс 5",
+    city: "результат",
+    before: "исходная ситуация",
+    after: "результат проекта",
+    what: "Текст кейса скоро появится.",
+  },
+  {
+    tag: "кейс 6",
+    name: "Кейс 6",
+    city: "результат",
+    before: "исходная ситуация",
+    after: "результат проекта",
+    what: "Текст кейса скоро появится.",
+  },
 ];
 
 const Results = () => {
@@ -57,14 +87,25 @@ const Results = () => {
           </p>
         </div>
 
-        <div className="reveal grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
+        <div className="reveal grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2">
           {STATS.map((s) => (
             <div key={s.v} className="group border-t border-cream/25 pt-4 transition-colors hover:border-brand">
               <CountUp
                 value={s.v}
-                className="block font-display text-[48px] font-semibold leading-none tracking-[-0.04em] text-brand transition-transform duration-500 group-hover:-translate-y-1 md:text-[72px]"
+                className="block font-display text-[64px] font-semibold leading-none tracking-[-0.04em] text-brand transition-transform duration-500 group-hover:-translate-y-1 md:text-[96px]"
               />
-              <p className="mt-3 max-w-[220px] text-[0.9em] leading-snug text-cream-muted">{s.l}</p>
+              <p className="mt-3 max-w-[280px] text-[0.95em] leading-snug text-cream-muted">{s.l}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="reveal mt-12 grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-5">
+          {FACTS.map((f) => (
+            <div key={f.l} className="border-t border-cream/25 pt-3.5">
+              <span className="block font-display text-[1.7em] font-semibold leading-none tracking-[-0.03em] text-brand md:text-[2em]">
+                {f.v}
+              </span>
+              <p className="mt-2 text-[0.85em] leading-snug text-cream-muted">{f.l}</p>
             </div>
           ))}
         </div>
