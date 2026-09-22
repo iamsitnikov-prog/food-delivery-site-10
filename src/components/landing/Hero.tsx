@@ -44,7 +44,7 @@ const Hero = () => {
         </div>
         <ul aria-label="Для кого" className="absolute bottom-[22px] left-5 z-10 flex flex-wrap gap-2 pr-5 md:left-14">
           {TAGS.map((t) => (
-            <li key={t} className="rounded-full bg-cream px-3.5 py-[7px] text-[0.82em] text-foreground">
+            <li key={t} className="rounded-full bg-pale px-3.5 py-[7px] text-[0.82em] text-foreground">
               {t}
             </li>
           ))}

@@ -80,7 +80,7 @@ const LeadForm = () => {
   };
 
   const field =
-    "h-14 rounded-xl border-primary/25 bg-cream px-4 text-[1em] text-foreground placeholder:text-muted-foreground/70 focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-0";
+    "h-14 rounded-xl border-cream/20 bg-cream/5 px-4 text-[1em] text-cream placeholder:text-cream-muted/70 focus-visible:ring-1 focus-visible:ring-brand focus-visible:ring-offset-0";
 
   return (
     <section id="lead" ref={ref} className="relative scroll-mt-4 overflow-hidden px-5 py-20 md:px-14 md:py-28">
@@ -111,19 +111,19 @@ const LeadForm = () => {
           />
         </div>
 
-        <div className="reveal rounded-xl border border-primary/25 bg-pale p-6 md:p-9">
+        <div className="reveal rounded-[28px] bg-surface p-6 text-cream md:p-10">
           {sent ? (
             <div className="flex min-h-[420px] animate-scale-in flex-col items-start justify-center">
-              <span className="flex h-16 w-16 items-center justify-center rounded-xl bg-primary text-brand">
+              <span className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand text-foreground">
                 <Icon name="PartyPopper" size={30} />
               </span>
               <h3 className="mt-6 font-display text-[2.2em] font-semibold leading-none tracking-[-0.02em]">
                 спасибо, {name.trim().split(" ")[0]}!
               </h3>
-              <p className="mt-4 max-w-[380px] text-muted-foreground">
+              <p className="mt-4 max-w-[380px] text-cream-muted">
                 Заявка у&nbsp;нас. Свяжемся с&nbsp;вами по&nbsp;номеру {phone} в&nbsp;течение рабочего дня.
               </p>
-              <button onClick={reset} className="mt-8 rounded-xl border border-primary/40 px-5 py-3 font-medium hover:bg-primary hover:text-primary-foreground transition-colors">
+              <button onClick={reset} className="mt-8 rounded-xl border border-cream/30 px-5 py-3 font-medium transition-colors hover:bg-brand hover:text-foreground">
                 отправить ещё одну
               </button>
             </div>
@@ -158,7 +158,7 @@ const LeadForm = () => {
               />
 
               <div>
-                <p className="mb-2 text-[0.86em] text-muted-foreground">Выберите услугу</p>
+                <p className="mb-2 text-[0.86em] text-cream-muted">Выберите услугу</p>
                 <div className="flex flex-wrap gap-2">
                   {STATUSES.map((s) => (
                     <button
@@ -167,8 +167,8 @@ const LeadForm = () => {
                       onClick={() => setStatus(s)}
                       className={`rounded-full border px-4 py-2 text-[0.88em] transition-colors ${
                         status === s
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-primary/25 bg-cream hover:border-primary"
+                          ? "border-brand bg-brand text-foreground"
+                          : "border-cream/20 text-cream-muted hover:border-brand hover:text-cream"
                       }`}
                     >
                       {s}
@@ -178,7 +178,7 @@ const LeadForm = () => {
               </div>
 
               <div>
-                <p className="mb-2 text-[0.86em] text-muted-foreground">Как с вами связаться?</p>
+                <p className="mb-2 text-[0.86em] text-cream-muted">Как с вами связаться?</p>
                 <div className="flex flex-wrap gap-2">
                   {CHANNELS.map((c) => (
                     <button
@@ -187,8 +187,8 @@ const LeadForm = () => {
                       onClick={() => setChannel(c)}
                       className={`rounded-full border px-4 py-2 text-[0.88em] transition-colors ${
                         channel === c
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-primary/25 bg-cream hover:border-primary"
+                          ? "border-brand bg-brand text-foreground"
+                          : "border-cream/20 text-cream-muted hover:border-brand hover:text-cream"
                       }`}
                     >
                       {c}
@@ -198,7 +198,7 @@ const LeadForm = () => {
               </div>
 
               <Textarea
-                className="min-h-[110px] rounded-xl border-primary/25 bg-cream px-4 py-3 text-[1em] placeholder:text-muted-foreground/70 focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-0"
+                className="min-h-[110px] rounded-xl border-cream/20 bg-cream/5 px-4 py-3 text-[1em] text-cream placeholder:text-cream-muted/70 focus-visible:ring-1 focus-visible:ring-brand focus-visible:ring-offset-0"
                 placeholder="Комментарий (необязательно)"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
@@ -208,7 +208,7 @@ const LeadForm = () => {
                 <Checkbox
                   checked={agree}
                   onCheckedChange={(v) => setAgree(v === true)}
-                  className="mt-0.5 border-primary data-[state=checked]:bg-primary"
+                  className="mt-0.5 border-cream/40 data-[state=checked]:border-brand data-[state=checked]:bg-brand data-[state=checked]:text-foreground"
                 />
                 <span>Согласен на обработку персональных данных</span>
               </label>
@@ -217,7 +217,7 @@ const LeadForm = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex h-16 w-full items-center justify-center gap-2 rounded-xl bg-primary text-[1.06em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5 disabled:opacity-70"
+                className="flex h-16 w-full items-center justify-center gap-2 rounded-xl bg-brand text-[1.06em] font-medium text-foreground transition-transform hover:-translate-y-0.5 disabled:opacity-70"
               >
                 {loading ? <Icon name="Loader2" size={20} className="animate-spin" /> : "оставить заявку"}
               </button>

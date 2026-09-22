@@ -64,42 +64,61 @@ const Extra = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        {ITEMS.map((item, i) => (
-          <article
-            key={item.title}
-            style={{ transitionDelay: `${i * 110}ms` }}
-            className="reveal group flex flex-col overflow-hidden rounded-[28px] bg-surface p-6 text-cream md:p-10"
-          >
-            <span className="inline-flex w-fit items-center gap-2 rounded-full bg-brand px-4 py-2 text-[0.82em] font-semibold text-foreground">
-              <Icon name={item.icon} size={16} />
-              {item.tag}
-            </span>
-            <h3 className="mt-6 font-display text-[1.7em] font-semibold leading-[.95] tracking-[-0.03em] md:text-[2.2em]">
-              {item.title}
-            </h3>
-            <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <CountUp
-                value={item.price}
-                className="font-display text-[1.8em] font-semibold leading-none tracking-[-0.03em] md:text-[2.2em]"
-              />
-              <span className="text-cream-muted">{item.note}</span>
-            </div>
-            <ul className="mt-8 flex-1 space-y-3 border-t border-cream/20 pt-6 text-[0.95em] leading-snug text-cream-muted">
-              {item.points.map((p) => (
-                <li key={p} className="flex gap-3">
-                  <Icon name="Check" size={18} className="mt-0.5 shrink-0 text-brand" />
-                  {p}
-                </li>
-              ))}
-            </ul>
-            <a
-              href="#lead"
-              className="mt-8 inline-flex w-fit items-center justify-center rounded-xl bg-brand px-7 py-4 font-medium text-foreground transition-transform hover:-translate-y-0.5"
+        {ITEMS.map((item, i) => {
+          const light = i === 1;
+          return (
+            <article
+              key={item.title}
+              style={{ transitionDelay: `${i * 110}ms` }}
+              className={`reveal group flex flex-col overflow-hidden rounded-[28px] p-6 md:p-10 ${
+                light ? "bg-pale text-foreground" : "bg-surface text-cream"
+              }`}
             >
-              {item.cta}
-            </a>
-          </article>
-        ))}
+              <span
+                className={`inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-[0.82em] font-semibold ${
+                  light ? "bg-foreground text-brand" : "bg-brand text-foreground"
+                }`}
+              >
+                <Icon name={item.icon} size={16} />
+                {item.tag}
+              </span>
+              <h3 className="mt-6 font-display text-[1.7em] font-semibold leading-[.95] tracking-[-0.03em] md:text-[2.2em]">
+                {item.title}
+              </h3>
+              <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <CountUp
+                  value={item.price}
+                  className="font-display text-[1.8em] font-semibold leading-none tracking-[-0.03em] md:text-[2.2em]"
+                />
+                <span className={light ? "text-foreground/70" : "text-cream-muted"}>{item.note}</span>
+              </div>
+              <ul
+                className={`mt-8 flex-1 space-y-3 border-t pt-6 text-[0.95em] leading-snug ${
+                  light ? "border-foreground/20 text-foreground/80" : "border-cream/20 text-cream-muted"
+                }`}
+              >
+                {item.points.map((p) => (
+                  <li key={p} className="flex gap-3">
+                    <Icon
+                      name="Check"
+                      size={18}
+                      className={`mt-0.5 shrink-0 ${light ? "text-foreground" : "text-brand"}`}
+                    />
+                    {p}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href="#lead"
+                className={`mt-8 inline-flex w-fit items-center justify-center rounded-xl px-7 py-4 font-medium transition-transform hover:-translate-y-0.5 ${
+                  light ? "bg-foreground text-brand" : "bg-brand text-foreground"
+                }`}
+              >
+                {item.cta}
+              </a>
+            </article>
+          );
+        })}
       </div>
 
       <article className="reveal mt-4 overflow-hidden rounded-[28px] bg-surface p-6 text-cream md:p-10">
