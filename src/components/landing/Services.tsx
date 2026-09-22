@@ -62,35 +62,60 @@ const Services = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {SERVICES.map((item, i) => (
-          <article
-            key={item.title}
-            style={{ transitionDelay: `${i * 90}ms` }}
-            className="reveal group flex flex-col rounded-[28px] bg-surface p-7 text-cream transition-transform duration-500 hover:-translate-y-1 md:p-8"
-          >
-            <div className="flex items-start justify-between gap-4">
-              <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand text-foreground transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110">
-                <Icon name={item.icon} size={24} />
-              </span>
-              <span className="font-display text-[1.1em] font-semibold text-cream/35">0{i + 1}</span>
-            </div>
+        {SERVICES.map((item, i) => {
+          const light = i % 2 === 1;
+          return (
+            <article
+              key={item.title}
+              style={{ transitionDelay: `${i * 90}ms` }}
+              className={`reveal group flex flex-col rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 md:p-8 ${
+                light ? "bg-pale text-foreground" : "bg-surface text-cream"
+              }`}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <span
+                  className={`flex h-12 w-12 items-center justify-center rounded-xl transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110 ${
+                    light ? "bg-foreground text-brand" : "bg-brand text-foreground"
+                  }`}
+                >
+                  <Icon name={item.icon} size={24} />
+                </span>
+                <span
+                  className={`font-display text-[1.1em] font-semibold ${light ? "text-foreground/40" : "text-cream/35"}`}
+                >
+                  0{i + 1}
+                </span>
+              </div>
 
-            <h3 className="mt-7 font-display text-[1.5em] font-semibold leading-[1.02] tracking-[-0.025em]">
-              {item.title}
-            </h3>
-            <p className="mt-2 text-[0.92em] text-brand">{item.short}</p>
-            <p className="mt-4 text-[0.95em] leading-relaxed text-cream-muted">{item.text}</p>
+              <h3 className="mt-7 font-display text-[1.5em] font-semibold leading-[1.02] tracking-[-0.025em]">
+                {item.title}
+              </h3>
+              <p className={`mt-2 text-[0.92em] ${light ? "text-foreground/70" : "text-brand"}`}>{item.short}</p>
+              <p
+                className={`mt-4 text-[0.95em] leading-relaxed ${light ? "text-foreground/80" : "text-cream-muted"}`}
+              >
+                {item.text}
+              </p>
 
-            <ul className="mt-7 flex-1 space-y-3 border-t border-cream/20 pt-6 text-[0.93em] leading-snug">
-              {item.points.map((p) => (
-                <li key={p} className="flex gap-3">
-                  <Icon name="Check" size={18} className="mt-0.5 shrink-0 text-brand" />
-                  {p}
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
+              <ul
+                className={`mt-7 flex-1 space-y-3 border-t pt-6 text-[0.93em] leading-snug ${
+                  light ? "border-foreground/20" : "border-cream/20"
+                }`}
+              >
+                {item.points.map((p) => (
+                  <li key={p} className="flex gap-3">
+                    <Icon
+                      name="Check"
+                      size={18}
+                      className={`mt-0.5 shrink-0 ${light ? "text-foreground" : "text-brand"}`}
+                    />
+                    {p}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          );
+        })}
       </div>
 
       <div className="reveal mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
