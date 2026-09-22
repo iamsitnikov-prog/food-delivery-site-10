@@ -58,7 +58,7 @@ const Pricing = () => {
           <article
             key={p.name}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className={`reveal tilt shine flex flex-col rounded-xl border p-6 md:p-9 ${
+            className={`reveal tilt flex flex-col rounded-xl border p-6 md:p-9 ${
               p.accent ? "border-primary bg-primary/10" : "border-primary/25 bg-pale hover:border-primary"
             }`}
           >

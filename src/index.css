@@ -181,20 +181,6 @@
     opacity: 1;
     transform: none;
   }
-  .marquee {
-    animation: marquee-scroll 32s linear infinite;
-  }
-  .marquee:hover {
-    animation-play-state: paused;
-  }
-  @keyframes marquee-scroll {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
-  }
   .tilt {
     transition:
       transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -203,27 +189,6 @@
   }
   .tilt:hover {
     transform: translateY(-6px);
-  }
-  .shine {
-    position: relative;
-    overflow: hidden;
-  }
-  .shine::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      115deg,
-      transparent 35%,
-      hsl(var(--brand-yellow) / 0.35) 50%,
-      transparent 65%
-    );
-    transform: translateX(-120%);
-    transition: transform 0.75s ease;
-    pointer-events: none;
-  }
-  .shine:hover::after {
-    transform: translateX(120%);
   }
 }
 
