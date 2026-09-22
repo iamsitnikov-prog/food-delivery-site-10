@@ -1,5 +1,6 @@
 import Icon from "@/components/ui/icon";
 import useReveal from "@/hooks/use-reveal";
+import CountUp from "./CountUp";
 
 const PLANS = [
   {
@@ -76,9 +77,10 @@ const Pricing = () => {
               {p.name}
             </h3>
             <div className="mt-5 flex items-baseline gap-2">
-              <span className="font-display text-[2.2em] font-semibold leading-none tracking-[-0.03em] md:text-[2.8em]">
-                {p.price}
-              </span>
+              <CountUp
+                value={p.price}
+                className="font-display text-[2.2em] font-semibold leading-none tracking-[-0.03em] md:text-[2.8em]"
+              />
               <span className={`text-[0.9em] ${p.accent ? "text-foreground/70" : "text-cream-muted"}`}>
                 {p.period}
               </span>

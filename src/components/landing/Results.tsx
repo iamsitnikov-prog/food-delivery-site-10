@@ -87,7 +87,7 @@ const Results = () => {
 
         <div className="reveal flex flex-col gap-4 border-y border-cream/25 py-8 md:flex-row md:items-end md:justify-between md:gap-10 md:py-10">
           <span className="flex items-baseline gap-3 font-display font-semibold leading-[.85] tracking-[-0.045em] text-brand">
-            <span className="text-[72px] md:text-[130px]">{HERO_STAT.v}</span>
+            <CountUp value={HERO_STAT.v} className="text-[72px] md:text-[130px]" />
             <span className="text-[26px] md:text-[44px]">{HERO_STAT.unit}</span>
           </span>
           <p className="max-w-[300px] text-[1em] leading-snug text-cream-muted md:pb-3 md:text-right md:text-[1.1em]">
@@ -136,10 +136,11 @@ const Results = () => {
                     {c.before}
                   </span>
                 </div>
-                <CountUp
-                  value={c.after}
+                <span
                   className={`mt-1 block font-display text-[1.5em] font-semibold ${light ? "text-foreground" : "text-cream"}`}
-                />
+                >
+                  {c.after}
+                </span>
                 <p
                   className={`mt-5 border-t pt-4 text-[0.88em] leading-snug ${
                     light ? "border-foreground/20 text-foreground/80" : "border-cream/20 text-cream-muted"

@@ -1,5 +1,6 @@
 import Icon from "@/components/ui/icon";
 import useReveal from "@/hooks/use-reveal";
+import CountUp from "./CountUp";
 
 const ITEMS = [
   {
@@ -85,9 +86,10 @@ const Extra = () => {
                 {item.title}
               </h3>
               <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="font-display text-[1.8em] font-semibold leading-none tracking-[-0.03em] md:text-[2.2em]">
-                  {item.price}
-                </span>
+                <CountUp
+                  value={item.price}
+                  className="font-display text-[1.8em] font-semibold leading-none tracking-[-0.03em] md:text-[2.2em]"
+                />
                 <span className={light ? "text-foreground/70" : "text-cream-muted"}>{item.note}</span>
               </div>
               <ul
@@ -131,9 +133,10 @@ const Extra = () => {
               <span className="block text-brand">с&nbsp;агрегатором</span>
             </h3>
             <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="font-display text-[1.8em] font-semibold leading-none tracking-[-0.03em] md:text-[2.4em]">
-                от 80 000 ₽
-              </span>
+              <CountUp
+                value="от 80 000 ₽"
+                className="font-display text-[1.8em] font-semibold leading-none tracking-[-0.03em] md:text-[2.4em]"
+              />
               <span className="text-cream-muted">до 6 человек</span>
             </div>
             <p className="mt-4 text-cream-muted">Без воды. 5 недель. 5 уроков по 45 минут.</p>
