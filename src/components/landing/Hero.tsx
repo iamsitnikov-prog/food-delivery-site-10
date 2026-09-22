@@ -31,7 +31,7 @@ const Hero = () => {
             <p className="max-w-[430px] text-[1.15em] leading-[1.2] md:text-[1.3em]">
               увеличиваем в&nbsp;первую неделю заказы и&nbsp;выручку ресторана на&nbsp;Яндекс Еде и&nbsp;Деливери. Настраиваем вендор, акции и&nbsp;продвижение, обучаем персонал
             </p>
-            <div className="flex flex-col items-start gap-2.5">
+            <div className="flex flex-col items-start gap-2.5 md:mx-auto md:items-center md:text-center">
               <a
                 href="#lead"
                 className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary px-[30px] py-[18px] text-[1.06em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
