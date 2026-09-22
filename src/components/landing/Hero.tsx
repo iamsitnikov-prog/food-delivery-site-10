@@ -18,18 +18,6 @@ const Hero = () => {
 
       <section className="relative min-h-0 overflow-hidden">
         <img
-          src="https://cdn.poehali.dev/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/bucket/7e32eb53-96cc-4b60-91d1-2b9755f1083f.jpg"
-          alt=""
-          aria-hidden
-          className="pointer-events-none absolute -left-10 bottom-0 z-0 w-[560px] max-w-none mask-fade-up md:left-0 md:w-[760px]"
-        />
-        <img
-          src="https://cdn.poehali.dev/projects/0cb7fc4b-a2a3-476c-9a18-3b625146050b/bucket/c7f9a60e-21d0-461d-973a-a81ff3fb1a00.jpg"
-          alt=""
-          aria-hidden
-          className="pointer-events-none absolute right-0 top-0 z-0 hidden w-[620px] max-w-none mask-fade-down lg:block"
-        />
-        <img
           src={ROBOT}
           alt="Жёлтый робот-курьер agregatory.pro"
           className="pointer-events-none absolute -right-24 top-auto bottom-10 z-0 w-[360px] animate-rise object-contain mask-fade-left sm:w-[460px] md:-right-10 md:bottom-auto md:-top-[70px] md:h-[640px] md:w-[640px]"
