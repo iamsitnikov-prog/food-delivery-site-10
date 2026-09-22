@@ -3,6 +3,7 @@ import useReveal from "@/hooks/use-reveal";
 const PEOPLE = [
   {
     name: "Юрий Ситников",
+    photo: "/team-yuriy.webp",
     exp: "15 лет общепит · 5 лет доставка",
     facts: [
       "Руководитель агрегаторов в проектах Ginza Project",
@@ -13,6 +14,7 @@ const PEOPLE = [
   },
   {
     name: "Лилия Ковальчук",
+    photo: "/team-liliya.webp",
     exp: "20 лет общепит · 15 лет доставка",
     facts: [
       "Эксперт-практик в доставке еды",
@@ -44,8 +46,17 @@ const Team = () => {
           <article
             key={p.name}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className="reveal rounded-xl border border-primary/25 bg-pale p-6 md:p-9"
+            className="reveal overflow-hidden rounded-xl border border-primary/25 bg-pale"
           >
+            <div className="flex items-end justify-center overflow-hidden bg-primary/15 pt-6">
+              <img
+                src={p.photo}
+                alt={p.name}
+                loading="lazy"
+                className="h-[280px] w-auto object-contain object-bottom md:h-[340px]"
+              />
+            </div>
+            <div className="p-6 md:p-9">
             <h3 className="font-display text-[1.8em] font-semibold tracking-[-0.03em] md:text-[2.3em]">{p.name}</h3>
             <div className="mt-2 inline-flex rounded-full bg-primary px-4 py-2 text-[0.85em] font-medium text-primary-foreground">
               {p.exp}
@@ -58,6 +69,7 @@ const Team = () => {
                 </li>
               ))}
             </ul>
+            </div>
           </article>
         ))}
       </div>
