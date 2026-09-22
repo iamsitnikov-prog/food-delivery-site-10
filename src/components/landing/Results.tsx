@@ -1,7 +1,7 @@
 import useReveal from "@/hooks/use-reveal";
 import CountUp from "./CountUp";
 
-const HERO_STAT = { v: "2,6 млрд ₽", l: "выручки проектов, которые ведём" };
+const HERO_STAT = { v: "2,6", unit: "млрд ₽", l: "выручка проектов, которые ведём" };
 
 const STATS = [
   { v: "×13", l: "рублей выручки на каждый рубль продвижения" },
@@ -85,11 +85,14 @@ const Results = () => {
           </p>
         </div>
 
-        <div className="reveal border-t border-brand pt-5">
-          <span className="block font-display text-[56px] font-semibold leading-[.9] tracking-[-0.045em] text-brand md:text-[120px]">
-            {HERO_STAT.v}
+        <div className="reveal flex flex-col gap-4 border-y border-cream/25 py-8 md:flex-row md:items-end md:justify-between md:gap-10 md:py-10">
+          <span className="flex items-baseline gap-3 font-display font-semibold leading-[.85] tracking-[-0.045em] text-brand">
+            <span className="text-[72px] md:text-[130px]">{HERO_STAT.v}</span>
+            <span className="text-[26px] md:text-[44px]">{HERO_STAT.unit}</span>
           </span>
-          <p className="mt-4 max-w-[520px] text-[1.05em] leading-snug text-cream md:text-[1.3em]">{HERO_STAT.l}</p>
+          <p className="max-w-[300px] text-[1em] leading-snug text-cream-muted md:pb-3 md:text-right md:text-[1.1em]">
+            {HERO_STAT.l}
+          </p>
         </div>
 
         <div className="reveal mt-14 grid gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
