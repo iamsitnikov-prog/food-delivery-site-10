@@ -85,14 +85,14 @@ const Results = () => {
           </p>
         </div>
 
-        <div className="reveal rounded-[28px] bg-brand p-7 text-foreground md:p-10">
-          <span className="block font-display text-[56px] font-semibold leading-none tracking-[-0.045em] md:text-[110px]">
+        <div className="reveal border-t border-brand pt-5">
+          <span className="block font-display text-[56px] font-semibold leading-[.9] tracking-[-0.045em] text-brand md:text-[120px]">
             {HERO_STAT.v}
           </span>
-          <p className="mt-4 text-[1.05em] leading-snug md:text-[1.25em]">{HERO_STAT.l}</p>
+          <p className="mt-4 max-w-[520px] text-[1.05em] leading-snug text-cream md:text-[1.3em]">{HERO_STAT.l}</p>
         </div>
 
-        <div className="reveal mt-4 grid gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="reveal mt-14 grid gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
           {STATS.map((s) => (
             <div key={s.l} className="group border-t border-cream/25 pt-4 transition-colors hover:border-brand">
               <CountUp
