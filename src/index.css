@@ -166,6 +166,26 @@
   .text-balance {
     text-wrap: balance;
   }
+  .mask-fade-up {
+    -webkit-mask-image:
+      linear-gradient(to top, #000 0, transparent 85%),
+      linear-gradient(to right, #000 0, transparent 85%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to top, #000 0, transparent 85%),
+      linear-gradient(to right, #000 0, transparent 85%);
+    mask-composite: intersect;
+  }
+  .mask-fade-down {
+    -webkit-mask-image:
+      linear-gradient(to bottom, #000 0, transparent 85%),
+      linear-gradient(to left, #000 0, transparent 85%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to bottom, #000 0, transparent 85%),
+      linear-gradient(to left, #000 0, transparent 85%);
+    mask-composite: intersect;
+  }
   .mask-fade-left {
     -webkit-mask-image: linear-gradient(to right, transparent 0, #000 22%);
     mask-image: linear-gradient(to right, transparent 0, #000 22%);
