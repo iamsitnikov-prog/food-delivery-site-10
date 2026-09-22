@@ -1,3 +1,4 @@
+import Icon from "@/components/ui/icon";
 import useReveal from "@/hooks/use-reveal";
 
 const PEOPLE = [
@@ -46,28 +47,44 @@ const Team = () => {
           <article
             key={p.name}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className="reveal tilt group rounded-xl border border-primary/25 bg-pale p-6 hover:border-primary md:p-9"
+            className={`reveal group flex flex-col rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 md:p-10 ${
+              i % 2 === 1 ? "bg-pale text-foreground" : "bg-surface text-cream"
+            }`}
           >
             <div className="flex items-center gap-5">
               <img
                 src={p.photo}
                 alt={p.name}
                 loading="lazy"
-                className="h-20 w-20 shrink-0 rounded-full border border-primary/30 object-cover object-top grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0 md:h-24 md:w-24"
+                className={`h-20 w-20 shrink-0 rounded-full border-2 object-cover object-top grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0 md:h-24 md:w-24 ${
+                  i % 2 === 1 ? "border-foreground/20" : "border-brand"
+                }`}
               />
               <div>
                 <h3 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.03em] md:text-[2.1em]">
                   {p.name}
                 </h3>
-                <div className="mt-2 inline-flex rounded-full bg-primary px-4 py-2 text-[0.85em] font-medium text-primary-foreground">
+                <div
+                  className={`mt-2 inline-flex rounded-full px-4 py-2 text-[0.85em] font-medium ${
+                    i % 2 === 1 ? "bg-foreground text-brand" : "bg-brand text-foreground"
+                  }`}
+                >
                   {p.exp}
                 </div>
               </div>
             </div>
-            <ul className="mt-7 space-y-3.5 border-t border-primary/25 pt-7">
+            <ul
+              className={`mt-8 flex-1 space-y-3.5 border-t pt-7 leading-snug ${
+                i % 2 === 1 ? "border-foreground/20 text-foreground/80" : "border-cream/20 text-cream-muted"
+              }`}
+            >
               {p.facts.map((f) => (
-                <li key={f} className="flex gap-3 leading-snug">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                <li key={f} className="flex gap-3">
+                  <Icon
+                    name="Check"
+                    size={18}
+                    className={`mt-0.5 shrink-0 ${i % 2 === 1 ? "text-foreground" : "text-brand"}`}
+                  />
                   {f}
                 </li>
               ))}
