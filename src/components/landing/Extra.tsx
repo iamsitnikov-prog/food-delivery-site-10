@@ -6,7 +6,8 @@ const ITEMS = [
   {
     icon: "PhoneCall",
     title: "консультация",
-    price: "от 60 мин / 20 000 ₽",
+    price: "от 20 000 ₽",
+    note: "от 60 минут",
     cta: "заказать консультацию",
     points: [
       "Ответы на любые вопросы и сложности, связанные с доставкой",
@@ -19,6 +20,7 @@ const ITEMS = [
     icon: "ClipboardCheck",
     title: "аудит ресторана на агрегаторе",
     price: "от 30 000 ₽",
+    note: "разовая услуга",
     cta: "заказать аудит",
     points: [
       "Всестороннее изучение текущего состояния проекта на агрегаторе",
@@ -27,18 +29,13 @@ const ITEMS = [
       "Отчёт с результатами анализа и рекомендациями",
     ],
   },
-  {
-    icon: "GraduationCap",
-    title: "курс: работа с агрегатором",
-    price: "от 80 000 ₽ / до 6 чел",
-    cta: "оставить заявку",
-    points: [
-      "Обучение всех сотрудников команды доставки ресторана",
-      "Теория и выполнение домашних заданий",
-      "Итоговая аттестация сотрудников через тестирование",
-      "Готовность команды к эффективной работе с агрегатором",
-    ],
-  },
+];
+
+const COURSE_POINTS = [
+  "Обучение всех сотрудников команды доставки ресторана",
+  "Теория и выполнение домашних заданий",
+  "Итоговая аттестация сотрудников через тестирование",
+  "Готовность команды к эффективной работе с агрегатором",
 ];
 
 const PROGRAM = [
@@ -64,7 +61,7 @@ const Extra = () => {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2">
         {ITEMS.map((item, i) => (
           <article
             key={item.title}
@@ -75,7 +72,10 @@ const Extra = () => {
               <Icon name={item.icon} size={24} />
             </span>
             <h3 className="font-display text-[1.45em] font-semibold leading-tight tracking-[-0.02em]">{item.title}</h3>
-            <CountUp value={item.price} className="mt-3 block font-display text-[1.3em] font-semibold text-foreground" />
+            <div className="mt-3 flex flex-wrap items-baseline gap-x-3">
+              <CountUp value={item.price} className="font-display text-[1.4em] font-semibold text-foreground" />
+              <span className="text-[0.88em] text-muted-foreground">{item.note}</span>
+            </div>
             <ul className="mt-6 flex-1 space-y-3 border-t border-primary/25 pt-6 text-[0.92em] leading-snug text-muted-foreground">
               {item.points.map((p) => (
                 <li key={p} className="flex gap-2.5">
@@ -94,23 +94,63 @@ const Extra = () => {
         ))}
       </div>
 
-      <div className="reveal mt-4 rounded-xl border border-primary/25 p-6 md:p-9">
-        <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-          <h3 className="font-display text-[1.6em] font-semibold tracking-[-0.02em] md:text-[2em]">
-            программа курса
-          </h3>
-          <p className="text-muted-foreground">Без воды. 5 недель. 5 уроков по 45 минут.</p>
+      <article className="reveal mt-4 overflow-hidden rounded-[28px] bg-surface p-6 text-cream md:p-10">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.15fr]">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[0.82em] font-semibold text-foreground">
+              <Icon name="GraduationCap" size={16} />
+              обучение команды
+            </span>
+            <h3 className="mt-6 font-display text-[2em] font-semibold leading-[.95] tracking-[-0.03em] md:text-[3em]">
+              курс: работа
+              <span className="block text-brand">с&nbsp;агрегатором</span>
+            </h3>
+            <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <CountUp
+                value="от 80 000 ₽"
+                className="font-display text-[1.8em] font-semibold leading-none tracking-[-0.03em] md:text-[2.4em]"
+              />
+              <span className="text-cream-muted">до 6 человек</span>
+            </div>
+            <p className="mt-4 text-cream-muted">Без воды. 5 недель. 5 уроков по 45 минут.</p>
+
+            <ul className="mt-8 space-y-3 border-t border-cream/20 pt-6 text-[0.95em] leading-snug text-cream-muted">
+              {COURSE_POINTS.map((p) => (
+                <li key={p} className="flex gap-3">
+                  <Icon name="Check" size={18} className="mt-0.5 shrink-0 text-brand" />
+                  {p}
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href="#lead"
+              className="mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-7 py-4 font-medium text-foreground transition-transform hover:-translate-y-0.5"
+            >
+              записать команду на курс
+            </a>
+          </div>
+
+          <div className="rounded-xl border border-cream/20 p-5 md:p-7">
+            <h4 className="font-display text-[1.3em] font-semibold tracking-[-0.02em] md:text-[1.6em]">
+              программа курса
+            </h4>
+            <ol className="mt-6 space-y-5">
+              {PROGRAM.map((p, i) => (
+                <li key={p.t} className="flex gap-4 border-t border-cream/20 pt-5">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand font-display text-[0.95em] font-semibold text-foreground">
+                    {i + 1}
+                  </span>
+                  <span>
+                    <b className="block text-[1.08em] font-medium leading-tight">{p.t}</b>
+                    <span className="mt-1 block text-[0.9em] leading-snug text-cream-muted">{p.d}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
-        <ol className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-          {PROGRAM.map((p, i) => (
-            <li key={p.t} className="border-t border-primary/25 pt-3.5">
-              <b className="mb-2 block text-[0.82em] font-semibold text-muted-foreground">урок {i + 1}</b>
-              <h4 className="mb-1.5 text-[1.1em] font-medium leading-tight">{p.t}</h4>
-              <p className="text-[0.88em] leading-snug text-muted-foreground">{p.d}</p>
-            </li>
-          ))}
-        </ol>
-      </div>
+      </article>
     </section>
   );
 };
