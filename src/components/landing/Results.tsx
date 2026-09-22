@@ -75,12 +75,12 @@ const Results = () => {
         className="pointer-events-none absolute -left-24 -top-10 w-[300px] animate-float opacity-90 md:-left-16 md:w-[420px]"
       />
       <div className="relative">
-        <div className="reveal mb-14 md:pl-[34%]">
+        <div className="reveal mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end md:pl-[34%]">
           <h2 className="font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
             результаты
             <span className="block pl-[1.2em] text-brand">в&nbsp;цифрах</span>
           </h2>
-          <p className="mt-6 max-w-[440px] leading-snug text-cream-muted">
+          <p className="max-w-[340px] text-[1.05em] leading-snug text-cream-muted">
             Настраиваем работу таким образом, чтобы гарантировать реальные результаты для&nbsp;вашего бизнеса.
           </p>
         </div>
@@ -108,24 +108,48 @@ const Results = () => {
         </div>
 
         <div className="mt-16 grid gap-4 md:grid-cols-3">
-          {CASES.map((c, i) => (
-            <article
-              key={c.name}
-              style={{ transitionDelay: `${i * 120}ms` }}
-              className="reveal group rounded-xl border border-cream/20 p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-brand hover:bg-brand/5"
-            >
-              <div className="flex items-center justify-between text-[0.82em] font-semibold text-brand">
-                <span>{c.tag}</span>
-                <span className="text-cream-muted">{c.city}</span>
-              </div>
-              <h3 className="mt-2 font-display text-[1.4em] font-semibold tracking-[-0.02em]">{c.name}</h3>
-              <div className="mt-6 flex items-center gap-3 text-[0.92em]">
-                <span className="text-cream-muted line-through decoration-cream/40">{c.before}</span>
-              </div>
-              <CountUp value={c.after} className="mt-1 block font-display text-[1.5em] font-semibold text-cream" />
-              <p className="mt-5 border-t border-cream/20 pt-4 text-[0.88em] leading-snug text-cream-muted">{c.what}</p>
-            </article>
-          ))}
+          {CASES.map((c, i) => {
+            const light = i % 2 === 1;
+            return (
+              <article
+                key={c.name}
+                style={{ transitionDelay: `${i * 120}ms` }}
+                className={`reveal group rounded-[24px] p-6 transition-all duration-500 hover:-translate-y-1.5 ${
+                  light ? "bg-pale text-foreground" : "border border-cream/20"
+                }`}
+              >
+                <div
+                  className={`flex items-center justify-between text-[0.82em] font-semibold ${
+                    light ? "text-foreground" : "text-brand"
+                  }`}
+                >
+                  <span>{c.tag}</span>
+                  <span className={light ? "text-foreground/60" : "text-cream-muted"}>{c.city}</span>
+                </div>
+                <h3 className="mt-2 font-display text-[1.4em] font-semibold tracking-[-0.02em]">{c.name}</h3>
+                <div className="mt-6 text-[0.92em]">
+                  <span
+                    className={`line-through ${
+                      light ? "text-foreground/60 decoration-foreground/40" : "text-cream-muted decoration-cream/40"
+                    }`}
+                  >
+                    {c.before}
+                  </span>
+                </div>
+                <CountUp
+                  value={c.after}
+                  className={`mt-1 block font-display text-[1.5em] font-semibold ${light ? "text-foreground" : "text-cream"}`}
+                />
+                <p
+                  className={`mt-5 border-t pt-4 text-[0.88em] leading-snug ${
+                    light ? "border-foreground/20 text-foreground/80" : "border-cream/20 text-cream-muted"
+                  }`}
+                >
+                  {c.what}
+                </p>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
