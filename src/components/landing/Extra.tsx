@@ -5,6 +5,7 @@ import CountUp from "./CountUp";
 const ITEMS = [
   {
     icon: "PhoneCall",
+    tag: "личная встреча",
     title: "консультация",
     price: "от 20 000 ₽",
     note: "от 60 минут",
@@ -18,6 +19,7 @@ const ITEMS = [
   },
   {
     icon: "ClipboardCheck",
+    tag: "анализ проекта",
     title: "аудит ресторана на агрегаторе",
     price: "от 30 000 ₽",
     note: "разовая услуга",
@@ -66,27 +68,33 @@ const Extra = () => {
           <article
             key={item.title}
             style={{ transitionDelay: `${i * 110}ms` }}
-            className="reveal tilt group flex flex-col rounded-xl border border-primary/25 bg-pale p-6 hover:border-primary md:p-8"
+            className="reveal group flex flex-col overflow-hidden rounded-[28px] bg-surface p-6 text-cream md:p-10"
           >
-            <span className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-primary-foreground transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110">
-              <Icon name={item.icon} size={24} />
+            <span className="inline-flex w-fit items-center gap-2 rounded-full bg-brand px-4 py-2 text-[0.82em] font-semibold text-foreground">
+              <Icon name={item.icon} size={16} />
+              {item.tag}
             </span>
-            <h3 className="font-display text-[1.45em] font-semibold leading-tight tracking-[-0.02em]">{item.title}</h3>
-            <div className="mt-3 flex flex-wrap items-baseline gap-x-3">
-              <CountUp value={item.price} className="font-display text-[1.4em] font-semibold text-foreground" />
-              <span className="text-[0.88em] text-muted-foreground">{item.note}</span>
+            <h3 className="mt-6 font-display text-[1.7em] font-semibold leading-[.95] tracking-[-0.03em] md:text-[2.2em]">
+              {item.title}
+            </h3>
+            <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <CountUp
+                value={item.price}
+                className="font-display text-[1.8em] font-semibold leading-none tracking-[-0.03em] md:text-[2.2em]"
+              />
+              <span className="text-cream-muted">{item.note}</span>
             </div>
-            <ul className="mt-6 flex-1 space-y-3 border-t border-primary/25 pt-6 text-[0.92em] leading-snug text-muted-foreground">
+            <ul className="mt-8 flex-1 space-y-3 border-t border-cream/20 pt-6 text-[0.95em] leading-snug text-cream-muted">
               {item.points.map((p) => (
-                <li key={p} className="flex gap-2.5">
-                  <Icon name="Dot" size={18} className="mt-0.5 shrink-0 text-primary" />
+                <li key={p} className="flex gap-3">
+                  <Icon name="Check" size={18} className="mt-0.5 shrink-0 text-brand" />
                   {p}
                 </li>
               ))}
             </ul>
             <a
               href="#lead"
-              className="mt-7 inline-flex items-center justify-center rounded-xl border border-primary px-5 py-3.5 font-medium transition-colors hover:bg-primary hover:text-primary-foreground"
+              className="mt-8 inline-flex w-fit items-center justify-center rounded-xl bg-brand px-7 py-4 font-medium text-foreground transition-transform hover:-translate-y-0.5"
             >
               {item.cta}
             </a>

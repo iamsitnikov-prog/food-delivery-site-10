@@ -39,7 +39,7 @@ const Results = () => {
   const ref = useReveal<HTMLElement>();
 
   return (
-    <section id="results" ref={ref} className="relative scroll-mt-4 overflow-hidden rounded-[40px] bg-surface px-5 py-20 text-cream md:mx-3 md:px-14 md:py-28">
+    <section id="results" ref={ref} className="relative mt-5 scroll-mt-4 overflow-hidden rounded-[40px] bg-surface px-5 py-20 text-cream md:mx-3 md:mt-7 md:px-14 md:py-28">
       <img
         src="/robot-flip.webp"
         alt=""
