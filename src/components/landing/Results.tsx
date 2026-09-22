@@ -1,17 +1,15 @@
 import useReveal from "@/hooks/use-reveal";
 import CountUp from "./CountUp";
 
+const HERO_STAT = { v: "2,6 млрд ₽", l: "выручки проектов, которые ведём" };
+
 const STATS = [
   { v: "×13", l: "рублей выручки на каждый рубль продвижения" },
   { v: "5", l: "дней от старта проекта до первого заказа" },
-];
-
-const FACTS = [
+  { v: "124", l: "проекта в работе" },
   { v: "17", l: "городов ведения проектов по России" },
   { v: "5", l: "городов международного формата" },
-  { v: "+30%", l: "выручки за месяц без продвижения и акций" },
-  { v: "124", l: "проекта" },
-  { v: "2,6 млрд ₽", l: "выручки проектов, которые ведём" },
+  { v: "5+", l: "лет работы с агрегаторами" },
 ];
 
 const CASES = [
@@ -87,25 +85,21 @@ const Results = () => {
           </p>
         </div>
 
-        <div className="reveal grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2">
-          {STATS.map((s) => (
-            <div key={s.v} className="group border-t border-cream/25 pt-4 transition-colors hover:border-brand">
-              <CountUp
-                value={s.v}
-                className="block font-display text-[64px] font-semibold leading-none tracking-[-0.04em] text-brand transition-transform duration-500 group-hover:-translate-y-1 md:text-[96px]"
-              />
-              <p className="mt-3 max-w-[280px] text-[0.95em] leading-snug text-cream-muted">{s.l}</p>
-            </div>
-          ))}
+        <div className="reveal rounded-[28px] bg-brand p-7 text-foreground md:p-10">
+          <span className="block font-display text-[56px] font-semibold leading-none tracking-[-0.045em] md:text-[110px]">
+            {HERO_STAT.v}
+          </span>
+          <p className="mt-4 text-[1.05em] leading-snug md:text-[1.25em]">{HERO_STAT.l}</p>
         </div>
 
-        <div className="reveal mt-12 grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-5">
-          {FACTS.map((f) => (
-            <div key={f.l} className="border-t border-cream/25 pt-3.5">
-              <span className="block font-display text-[1.7em] font-semibold leading-none tracking-[-0.03em] text-brand md:text-[2em]">
-                {f.v}
-              </span>
-              <p className="mt-2 text-[0.85em] leading-snug text-cream-muted">{f.l}</p>
+        <div className="reveal mt-4 grid gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+          {STATS.map((s) => (
+            <div key={s.l} className="group border-t border-cream/25 pt-4 transition-colors hover:border-brand">
+              <CountUp
+                value={s.v}
+                className="block font-display text-[44px] font-semibold leading-none tracking-[-0.04em] text-brand transition-transform duration-500 group-hover:-translate-y-1 md:text-[64px]"
+              />
+              <p className="mt-3 max-w-[260px] text-[0.92em] leading-snug text-cream-muted">{s.l}</p>
             </div>
           ))}
         </div>

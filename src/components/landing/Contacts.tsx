@@ -2,9 +2,10 @@ import Icon from "@/components/ui/icon";
 import { NAV } from "./Header";
 
 const CONTACTS = [
-  { icon: "Phone", label: "телефон", value: "+7 931 378-22-24", href: "tel:+79313782224" },
-  { icon: "Send", label: "телеграм", value: "@agregatory", href: "https://t.me/agregatory" },
-  { icon: "MessageCircle", label: "whatsapp", value: "+7 931 378-22-24", href: "https://wa.me/79313782224" },
+  { icon: "Phone", label: "телефон", value: "+7 931 002-82-22", href: "tel:+79310028222" },
+  { icon: "Send", label: "телеграм", value: "@sirnikovy1", href: "https://t.me/sirnikovy1" },
+  { icon: "MessageCircle", label: "whatsapp", value: "+7 931 002-82-22", href: "https://wa.me/79310028222" },
+  { icon: "MessagesSquare", label: "max", value: "+7 931 002-82-22", href: "tel:+79310028222" },
 ];
 
 const Contacts = () => {

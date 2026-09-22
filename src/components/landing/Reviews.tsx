@@ -70,7 +70,7 @@ const Reviews = () => {
                 href={r.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-cream/30 px-4 py-2.5 text-[0.88em] font-medium transition-colors hover:bg-brand hover:text-foreground"
+                className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.88em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
               >
                 открыть оригинал
                 <Icon name="ArrowUpRight" size={16} />
