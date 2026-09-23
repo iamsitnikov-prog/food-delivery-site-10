@@ -143,7 +143,7 @@ const Results = () => {
               <article
                 key={c.name}
                 style={{ transitionDelay: `${i * 120}ms` }}
-                className={`reveal group rounded-[24px] p-6 transition-all duration-500 hover:-translate-y-1.5 ${
+                className={`group animate-fade-in rounded-[24px] p-6 transition-all duration-500 hover:-translate-y-1.5 ${
                   light ? "bg-pale text-foreground" : "border border-cream/20"
                 }`}
               >
