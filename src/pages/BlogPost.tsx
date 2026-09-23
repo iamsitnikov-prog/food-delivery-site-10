@@ -61,7 +61,7 @@ const BlogPost = () => {
       <div id="top">
         <Header />
 
-        <article className="px-5 pb-16 pt-12 md:px-14 md:pb-24 md:pt-16">
+        <article className="mx-auto max-w-[1240px] px-5 pb-16 pt-12 md:px-14 md:pb-24 md:pt-16">
           <nav aria-label="Хлебные крошки" className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               главная
@@ -80,12 +80,12 @@ const BlogPost = () => {
             </span>
           </div>
 
-          <h1 className="mt-6 max-w-[18ch] font-display text-[38px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[64px]">
+          <h1 className="mt-6 max-w-[20ch] font-display text-[38px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[60px]">
             {post.h1}
           </h1>
-          <p className="mt-6 max-w-[620px] text-[1.1em] leading-snug text-muted-foreground">{post.lead}</p>
+          <p className="mt-6 max-w-[760px] text-[1.15em] leading-snug text-muted-foreground">{post.lead}</p>
 
-          <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_260px] lg:items-start">
+          <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-20 lg:items-start">
             <PostBody blocks={post.blocks} />
 
             <aside className="order-first rounded-[28px] bg-pale p-6 lg:order-last lg:sticky lg:top-8">
@@ -111,12 +111,12 @@ const BlogPost = () => {
         </article>
       </div>
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">
         <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           частые
           <span className="pl-3 text-muted-foreground">вопросы</span>
         </h2>
-        <Accordion type="single" collapsible defaultValue="q-0" className="mt-8 max-w-[840px] border-t border-primary/25">
+        <Accordion type="single" collapsible defaultValue="q-0" className="mt-8 border-t border-primary/25">
           {post.faq.map((f, i) => (
             <AccordionItem key={f.q} value={`q-${i}`} className="border-b border-primary/25">
               <AccordionTrigger className="py-6 text-left font-display text-[1.15em] font-semibold hover:no-underline md:text-[1.35em]">
@@ -128,7 +128,7 @@ const BlogPost = () => {
         </Accordion>
       </section>
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">
         <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">читайте также</h2>
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           {others.map((o, i) => (

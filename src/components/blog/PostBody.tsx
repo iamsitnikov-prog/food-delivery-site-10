@@ -2,7 +2,7 @@ import type { PostBlock } from "@/data/blog-posts";
 import Icon from "@/components/ui/icon";
 
 const PostBody = ({ blocks }: { blocks: PostBlock[] }) => (
-  <div className="max-w-[760px]">
+  <div className="min-w-0 text-[1.06em]">
     {blocks.map((b, i) => {
       if (b.type === "h2")
         return (
