@@ -91,7 +91,7 @@ const PostFeedback = ({ slug, title }: { slug: string; title: string }) => {
             Остались вопросы по вашему заведению?
           </h2>
           <p className="mt-3 max-w-[520px] text-[0.95em] leading-relaxed text-cream-muted">
-            Напишите нам&nbsp;— разберём вашу ситуацию и&nbsp;подскажем, с&nbsp;чего начать. Это бесплатно и&nbsp;ни&nbsp;к&nbsp;чему не&nbsp;обязывает.
+            Напишите нам&nbsp;— разберём вашу ситуацию и&nbsp;подскажем, с&nbsp;чего начать именно в&nbsp;вашем случае.
           </p>
         </div>
         <div className="flex shrink-0 flex-wrap gap-3">
