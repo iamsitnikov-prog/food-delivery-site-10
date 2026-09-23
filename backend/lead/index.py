@@ -60,7 +60,7 @@ def send_telegram(lines):
                          headers={'Content-Type': 'application/x-www-form-urlencoded'})
             resp = conn.getresponse()
             ok = resp.status == 200
-            resp.read()
+            print(f'telegram response {resp.status}: {resp.read()[:300].decode(errors="ignore")}')
             conn.close()
             if ok:
                 return True
