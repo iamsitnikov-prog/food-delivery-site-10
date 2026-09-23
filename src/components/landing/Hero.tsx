@@ -18,7 +18,7 @@ const TAGS = [
 
 const Hero = () => {
   return (
-    <div id="top" className="relative grid md:h-[100svh] md:min-h-[680px] grid-rows-[auto_1fr_auto] overflow-hidden bg-background">
+    <div id="top" className="relative grid md:h-[100svh] md:min-h-[680px] md:max-h-[900px] grid-rows-[auto_1fr_auto] overflow-hidden bg-background">
       <Header />
 
       <section className="relative min-h-0 overflow-hidden">
@@ -27,10 +27,10 @@ const Hero = () => {
           alt="Жёлтый робот-курьер agregatory.pro"
           fetchPriority="high"
           decoding="async"
-          className="pointer-events-none absolute -right-20 bottom-[-14px] top-auto z-0 w-[300px] animate-float object-contain object-bottom mask-fade-left sm:w-[460px] md:-right-10 md:h-[620px] md:w-[620px] 2xl:h-[760px] 2xl:w-[760px] min-[1900px]:h-[880px] min-[1900px]:w-[880px]"
+          className="pointer-events-none absolute -right-20 bottom-[-14px] top-auto z-0 w-[300px] animate-float object-contain object-bottom mask-fade-left sm:w-[460px] md:-right-10 md:h-[620px] md:w-[620px]"
         />
         <div className="relative z-10 h-full px-5 pb-10 pt-9 md:pb-28 md:px-14 md:pt-11">
-          <h1 className="max-w-[860px] animate-rise font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] sm:text-[64px] lg:text-[88px] 2xl:max-w-[1100px] 2xl:text-[110px] min-[1900px]:text-[128px] text-left">
+          <h1 className="max-w-[860px] animate-rise font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] sm:text-[64px] lg:text-[88px] text-left">
             Продвижение ресторана{" "}
             <span className="block px-0">в Яндекс Еде</span>
           </h1>
