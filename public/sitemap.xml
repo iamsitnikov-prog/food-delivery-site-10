@@ -41,6 +41,61 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://agregatory.pro/uslugi/sostavlenie-menyu</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/uslugi/moderatsiya-blyud</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/uslugi/fotokontent-dlya-menyu</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/uslugi/nastroyka-aktsiy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/uslugi/rabota-s-otmenami</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/uslugi/shtrafy-i-uderzhaniya</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/uslugi/analitika-i-otchetnost</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/uslugi/zony-i-grafik-dostavki</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/uslugi/podklyuchenie-samovyvoza</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/uslugi/zapusk-seti-restoranov</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/uslugi/konsultatsiya-restoratora</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://agregatory.pro/goroda</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
@@ -62,6 +117,61 @@
   </url>
   <url>
     <loc>https://agregatory.pro/goroda/cherepovets</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/novosibirsk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/ekaterinburg</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/kazan</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/nizhniy-novgorod</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/krasnodar</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/rostov-na-donu</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/chelyabinsk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/ufa</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/krasnoyarsk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/voronezh</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/sochi</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
