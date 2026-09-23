@@ -1,13 +1,37 @@
 import http.client
 import json
 import os
+import smtplib
 import socket
 import ssl
 import urllib.parse
+from email.message import EmailMessage
 
 import psycopg2
 
 TG_IPS = ['149.154.167.220']
+
+
+def send_email(subject, text):
+    host = os.environ.get('SMTP_HOST')
+    user = os.environ.get('SMTP_USER')
+    password = os.environ.get('SMTP_PASSWORD')
+    to = os.environ.get('LEAD_EMAIL_TO')
+    if not host or not user or not password or not to:
+        return False
+    msg = EmailMessage()
+    msg['Subject'] = subject
+    msg['From'] = user
+    msg['To'] = to
+    msg.set_content(text)
+    try:
+        with smtplib.SMTP_SSL(host, 465, timeout=4) as s:
+            s.login(user, password)
+            s.send_message(msg)
+        return True
+    except Exception as exc:
+        print(f'email error: {exc}')
+        return False
 
 
 def save_lead(name, phone, place, status, channel, comment, sent):
@@ -135,11 +159,13 @@ def handler(event, context):
         lines.append(f'<b>Комментарий:</b> {comment}')
 
     sent = send_telegram(lines)
+    plain = '\n'.join(l.replace('<b>', '').replace('</b>', '') for l in lines)
+    mailed = send_email(f'Заявка с сайта: {name}', plain)
     lead_id = save_lead(name, phone, place, status, channel, comment, sent)
 
     return {
         'statusCode': 200,
         'headers': cors,
         'isBase64Encoded': False,
-        'body': json.dumps({'ok': True, 'id': lead_id, 'telegram': sent}),
+        'body': json.dumps({'ok': True, 'id': lead_id, 'telegram': sent, 'email': mailed}),
     }
