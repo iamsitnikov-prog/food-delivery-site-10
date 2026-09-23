@@ -1,9 +1,13 @@
+import http.client
 import json
 import os
-import urllib.request
+import socket
+import ssl
 import urllib.parse
 
 import psycopg2
+
+TG_IPS = ['149.154.167.220']
 
 
 def save_lead(name, phone, place, status, channel, comment, sent):
@@ -45,15 +49,24 @@ def send_telegram(lines):
         'text': '\n'.join(lines),
         'parse_mode': 'HTML',
     }).encode()
-    url = f'https://api.telegram.org/bot{token}/sendMessage'
-    req = urllib.request.Request(url, data=payload)
-    try:
-        with urllib.request.urlopen(req, timeout=3) as resp:
+    for ip in TG_IPS:
+        try:
+            ctx = ssl.create_default_context()
+            raw = socket.create_connection((ip, 443), timeout=2)
+            sock = ctx.wrap_socket(raw, server_hostname='api.telegram.org')
+            conn = http.client.HTTPSConnection('api.telegram.org', timeout=3)
+            conn.sock = sock
+            conn.request('POST', f'/bot{token}/sendMessage', body=payload,
+                         headers={'Content-Type': 'application/x-www-form-urlencoded'})
+            resp = conn.getresponse()
+            ok = resp.status == 200
             resp.read()
-        return True
-    except Exception as exc:
-        print(f'telegram error: {exc}')
-        return False
+            conn.close()
+            if ok:
+                return True
+        except Exception as exc:
+            print(f'telegram error via {ip}: {exc}')
+    return False
 
 
 def handler(event, context):
