@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Icon from "@/components/ui/icon";
 import { toast } from "@/hooks/use-toast";
 import useReveal from "@/hooks/use-reveal";
+import { reachGoal } from "@/lib/metrika";
 import { ROBOT } from "./Hero";
 
 const STATUSES = [
@@ -73,8 +74,10 @@ const LeadForm = () => {
       });
       if (!res.ok) throw new Error("failed");
       setSent(true);
+      reachGoal("lead_submit", { status, channel });
       toast({ title: "Заявка отправлена", description: "Перезвоним в течение рабочего дня." });
     } catch {
+      reachGoal("lead_error");
       toast({
         title: "Не удалось отправить",
         description: "Позвоните нам: +7 931 002-82-22",
