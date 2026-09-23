@@ -25,6 +25,8 @@ const Hero = () => {
         <img
           src={ROBOT}
           alt="Жёлтый робот-курьер agregatory.pro"
+          fetchPriority="high"
+          decoding="async"
           className="pointer-events-none absolute -right-20 bottom-[-14px] top-auto z-0 w-[300px] animate-float object-contain object-bottom mask-fade-left sm:w-[460px] md:-right-10 md:h-[620px] md:w-[620px]"
         />
         <div className="relative z-10 h-full px-5 pb-10 pt-9 md:pb-28 md:px-14 md:pt-11">
