@@ -4,6 +4,7 @@ import Advantages from "@/components/landing/Advantages";
 import Results from "@/components/landing/Results";
 import Pricing from "@/components/landing/Pricing";
 import Extra from "@/components/landing/Extra";
+import FreeAudit from "@/components/landing/FreeAudit";
 import Team from "@/components/landing/Team";
 import Reviews from "@/components/landing/Reviews";
 import Faq from "@/components/landing/Faq";
@@ -19,6 +20,7 @@ const Index = () => {
       <Results />
       <Pricing />
       <Extra />
+      <FreeAudit />
       <Team />
       <Reviews />
       <Faq />

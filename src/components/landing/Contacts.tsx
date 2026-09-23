@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { NAV } from "./Header";
 
@@ -66,6 +67,9 @@ const Contacts = () => {
               {n.label}
             </a>
           ))}
+          <Link to="/privacy" className="hover:text-cream">
+            политика конфиденциальности
+          </Link>
         </nav>
         <span>© {new Date().getFullYear()} agregatory.pro</span>
       </div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -210,7 +211,12 @@ const LeadForm = () => {
                   onCheckedChange={(v) => setAgree(v === true)}
                   className="mt-0.5 border-cream/40 data-[state=checked]:border-brand data-[state=checked]:bg-brand data-[state=checked]:text-foreground"
                 />
-                <span>Согласен на обработку персональных данных</span>
+                <span>
+                  Согласен на обработку персональных данных и&nbsp;с&nbsp;
+                  <Link to="/privacy" target="_blank" className="text-brand underline underline-offset-2">
+                    политикой конфиденциальности
+                  </Link>
+                </span>
               </label>
               {errors.agree && <p className="text-[0.82em] text-destructive">{errors.agree}</p>}
 
