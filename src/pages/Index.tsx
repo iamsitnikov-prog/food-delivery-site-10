@@ -9,6 +9,7 @@ import Guarantees from "@/components/landing/Guarantees";
 import AfterLaunch from "@/components/landing/AfterLaunch";
 import StickyCta from "@/components/landing/StickyCta";
 import Team from "@/components/landing/Team";
+import Partners from "@/components/landing/Partners";
 import Reviews from "@/components/landing/Reviews";
 import Faq from "@/components/landing/Faq";
 import LeadForm from "@/components/landing/LeadForm";
@@ -26,6 +27,7 @@ const Index = () => {
       <Extra />
       <AfterLaunch />
       <FreeAudit />
+      <Partners />
       <Team />
       <Reviews />
       <Faq />

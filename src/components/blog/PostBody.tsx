@@ -39,6 +39,28 @@ const PostBody = ({ blocks }: { blocks: PostBlock[] }) => (
           </blockquote>
         );
 
+      if (b.type === "partner")
+        return (
+          <aside key={i} className="mt-8 rounded-[24px] border border-primary/25 bg-pale p-7">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <span className="rounded-lg bg-foreground px-3 py-1.5 text-[0.75em] font-medium uppercase tracking-wide text-brand">
+                новое
+              </span>
+              <span className="text-[0.85em] text-foreground/60">инструмент, который мы советуем</span>
+            </div>
+            <p className="mt-4 leading-relaxed text-foreground/85">{b.text}</p>
+            <a
+              href={b.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-[0.95em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
+            >
+              {b.cta || `перейти в ${b.name}`}
+              <Icon name="ArrowUpRight" size={17} />
+            </a>
+          </aside>
+        );
+
       if (b.type === "list")
         return (
           <ul key={i} className="mt-6 space-y-3">

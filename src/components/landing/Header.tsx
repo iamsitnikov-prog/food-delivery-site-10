@@ -7,6 +7,7 @@ export const NAV = [
   { href: "/uslugi", label: "услуги" },
   { href: "/goroda", label: "города" },
   { href: "/blog", label: "блог" },
+  { href: "/partnery", label: "партнёры" },
   { href: "#guarantees", label: "гарантии" },
   { href: "#results", label: "результаты" },
   { href: "#pricing", label: "стоимость" },

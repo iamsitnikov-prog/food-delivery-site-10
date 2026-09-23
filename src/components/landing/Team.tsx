@@ -30,25 +30,6 @@ const PEOPLE = [
   },
 ];
 
-const BRANDS = [
-  "Ginza Project",
-  "X5 Group",
-  "Novikov Business School",
-  "HoReCa Go",
-  "METRO",
-  "CDEK",
-  "Шоколадница",
-  "Дагестанская лавка",
-  "Faces Team",
-  "iiko",
-  "R-Keeper",
-  "Saby",
-  "MyBox",
-  "Честная ферма",
-  "Яндекс Еда",
-  "WABI SABI",
-];
-
 const Team = () => {
   const ref = useReveal<HTMLElement>();
 
@@ -57,7 +38,6 @@ const Team = () => {
       <div className="reveal mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <h2 className="font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
           кто мы?
-          <span className="block pl-[1.2em] text-muted-foreground">нам доверяют</span>
         </h2>
         <p className="max-w-[380px] text-[1.05em] leading-snug">
           Два опытных специалиста-практика в&nbsp;сфере доставки. За&nbsp;нами стоит целая команда специалистов поддержки и&nbsp;контента.
@@ -128,28 +108,6 @@ const Team = () => {
         ))}
       </div>
 
-      <div className="reveal mt-4 rounded-[28px] bg-surface p-7 text-cream md:p-10">
-        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-          <h3 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.2em]">
-            нам доверяют
-          </h3>
-          <p className="max-w-[420px] text-[0.95em] leading-snug text-cream-muted">
-            Работали и&nbsp;сотрудничаем с&nbsp;сетями, холдингами и&nbsp;сервисами рынка HoReCa
-          </p>
-        </div>
-
-        <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {BRANDS.map((b) => (
-            <li
-              key={b}
-              className="flex min-h-[74px] items-center justify-center rounded-[18px] bg-pale px-4 py-4 text-center font-display text-[1.02em] font-semibold leading-tight tracking-[-0.01em] text-foreground transition-transform duration-300 hover:-translate-y-0.5"
-            >
-              {b}
-            </li>
-          ))}
-        </ul>
-        <p className="mt-5 text-[0.88em] text-cream-muted">и другие компании рынка</p>
-      </div>
     </section>
   );
 };
