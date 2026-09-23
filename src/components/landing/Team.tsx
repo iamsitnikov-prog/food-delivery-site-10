@@ -7,11 +7,13 @@ const PEOPLE = [
     photo: "/team-yuriy.webp",
     exp: "15 лет общепит · 5 лет доставка",
     facts: [
-      "Руководитель агрегаторов в проектах Ginza Project",
+      "Руководитель агрегаторов (Ginza Project, Faces Team, GrigGroup)",
       "Преподаватель Novikov Business School",
-      "Модератор «Тема Еды» 2023–2025",
-      "Эксперт проектов Яндекс Еда «Рецепты Роста» и «Консалтинг для региональных рестораторов»",
+      "Модератор «Тема Еды» 2023–2026",
+      "Эксперт Яндекс Еда «Рецепты Роста», «Консалтинг для региональных рестораторов»",
+      "Сертифицированный эксперт FORBES Экспертиза",
     ],
+    link: { label: "читать FORBES", href: "https://blogs.forbes.ru/author/sitnikov/" },
   },
   {
     name: "Лилия Ковальчук",
@@ -89,6 +91,19 @@ const Team = () => {
                 </li>
               ))}
             </ul>
+            {p.link && (
+              <a
+                href={p.link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`mt-7 inline-flex w-fit items-center gap-2 rounded-xl px-6 py-3.5 font-medium transition-transform hover:-translate-y-0.5 ${
+                  i % 2 === 1 ? "bg-foreground text-brand" : "bg-brand text-foreground"
+                }`}
+              >
+                {p.link.label}
+                <Icon name="ArrowUpRight" size={18} />
+              </a>
+            )}
           </article>
         ))}
       </div>

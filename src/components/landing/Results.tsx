@@ -1,3 +1,5 @@
+import { useState } from "react";
+import Icon from "@/components/ui/icon";
 import useReveal from "@/hooks/use-reveal";
 import CountUp from "./CountUp";
 
@@ -89,6 +91,8 @@ const CASES = [
 
 const Results = () => {
   const ref = useReveal<HTMLElement>();
+  const [showAll, setShowAll] = useState(false);
+  const visible = showAll ? CASES : CASES.slice(0, 6);
 
   return (
     <section id="results" ref={ref} className="relative mt-5 scroll-mt-4 overflow-hidden rounded-[40px] bg-surface px-5 py-20 text-cream md:mx-3 md:mt-7 md:px-14 md:py-28">
@@ -132,7 +136,7 @@ const Results = () => {
         </div>
 
         <div className="mt-16 grid gap-4 md:grid-cols-3">
-          {CASES.map((c, i) => {
+          {visible.map((c, i) => {
             const light = i % 2 === 1;
             return (
               <article
@@ -176,6 +180,18 @@ const Results = () => {
             );
           })}
         </div>
+
+        {CASES.length > 6 && (
+          <div className="reveal mt-8 flex justify-center">
+            <button
+              onClick={() => setShowAll((v) => !v)}
+              className="inline-flex items-center gap-2 rounded-xl border border-cream/30 px-7 py-4 font-medium transition-colors hover:bg-brand hover:text-foreground"
+            >
+              {showAll ? "свернуть кейсы" : `показать ещё ${CASES.length - 6}`}
+              <Icon name={showAll ? "ChevronUp" : "ChevronDown"} size={18} />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
