@@ -72,6 +72,15 @@ const PartnersPage = () => {
                   <h3 className="font-display text-[1.1em] font-semibold">кому подойдёт</h3>
                   <p className="mt-3 text-[0.95em] leading-relaxed text-cream-muted">{p.forWhom}</p>
                 </div>
+                {p.promo && (
+                  <div className="rounded-[18px] border border-brand/40 p-5">
+                    <div className="text-[0.78em] uppercase tracking-wide text-cream-muted">промокод</div>
+                    <div className="mt-2 font-display text-[1.5em] font-semibold tracking-[-0.02em] text-brand">
+                      {p.promo.code}
+                    </div>
+                    <p className="mt-2.5 text-[0.85em] leading-snug text-cream-muted">{p.promo.text}</p>
+                  </div>
+                )}
                 <a
                   href={p.url}
                   target="_blank"

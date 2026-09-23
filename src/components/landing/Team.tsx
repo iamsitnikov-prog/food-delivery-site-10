@@ -111,6 +111,21 @@ const Team = () => {
         ))}
       </div>
 
+      <div className="reveal mt-4 flex flex-col gap-7 rounded-[28px] bg-brand p-7 text-foreground md:flex-row md:items-center md:justify-between md:p-10">
+        <div className="max-w-[640px]">
+          <span className="inline-flex rounded-lg bg-foreground px-3 py-1.5 text-[0.78em] font-medium uppercase tracking-wide text-brand">
+            наш общий проект
+          </span>
+          <h3 className="mt-5 font-display text-[1.5em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.1em]">
+            Создатели и соавторы курса «Бесплатная школа доставки Яндекс Еды»
+          </h3>
+          <p className="mt-4 leading-relaxed text-foreground/75">
+            Обучающая программа для&nbsp;рестораторов, которую мы&nbsp;разработали вместе: от&nbsp;подключения к&nbsp;сервису до&nbsp;продвижения и&nbsp;работы с&nbsp;рейтингом.
+          </p>
+        </div>
+        <Icon name="GraduationCap" size={78} className="hidden shrink-0 opacity-25 lg:block" />
+      </div>
+
     </section>
   );
 };

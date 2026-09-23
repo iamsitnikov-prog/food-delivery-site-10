@@ -6,7 +6,7 @@ export type PostBlock =
   | { type: "numbered"; items: string[] }
   | { type: "quote"; text: string }
   | { type: "table"; head: string[]; rows: string[][] }
-  | { type: "partner"; name: string; url: string; text: string; cta?: string };
+  | { type: "partner"; name: string; url: string; text: string; cta?: string; promo?: string };
 
 export type BlogPost = {
   slug: string;

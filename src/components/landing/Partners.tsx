@@ -17,17 +17,17 @@ const Partners = () => {
         </p>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {PARTNERS.map((p) => (
           <a
             key={p.slug}
             href={p.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="reveal group flex flex-col rounded-[28px] bg-surface p-7 text-cream transition-transform duration-500 hover:-translate-y-1 md:p-10"
+            className="reveal group flex flex-col rounded-[28px] bg-surface p-7 text-cream transition-transform duration-500 hover:-translate-y-1 md:p-8"
           >
             <div className="flex flex-wrap items-center gap-3">
-              <span className="font-display text-[1.7em] font-semibold tracking-[-0.03em]">{p.name}</span>
+              <span className="font-display text-[1.5em] font-semibold tracking-[-0.03em]">{p.name}</span>
               <span className="rounded-lg bg-brand px-3 py-1.5 text-[0.78em] font-medium text-foreground">
                 {p.category}
               </span>
@@ -41,6 +41,15 @@ const Partners = () => {
             <p className="mt-4 text-[1.05em] leading-snug">{p.tagline}</p>
             <p className="mt-4 flex-1 text-[0.95em] leading-relaxed text-cream-muted">{p.description}</p>
 
+            {p.promo && (
+              <div className="mt-6 inline-flex w-fit items-center gap-3 rounded-xl border border-brand/40 px-4 py-3">
+                <span className="text-[0.8em] uppercase tracking-wide text-cream-muted">промокод</span>
+                <span className="font-display text-[1.15em] font-semibold tracking-[-0.01em] text-brand">
+                  {p.promo.code}
+                </span>
+              </div>
+            )}
+
             <span className="mt-7 inline-flex items-center gap-2 font-medium text-brand">
               перейти на сайт
               <Icon name="ArrowUpRight" size={18} className="transition-transform group-hover:translate-x-0.5" />
@@ -48,7 +57,7 @@ const Partners = () => {
           </a>
         ))}
 
-        <div className="reveal flex flex-col justify-between rounded-[28px] bg-pale p-7 md:p-10">
+        <div className="reveal flex flex-col justify-between rounded-[28px] bg-pale p-7 md:p-8">
           <div>
             <h3 className="font-display text-[1.5em] font-semibold leading-tight tracking-[-0.025em] md:text-[1.9em]">
               Подробнее о партнёрах

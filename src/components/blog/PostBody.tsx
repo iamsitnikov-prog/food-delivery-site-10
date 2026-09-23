@@ -83,6 +83,12 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
               <span className="text-[0.85em] text-foreground/60">инструмент, который мы советуем</span>
             </div>
             <p className="mt-4 leading-relaxed text-foreground/85">{b.text}</p>
+            {b.promo && (
+              <div className="mt-4 mr-3 inline-flex items-center gap-3 rounded-xl bg-foreground px-4 py-3 align-middle">
+                <span className="text-[0.78em] uppercase tracking-wide text-brand/70">промокод</span>
+                <span className="font-display text-[1.1em] font-semibold text-brand">{b.promo}</span>
+              </div>
+            )}
             <a
               href={b.url}
               target="_blank"
