@@ -12,7 +12,13 @@ const Blog = () => {
   const { pathname } = useLocation();
   const [group, setGroup] = useState<string | null>(null);
 
-  const sorted = useMemo(() => [...BLOG_POSTS].sort((a, b) => Number(!!b.isNew) - Number(!!a.isNew)), []);
+  const sorted = useMemo(
+    () =>
+      [...BLOG_POSTS].sort(
+        (a, b) => Number(!!b.pinned) - Number(!!a.pinned) || Number(!!b.isNew) - Number(!!a.isNew),
+      ),
+    [],
+  );
 
   const posts = useMemo(() => {
     if (!group) return sorted;

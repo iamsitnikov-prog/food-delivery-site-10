@@ -335,6 +335,7 @@ export const RULES_POSTS: BlogPost[] = [
     readTime: "9 минут",
     tag: "документы",
     isNew: true,
+    pinned: true,
     toc: [
       { id: "chto-menyaetsya", label: "Что меняется" },
       { id: "shag-1", label: "Шаг 1: блюда и товары" },

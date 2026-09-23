@@ -19,6 +19,7 @@ export type BlogPost = {
   readTime: string;
   tag: string;
   isNew?: boolean;
+  pinned?: boolean;
   toc: { id: string; label: string }[];
   blocks: PostBlock[];
   faq: { q: string; a: string }[];
