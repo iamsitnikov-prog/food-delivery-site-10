@@ -14,7 +14,7 @@ const SeoLinks = () => {
           <span className="block pl-[1.2em] text-muted-foreground">о&nbsp;работе</span>
         </h2>
         <p className="max-w-[360px] text-[1.05em] leading-snug">
-          Разобрали каждую услугу и&nbsp;специфику городов на&nbsp;отдельных страницах.
+          Разобрали каждую услугу на&nbsp;отдельной странице. Работаем по&nbsp;всей России&nbsp;— ниже лишь часть городов.
         </p>
       </div>
 
@@ -42,6 +42,9 @@ const SeoLinks = () => {
 
         <div className="rounded-[28px] bg-surface p-7 text-cream md:p-8">
           <h3 className="font-display text-[1.5em] font-semibold tracking-[-0.025em]">города</h3>
+          <p className="mt-2 text-[0.9em] leading-snug text-cream-muted">
+            Работаем по&nbsp;всей России. Для этих городов расписали местную специфику отдельно.
+          </p>
           <ul className="mt-5 space-y-2">
             {CITY_PAGES.map((c) => (
               <li key={c.slug}>
@@ -60,7 +63,7 @@ const SeoLinks = () => {
             ))}
           </ul>
           <p className="mt-6 text-[0.9em] leading-snug text-cream-muted">
-            Вашего города нет в&nbsp;списке? Работаем по&nbsp;всей России — обучение и&nbsp;поддержка онлайн.
+            Вашего города нет в&nbsp;списке? Это не&nbsp;помеха: обучение и&nbsp;поддержка идут онлайн, подключаем рестораны в&nbsp;любом городе страны.
           </p>
         </div>
       </div>

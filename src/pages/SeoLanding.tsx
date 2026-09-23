@@ -147,6 +147,11 @@ const SeoLanding = () => {
             <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
               {page.kind === "service" ? "другие услуги" : "другие города"}
             </h2>
+            {page.kind === "city" && (
+              <p className="mt-3 max-w-[460px] text-[0.95em] leading-snug text-muted-foreground">
+                Это лишь часть городов&nbsp;— работаем с&nbsp;ресторанами по&nbsp;всей России, от&nbsp;Калининграда до&nbsp;Дальнего Востока.
+              </p>
+            )}
             <ul className="mt-5 flex flex-wrap gap-2">
               {others.map((o) => (
                 <li key={o.slug}>
@@ -162,8 +167,13 @@ const SeoLanding = () => {
           </div>
           <div>
             <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
-              {page.kind === "service" ? "работаем в городах" : "наши услуги"}
+              {page.kind === "service" ? "работаем по всей России" : "наши услуги"}
             </h2>
+            {page.kind === "service" && (
+              <p className="mt-3 max-w-[460px] text-[0.95em] leading-snug text-muted-foreground">
+                Обучение и&nbsp;поддержка проходят онлайн, поэтому подключаем и&nbsp;ведём рестораны в&nbsp;любом городе страны. Ниже&nbsp;— города, по&nbsp;которым мы&nbsp;расписали местную специфику.
+              </p>
+            )}
             <ul className="mt-5 flex flex-wrap gap-2">
               {cross.map((o) => (
                 <li key={o.slug}>

@@ -19,10 +19,10 @@ const COPY = {
   },
   city: {
     h1: "Работаем с ресторанами по всей России",
-    lead: "Обучение и поддержка проходят онлайн, команда 24/7 в ваших рабочих чатах. Выберите свой город.",
-    title: "Продвижение ресторанов на агрегаторах по городам России",
+    lead: "Подключаем и ведём заведения в любом городе страны: обучение и поддержка проходят онлайн, команда 24/7 в ваших рабочих чатах. Ниже — города, по которым мы отдельно расписали местную специфику.",
+    title: "Продвижение ресторанов на агрегаторах по всей России",
     description:
-      "Продвигаем рестораны в Яндекс Еде и Деливери в Москве, Санкт-Петербурге, Самаре, Череповце и других городах России.",
+      "Продвигаем рестораны в Яндекс Еде и Деливери по всей России — от Калининграда до Дальнего Востока. Работаем онлайн, поддержка 24/7.",
     base: "/goroda",
   },
 };
@@ -79,6 +79,23 @@ const SeoIndex = ({ kind }: Props) => {
             );
           })}
         </div>
+
+        {kind === "city" && (
+          <div className="mt-6 flex flex-col items-start justify-between gap-6 rounded-[28px] border border-primary/30 p-7 md:flex-row md:items-center md:p-9">
+            <div>
+              <h2 className="font-display text-[1.5em] font-semibold tracking-[-0.025em]">вашего города нет в списке?</h2>
+              <p className="mt-2 max-w-[560px] leading-snug text-muted-foreground">
+                Это не&nbsp;ограничение&nbsp;— мы&nbsp;просто расписали специфику не&nbsp;для всех городов. Работаем с&nbsp;ресторанами по&nbsp;всей России: от&nbsp;Калининграда до&nbsp;Дальнего Востока, включая небольшие города.
+              </p>
+            </div>
+            <a
+              href="#lead"
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-primary px-7 py-4 font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
+            >
+              обсудить ваш город <Icon name="ArrowRight" size={18} />
+            </a>
+          </div>
+        )}
       </section>
 
       <LeadForm />
