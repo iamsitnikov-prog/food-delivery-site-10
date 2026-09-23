@@ -15,6 +15,12 @@ export const NAV = [
   { href: "#contacts", label: "контакты" },
 ];
 
+const MESSENGERS = [
+  { icon: "Send", label: "telegram", href: "https://t.me/sitnikovy1" },
+  { icon: "MessageCircle", label: "whatsapp", href: "https://wa.me/79310028222" },
+  { icon: "MessagesSquare", label: "max", href: "https://max.ru/u/79310028222" },
+];
+
 const Header = () => {
   const [open, setOpen] = useState(false);
 
@@ -33,6 +39,22 @@ const Header = () => {
       </nav>
 
       <div className="flex items-center gap-2">
+        <div className="hidden items-center gap-1.5 xl:flex">
+          {MESSENGERS.map((m) => (
+            <a
+              key={m.label}
+              href={m.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={m.label}
+              title={m.label}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary/30 transition-colors hover:bg-primary hover:text-primary-foreground"
+            >
+              <Icon name={m.icon} size={19} />
+            </a>
+          ))}
+        </div>
+
         <a
           href="#lead"
           className="hidden items-center justify-center whitespace-nowrap rounded-xl bg-primary px-[22px] py-3 text-[0.94em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5 sm:inline-flex"
@@ -72,6 +94,20 @@ const Header = () => {
             >
               оставить заявку
             </a>
+            <div className="mt-4 flex gap-2">
+              {MESSENGERS.map((m) => (
+                <a
+                  key={m.label}
+                  href={m.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={m.label}
+                  className="inline-flex h-12 flex-1 items-center justify-center rounded-xl border border-primary/30"
+                >
+                  <Icon name={m.icon} size={20} />
+                </a>
+              ))}
+            </div>
           </SheetContent>
         </Sheet>
       </div>

@@ -127,12 +127,12 @@ const Team = () => {
         ))}
       </div>
 
-      <div className="reveal mt-4 rounded-[28px] bg-surface p-7 text-cream md:p-10">
+      <div className="reveal mt-4 rounded-[28px] bg-pale p-7 text-foreground md:p-10">
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <h3 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.2em]">
             нам доверяют
           </h3>
-          <p className="max-w-[420px] text-[0.95em] leading-snug text-cream-muted">
+          <p className="max-w-[420px] text-[0.95em] leading-snug text-foreground/75">
             Работали и&nbsp;сотрудничаем с&nbsp;сетями, холдингами и&nbsp;сервисами рынка HoReCa
           </p>
         </div>
@@ -141,13 +141,13 @@ const Team = () => {
           {BRANDS.map((b) => (
             <li
               key={b}
-              className="flex min-h-[74px] items-center justify-center rounded-[18px] border border-cream/20 px-4 py-4 text-center font-display text-[1.02em] font-semibold leading-tight tracking-[-0.01em] text-cream/85 transition-colors hover:border-brand hover:text-brand"
+              className="flex min-h-[74px] items-center justify-center rounded-[18px] border border-foreground/20 px-4 py-4 text-center font-display text-[1.02em] font-semibold leading-tight tracking-[-0.01em] text-foreground/85 transition-colors hover:border-foreground hover:bg-foreground hover:text-brand"
             >
               {b}
             </li>
           ))}
         </ul>
-        <p className="mt-5 text-[0.88em] text-cream-muted">и другие компании рынка</p>
+        <p className="mt-5 text-[0.88em] text-foreground/70">и другие компании рынка</p>
       </div>
     </section>
   );
