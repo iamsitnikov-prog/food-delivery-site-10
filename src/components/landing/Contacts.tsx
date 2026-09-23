@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { NAV } from "./Header";
 
@@ -13,6 +13,10 @@ const MESSENGERS = [
 ];
 
 const Contacts = () => {
+  const { pathname } = useLocation();
+  const home = pathname === "/" ? "" : "/";
+  const to = (href: string) => (href.startsWith("#") ? `${home}${href}` : href);
+
   return (
     <footer id="contacts" className="scroll-mt-4 rounded-t-[40px] bg-surface px-5 pb-8 pt-16 text-cream md:px-14 md:pt-20">
       <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr]">
@@ -25,7 +29,7 @@ const Contacts = () => {
             Увеличьте свою выручку уже&nbsp;в&nbsp;первую неделю — просто оставьте заявку. Работаем с&nbsp;ресторанами по&nbsp;всей России.
           </p>
           <a
-            href="#lead"
+            href={to("#lead")}
             className="mt-8 inline-flex items-center gap-2 rounded-xl bg-brand px-7 py-4 font-medium text-foreground transition-transform hover:-translate-y-0.5"
           >
             начать сотрудничать <Icon name="ArrowRight" size={18} />
@@ -76,12 +80,12 @@ const Contacts = () => {
       </div>
 
       <div className="mt-16 flex flex-col gap-6 border-t border-cream/25 pt-6 text-[0.86em] text-cream-muted md:flex-row md:items-center md:justify-between">
-        <a href="#top" className="font-display text-[1.3em] font-semibold text-cream">
+        <a href={to("#top")} className="font-display text-[1.3em] font-semibold text-cream">
           agregatory<span className="font-normal text-cream-muted">.pro</span>
         </a>
         <nav className="flex flex-wrap gap-x-6 gap-y-2">
           {NAV.map((n) => (
-            <a key={n.href} href={n.href} className="hover:text-cream">
+            <a key={n.href} href={to(n.href)} className="hover:text-cream">
               {n.label}
             </a>
           ))}

@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import Icon from "@/components/ui/icon";
 
 export const NAV = [
-  { href: "#services", label: "услуги" },
-  { href: "#advantages", label: "преимущества" },
+  { href: "/uslugi", label: "услуги" },
+  { href: "/goroda", label: "города" },
   { href: "#guarantees", label: "гарантии" },
   { href: "#results", label: "результаты" },
   { href: "#pricing", label: "стоимость" },
@@ -16,11 +17,11 @@ export const NAV = [
 ];
 
 const MOBILE_NAV = [
-  { href: "#services", label: "услуги" },
+  { href: "/uslugi", label: "услуги" },
+  { href: "/goroda", label: "города" },
   { href: "#free-audit", label: "бесплатный анализ" },
   { href: "#pricing", label: "стоимость" },
   { href: "#results", label: "результаты" },
-  { href: "#team", label: "кто мы" },
   { href: "#contacts", label: "контакты" },
 ];
 
@@ -32,16 +33,19 @@ const MESSENGERS = [
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+  const home = pathname === "/" ? "" : "/";
+  const to = (href: string) => (href.startsWith("#") ? `${home}${href}` : href);
 
   return (
     <header className="relative z-20 flex items-center justify-between gap-4 px-5 pt-[22px] md:px-14">
-      <a href="#top" className="flex items-baseline gap-[2px] font-display text-[1.3em] font-semibold tracking-[-0.02em]">
+      <a href={to("#top")} className="flex items-baseline gap-[2px] font-display text-[1.3em] font-semibold tracking-[-0.02em]">
         agregatory<span className="font-normal text-muted-foreground">.pro</span>
       </a>
 
       <nav aria-label="Разделы" className="hidden gap-5 text-[0.9em] xl:flex">
         {NAV.map((n) => (
-          <a key={n.href} href={n.href} className="opacity-[.85] transition-opacity hover:opacity-100">
+          <a key={n.href} href={to(n.href)} className="opacity-[.85] transition-opacity hover:opacity-100">
             {n.label}
           </a>
         ))}
@@ -65,7 +69,7 @@ const Header = () => {
         </div>
 
         <a
-          href="#lead"
+          href={to("#lead")}
           className="hidden items-center justify-center whitespace-nowrap rounded-xl bg-primary px-[22px] py-3 text-[0.94em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5 sm:inline-flex"
         >
           консультация
@@ -88,7 +92,7 @@ const Header = () => {
               {MOBILE_NAV.map((n) => (
                 <a
                   key={n.href}
-                  href={n.href}
+                  href={to(n.href)}
                   onClick={() => setOpen(false)}
                   className="border-b border-border py-4 font-display text-2xl font-semibold tracking-tight"
                 >
@@ -97,7 +101,7 @@ const Header = () => {
               ))}
             </nav>
             <a
-              href="#lead"
+              href={to("#lead")}
               onClick={() => setOpen(false)}
               className="mt-8 inline-flex w-full items-center justify-center rounded-xl bg-primary px-6 py-4 font-medium text-primary-foreground"
             >
