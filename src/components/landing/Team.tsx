@@ -78,8 +78,33 @@ const Team = () => {
                 </div>
               </div>
             </div>
+
+            <div
+              className={`mt-7 flex items-start gap-4 rounded-[20px] border-2 p-5 ${
+                i % 2 === 1 ? "border-foreground/25 bg-foreground/[0.04]" : "border-brand bg-brand/10"
+              }`}
+            >
+              <Icon
+                name="GraduationCap"
+                size={26}
+                className={`mt-0.5 shrink-0 ${i % 2 === 1 ? "text-foreground" : "text-brand"}`}
+              />
+              <div>
+                <div
+                  className={`text-[0.78em] font-medium uppercase tracking-wide ${
+                    i % 2 === 1 ? "text-foreground/60" : "text-brand"
+                  }`}
+                >
+                  создатель и соавтор курса
+                </div>
+                <div className="mt-1.5 font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.3em]">
+                  Бесплатная школа доставки Яндекс Еды
+                </div>
+              </div>
+            </div>
+
             <ul
-              className={`mt-8 flex-1 space-y-3.5 border-t pt-7 leading-snug ${
+              className={`mt-7 flex-1 space-y-3.5 border-t pt-7 leading-snug ${
                 i % 2 === 1 ? "border-foreground/20 text-foreground/80" : "border-cream/20 text-cream-muted"
               }`}
             >
@@ -109,21 +134,6 @@ const Team = () => {
             )}
           </article>
         ))}
-      </div>
-
-      <div className="reveal mt-4 flex flex-col gap-7 rounded-[28px] bg-brand p-7 text-foreground md:flex-row md:items-center md:justify-between md:p-10">
-        <div className="max-w-[640px]">
-          <span className="inline-flex rounded-lg bg-foreground px-3 py-1.5 text-[0.78em] font-medium uppercase tracking-wide text-brand">
-            наш общий проект
-          </span>
-          <h3 className="mt-5 font-display text-[1.5em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.1em]">
-            Создатели и соавторы курса «Бесплатная школа доставки Яндекс Еды»
-          </h3>
-          <p className="mt-4 leading-relaxed text-foreground/75">
-            Обучающая программа для&nbsp;рестораторов, которую мы&nbsp;разработали вместе: от&nbsp;подключения к&nbsp;сервису до&nbsp;продвижения и&nbsp;работы с&nbsp;рейтингом.
-          </p>
-        </div>
-        <Icon name="GraduationCap" size={78} className="hidden shrink-0 opacity-25 lg:block" />
       </div>
 
     </section>
