@@ -30,7 +30,8 @@ const StickyCta = () => {
           href="#lead"
           className="inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-brand px-5 py-3 font-medium text-foreground transition-transform hover:-translate-y-0.5"
         >
-          оставить заявку
+          <span className="sm:hidden">бесплатный анализ</span>
+          <span className="hidden sm:inline">оставить заявку</span>
           <Icon name="ArrowRight" size={17} />
         </a>
       </div>
