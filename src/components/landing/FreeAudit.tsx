@@ -7,11 +7,16 @@ const POINTS = [
   { icon: "TrendingUp", t: "показываем точки роста", d: "что даст прирост заказов быстрее всего именно у вас" },
 ];
 
+const GUARANTEES = [
+  "Гарантируем рейтинг от 4.8 и выше без дополнительных вложений",
+  "Гарантируем отработку всех удержаний и штрафов от сервиса",
+];
+
 const FreeAudit = () => {
   const ref = useReveal<HTMLElement>();
 
   return (
-    <section ref={ref} className="scroll-mt-4 px-5 pb-20 md:px-14 md:pb-28">
+    <section id="free-audit" ref={ref} className="scroll-mt-4 px-5 pb-20 md:px-14 md:pb-28">
       <div className="reveal overflow-hidden rounded-[28px] bg-surface p-7 text-cream md:p-12">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr]">
           <div>
@@ -37,18 +42,35 @@ const FreeAudit = () => {
             <p className="mt-4 text-[0.86em] text-cream-muted">результат пришлём в течение 2 рабочих дней</p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-            {POINTS.map((p) => (
-              <div key={p.t} className="flex gap-4 rounded-[20px] bg-pale p-5 text-foreground">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-foreground text-brand">
-                  <Icon name={p.icon} size={20} />
-                </span>
-                <span>
-                  <b className="block text-[1.05em] font-semibold leading-tight">{p.t}</b>
-                  <span className="mt-1.5 block text-[0.9em] leading-snug text-foreground/75">{p.d}</span>
-                </span>
-              </div>
-            ))}
+          <div className="space-y-4">
+            <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+              {POINTS.map((p) => (
+                <div key={p.t} className="flex gap-4 rounded-[20px] bg-pale p-5 text-foreground">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-foreground text-brand">
+                    <Icon name={p.icon} size={20} />
+                  </span>
+                  <span>
+                    <b className="block text-[1.05em] font-semibold leading-tight">{p.t}</b>
+                    <span className="mt-1.5 block text-[0.9em] leading-snug text-foreground/75">{p.d}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="rounded-[20px] border border-brand/40 p-5">
+              <span className="inline-flex items-center gap-2 text-[0.82em] font-semibold text-brand">
+                <Icon name="ShieldCheck" size={16} />
+                наши гарантии
+              </span>
+              <ul className="mt-4 space-y-3 text-[0.95em] leading-snug">
+                {GUARANTEES.map((g) => (
+                  <li key={g} className="flex gap-3">
+                    <Icon name="Check" size={18} className="mt-0.5 shrink-0 text-brand" />
+                    {g}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

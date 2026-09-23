@@ -8,6 +8,7 @@ export const NAV = [
   { href: "#results", label: "результаты" },
   { href: "#pricing", label: "стоимость" },
   { href: "#extra", label: "дополнительно" },
+  { href: "#free-audit", label: "бесплатный анализ" },
   { href: "#team", label: "кто мы" },
   { href: "#reviews", label: "отзывы" },
   { href: "#contacts", label: "контакты" },
