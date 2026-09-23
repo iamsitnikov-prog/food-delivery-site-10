@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://agregatory.pro/sitemap.xml
+Sitemap: https://agregatory.pro/rss.xml

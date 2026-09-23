@@ -71,6 +71,15 @@ const Blog = () => {
           <p className="mt-6 max-w-[600px] text-[1.1em] leading-snug text-muted-foreground">
             Подробные материалы о&nbsp;работе с&nbsp;агрегаторами доставки: на&nbsp;основе официальной справки сервиса и&nbsp;нашей практики с&nbsp;ресторанами по&nbsp;всей России.
           </p>
+          <a
+            href="/rss.xml"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-7 inline-flex items-center gap-2 rounded-xl border border-foreground/20 px-4 py-2.5 text-[0.88em] font-medium transition-colors hover:bg-foreground hover:text-brand"
+          >
+            <Icon name="Rss" size={15} />
+            подписаться на RSS
+          </a>
         </section>
       </div>
 
