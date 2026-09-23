@@ -9,6 +9,7 @@ import useReveal from "@/hooks/use-reveal";
 import { ROBOT } from "./Hero";
 
 const STATUSES = [
+  "бесплатный анализ",
   "тариф для действующих",
   "тариф для новичков",
   "консультация",
@@ -17,7 +18,9 @@ const STATUSES = [
   "другое",
 ];
 
-const CHANNELS = ["Телефон", "Telegram", "WhatsApp"];
+const CHANNELS = ["Телефон", "Telegram", "WhatsApp", "MAX"];
+
+const LEAD_URL = "https://functions.poehali.dev/3df83e5c-d49d-4a84-8862-107cedfd17f0";
 
 type Errors = Partial<Record<"name" | "phone" | "agree", string>>;
 
@@ -58,15 +61,28 @@ const LeadForm = () => {
     return Object.keys(e).length === 0;
   };
 
-  const onSubmit = (ev: React.FormEvent) => {
+  const onSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault();
     if (!validate()) return;
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const res = await fetch(LEAD_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone, place, status, channel, comment }),
+      });
+      if (!res.ok) throw new Error("failed");
       setSent(true);
       toast({ title: "Заявка отправлена", description: "Перезвоним в течение рабочего дня." });
-    }, 700);
+    } catch {
+      toast({
+        title: "Не удалось отправить",
+        description: "Позвоните нам: +7 931 002-82-22",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const reset = () => {

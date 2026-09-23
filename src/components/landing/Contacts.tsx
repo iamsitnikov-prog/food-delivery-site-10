@@ -5,7 +5,8 @@ import { NAV } from "./Header";
 const CONTACTS = [
   { icon: "Phone", label: "телефон", value: "+7 931 002-82-22", href: "tel:+79310028222" },
   { icon: "Send", label: "телеграм", value: "@sitnikovy1", href: "https://t.me/sitnikovy1" },
-  { icon: "MessageCircle", label: "whatsapp и max", value: "+7 931 002-82-22", href: "https://wa.me/79310028222" },
+  { icon: "MessageCircle", label: "whatsapp", value: "+7 931 002-82-22", href: "https://wa.me/79310028222" },
+  { icon: "MessagesSquare", label: "max", value: "+7 931 002-82-22", href: "https://max.ru/u/79310028222" },
 ];
 
 const Contacts = () => {
