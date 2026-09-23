@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
@@ -8,6 +9,10 @@ import { BLOG_POSTS } from "@/data/blog-posts";
 
 const Blog = () => {
   const { pathname } = useLocation();
+  const [tag, setTag] = useState<string | null>(null);
+
+  const tags = useMemo(() => Array.from(new Set(BLOG_POSTS.map((p) => p.tag))), []);
+  const posts = useMemo(() => (tag ? BLOG_POSTS.filter((p) => p.tag === tag) : BLOG_POSTS), [tag]);
 
   useSeo({
     title: "Блог о работе ресторана с агрегаторами доставки — agregatory.pro",
@@ -38,8 +43,30 @@ const Blog = () => {
       </div>
 
       <section className="px-5 pb-16 md:px-14 md:pb-24">
+        <div className="mb-8 flex flex-wrap gap-2">
+          <button
+            onClick={() => setTag(null)}
+            className={`rounded-xl px-4 py-2.5 text-[0.9em] transition-colors ${
+              tag === null ? "bg-primary text-primary-foreground" : "border border-primary/30 hover:bg-pale"
+            }`}
+          >
+            все темы
+          </button>
+          {tags.map((t) => (
+            <button
+              key={t}
+              onClick={() => setTag(t)}
+              className={`rounded-xl px-4 py-2.5 text-[0.9em] transition-colors ${
+                tag === t ? "bg-primary text-primary-foreground" : "border border-primary/30 hover:bg-pale"
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+
         <div className="grid gap-4 lg:grid-cols-3">
-          {BLOG_POSTS.map((post, i) => (
+          {posts.map((post, i) => (
             <Link
               key={post.slug}
               to={`/blog/${post.slug}`}

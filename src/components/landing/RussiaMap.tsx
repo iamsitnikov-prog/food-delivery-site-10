@@ -15,6 +15,8 @@ const POINTS: Record<string, { x: number; y: number; align?: "left" | "right" }>
   ufa: { x: 28.5, y: 47 },
   chelyabinsk: { x: 31, y: 40 },
   ekaterinburg: { x: 29, y: 31 },
+  perm: { x: 26, y: 25 },
+  tyumen: { x: 34, y: 27 },
   novosibirsk: { x: 42, y: 45 },
   krasnoyarsk: { x: 51, y: 36 },
 };

@@ -54,7 +54,9 @@ const BlogPost = () => {
 
   if (!post) return <Navigate to="/404" replace />;
 
-  const others = BLOG_POSTS.filter((p) => p.slug !== post.slug);
+  const rest = BLOG_POSTS.filter((p) => p.slug !== post.slug);
+  const sameTag = rest.filter((p) => p.tag === post.tag);
+  const others = [...sameTag, ...rest.filter((p) => p.tag !== post.tag)].slice(0, 4);
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">

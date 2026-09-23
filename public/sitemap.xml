@@ -171,6 +171,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://agregatory.pro/goroda/perm</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/tyumen</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://agregatory.pro/goroda/sochi</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -192,6 +202,126 @@
   </url>
   <url>
     <loc>https://agregatory.pro/blog/skolko-stoit-prodvizhenie-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-sostavit-menyu-dlya-dostavki</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/foto-blyud-dlya-agregatora</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-rabotat-s-otzyvami-v-dostavke</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/obuchenie-komandy-rabote-s-dostavkoy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/prodvizhenie-restorana-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/agentstvo-po-prodvizheniyu-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/raskrutka-restorana-v-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/prodvizhenie-dostavki-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/prodvizhenie-na-yandex-dostavke</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/uslugi-po-prodvizheniyu-servisa-yandex-eda</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/yandex-eda-prodvizhenie-restorana-s-nulya</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-snizit-drr-na-agregatore</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/komissiya-i-vyplaty-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-snizit-otmeny-zakazov</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/zony-dostavki-i-grafik-raboty</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/analitika-restorana-na-agregatore</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/stoit-li-restoranu-vyhodit-na-agregator</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/pervyy-mesyats-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-vernut-gostya-v-dostavke</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kakie-aktsii-zapuskat-na-agregatore</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-popast-v-top-vydachi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/set-restoranov-na-agregatore</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/samovyvoz-v-restorane</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/oshibki-restoranov-na-agregatorah</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
