@@ -6,13 +6,19 @@ import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
 import { BLOG_POSTS } from "@/data/blog-posts";
+import { BLOG_GROUPS } from "@/data/blog-groups";
 
 const Blog = () => {
   const { pathname } = useLocation();
-  const [tag, setTag] = useState<string | null>(null);
+  const [group, setGroup] = useState<string | null>(null);
 
-  const tags = useMemo(() => Array.from(new Set(BLOG_POSTS.map((p) => p.tag))), []);
-  const posts = useMemo(() => (tag ? BLOG_POSTS.filter((p) => p.tag === tag) : BLOG_POSTS), [tag]);
+  const sorted = useMemo(() => [...BLOG_POSTS].sort((a, b) => Number(!!b.isNew) - Number(!!a.isNew)), []);
+
+  const posts = useMemo(() => {
+    if (!group) return sorted;
+    const tags = BLOG_GROUPS.find((g) => g.id === group)?.tags ?? [];
+    return sorted.filter((p) => tags.includes(p.tag));
+  }, [group, sorted]);
 
   useSeo({
     title: "Блог о работе ресторана с агрегаторами доставки — agregatory.pro",
@@ -43,26 +49,45 @@ const Blog = () => {
       </div>
 
       <section className="px-5 pb-16 md:px-14 md:pb-24">
-        <div className="mb-8 flex flex-wrap gap-2">
+        <div className="mb-10 flex flex-wrap gap-2">
           <button
-            onClick={() => setTag(null)}
+            onClick={() => setGroup(null)}
             className={`rounded-xl px-4 py-2.5 text-[0.9em] transition-colors ${
-              tag === null ? "bg-primary text-primary-foreground" : "border border-primary/30 hover:bg-pale"
+              group === null ? "bg-primary text-primary-foreground" : "border border-primary/30 hover:bg-pale"
             }`}
           >
-            все темы
+            все материалы
+            <span className={group === null ? "pl-2 text-primary-foreground/50" : "pl-2 text-muted-foreground"}>
+              {BLOG_POSTS.length}
+            </span>
           </button>
-          {tags.map((t) => (
-            <button
-              key={t}
-              onClick={() => setTag(t)}
-              className={`rounded-xl px-4 py-2.5 text-[0.9em] transition-colors ${
-                tag === t ? "bg-primary text-primary-foreground" : "border border-primary/30 hover:bg-pale"
-              }`}
-            >
-              {t}
-            </button>
-          ))}
+          {BLOG_GROUPS.map((g) => {
+            const count = BLOG_POSTS.filter((p) => g.tags.includes(p.tag)).length;
+            const active = group === g.id;
+            return (
+              <button
+                key={g.id}
+                onClick={() => setGroup(g.id)}
+                className={`inline-flex items-center rounded-xl px-4 py-2.5 text-[0.9em] transition-colors ${
+                  active ? "bg-primary text-primary-foreground" : "border border-primary/30 hover:bg-pale"
+                }`}
+              >
+                {g.label}
+                {g.isNew && (
+                  <span
+                    className={`ml-2.5 rounded-md px-2 py-0.5 text-[0.75em] font-medium uppercase tracking-wide ${
+                      active ? "bg-brand text-foreground" : "bg-foreground text-brand"
+                    }`}
+                  >
+                    новое
+                  </span>
+                )}
+                <span className={active ? "pl-2 text-primary-foreground/50" : "pl-2 text-muted-foreground"}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         <div className="grid gap-4 lg:grid-cols-3">
@@ -74,7 +99,7 @@ const Blog = () => {
                 i % 2 === 1 ? "bg-pale text-foreground" : "bg-surface text-cream"
               }`}
             >
-              <div className="flex items-center gap-3 text-[0.82em]">
+              <div className="flex flex-wrap items-center gap-3 text-[0.82em]">
                 <span
                   className={`rounded-lg px-3 py-1.5 font-medium ${
                     i % 2 === 1 ? "bg-foreground text-brand" : "bg-brand text-foreground"
@@ -82,6 +107,11 @@ const Blog = () => {
                 >
                   {post.tag}
                 </span>
+                {post.isNew && (
+                  <span className="rounded-lg bg-brand px-3 py-1.5 font-medium uppercase tracking-wide text-foreground">
+                    новое
+                  </span>
+                )}
                 <span className={i % 2 === 1 ? "text-foreground/60" : "text-cream-muted"}>{post.readTime}</span>
               </div>
 

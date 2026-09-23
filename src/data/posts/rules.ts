@@ -328,6 +328,7 @@ export const RULES_POSTS: BlogPost[] = [
     dateLabel: "23 сентября 2026",
     readTime: "9 минут",
     tag: "документы",
+    isNew: true,
     toc: [
       { id: "chto-menyaetsya", label: "Что меняется" },
       { id: "shag-1", label: "Шаг 1: блюда и товары" },

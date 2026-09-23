@@ -17,6 +17,7 @@ export type BlogPost = {
   dateLabel: string;
   readTime: string;
   tag: string;
+  isNew?: boolean;
   toc: { id: string; label: string }[];
   blocks: PostBlock[];
   faq: { q: string; a: string }[];
