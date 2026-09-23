@@ -326,6 +326,31 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://agregatory.pro/blog/zadaniya-i-nagrady-yandex-eda</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/referalnaya-programma-yandex-eda</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/obedomaniya-yandex-eda</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/chek-listy-dlya-kuhni-restorana</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/aktsiya-sekret-set</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://agregatory.pro/blog/kakie-aktsii-zapuskat-na-agregatore</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

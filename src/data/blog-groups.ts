@@ -2,6 +2,7 @@ export type BlogGroup = { id: string; label: string; tags: string[]; isNew?: boo
 
 export const BLOG_GROUPS: BlogGroup[] = [
   { id: "documents", label: "правила и документы", tags: ["документы", "штрафы"], isNew: true },
+  { id: "tools", label: "новые инструменты", tags: ["инструменты"], isNew: true },
   {
     id: "promo",
     label: "продвижение",

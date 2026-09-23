@@ -7,12 +7,14 @@ import { ECONOMY_POSTS } from "./posts/economy";
 import { GROWTH_POSTS } from "./posts/growth";
 import { EXTRA_POSTS } from "./posts/extra";
 import { RULES_POSTS } from "./posts/rules";
+import { FRESH_POSTS } from "./posts/fresh";
 import { SETUP_POSTS } from "./posts/setup";
 import { FINANCE_POSTS } from "./posts/finance";
 
 export type { PostBlock, BlogPost } from "./blog-types";
 
 export const BLOG_POSTS: BlogPost[] = [
+  ...FRESH_POSTS,
   ...CORE_POSTS,
   ...BASE_POSTS,
   ...SETUP_POSTS,
