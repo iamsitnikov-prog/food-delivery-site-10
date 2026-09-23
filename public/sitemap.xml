@@ -171,6 +171,16 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://agregatory.pro/goroda/surgut</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/nefteyugansk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://agregatory.pro/goroda/perm</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -301,6 +311,21 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://agregatory.pro/blog/buhgalteriya-restorana-na-agregatore</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kontrol-kachestva-zakazov</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/vyplaty-i-planirovanie-finansov</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://agregatory.pro/blog/kakie-aktsii-zapuskat-na-agregatore</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -322,6 +347,36 @@
   </url>
   <url>
     <loc>https://agregatory.pro/blog/oshibki-restoranov-na-agregatorah</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/shtrafy-i-uderzhaniya-yandex-eda</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/restoran-skryt-na-servise-chto-delat</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/platformennaya-ekonomika-289-fz</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/bystryy-start-4-shaga</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/razdely-lichnogo-kabineta-vendor</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/yandex-dostavka-podklyuchenie-tarify</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
