@@ -7,6 +7,7 @@ import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
 import PostBody from "@/components/blog/PostBody";
 import PostAuthor from "@/components/blog/PostAuthor";
+import PostFeedback from "@/components/blog/PostFeedback";
 import useSeo from "@/hooks/use-seo";
 import { BLOG_POSTS, findPost } from "@/data/blog-posts";
 import { PEOPLE } from "@/data/team";
@@ -122,6 +123,7 @@ const BlogPost = () => {
           <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-20 lg:items-start">
             <div className="min-w-0">
               <PostBody blocks={post.blocks} slug={post.slug} />
+              <PostFeedback slug={post.slug} title={post.h1} />
               <PostAuthor dateLabel={post.dateLabel} />
             </div>
 

@@ -1,0 +1,34 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS возвращает CORS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "GET без параметров возвращает пустой объект",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": { "likes": {} },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "POST с некорректным slug отклоняется",
+      "method": "POST",
+      "path": "/",
+      "body": { "slug": "BAD SLUG!!" },
+      "expectedStatus": 400
+    },
+    {
+      "name": "POST добавляет лайк",
+      "method": "POST",
+      "path": "/",
+      "body": { "slug": "test-post" },
+      "expectedStatus": 200,
+      "expectedBody": { "slug": "test-post" },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

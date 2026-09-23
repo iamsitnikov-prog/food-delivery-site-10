@@ -1,0 +1,1 @@
+UPDATE post_reactions SET likes = 0 WHERE slug IN ('test-post', 'referalnaya-programma-yandex-eda');
