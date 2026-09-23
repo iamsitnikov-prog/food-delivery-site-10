@@ -95,7 +95,7 @@ def send_telegram(lines):
         'text': '\n'.join(lines),
         'parse_mode': 'HTML',
     }).encode()
-    targets = []
+    targets = list(TG_IPS)
     try:
         for info in socket.getaddrinfo('api.telegram.org', 443, socket.AF_INET, socket.SOCK_STREAM):
             ip = info[4][0]
@@ -103,20 +103,18 @@ def send_telegram(lines):
                 targets.append(ip)
     except Exception as exc:
         print(f'telegram dns error: {exc}')
-    for ip in TG_IPS:
-        if ip not in targets:
-            targets.append(ip)
 
-    deadline = time.monotonic() + 3.4
-    for ip in targets:
+    deadline = time.monotonic() + 6.0
+    attempts = targets + targets
+    for ip in attempts:
         if time.monotonic() > deadline:
             print('telegram: time budget exceeded')
             break
         try:
             ctx = ssl.create_default_context()
-            raw = socket.create_connection((ip, 443), timeout=1.2)
+            raw = socket.create_connection((ip, 443), timeout=1.5)
             sock = ctx.wrap_socket(raw, server_hostname='api.telegram.org')
-            conn = http.client.HTTPSConnection('api.telegram.org', timeout=1.8)
+            conn = http.client.HTTPSConnection('api.telegram.org', timeout=2.5)
             conn.sock = sock
             conn.request('POST', f'/bot{token}/sendMessage', body=payload,
                          headers={'Content-Type': 'application/x-www-form-urlencoded'})
@@ -198,9 +196,9 @@ def handler(event, context):
         lines.append(f'<b>Комментарий:</b> {comment}')
 
     lead_id = save_lead(name, phone, place, status, channel, comment, False)
-    sent = send_telegram(lines)
     plain = '\n'.join(l.replace('<b>', '').replace('</b>', '') for l in lines)
     mailed = send_email(f'Заявка с сайта: {name}', plain)
+    sent = send_telegram(lines)
     if sent and lead_id:
         mark_sent(lead_id)
 
