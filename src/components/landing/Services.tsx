@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import useReveal from "@/hooks/use-reveal";
 
@@ -125,6 +126,12 @@ const Services = () => {
         >
           обсудить задачу
         </a>
+        <Link
+          to="/uslugi"
+          className="inline-flex items-center gap-2 rounded-xl border border-primary/30 px-7 py-4 font-medium transition-colors hover:bg-primary hover:text-primary-foreground"
+        >
+          все услуги <Icon name="ArrowRight" size={18} />
+        </Link>
         <span className="text-[0.92em] text-muted-foreground">подберём услуги под ваш ресторан</span>
       </div>
     </section>

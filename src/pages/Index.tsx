@@ -10,7 +10,6 @@ import AfterLaunch from "@/components/landing/AfterLaunch";
 import StickyCta from "@/components/landing/StickyCta";
 import Team from "@/components/landing/Team";
 import Reviews from "@/components/landing/Reviews";
-import SeoLinks from "@/components/landing/SeoLinks";
 import Faq from "@/components/landing/Faq";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
@@ -29,7 +28,6 @@ const Index = () => {
       <FreeAudit />
       <Team />
       <Reviews />
-      <SeoLinks />
       <Faq />
       <LeadForm />
       <Contacts />
