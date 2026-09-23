@@ -25,7 +25,7 @@ const Hero = () => {
         <img
           src={ROBOT}
           alt="Жёлтый робот-курьер agregatory.pro"
-          className="pointer-events-none absolute -right-16 bottom-[-18px] top-auto z-0 w-[340px] animate-float object-contain object-bottom mask-fade-left sm:w-[520px] md:-right-4 md:h-[780px] md:w-[780px]"
+          className="pointer-events-none absolute -right-16 bottom-[-20px] top-auto z-0 h-auto w-[340px] max-w-none animate-float object-contain mask-fade-left sm:w-[520px] md:-right-6 md:w-[840px] lg:w-[900px]"
         />
         <div className="relative z-10 h-full px-5 pb-10 pt-9 md:pb-28 md:px-14 md:pt-11">
           <h1 className="max-w-[860px] animate-rise font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] sm:text-[64px] lg:text-[88px] text-left">
