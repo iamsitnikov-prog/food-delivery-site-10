@@ -124,7 +124,7 @@ const LeadForm = () => {
             src={ROBOT}
             alt=""
             aria-hidden
-            className="pointer-events-none mt-6 hidden w-[360px] animate-float lg:block"
+            className="pointer-events-none mt-10 hidden w-[520px] max-w-none animate-float lg:block xl:w-[600px]"
           />
         </div>
 
