@@ -7,6 +7,7 @@ const STEPS = [
   { n: "шаг 2", t: "контент и вендор", d: "SEO, теги, титульное фото и все параметры меню" },
   { n: "шаг 3", t: "обучение", d: "учим весь персонал, который участвует в доставке" },
   { n: "шаг 4", t: "продвижение", d: "ставки на аукционе, акции и контроль рейтинга" },
+  { n: "шаг 5", t: "запуск и первые заказы", d: "выводим проект на сервис и сопровождаем первые заказы" },
 ];
 
 const TAGS = [
@@ -59,7 +60,7 @@ const Hero = () => {
       <section
         id="steps"
         aria-label="Этапы работы"
-        className="grid animate-up scroll-mt-4 grid-cols-1 gap-7 rounded-t-[40px] bg-surface px-5 pb-[34px] pt-[30px] text-cream sm:grid-cols-2 md:px-14 lg:grid-cols-[220px_repeat(4,1fr)]"
+        className="grid animate-up scroll-mt-4 grid-cols-1 gap-7 rounded-t-[40px] bg-surface px-5 pb-[34px] pt-[30px] text-cream sm:grid-cols-2 md:px-14 lg:grid-cols-[200px_repeat(5,1fr)]"
       >
         <h2 className="font-display text-[1.75em] font-semibold leading-none tracking-[-0.02em] sm:col-span-2 lg:col-span-1">
           как мы <em className="not-italic text-brand">работаем</em>
