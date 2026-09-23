@@ -1,5 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
+import useSeo from "@/hooks/use-seo";
 
 const SECTIONS = [
   {
@@ -61,6 +62,15 @@ const SECTIONS = [
 ];
 
 const Privacy = () => {
+  const { pathname } = useLocation();
+
+  useSeo({
+    title: "Политика обработки персональных данных — agregatory.pro",
+    description:
+      "Порядок обработки и защиты персональных данных пользователей сайта agregatory.pro: какие данные собираем, цели обработки, права пользователя и контакты операторов.",
+    path: pathname,
+  });
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       <div className="px-5 py-12 md:px-14 md:py-16">
