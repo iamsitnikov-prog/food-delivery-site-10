@@ -44,6 +44,8 @@ const BRANDS = [
   "Saby",
   "MyBox",
   "Честная ферма",
+  "Яндекс Еда",
+  "WABI SABI",
 ];
 
 const Team = () => {

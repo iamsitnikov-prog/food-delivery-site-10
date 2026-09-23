@@ -113,14 +113,12 @@ const Results = () => {
           </p>
         </div>
 
-        <div className="reveal flex flex-col gap-4 border-y border-cream/25 py-8 md:flex-row md:items-end md:justify-between md:gap-10 md:py-10">
+        <div className="reveal flex flex-col items-center gap-3 border-y border-cream/25 py-10 text-center md:py-14">
           <span className="flex items-baseline gap-3 font-display font-semibold leading-[.85] tracking-[-0.045em] text-brand">
             <CountUp value={HERO_STAT.v} className="text-[72px] md:text-[130px]" />
             <span className="text-[26px] md:text-[44px]">{HERO_STAT.unit}</span>
           </span>
-          <p className="max-w-[300px] text-[1em] leading-snug text-cream-muted md:pb-3 md:text-right md:text-[1.1em]">
-            {HERO_STAT.l}
-          </p>
+          <p className="max-w-[420px] text-[1em] leading-snug text-cream-muted md:text-[1.15em]">{HERO_STAT.l}</p>
         </div>
 
         <div className="reveal mt-14 grid gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
