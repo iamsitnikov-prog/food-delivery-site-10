@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
+import RussiaMap from "@/components/landing/RussiaMap";
 import useSeo from "@/hooks/use-seo";
 import { CITY_PAGES, SERVICE_PAGES } from "@/data/seo-pages";
 
@@ -52,6 +53,12 @@ const SeoIndex = ({ kind }: Props) => {
           <p className="mt-6 max-w-[560px] text-[1.1em] leading-snug text-muted-foreground">{copy.lead}</p>
         </section>
       </div>
+
+      {kind === "city" && (
+        <section className="px-5 pb-12 md:px-14 md:pb-16">
+          <RussiaMap />
+        </section>
+      )}
 
       <section className="px-5 pb-16 md:px-14 md:pb-24">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

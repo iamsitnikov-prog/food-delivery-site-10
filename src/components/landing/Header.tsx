@@ -6,10 +6,10 @@ import Icon from "@/components/ui/icon";
 export const NAV = [
   { href: "/uslugi", label: "услуги" },
   { href: "/goroda", label: "города" },
+  { href: "/blog", label: "блог" },
   { href: "#guarantees", label: "гарантии" },
   { href: "#results", label: "результаты" },
   { href: "#pricing", label: "стоимость" },
-  { href: "#extra", label: "дополнительно" },
   { href: "#free-audit", label: "бесплатный анализ" },
   { href: "#team", label: "кто мы" },
   { href: "#reviews", label: "отзывы" },
@@ -19,9 +19,9 @@ export const NAV = [
 const MOBILE_NAV = [
   { href: "/uslugi", label: "услуги" },
   { href: "/goroda", label: "города" },
+  { href: "/blog", label: "блог" },
   { href: "#free-audit", label: "бесплатный анализ" },
   { href: "#pricing", label: "стоимость" },
-  { href: "#results", label: "результаты" },
   { href: "#contacts", label: "контакты" },
 ];
 

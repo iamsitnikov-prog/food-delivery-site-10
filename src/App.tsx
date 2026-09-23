@@ -10,6 +10,8 @@ import Index from "./pages/Index";
 import Privacy from "./pages/Privacy";
 import SeoIndex from "./pages/SeoIndex";
 import SeoLanding from "./pages/SeoLanding";
+import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +33,8 @@ const App = () => {
           <Route path="/uslugi/:slug" element={<SeoLanding />} />
           <Route path="/goroda" element={<SeoIndex kind="city" />} />
           <Route path="/goroda/:slug" element={<SeoLanding />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
