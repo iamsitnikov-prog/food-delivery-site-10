@@ -7,11 +7,6 @@ const POINTS = [
   { icon: "TrendingUp", t: "показываем точки роста", d: "что даст прирост заказов быстрее всего именно у вас" },
 ];
 
-const GUARANTEES = [
-  "Гарантируем рейтинг от 4.8 и выше без дополнительных вложений",
-  "Гарантируем отработку всех удержаний и штрафов от сервиса",
-];
-
 const FreeAudit = () => {
   const ref = useReveal<HTMLElement>();
 
@@ -42,7 +37,7 @@ const FreeAudit = () => {
             <p className="mt-4 text-[0.86em] text-cream-muted">результат пришлём в течение 2 рабочих дней</p>
           </div>
 
-          <div className="space-y-4">
+          <div>
             <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
               {POINTS.map((p) => (
                 <div key={p.t} className="flex gap-4 rounded-[20px] bg-pale p-5 text-foreground">
@@ -55,21 +50,6 @@ const FreeAudit = () => {
                   </span>
                 </div>
               ))}
-            </div>
-
-            <div className="rounded-[20px] border border-brand/40 p-5">
-              <span className="inline-flex items-center gap-2 text-[0.82em] font-semibold text-brand">
-                <Icon name="ShieldCheck" size={16} />
-                наши гарантии
-              </span>
-              <ul className="mt-4 space-y-3 text-[0.95em] leading-snug">
-                {GUARANTEES.map((g) => (
-                  <li key={g} className="flex gap-3">
-                    <Icon name="Check" size={18} className="mt-0.5 shrink-0 text-brand" />
-                    {g}
-                  </li>
-                ))}
-              </ul>
             </div>
           </div>
         </div>

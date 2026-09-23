@@ -5,6 +5,7 @@ import Icon from "@/components/ui/icon";
 export const NAV = [
   { href: "#services", label: "услуги" },
   { href: "#advantages", label: "преимущества" },
+  { href: "#guarantees", label: "гарантии" },
   { href: "#results", label: "результаты" },
   { href: "#pricing", label: "стоимость" },
   { href: "#extra", label: "дополнительно" },
