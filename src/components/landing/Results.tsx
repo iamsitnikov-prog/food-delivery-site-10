@@ -123,7 +123,10 @@ const Results = () => {
 
         <div className="reveal mt-14 grid gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
           {STATS.map((s) => (
-            <div key={s.l} className="group border-t border-cream/25 pt-4 transition-colors hover:border-brand">
+            <div
+              key={s.l}
+              className="group flex flex-col items-center border-t border-cream/25 pt-4 text-center transition-colors hover:border-brand"
+            >
               <CountUp
                 value={s.v}
                 className="block font-display text-[44px] font-semibold leading-none tracking-[-0.04em] text-brand transition-transform duration-500 group-hover:-translate-y-1 md:text-[64px]"
