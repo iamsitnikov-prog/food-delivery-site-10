@@ -6,8 +6,10 @@ import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
 import PostBody from "@/components/blog/PostBody";
+import PostAuthor from "@/components/blog/PostAuthor";
 import useSeo from "@/hooks/use-seo";
 import { BLOG_POSTS, findPost } from "@/data/blog-posts";
+import { PEOPLE } from "@/data/team";
 
 const BlogPost = () => {
   const { slug } = useParams();
@@ -25,8 +27,18 @@ const BlogPost = () => {
         description: post.description,
         datePublished: post.date,
         dateModified: post.date,
-        author: { "@type": "Organization", name: "agregatory.pro" },
-        publisher: { "@type": "Organization", name: "agregatory.pro" },
+        author: PEOPLE.map((p) => ({
+          "@type": "Person",
+          name: p.name,
+          jobTitle: p.role,
+          worksFor: { "@type": "Organization", name: "agregatory.pro" },
+          ...(p.link ? { sameAs: [p.link.href] } : {}),
+        })),
+        publisher: {
+          "@type": "Organization",
+          name: "agregatory.pro",
+          logo: { "@type": "ImageObject", url: "https://agregatory.pro/og-preview.jpg" },
+        },
         mainEntityOfPage: url,
       },
       {
@@ -87,8 +99,31 @@ const BlogPost = () => {
           </h1>
           <p className="mt-6 max-w-[760px] text-[1.15em] leading-snug text-muted-foreground">{post.lead}</p>
 
+          <div className="mt-7 flex items-center gap-3">
+            <div className="flex -space-x-3">
+              {PEOPLE.map((p) => (
+                <img
+                  key={p.name}
+                  src={p.photo}
+                  alt={p.name}
+                  width={400}
+                  height={400}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-10 w-10 rounded-full border-2 border-background object-cover object-top"
+                />
+              ))}
+            </div>
+            <span className="text-[0.9em] text-muted-foreground">
+              {PEOPLE.map((p) => p.name).join(" и ")}
+            </span>
+          </div>
+
           <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-20 lg:items-start">
-            <PostBody blocks={post.blocks} slug={post.slug} />
+            <div className="min-w-0">
+              <PostBody blocks={post.blocks} slug={post.slug} />
+              <PostAuthor dateLabel={post.dateLabel} />
+            </div>
 
             <aside className="order-first rounded-[28px] bg-pale p-6 lg:order-last lg:sticky lg:top-8">
               <h2 className="font-display text-[1.1em] font-semibold">содержание</h2>
