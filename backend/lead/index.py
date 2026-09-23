@@ -4,12 +4,19 @@ import os
 import smtplib
 import socket
 import ssl
+import time
 import urllib.parse
 from email.message import EmailMessage
 
 import psycopg2
 
-TG_IPS = ['149.154.167.220']
+TG_IPS = [
+    '149.154.167.220',
+    '149.154.167.99',
+    '149.154.175.50',
+    '91.108.56.130',
+    '149.154.171.5',
+]
 
 
 def send_email(subject, text):
@@ -25,7 +32,7 @@ def send_email(subject, text):
     msg['To'] = to
     msg.set_content(text)
     try:
-        with smtplib.SMTP_SSL(host, 465, timeout=4) as s:
+        with smtplib.SMTP_SSL(host, 465, timeout=2.5) as s:
             s.login(user, password)
             s.send_message(msg)
         return True
@@ -63,6 +70,21 @@ def save_lead(name, phone, place, status, channel, comment, sent):
         conn.close()
 
 
+def mark_sent(lead_id):
+    dsn = os.environ.get('DATABASE_URL')
+    if not dsn:
+        return
+    schema = os.environ.get('MAIN_DB_SCHEMA', 'public')
+    try:
+        conn = psycopg2.connect(dsn, connect_timeout=2)
+        with conn.cursor() as cur:
+            cur.execute(f"UPDATE {schema}.leads SET sent_to_telegram = TRUE WHERE id = {int(lead_id)}")
+        conn.commit()
+        conn.close()
+    except Exception as exc:
+        print(f'db update error: {exc}')
+
+
 def send_telegram(lines):
     token = os.environ.get('TELEGRAM_BOT_TOKEN')
     chat_id = os.environ.get('TELEGRAM_CHAT_ID')
@@ -73,18 +95,35 @@ def send_telegram(lines):
         'text': '\n'.join(lines),
         'parse_mode': 'HTML',
     }).encode()
+    targets = []
+    try:
+        for info in socket.getaddrinfo('api.telegram.org', 443, socket.AF_INET, socket.SOCK_STREAM):
+            ip = info[4][0]
+            if ip not in targets:
+                targets.append(ip)
+    except Exception as exc:
+        print(f'telegram dns error: {exc}')
     for ip in TG_IPS:
+        if ip not in targets:
+            targets.append(ip)
+
+    deadline = time.monotonic() + 3.4
+    for ip in targets:
+        if time.monotonic() > deadline:
+            print('telegram: time budget exceeded')
+            break
         try:
             ctx = ssl.create_default_context()
-            raw = socket.create_connection((ip, 443), timeout=2)
+            raw = socket.create_connection((ip, 443), timeout=1.2)
             sock = ctx.wrap_socket(raw, server_hostname='api.telegram.org')
-            conn = http.client.HTTPSConnection('api.telegram.org', timeout=3)
+            conn = http.client.HTTPSConnection('api.telegram.org', timeout=1.8)
             conn.sock = sock
             conn.request('POST', f'/bot{token}/sendMessage', body=payload,
                          headers={'Content-Type': 'application/x-www-form-urlencoded'})
             resp = conn.getresponse()
             ok = resp.status == 200
-            print(f'telegram response {resp.status}: {resp.read()[:300].decode(errors="ignore")}')
+            print(f'telegram response {resp.status} via {ip}')
+            resp.read()
             conn.close()
             if ok:
                 return True
@@ -158,10 +197,12 @@ def handler(event, context):
     if comment:
         lines.append(f'<b>Комментарий:</b> {comment}')
 
+    lead_id = save_lead(name, phone, place, status, channel, comment, False)
     sent = send_telegram(lines)
     plain = '\n'.join(l.replace('<b>', '').replace('</b>', '') for l in lines)
     mailed = send_email(f'Заявка с сайта: {name}', plain)
-    lead_id = save_lead(name, phone, place, status, channel, comment, sent)
+    if sent and lead_id:
+        mark_sent(lead_id)
 
     return {
         'statusCode': 200,
