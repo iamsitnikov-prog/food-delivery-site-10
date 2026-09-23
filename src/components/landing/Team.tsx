@@ -26,6 +26,7 @@ const PEOPLE = [
       "Модератор «Тема Еды» 2024–2025",
       "Эксперт проекта Яндекс Еда «Консалтинг для региональных рестораторов»",
     ],
+    link: { label: "профиль в Novikov School", href: "https://novikovspace.com/school/chefs/liliya-kovalchuk" },
   },
 ];
 
