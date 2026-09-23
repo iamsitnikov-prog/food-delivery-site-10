@@ -15,6 +15,15 @@ export const NAV = [
   { href: "#contacts", label: "контакты" },
 ];
 
+const MOBILE_NAV = [
+  { href: "#services", label: "услуги" },
+  { href: "#free-audit", label: "бесплатный анализ" },
+  { href: "#pricing", label: "стоимость" },
+  { href: "#results", label: "результаты" },
+  { href: "#team", label: "кто мы" },
+  { href: "#contacts", label: "контакты" },
+];
+
 const MESSENGERS = [
   { icon: "Send", label: "telegram", href: "https://t.me/sitnikovy1" },
   { icon: "MessageCircle", label: "whatsapp", href: "https://wa.me/79310028222" },
@@ -76,7 +85,7 @@ const Header = () => {
               agregatory<span className="font-normal text-muted-foreground">.pro</span>
             </SheetTitle>
             <nav className="mt-10 flex flex-col gap-1">
-              {NAV.map((n) => (
+              {MOBILE_NAV.map((n) => (
                 <a
                   key={n.href}
                   href={n.href}
