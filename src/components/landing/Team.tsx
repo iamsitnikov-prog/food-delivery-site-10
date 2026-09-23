@@ -1,34 +1,6 @@
 import Icon from "@/components/ui/icon";
-import useReveal from "@/hooks/use-reveal";
-
-const PEOPLE = [
-  {
-    name: "Юрий Ситников",
-    photo: "/team-yuriy.webp",
-    exp: "15 лет общепит · 5 лет доставка",
-    facts: [
-      "Руководитель агрегаторов (Ginza Project, Faces Team, GrigGroup)",
-      "Преподаватель Novikov Business School",
-      "Модератор «Тема Еды» 2023–2026",
-      "Эксперт Яндекс Еда «Рецепты Роста», «Консалтинг для региональных рестораторов»",
-      "Сертифицированный эксперт FORBES Экспертиза",
-    ],
-    link: { label: "читать FORBES", href: "https://blogs.forbes.ru/author/sitnikov/" },
-  },
-  {
-    name: "Лилия Ковальчук",
-    photo: "/team-liliya.webp",
-    exp: "20 лет общепит · 15 лет доставка",
-    facts: [
-      "Эксперт-практик в доставке еды",
-      "Ex. партнёр сети «Дагестанская Лавка»",
-      "Автор курса «Сильная доставка» в Novikov Business School",
-      "Модератор «Тема Еды» 2024–2025",
-      "Эксперт проекта Яндекс Еда «Консалтинг для региональных рестораторов»",
-    ],
-    link: { label: "профиль в Novikov School", href: "https://novikovspace.com/school/chefs/liliya-kovalchuk" },
-  },
-];
+import { useReveal } from "@/hooks/use-reveal";
+import { PEOPLE, COURSE } from "@/data/team";
 
 const Team = () => {
   const ref = useReveal<HTMLElement>();
@@ -98,7 +70,7 @@ const Team = () => {
                   создатель и соавтор курса
                 </div>
                 <div className="mt-1.5 font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.3em]">
-                  Бесплатная школа доставки Яндекс Еды
+                  {COURSE}
                 </div>
               </div>
             </div>

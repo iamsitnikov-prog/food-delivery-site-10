@@ -5,8 +5,10 @@ import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
+import ExpertiseStrip from "@/components/landing/ExpertiseStrip";
 import useSeo from "@/hooks/use-seo";
 import { CITY_PAGES, SERVICE_PAGES, findPage } from "@/data/seo-pages";
+import { PEOPLE } from "@/data/team";
 
 const SeoLanding = () => {
   const { slug } = useParams();
@@ -29,7 +31,16 @@ const SeoLanding = () => {
         "@type": "Service",
         name: page.h1,
         description: page.description,
-        provider: { "@type": "ProfessionalService", name: "agregatory.pro", telephone: "+7 931 002-82-22" },
+        provider: {
+          "@type": "ProfessionalService",
+          name: "agregatory.pro",
+          telephone: "+7 931 002-82-22",
+          employee: PEOPLE.map((p) => ({
+            "@type": "Person",
+            name: p.name,
+            jobTitle: p.role,
+          })),
+        },
         areaServed: page.kind === "city" ? page.navLabel : "RU",
       },
       {
@@ -124,7 +135,11 @@ const SeoLanding = () => {
         </div>
       </section>
 
-      <section className="px-5 py-16 md:px-14 md:py-24">
+      <div className="pt-16 md:pt-24">
+        <ExpertiseStrip />
+      </div>
+
+      <section className="px-5 pb-16 md:px-14 md:pb-24">
         <h2 className="font-display text-[34px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[52px]">
           вопросы
           <span className="pl-3 text-muted-foreground">и ответы</span>
