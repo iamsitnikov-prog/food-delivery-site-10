@@ -24,7 +24,7 @@ const Header = () => {
         agregatory<span className="font-normal text-muted-foreground">.pro</span>
       </a>
 
-      <nav aria-label="Разделы" className="hidden gap-7 text-[0.94em] lg:flex">
+      <nav aria-label="Разделы" className="hidden gap-5 text-[0.9em] xl:flex">
         {NAV.map((n) => (
           <a key={n.href} href={n.href} className="opacity-[.85] transition-opacity hover:opacity-100">
             {n.label}
@@ -44,7 +44,7 @@ const Header = () => {
           <SheetTrigger asChild>
             <button
               aria-label="Открыть меню"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary/30 lg:hidden"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary/30 xl:hidden"
             >
               <Icon name="Menu" size={22} />
             </button>
