@@ -100,9 +100,9 @@ const LeadForm = () => {
     "h-14 rounded-xl border-cream/20 bg-cream/5 px-4 text-[1em] text-cream placeholder:text-cream-muted/70 focus-visible:ring-1 focus-visible:ring-brand focus-visible:ring-offset-0";
 
   return (
-    <section id="lead" ref={ref} className="relative scroll-mt-4 overflow-hidden px-5 py-20 md:px-14 md:py-28">
-      <div className="grid items-start gap-12 lg:grid-cols-[1fr_1.05fr]">
-        <div className="reveal relative">
+    <section id="lead" ref={ref} className="relative scroll-mt-4 overflow-hidden px-5 py-20 md:px-14 md:pb-0 md:pt-28">
+      <div className="grid items-end gap-12 lg:grid-cols-[1fr_1.05fr]">
+        <div className="reveal relative pb-20 md:pb-0">
           <h2 className="font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[80px]">
             оставьте
             <span className="block pl-[1.2em]">заявку</span>
@@ -124,11 +124,11 @@ const LeadForm = () => {
             src={ROBOT}
             alt=""
             aria-hidden
-            className="pointer-events-none mt-10 hidden w-[520px] max-w-none animate-float lg:block xl:w-[600px]"
+            className="pointer-events-none mt-6 hidden w-[360px] animate-float lg:block"
           />
         </div>
 
-        <div className="reveal rounded-[28px] bg-surface p-6 text-cream md:p-10">
+        <div className="reveal rounded-[28px] bg-surface p-6 text-cream md:mb-16 md:p-10">
           {sent ? (
             <div className="flex min-h-[420px] animate-scale-in flex-col items-start justify-center">
               <span className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand text-foreground">
