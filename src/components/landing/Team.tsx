@@ -56,8 +56,11 @@ const Team = () => {
             <div className="flex items-center gap-5">
               <img
                 src={p.photo}
-                alt={p.name}
+                alt={`${p.name} — эксперт по продвижению ресторанов на Яндекс Еде, agregatory.pro`}
+                width={400}
+                height={400}
                 loading="lazy"
+                decoding="async"
                 className={`h-20 w-20 shrink-0 rounded-full border-2 object-cover object-top grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0 md:h-24 md:w-24 ${
                   i % 2 === 1 ? "border-foreground/20" : "border-brand"
                 }`}

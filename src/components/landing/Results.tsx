@@ -114,6 +114,8 @@ const Results = () => {
         src="/robot-flip.webp"
         alt=""
         aria-hidden
+        width={800}
+        height={765}
         loading="lazy"
         decoding="async"
         className="pointer-events-none absolute -left-24 -top-10 w-[300px] animate-float opacity-90 md:-left-16 md:w-[420px]"

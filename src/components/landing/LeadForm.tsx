@@ -127,6 +127,8 @@ const LeadForm = () => {
             src={ROBOT}
             alt=""
             aria-hidden
+            width={1100}
+            height={1052}
             loading="lazy"
             decoding="async"
             className="pointer-events-none mt-6 hidden w-[360px] animate-float lg:block"

@@ -1,6 +1,86 @@
 import React from 'react';
-import * as LucideIcons from 'lucide-react';
-import { LucideProps } from 'lucide-react';
+import type { LucideProps } from 'lucide-react';
+import {
+  Activity,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  Building2,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  ChevronUp,
+  CircleAlert,
+  ClipboardCheck,
+  Clock,
+  FileBarChart,
+  FileSignature,
+  Gift,
+  GraduationCap,
+  Headset,
+  Loader2,
+  Megaphone,
+  Menu,
+  MessageCircle,
+  MessagesSquare,
+  PartyPopper,
+  Percent,
+  Phone,
+  PhoneCall,
+  Quote,
+  Search,
+  Send,
+  ShieldCheck,
+  Star,
+  Timer,
+  TrendingUp,
+  UserCheck,
+  Users,
+  UtensilsCrossed,
+  Video,
+  X,
+} from 'lucide-react';
+
+const ICONS: Record<string, React.FC<LucideProps>> = {
+  Activity,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  Building2,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  ChevronUp,
+  CircleAlert,
+  ClipboardCheck,
+  Clock,
+  FileBarChart,
+  FileSignature,
+  Gift,
+  GraduationCap,
+  Headset,
+  Loader2,
+  Megaphone,
+  Menu,
+  MessageCircle,
+  MessagesSquare,
+  PartyPopper,
+  Percent,
+  Phone,
+  PhoneCall,
+  Quote,
+  Search,
+  Send,
+  ShieldCheck,
+  Star,
+  Timer,
+  TrendingUp,
+  UserCheck,
+  Users,
+  UtensilsCrossed,
+  Video,
+  X,
+};
 
 interface IconProps extends LucideProps {
   name: string;
@@ -8,18 +88,10 @@ interface IconProps extends LucideProps {
 }
 
 const Icon: React.FC<IconProps> = ({ name, fallback = 'CircleAlert', ...props }) => {
-  const IconComponent = (LucideIcons as Record<string, React.FC<LucideProps>>)[name];
+  const IconComponent = ICONS[name] || ICONS[fallback];
 
   if (!IconComponent) {
-    // Если иконка не найдена, используем fallback иконку
-    const FallbackIcon = (LucideIcons as Record<string, React.FC<LucideProps>>)[fallback];
-
-    // Если даже fallback не найден, возвращаем пустой span
-    if (!FallbackIcon) {
-      return <span className="text-xs text-gray-400">[icon]</span>;
-    }
-
-    return <FallbackIcon {...props} />;
+    return <span className="text-xs text-gray-400">[icon]</span>;
   }
 
   return <IconComponent {...props} />;

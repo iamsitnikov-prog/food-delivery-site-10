@@ -1,4 +1,5 @@
 
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,13 +8,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import useContactGoals from "@/hooks/use-contact-goals";
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
-import Privacy from "./pages/Privacy";
-import SeoIndex from "./pages/SeoIndex";
-import SeoLanding from "./pages/SeoLanding";
-import Blog from "./pages/Blog";
-import PartnersPage from "./pages/Partners";
-import BlogPost from "./pages/BlogPost";
-import NotFound from "./pages/NotFound";
+
+const Privacy = lazy(() => import("./pages/Privacy"));
+const SeoIndex = lazy(() => import("./pages/SeoIndex"));
+const SeoLanding = lazy(() => import("./pages/SeoLanding"));
+const Blog = lazy(() => import("./pages/Blog"));
+const PartnersPage = lazy(() => import("./pages/Partners"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,7 @@ const App = () => {
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
+        <Suspense fallback={<div className="min-h-screen bg-background" />}>
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/privacy" element={<Privacy />} />
@@ -40,6 +43,7 @@ const App = () => {
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </Suspense>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

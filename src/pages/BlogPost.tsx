@@ -88,7 +88,7 @@ const BlogPost = () => {
           <p className="mt-6 max-w-[760px] text-[1.15em] leading-snug text-muted-foreground">{post.lead}</p>
 
           <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-20 lg:items-start">
-            <PostBody blocks={post.blocks} />
+            <PostBody blocks={post.blocks} slug={post.slug} />
 
             <aside className="order-first rounded-[28px] bg-pale p-6 lg:order-last lg:sticky lg:top-8">
               <h2 className="font-display text-[1.1em] font-semibold">содержание</h2>

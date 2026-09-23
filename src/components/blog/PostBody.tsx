@@ -1,7 +1,41 @@
+import { Link } from "react-router-dom";
 import type { PostBlock } from "@/data/blog-posts";
 import Icon from "@/components/ui/icon";
+import { INTERLINKS } from "@/data/interlinks";
 
-const PostBody = ({ blocks }: { blocks: PostBlock[] }) => (
+const linkify = (text: string, currentSlug: string, used: Set<string>) => {
+  const targets = INTERLINKS.filter((l) => l.slug !== currentSlug && !used.has(l.slug));
+  if (!targets.length) return text;
+
+  let best: { idx: number; slug: string; phrase: string } | null = null;
+  for (const t of targets) {
+    const idx = text.toLowerCase().indexOf(t.phrase.toLowerCase());
+    if (idx === -1) continue;
+    if (!best || idx < best.idx) best = { idx, slug: t.slug, phrase: t.phrase };
+  }
+  if (!best) return text;
+
+  const end = best.idx + best.phrase.length;
+  const tail = text.slice(end).match(/^[а-яё]*/i)?.[0] ?? "";
+  used.add(best.slug);
+
+  return [
+    text.slice(0, best.idx),
+    <Link
+      key={best.slug}
+      to={`/blog/${best.slug}`}
+      className="underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary"
+    >
+      {text.slice(best.idx, end) + tail}
+    </Link>,
+    linkify(text.slice(end + tail.length), currentSlug, used),
+  ];
+};
+
+const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string }) => {
+  const used = new Set<string>();
+
+  return (
   <div className="min-w-0 text-[1.06em]">
     {blocks.map((b, i) => {
       if (b.type === "h2")
@@ -25,7 +59,7 @@ const PostBody = ({ blocks }: { blocks: PostBlock[] }) => (
       if (b.type === "p")
         return (
           <p key={i} className="mt-5 leading-relaxed text-foreground/85">
-            {b.text}
+            {linkify(b.text, slug, used)}
           </p>
         );
 
@@ -67,7 +101,7 @@ const PostBody = ({ blocks }: { blocks: PostBlock[] }) => (
             {b.items.map((item) => (
               <li key={item} className="flex gap-3 leading-relaxed text-foreground/85">
                 <Icon name="Check" size={19} className="mt-1 shrink-0" />
-                {item}
+                {linkify(item, slug, used)}
               </li>
             ))}
           </ul>
@@ -81,7 +115,7 @@ const PostBody = ({ blocks }: { blocks: PostBlock[] }) => (
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-surface text-[0.85em] font-semibold text-brand">
                   {n + 1}
                 </span>
-                <span className="pt-0.5">{item}</span>
+                <span className="pt-0.5">{linkify(item, slug, used)}</span>
               </li>
             ))}
           </ol>
@@ -115,6 +149,7 @@ const PostBody = ({ blocks }: { blocks: PostBlock[] }) => (
       );
     })}
   </div>
-);
+  );
+};
 
 export default PostBody;
