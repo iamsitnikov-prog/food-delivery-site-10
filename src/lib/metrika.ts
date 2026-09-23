@@ -1,4 +1,4 @@
-const COUNTER_ID = 101026698;
+const COUNTER_ID = 112965538;
 
 type Ym = (id: number, action: string, target?: string, params?: unknown) => void;
 
