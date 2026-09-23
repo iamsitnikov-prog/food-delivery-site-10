@@ -5,8 +5,11 @@ import { NAV } from "./Header";
 const CONTACTS = [
   { icon: "Phone", label: "телефон", value: "+7 931 002-82-22", href: "tel:+79310028222" },
   { icon: "Send", label: "телеграм", value: "@sitnikovy1", href: "https://t.me/sitnikovy1" },
-  { icon: "MessageCircle", label: "whatsapp", value: "+7 931 002-82-22", href: "https://wa.me/79310028222" },
-  { icon: "MessagesSquare", label: "max", value: "+7 931 002-82-22", href: "https://max.ru/u/79310028222" },
+];
+
+const MESSENGERS = [
+  { icon: "MessageCircle", label: "whatsapp", href: "https://wa.me/79310028222" },
+  { icon: "MessagesSquare", label: "max", href: "https://max.ru/u/79310028222" },
 ];
 
 const Contacts = () => {
@@ -54,6 +57,21 @@ const Contacts = () => {
               </a>
             </li>
           ))}
+          <li className="flex flex-wrap items-center gap-3 border-b border-cream/25 py-6">
+            <span className="mr-auto text-[0.82em] text-cream-muted">мессенджеры</span>
+            {MESSENGERS.map((m) => (
+              <a
+                key={m.label}
+                href={m.href}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-4 py-3 font-medium transition-colors hover:bg-brand hover:text-foreground"
+              >
+                <Icon name={m.icon} size={18} />
+                {m.label}
+              </a>
+            ))}
+          </li>
         </ul>
       </div>
 
