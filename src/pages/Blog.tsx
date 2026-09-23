@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
@@ -8,9 +8,29 @@ import useSeo from "@/hooks/use-seo";
 import { BLOG_POSTS } from "@/data/blog-posts";
 import { BLOG_GROUPS } from "@/data/blog-groups";
 
+const REACTIONS_API = "https://functions.poehali.dev/5384928e-d232-4529-9e00-cfdcc6458060";
+const TOP_MIN_LIKES = 3;
+
 const Blog = () => {
   const { pathname } = useLocation();
   const [group, setGroup] = useState<string | null>(null);
+  const [likes, setLikes] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    const slugs = BLOG_POSTS.map((p) => p.slug).join(",");
+    fetch(`${REACTIONS_API}?slugs=${slugs}`)
+      .then((r) => r.json())
+      .then((d) => setLikes(d?.likes ?? {}))
+      .catch(() => undefined);
+  }, []);
+
+  const top = useMemo(
+    () =>
+      BLOG_POSTS.filter((p) => (likes[p.slug] ?? 0) >= TOP_MIN_LIKES)
+        .sort((a, b) => (likes[b.slug] ?? 0) - (likes[a.slug] ?? 0))
+        .slice(0, 3),
+    [likes],
+  );
 
   const sorted = useMemo(
     () =>
@@ -53,6 +73,46 @@ const Blog = () => {
           </p>
         </section>
       </div>
+
+      {top.length > 0 && (
+        <section className="px-5 pb-14 md:px-14 md:pb-16">
+          <div className="rounded-[32px] bg-surface p-7 text-cream md:p-10">
+            <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+              <h2 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.1em]">
+                самое полезное
+              </h2>
+              <p className="max-w-[380px] text-[0.92em] leading-snug text-cream-muted">
+                Подборка формируется автоматически&nbsp;— по&nbsp;отметкам читателей.
+              </p>
+            </div>
+
+            <div className="mt-8 grid gap-4 md:grid-cols-3">
+              {top.map((p, i) => (
+                <Link
+                  key={p.slug}
+                  to={`/blog/${p.slug}`}
+                  className="group flex flex-col rounded-[22px] bg-cream/[0.06] p-6 transition-colors hover:bg-cream/10"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-display text-[1.6em] font-semibold text-brand">{i + 1}</span>
+                    <span className="inline-flex items-center gap-1.5 text-[0.85em] text-cream-muted">
+                      <Icon name="Star" size={14} className="text-brand" />
+                      {likes[p.slug]}
+                    </span>
+                  </div>
+                  <h3 className="mt-4 flex-1 font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em]">
+                    {p.h1}
+                  </h3>
+                  <span className="mt-5 inline-flex items-center gap-2 text-[0.88em] font-medium text-brand">
+                    читать
+                    <Icon name="ArrowRight" size={15} className="transition-transform group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="px-5 pb-16 md:px-14 md:pb-24">
         <div className="mb-10 flex flex-wrap gap-2">
@@ -119,6 +179,16 @@ const Blog = () => {
                   </span>
                 )}
                 <span className={i % 2 === 1 ? "text-foreground/60" : "text-cream-muted"}>{post.readTime}</span>
+                {(likes[post.slug] ?? 0) > 0 && (
+                  <span
+                    className={`inline-flex items-center gap-1.5 ${
+                      i % 2 === 1 ? "text-foreground/60" : "text-cream-muted"
+                    }`}
+                  >
+                    <Icon name="Star" size={13} className={i % 2 === 1 ? "text-foreground/50" : "text-brand"} />
+                    {likes[post.slug]}
+                  </span>
+                )}
               </div>
 
               <h2 className="mt-6 font-display text-[1.45em] font-semibold leading-[1.05] tracking-[-0.025em]">
