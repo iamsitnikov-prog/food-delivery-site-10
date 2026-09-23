@@ -33,7 +33,7 @@ const Hero = () => {
             <span className="block px-0">в Яндекс Еде</span>
           </h1>
           <div className="mt-[34px] flex animate-rise-delay flex-col items-start gap-6 md:flex-row md:items-end md:gap-10">
-            <p className="max-w-[430px] text-[1.15em] leading-[1.2] md:text-[1.3em]">
+            <p className="max-w-[430px] leading-[1.2] md:text-[1.3em] text-xl text-left">
               Заказы и&nbsp;выручка на&nbsp;Яндекс Еде уже&nbsp;с&nbsp;первой недели. Настраиваем вендор, акции, продвижение и&nbsp;лояльность, обучаем персонал.
             </p>
             <div className="flex flex-col items-start gap-2.5 md:mx-auto md:items-center md:text-center">
