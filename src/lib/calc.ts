@@ -2,34 +2,46 @@ export type DeliveryType = "service" | "own";
 
 export type TaxMode = "usn6" | "usn15" | "patent" | "osno" | "none";
 
-export type Channel = "aggregator" | "self";
-
-export type FeeOwner = "restaurant" | "courier";
-
 export type Unit = "percent" | "rub";
 
 export type CalcInput = {
-  channel: Channel;
+  aggEnabled: boolean;
+  aggOrdersPerDay: number;
+  aggAvgCheck: number;
+  deliveryType: DeliveryType;
+  commission: number;
+  commissionUnit: Unit;
+  subscriptionShare: number;
+  useYandexDelivery: boolean;
+  marketingShare: number;
+  aggAdShare: number;
+  aggAdUnit: Unit;
+  aggPromoShare: number;
+  aggPromoUnit: Unit;
+  refundShare: number;
+  penaltyShare: number;
+
+  selfEnabled: boolean;
+  selfOrdersPerDay: number;
+  selfAvgCheck: number;
   selfCommission: number;
   serviceFeeEnabled: boolean;
   serviceFee: number;
   serviceFeeUnit: Unit;
-  deliveryPriceEnabled: boolean;
-  deliveryPrice: number;
-  deliveryPriceOwner: FeeOwner;
-  commissionUnit: Unit;
-  adUnit: Unit;
-  promoUnit: Unit;
+  selfAdShare: number;
+  selfAdUnit: Unit;
+  selfPromoShare: number;
+  royaltyShare: number;
+
+  foodCost: number;
   foodCostUnit: Unit;
+  packaging: number;
+  suppliesPerOrder: number;
+  writeOffShare: number;
+
   overheadEnabled: boolean;
   overheadTotal: number;
   overheadShare: number;
-  subscriptionShare: number;
-  royaltyShare: number;
-  suppliesPerOrder: number;
-  writeOffShare: number;
-  itPerMonth: number;
-  depreciationPerMonth: number;
   staffEnabled: boolean;
   managerCount: number;
   managerSalary: number;
@@ -39,27 +51,16 @@ export type CalcInput = {
   packerCount: number;
   packerSalary: number;
   insuranceRate: number;
+  fixedPerMonth: number;
+  itPerMonth: number;
+  depreciationPerMonth: number;
   taxMode: TaxMode;
   patentCost: number;
-  avgCheck: number;
-  ordersPerDay: number;
-  deliveryType: DeliveryType;
-  commission: number;
-  useYandexDelivery: boolean;
-  promoShare: number;
-  adShare: number;
-  marketingShare: number;
-  refundShare: number;
-  penaltyShare: number;
-  foodCost: number;
-  packaging: number;
-  fixedPerMonth: number;
 };
 
 export const COMMISSION_SERVICE = 35;
 export const COMMISSION_OWN = 20;
 export const YANDEX_DELIVERY_FEE = 2;
-export const MARKETING_OPTIONS = [0, 2, 5];
 export const INSURANCE_RATE_DEFAULT = 30;
 
 export const TAX_MODES: { value: TaxMode; label: string; hint: string }[] = [
@@ -87,27 +88,43 @@ export const TAX_MODES: { value: TaxMode; label: string; hint: string }[] = [
 ];
 
 export const DEFAULTS: CalcInput = {
-  channel: "aggregator",
+  aggEnabled: true,
+  aggOrdersPerDay: 25,
+  aggAvgCheck: 1200,
+  deliveryType: "service",
+  commission: COMMISSION_SERVICE,
+  commissionUnit: "percent",
+  subscriptionShare: 1.44,
+  useYandexDelivery: false,
+  marketingShare: 0,
+  aggAdShare: 15,
+  aggAdUnit: "percent",
+  aggPromoShare: 0,
+  aggPromoUnit: "percent",
+  refundShare: 1,
+  penaltyShare: 0.2,
+
+  selfEnabled: false,
+  selfOrdersPerDay: 10,
+  selfAvgCheck: 1400,
   selfCommission: 0,
   serviceFeeEnabled: false,
   serviceFee: 0,
   serviceFeeUnit: "rub",
-  deliveryPriceEnabled: false,
-  deliveryPrice: 0,
-  deliveryPriceOwner: "restaurant",
-  commissionUnit: "percent",
-  adUnit: "percent",
-  promoUnit: "percent",
+  selfAdShare: 5,
+  selfAdUnit: "percent",
+  selfPromoShare: 0,
+  royaltyShare: 0,
+
+  foodCost: 30,
   foodCostUnit: "percent",
+  packaging: 60,
+  suppliesPerOrder: 20,
+  writeOffShare: 0,
+
   overheadEnabled: false,
   overheadTotal: 0,
   overheadShare: 25,
-  subscriptionShare: 1.44,
-  royaltyShare: 0,
-  suppliesPerOrder: 20,
-  writeOffShare: 0,
-  itPerMonth: 0,
-  depreciationPerMonth: 0,
   staffEnabled: false,
   managerCount: 1,
   managerSalary: 60000,
@@ -117,21 +134,11 @@ export const DEFAULTS: CalcInput = {
   packerCount: 1,
   packerSalary: 45000,
   insuranceRate: INSURANCE_RATE_DEFAULT,
+  fixedPerMonth: 0,
+  itPerMonth: 0,
+  depreciationPerMonth: 0,
   taxMode: "usn6",
   patentCost: 5000,
-  avgCheck: 1200,
-  ordersPerDay: 25,
-  deliveryType: "service",
-  commission: COMMISSION_SERVICE,
-  useYandexDelivery: false,
-  promoShare: 0,
-  adShare: 15,
-  marketingShare: 0,
-  refundShare: 1,
-  penaltyShare: 0.2,
-  foodCost: 30,
-  packaging: 60,
-  fixedPerMonth: 0,
 };
 
 export const VAT_FREE_LIMIT = 20_000_000;
@@ -166,49 +173,60 @@ export const getVatTier = (yearRevenue: number): VatTier => {
   };
 };
 
-export type CalcResult = {
-  subscriptionRub: number;
-  royaltyRub: number;
-  suppliesRub: number;
-  writeOffRub: number;
-  itCost: number;
-  depreciationCost: number;
-  grossProfitPerOrder: number;
-  grossMarginPercent: number;
-  ebitda: number;
-  ebitdaPercent: number;
+export type ChannelResult = {
+  enabled: boolean;
+  orders: number;
+  avgCheck: number;
   serviceFeeRub: number;
-  deliveryPriceRub: number;
-  guestPaysTotal: number;
-  restaurantIncome: number;
-  overheadCost: number;
-  overheadPerOrder: number;
+  income: number;
   commissionRub: number;
+  subscriptionRub: number;
   deliveryFeeRub: number;
-  promoRub: number;
   adRub: number;
+  promoRub: number;
   marketingRub: number;
   refundRub: number;
   penaltyRub: number;
-  foodCostRub: number;
-  packagingRub: number;
+  royaltyRub: number;
   totalWithheldRub: number;
   withheldPercent: number;
   payoutPerOrder: number;
   payoutPercent: number;
-  payoutPerMonth: number;
+  foodCostRub: number;
+  packagingRub: number;
+  suppliesRub: number;
+  writeOffRub: number;
   profitPerOrder: number;
   marginPercent: number;
+  revenuePerMonth: number;
+  payoutPerMonth: number;
+  profitPerMonth: number;
+  adSpendPerMonth: number;
+  drr: number;
+  drrLimit: number;
+};
+
+export type CalcResult = {
+  agg: ChannelResult;
+  self: ChannelResult;
+  bothChannels: boolean;
+  anyChannel: boolean;
+  ordersPerDay: number;
+  avgCheck: number;
   revenuePerDay: number;
   revenuePerMonth: number;
   revenuePerYear: number;
-  profitPerDay: number;
-  profitPerMonth: number;
+  payoutPerMonth: number;
+  grossProfitPerMonth: number;
+  profitPerOrder: number;
+  marginPercent: number;
+  payoutPerOrder: number;
+  payoutPercent: number;
+  withheldPercent: number;
   drr: number;
   drrVerdict: "good" | "ok" | "bad";
   drrLimit: number;
   adSpendPerMonth: number;
-  breakEvenOrders: number;
   isProfitable: boolean;
   managersCost: number;
   couriersCost: number;
@@ -218,12 +236,20 @@ export type CalcResult = {
   insuranceCost: number;
   staffTotal: number;
   staffPerOrder: number;
+  overheadCost: number;
+  overheadPerOrder: number;
+  itCost: number;
+  depreciationCost: number;
+  operatingTotal: number;
+  ebitda: number;
+  ebitdaPercent: number;
   profitBeforeTax: number;
   taxAmount: number;
   taxLabel: string;
   taxNote: string;
   netProfitPerMonth: number;
   netMarginPercent: number;
+  breakEvenOrders: number;
   vat: VatTier;
   vatAmountPerYear: number;
   ordersToVatLimit: number | null;
@@ -238,77 +264,240 @@ export const money = (v: number, digits = 0) =>
     .format(Math.round(v * 10 ** digits) / 10 ** digits)
     .replace("-", "\u2212");
 
+export const percent = (v: number, digits = 1) =>
+  `${new Intl.NumberFormat("ru-RU", {
+    maximumFractionDigits: digits,
+    minimumFractionDigits: 0,
+  })
+    .format(v)
+    .replace("-", "\u2212")}%`;
+
 const clamp = (v: number, min = 0) => (Number.isFinite(v) && v > min ? v : min);
 
-export const calculate = (input: CalcInput): CalcResult => {
-  const avgCheck = clamp(input.avgCheck);
-  const orders = clamp(input.ordersPerDay);
+const EMPTY_CHANNEL: ChannelResult = {
+  enabled: false,
+  orders: 0,
+  avgCheck: 0,
+  serviceFeeRub: 0,
+  income: 0,
+  commissionRub: 0,
+  subscriptionRub: 0,
+  deliveryFeeRub: 0,
+  adRub: 0,
+  promoRub: 0,
+  marketingRub: 0,
+  refundRub: 0,
+  penaltyRub: 0,
+  royaltyRub: 0,
+  totalWithheldRub: 0,
+  withheldPercent: 0,
+  payoutPerOrder: 0,
+  payoutPercent: 0,
+  foodCostRub: 0,
+  packagingRub: 0,
+  suppliesRub: 0,
+  writeOffRub: 0,
+  profitPerOrder: 0,
+  marginPercent: 0,
+  revenuePerMonth: 0,
+  payoutPerMonth: 0,
+  profitPerMonth: 0,
+  adSpendPerMonth: 0,
+  drr: 0,
+  drrLimit: 0,
+};
+
+type ChannelParams = {
+  enabled: boolean;
+  orders: number;
+  avgCheck: number;
+  serviceFeeRub?: number;
+  commission: number;
+  commissionUnit?: Unit;
+  subscriptionShare?: number;
+  deliveryFeeShare?: number;
+  adShare: number;
+  adUnit?: Unit;
+  promoShare: number;
+  promoUnit?: Unit;
+  marketingShare?: number;
+  refundShare?: number;
+  penaltyShare?: number;
+  royaltyShare?: number;
+};
+
+const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
+  if (!p.enabled) return EMPTY_CHANNEL;
+
+  const avgCheck = clamp(p.avgCheck);
+  const orders = clamp(p.orders);
   const pct = (share: number) => (avgCheck * clamp(share)) / 100;
-  const amount = (value: number, unit: Unit) =>
+  const amount = (value: number, unit: Unit = "percent") =>
     unit === "rub" ? clamp(value) : pct(value);
 
-  const isAgg = input.channel === "aggregator";
+  const serviceFeeRub = clamp(p.serviceFeeRub ?? 0);
+  const income = avgCheck + serviceFeeRub;
 
-  const serviceFeeRub = input.serviceFeeEnabled
-    ? amount(input.serviceFee, input.serviceFeeUnit)
-    : 0;
-  const deliveryPriceRub = input.deliveryPriceEnabled ? clamp(input.deliveryPrice) : 0;
-  const deliveryToRestaurant =
-    input.deliveryPriceEnabled && input.deliveryPriceOwner === "restaurant"
-      ? deliveryPriceRub
-      : 0;
-
-  const guestPaysTotal = avgCheck + serviceFeeRub + deliveryPriceRub;
-  const restaurantIncome = avgCheck + serviceFeeRub + deliveryToRestaurant;
-
-  const commissionRub = isAgg
-    ? amount(input.commission, input.commissionUnit)
-    : pct(input.selfCommission);
-  const deliveryFeeRub =
-    isAgg && input.deliveryType === "own" && input.useYandexDelivery
-      ? pct(YANDEX_DELIVERY_FEE)
-      : 0;
-  const promoRub = amount(input.promoShare, input.promoUnit);
-  const adRub = amount(input.adShare, input.adUnit);
-  const marketingRub = isAgg ? pct(input.marketingShare) : 0;
-  const refundRub = pct(input.refundShare);
-  const penaltyRub = isAgg ? pct(input.penaltyShare) : 0;
-  const subscriptionRub = isAgg ? pct(input.subscriptionShare) : 0;
-  const royaltyRub = (restaurantIncome * clamp(input.royaltyShare)) / 100;
-  const foodCostRub = amount(input.foodCost, input.foodCostUnit);
-  const packagingRub = clamp(input.packaging);
-  const suppliesRub = clamp(input.suppliesPerOrder);
-  const writeOffRub = pct(input.writeOffShare);
+  const commissionRub = amount(p.commission, p.commissionUnit);
+  const subscriptionRub = pct(p.subscriptionShare ?? 0);
+  const deliveryFeeRub = pct(p.deliveryFeeShare ?? 0);
+  const adRub = amount(p.adShare, p.adUnit);
+  const promoRub = amount(p.promoShare, p.promoUnit);
+  const marketingRub = pct(p.marketingShare ?? 0);
+  const refundRub = pct(p.refundShare ?? 0);
+  const penaltyRub = pct(p.penaltyShare ?? 0);
+  const royaltyRub = (income * clamp(p.royaltyShare ?? 0)) / 100;
 
   const totalWithheldRub =
     commissionRub +
     subscriptionRub +
     deliveryFeeRub +
-    promoRub +
     adRub +
+    promoRub +
     marketingRub +
     refundRub +
     penaltyRub;
-  const withheldPercent =
-    restaurantIncome > 0 ? (totalWithheldRub / restaurantIncome) * 100 : 0;
+  const withheldPercent = income > 0 ? (totalWithheldRub / income) * 100 : 0;
 
-  const payoutPerOrder = restaurantIncome - totalWithheldRub;
-  const payoutPercent = restaurantIncome > 0 ? (payoutPerOrder / restaurantIncome) * 100 : 0;
+  const payoutPerOrder = income - totalWithheldRub;
+  const payoutPercent = income > 0 ? (payoutPerOrder / income) * 100 : 0;
+
+  const foodCostRub =
+    shared.foodCostUnit === "rub"
+      ? clamp(shared.foodCost)
+      : (avgCheck * clamp(shared.foodCost)) / 100;
+  const packagingRub = clamp(shared.packaging);
+  const suppliesRub = clamp(shared.suppliesPerOrder);
+  const writeOffRub = pct(shared.writeOffShare);
 
   const profitPerOrder =
     payoutPerOrder - foodCostRub - packagingRub - suppliesRub - writeOffRub - royaltyRub;
-  const marginPercent = restaurantIncome > 0 ? (profitPerOrder / restaurantIncome) * 100 : 0;
-  const grossProfitPerOrder = profitPerOrder;
-  const grossMarginPercent = marginPercent;
+  const marginPercent = income > 0 ? (profitPerOrder / income) * 100 : 0;
 
-  const revenuePerDay = restaurantIncome * orders;
-  const revenuePerMonth = revenuePerDay * 30;
-  const revenuePerYear = revenuePerDay * 365;
-  const payoutPerMonth = payoutPerOrder * orders * 30;
+  const ordersPerMonth = orders * 30;
+  const revenuePerMonth = income * ordersPerMonth;
+  const payoutPerMonth = payoutPerOrder * ordersPerMonth;
+  const profitPerMonth = profitPerOrder * ordersPerMonth;
+  const adSpendPerMonth = (adRub + marketingRub + promoRub) * ordersPerMonth;
+  const drr = income > 0 ? ((adRub + marketingRub + promoRub) / income) * 100 : 0;
 
-  const overheadCost = input.overheadEnabled
-    ? (clamp(input.overheadTotal) * clamp(input.overheadShare)) / 100
+  const marginBeforeAds =
+    income -
+    commissionRub -
+    subscriptionRub -
+    deliveryFeeRub -
+    refundRub -
+    penaltyRub -
+    royaltyRub -
+    foodCostRub -
+    packagingRub -
+    suppliesRub -
+    writeOffRub;
+  const drrLimit = income > 0 ? (marginBeforeAds / income) * 100 : 0;
+
+  return {
+    enabled: true,
+    orders,
+    avgCheck,
+    serviceFeeRub,
+    income,
+    commissionRub,
+    subscriptionRub,
+    deliveryFeeRub,
+    adRub,
+    promoRub,
+    marketingRub,
+    refundRub,
+    penaltyRub,
+    royaltyRub,
+    totalWithheldRub,
+    withheldPercent,
+    payoutPerOrder,
+    payoutPercent,
+    foodCostRub,
+    packagingRub,
+    suppliesRub,
+    writeOffRub,
+    profitPerOrder,
+    marginPercent,
+    revenuePerMonth,
+    payoutPerMonth,
+    profitPerMonth,
+    adSpendPerMonth,
+    drr,
+    drrLimit,
+  };
+};
+
+export const calculate = (input: CalcInput): CalcResult => {
+  const aggOn = input.aggEnabled;
+  const selfOn = input.selfEnabled;
+
+  const agg = computeChannel(
+    {
+      enabled: aggOn,
+      orders: input.aggOrdersPerDay,
+      avgCheck: input.aggAvgCheck,
+      commission: input.commission,
+      commissionUnit: input.commissionUnit,
+      subscriptionShare: input.subscriptionShare,
+      deliveryFeeShare:
+        input.deliveryType === "own" && input.useYandexDelivery ? YANDEX_DELIVERY_FEE : 0,
+      adShare: input.aggAdShare,
+      adUnit: input.aggAdUnit,
+      promoShare: input.aggPromoShare,
+      promoUnit: input.aggPromoUnit,
+      marketingShare: input.marketingShare,
+      refundShare: input.refundShare,
+      penaltyShare: input.penaltyShare,
+    },
+    input,
+  );
+
+  const selfServiceFee = input.serviceFeeEnabled
+    ? input.serviceFeeUnit === "rub"
+      ? clamp(input.serviceFee)
+      : (clamp(input.selfAvgCheck) * clamp(input.serviceFee)) / 100
     : 0;
+
+  const self = computeChannel(
+    {
+      enabled: selfOn,
+      orders: input.selfOrdersPerDay,
+      avgCheck: input.selfAvgCheck,
+      serviceFeeRub: selfServiceFee,
+      commission: input.selfCommission,
+      adShare: input.selfAdShare,
+      adUnit: input.selfAdUnit,
+      promoShare: input.selfPromoShare,
+      royaltyShare: input.royaltyShare,
+    },
+    input,
+  );
+
+  const ordersPerDay = agg.orders + self.orders;
+  const ordersPerMonth = ordersPerDay * 30;
+  const revenuePerMonth = agg.revenuePerMonth + self.revenuePerMonth;
+  const revenuePerDay = revenuePerMonth / 30;
+  const revenuePerYear = revenuePerDay * 365;
+  const payoutPerMonth = agg.payoutPerMonth + self.payoutPerMonth;
+  const grossProfitPerMonth = agg.profitPerMonth + self.profitPerMonth;
+
+  const avgCheck = ordersPerMonth > 0 ? revenuePerMonth / ordersPerMonth : 0;
+  const profitPerOrder = ordersPerMonth > 0 ? grossProfitPerMonth / ordersPerMonth : 0;
+  const payoutPerOrder = ordersPerMonth > 0 ? payoutPerMonth / ordersPerMonth : 0;
+  const marginPercent = revenuePerMonth > 0 ? (grossProfitPerMonth / revenuePerMonth) * 100 : 0;
+  const payoutPercent = revenuePerMonth > 0 ? (payoutPerMonth / revenuePerMonth) * 100 : 0;
+  const withheldPercent = revenuePerMonth > 0 ? 100 - payoutPercent : 0;
+
+  const adSpendPerMonth = agg.adSpendPerMonth + self.adSpendPerMonth;
+  const drr = revenuePerMonth > 0 ? (adSpendPerMonth / revenuePerMonth) * 100 : 0;
+  const drrVerdict: CalcResult["drrVerdict"] = drr <= 12 ? "good" : drr <= 15 ? "ok" : "bad";
+  const drrLimit =
+    revenuePerMonth > 0
+      ? (agg.drrLimit * agg.revenuePerMonth + self.drrLimit * self.revenuePerMonth) /
+        revenuePerMonth
+      : 0;
 
   const on = input.staffEnabled;
   const managersCost = on ? clamp(input.managerCount) * clamp(input.managerSalary) : 0;
@@ -318,44 +507,22 @@ export const calculate = (input: CalcInput): CalcResult => {
   const salaryFund = managersCost + couriersCost + packersCost;
   const insuranceCost = (salaryFund * clamp(input.insuranceRate)) / 100;
   const staffTotal = salaryFund + insuranceCost + fuelCost;
-  const ordersPerMonth = orders * 30;
   const staffPerOrder = ordersPerMonth > 0 ? staffTotal / ordersPerMonth : 0;
+
+  const overheadCost = input.overheadEnabled
+    ? (clamp(input.overheadTotal) * clamp(input.overheadShare)) / 100
+    : 0;
   const overheadPerOrder = ordersPerMonth > 0 ? overheadCost / ordersPerMonth : 0;
 
+  const fixed = clamp(input.fixedPerMonth);
   const itCost = clamp(input.itPerMonth);
   const depreciationCost = clamp(input.depreciationPerMonth);
+  const operatingTotal = staffTotal + overheadCost + fixed + itCost;
 
-  const profitPerDay = profitPerOrder * orders;
-  const fixed = clamp(input.fixedPerMonth);
-  const ebitda = profitPerDay * 30 - fixed - staffTotal - overheadCost - itCost;
+  const ebitda = grossProfitPerMonth - operatingTotal;
   const ebitdaPercent = revenuePerMonth > 0 ? (ebitda / revenuePerMonth) * 100 : 0;
-  const profitPerMonth = ebitda - depreciationCost;
+  const profitBeforeTax = ebitda - depreciationCost;
 
-  const drr = restaurantIncome > 0 ? ((adRub + marketingRub) / restaurantIncome) * 100 : 0;
-  const drrVerdict: CalcResult["drrVerdict"] = drr <= 12 ? "good" : drr <= 15 ? "ok" : "bad";
-  const adSpendPerMonth = (adRub + marketingRub) * orders * 30;
-
-  const marginBeforeAds =
-    restaurantIncome -
-    commissionRub -
-    deliveryFeeRub -
-    promoRub -
-    refundRub -
-    penaltyRub -
-    subscriptionRub -
-    foodCostRub -
-    packagingRub -
-    suppliesRub -
-    writeOffRub -
-    royaltyRub;
-  const drrLimit = restaurantIncome > 0 ? (marginBeforeAds / restaurantIncome) * 100 : 0;
-
-  const breakEvenOrders =
-    profitPerOrder > 0
-      ? Math.ceil((fixed + staffTotal + overheadCost + itCost + depreciationCost) / 30 / profitPerOrder)
-      : 0;
-
-  const profitBeforeTax = profitPerMonth;
   let taxAmount = 0;
   let taxLabel = "без налога";
   let taxNote = "Налог на прибыль в расчёте не учитывается.";
@@ -393,62 +560,41 @@ export const calculate = (input: CalcInput): CalcResult => {
   const netProfitPerMonth = profitBeforeTax - taxAmount;
   const netMarginPercent = revenuePerMonth > 0 ? (netProfitPerMonth / revenuePerMonth) * 100 : 0;
 
+  const breakEvenOrders =
+    profitPerOrder > 0 ? Math.ceil((operatingTotal + depreciationCost) / 30 / profitPerOrder) : 0;
+
   const vat = getVatTier(revenuePerYear);
-  const vatAmountPerYear =
-    vat.rate > 0 ? (revenuePerYear * vat.rate) / (100 + vat.rate) : 0;
+  const vatAmountPerYear = vat.rate > 0 ? (revenuePerYear * vat.rate) / (100 + vat.rate) : 0;
 
   const remaining = VAT_FREE_LIMIT - revenuePerYear;
-  const ordersToVatLimit =
-    remaining > 0 && avgCheck > 0 ? Math.floor(remaining / avgCheck) : null;
+  const ordersToVatLimit = remaining > 0 && avgCheck > 0 ? Math.floor(remaining / avgCheck) : null;
   const daysToVatLimit =
     revenuePerDay > 0 && revenuePerYear > VAT_FREE_LIMIT
       ? Math.floor(VAT_FREE_LIMIT / revenuePerDay)
       : null;
 
   return {
-    commissionRub,
-    deliveryFeeRub,
-    promoRub,
-    adRub,
-    marketingRub,
-    refundRub,
-    penaltyRub,
-    foodCostRub,
-    packagingRub,
-    totalWithheldRub,
-    withheldPercent,
-    payoutPerOrder,
-    payoutPercent,
-    payoutPerMonth,
-    profitPerOrder,
-    marginPercent,
+    agg,
+    self,
+    bothChannels: aggOn && selfOn,
+    anyChannel: aggOn || selfOn,
+    ordersPerDay,
+    avgCheck,
     revenuePerDay,
     revenuePerMonth,
     revenuePerYear,
-    profitPerDay,
-    profitPerMonth,
+    payoutPerMonth,
+    grossProfitPerMonth,
+    profitPerOrder,
+    marginPercent,
+    payoutPerOrder,
+    payoutPercent,
+    withheldPercent,
     drr,
     drrVerdict,
     drrLimit,
     adSpendPerMonth,
-    breakEvenOrders,
     isProfitable: profitPerOrder > 0,
-    subscriptionRub,
-    royaltyRub,
-    suppliesRub,
-    writeOffRub,
-    itCost,
-    depreciationCost,
-    grossProfitPerOrder,
-    grossMarginPercent,
-    ebitda,
-    ebitdaPercent,
-    serviceFeeRub,
-    deliveryPriceRub,
-    guestPaysTotal,
-    restaurantIncome,
-    overheadCost,
-    overheadPerOrder,
     managersCost,
     couriersCost,
     fuelCost,
@@ -457,24 +603,23 @@ export const calculate = (input: CalcInput): CalcResult => {
     insuranceCost,
     staffTotal,
     staffPerOrder,
+    overheadCost,
+    overheadPerOrder,
+    itCost,
+    depreciationCost,
+    operatingTotal,
+    ebitda,
+    ebitdaPercent,
     profitBeforeTax,
     taxAmount,
     taxLabel,
     taxNote,
     netProfitPerMonth,
     netMarginPercent,
+    breakEvenOrders,
     vat,
     vatAmountPerYear,
     ordersToVatLimit,
     daysToVatLimit,
   };
 };
-
-
-export const percent = (v: number, digits = 1) =>
-  `${new Intl.NumberFormat("ru-RU", {
-    maximumFractionDigits: digits,
-    minimumFractionDigits: 0,
-  })
-    .format(v)
-    .replace("-", "\u2212")}%`;

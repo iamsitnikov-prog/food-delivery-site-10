@@ -1,4 +1,11 @@
-import { money, percent, TAX_MODES, type CalcInput, type CalcResult } from "@/lib/calc";
+import {
+  money,
+  percent,
+  TAX_MODES,
+  type CalcInput,
+  type CalcResult,
+  type ChannelResult,
+} from "@/lib/calc";
 
 type Props = {
   input: CalcInput;
@@ -77,6 +84,39 @@ const Block = ({ head, children }: { head: string; children: React.ReactNode }) 
   </div>
 );
 
+const ChannelLines = ({ c }: { c: ChannelResult }) => (
+  <>
+    <Line label="Средний чек" value={`${money(c.avgCheck)} ₽`} />
+    <Line label="Заказов в день" value={`${money(c.orders)} шт`} />
+    {c.serviceFeeRub > 0 && (
+      <Line label="Сервисный сбор с гостя" value={`+${money(c.serviceFeeRub)} ₽`} />
+    )}
+    {c.serviceFeeRub > 0 && <Line label="Доход с заказа" value={`${money(c.income)} ₽`} bold />}
+    {c.commissionRub > 0 && <Line label="Комиссия" value={`−${money(c.commissionRub)} ₽`} />}
+    {c.subscriptionRub > 0 && (
+      <Line label="Подписка сервиса" value={`−${money(c.subscriptionRub)} ₽`} />
+    )}
+    {c.deliveryFeeRub > 0 && (
+      <Line label="Вызов Яндекс Доставки" value={`−${money(c.deliveryFeeRub)} ₽`} />
+    )}
+    {c.adRub > 0 && <Line label="Продвижение" value={`−${money(c.adRub)} ₽`} />}
+    {c.marketingRub > 0 && <Line label="Маркетинг Ultima" value={`−${money(c.marketingRub)} ₽`} />}
+    {c.promoRub > 0 && <Line label="Скидки и акции" value={`−${money(c.promoRub)} ₽`} />}
+    {c.refundRub > 0 && <Line label="Возвраты гостям" value={`−${money(c.refundRub)} ₽`} />}
+    {c.penaltyRub > 0 && <Line label="Штрафы и удержания" value={`−${money(c.penaltyRub)} ₽`} />}
+    <Line label="Придёт на счёт" value={`${money(c.payoutPerOrder)} ₽`} bold top />
+    <Line label="Себестоимость блюд" value={`−${money(c.foodCostRub)} ₽`} />
+    <Line label="Упаковка" value={`−${money(c.packagingRub)} ₽`} />
+    {c.suppliesRub > 0 && <Line label="Расходные материалы" value={`−${money(c.suppliesRub)} ₽`} />}
+    {c.writeOffRub > 0 && <Line label="Списания продуктов" value={`−${money(c.writeOffRub)} ₽`} />}
+    {c.royaltyRub > 0 && <Line label="Роялти" value={`−${money(c.royaltyRub)} ₽`} />}
+    <Line label="Остаётся с заказа" value={`${money(c.profitPerOrder)} ₽`} accent top />
+    <Line label="Маржинальность" value={percent(c.marginPercent)} />
+    <Line label="Оборот за месяц" value={`${money(c.revenuePerMonth)} ₽`} />
+    <Line label="Валовая прибыль за месяц" value={`${money(c.profitPerMonth)} ₽`} bold />
+  </>
+);
+
 const CalcPrint = ({ input, r, title, full = true }: Props) => {
   const today = new Date().toLocaleDateString("ru-RU", {
     day: "numeric",
@@ -84,13 +124,15 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
     year: "numeric",
   });
   const taxLabel = TAX_MODES.find((t) => t.value === input.taxMode)?.label || "—";
-  const isAgg = input.channel === "aggregator";
+  const channels = [
+    input.aggEnabled ? "агрегатор" : null,
+    input.selfEnabled ? "своя доставка" : null,
+  ]
+    .filter(Boolean)
+    .join(" + ");
 
   return (
-    <div
-      id="calc-print"
-      style={{ display: "none", color: DARK, fontSize: 12, lineHeight: 1.35 }}
-    >
+    <div id="calc-print" style={{ display: "none", color: DARK, fontSize: 12, lineHeight: 1.35 }}>
       <div
         style={{
           background: DARK,
@@ -104,130 +146,39 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
           {title}
         </div>
         <div style={{ fontSize: 10.5, marginTop: 5, color: "#BBB5B4" }}>
-          {today} · канал: {isAgg ? "агрегатор" : "своя доставка"} · agregatory
+          {today}
+          {channels && ` · ${channels}`} · agregatory
           <span style={{ color: BRAND }}>.pro</span>
         </div>
       </div>
 
-      <Block head="Исходные данные">
-        <Line label="Средний чек" value={`${money(input.avgCheck)} ₽`} />
-        <Line label="Заказов в день" value={`${money(input.ordersPerDay)} шт`} />
-        {isAgg ? (
-          <>
-            <Line
-              label="Доставка"
-              value={input.deliveryType === "service" ? "курьеры сервиса" : "свои курьеры"}
-            />
-            <Line label="Комиссия сервиса" value={percent(input.commission)} />
-            {input.subscriptionShare > 0 && (
-              <Line label="Подписка сервиса" value={percent(input.subscriptionShare)} />
-            )}
-            {input.deliveryType === "own" && input.useYandexDelivery && (
-              <Line label="Вызов Яндекс Доставки" value="2%" />
-            )}
-            {input.marketingShare > 0 && (
-              <Line label="Маркетинг Ultima" value={percent(input.marketingShare)} />
-            )}
-          </>
-        ) : (
-          <Line
-            label="Комиссия платформы"
-            value={input.selfCommission > 0 ? percent(input.selfCommission) : "нет"}
-          />
-        )}
-        {input.serviceFeeEnabled && (
-          <Line label="Сервисный сбор с гостя" value={`${money(r.serviceFeeRub)} ₽`} />
-        )}
-        {input.deliveryPriceEnabled && (
-          <Line
-            label="Платная доставка для гостя"
-            value={`${money(input.deliveryPrice)} ₽ — ${
-              input.deliveryPriceOwner === "restaurant" ? "в кассу" : "курьеру"
-            }`}
-          />
-        )}
-        <Line label="Продвижение (CPA, буст)" value={percent(input.adShare)} />
-        {input.promoShare > 0 && <Line label="Скидки и акции" value={percent(input.promoShare)} />}
-        <Line label="Возвраты за счёт ресторана" value={percent(input.refundShare)} />
-        {isAgg && <Line label="Штрафы и удержания" value={percent(input.penaltyShare)} />}
-        <Line label="Фудкост" value={percent(input.foodCost)} />
-        <Line label="Упаковка на заказ" value={`${money(input.packaging)} ₽`} />
-        {input.suppliesPerOrder > 0 && (
-          <Line label="Расходные материалы" value={`${money(input.suppliesPerOrder)} ₽`} />
-        )}
-        {input.royaltyShare > 0 && (
-          <Line label="Роялти по франшизе" value={percent(input.royaltyShare)} />
-        )}
-        {full && input.fixedPerMonth > 0 && (
-          <Line label="Постоянные расходы" value={`${money(input.fixedPerMonth)} ₽/мес`} />
-        )}
-        {full && <Line label="Система налогообложения" value={taxLabel} />}
-      </Block>
+      {input.aggEnabled && (
+        <Block head="Канал 1 — агрегатор">
+          <ChannelLines c={r.agg} />
+        </Block>
+      )}
 
-      <Block head={isAgg ? "Что удерживает сервис (с заказа)" : "Расходы канала (с заказа)"}>
-        <Line label="Средний чек" value={`${money(input.avgCheck)} ₽`} />
-        {r.serviceFeeRub > 0 && (
-          <Line label="Сервисный сбор с гостя" value={`+${money(r.serviceFeeRub)} ₽`} />
-        )}
-        {r.deliveryPriceRub > 0 && (
-          <Line
-            label={
-              input.deliveryPriceOwner === "restaurant"
-                ? "Платная доставка (в кассу)"
-                : "Платная доставка (курьеру)"
-            }
-            value={
-              input.deliveryPriceOwner === "restaurant"
-                ? `+${money(r.deliveryPriceRub)} ₽`
-                : "мимо кассы"
-            }
-          />
-        )}
-        {r.restaurantIncome !== input.avgCheck && (
-          <Line label="Доход ресторана с заказа" value={`${money(r.restaurantIncome)} ₽`} bold />
-        )}
-        {r.commissionRub > 0 && (
-          <Line
-            label={isAgg ? "Комиссия сервиса" : "Комиссия платформы"}
-            value={`−${money(r.commissionRub)} ₽`}
-          />
-        )}
-        {r.subscriptionRub > 0 && (
-          <Line label="Подписка сервиса" value={`−${money(r.subscriptionRub)} ₽`} />
-        )}
-        {r.deliveryFeeRub > 0 && (
-          <Line label="Вызов Яндекс Доставки" value={`−${money(r.deliveryFeeRub)} ₽`} />
-        )}
-        <Line label="Продвижение" value={`−${money(r.adRub)} ₽`} />
-        {r.marketingRub > 0 && (
-          <Line label="Маркетинг Ultima" value={`−${money(r.marketingRub)} ₽`} />
-        )}
-        {r.promoRub > 0 && <Line label="Скидки и акции" value={`−${money(r.promoRub)} ₽`} />}
-        <Line label="Возвраты гостям" value={`−${money(r.refundRub)} ₽`} />
-        {r.penaltyRub > 0 && (
-          <Line label="Штрафы и удержания" value={`−${money(r.penaltyRub)} ₽`} />
-        )}
-        <Line label="Придёт на счёт с заказа" value={`${money(r.payoutPerOrder)} ₽`} accent top />
-        <Line label="Доля от дохода с заказа" value={percent(r.payoutPercent)} />
-      </Block>
+      {input.selfEnabled && (
+        <Block head={input.aggEnabled ? "Канал 2 — собственная доставка" : "Собственная доставка"}>
+          <ChannelLines c={r.self} />
+        </Block>
+      )}
 
-      <Block head="Рентабельность заказа">
-        <Line label="Поступило на счёт" value={`${money(r.payoutPerOrder)} ₽`} />
-        <Line label="Себестоимость блюд" value={`−${money(r.foodCostRub)} ₽`} />
-        <Line label="Упаковка" value={`−${money(r.packagingRub)} ₽`} />
-        {r.suppliesRub > 0 && (
-          <Line label="Расходные материалы" value={`−${money(r.suppliesRub)} ₽`} />
-        )}
-        {r.writeOffRub > 0 && (
-          <Line label="Списания продуктов" value={`−${money(r.writeOffRub)} ₽`} />
-        )}
-        {r.royaltyRub > 0 && <Line label="Роялти" value={`−${money(r.royaltyRub)} ₽`} />}
-        <Line label="Остаётся с заказа" value={`${money(r.profitPerOrder)} ₽`} accent top />
-        <Line label="Маржинальность" value={percent(r.marginPercent)} />
-      </Block>
+      {r.bothChannels && (
+        <Block head="Итого по каналам">
+          <Line label="Заказов в день" value={`${money(r.ordersPerDay)} шт`} />
+          <Line label="Средний чек" value={`${money(r.avgCheck)} ₽`} />
+          <Line label="Оборот в месяц" value={`${money(r.revenuePerMonth)} ₽`} bold />
+          <Line label="Поступит на счёт" value={`${money(r.payoutPerMonth)} ₽`} />
+          <Line label="Валовая прибыль" value={`${money(r.grossProfitPerMonth)} ₽`} accent top />
+          <Line label="Средняя маржинальность" value={percent(r.marginPercent)} />
+        </Block>
+      )}
 
       <Block head="Продвижение">
         <Line label="ДРР — доля рекламных расходов" value={percent(r.drr)} bold />
+        {r.bothChannels && <Line label="ДРР агрегатора" value={percent(r.agg.drr)} />}
+        {r.bothChannels && <Line label="ДРР своей доставки" value={percent(r.self.drr)} />}
         <Line label="Предельный ДРР при вашей марже" value={percent(r.drrLimit)} />
         <Line label="Расходы на рекламу в месяц" value={`${money(r.adSpendPerMonth)} ₽`} />
       </Block>
@@ -264,7 +215,7 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
 
       <Block head="Итоги за месяц">
         <Line label="Оборот" value={`${money(r.revenuePerMonth)} ₽`} />
-        <Line label="Поступит на счёт" value={`${money(r.payoutPerMonth)} ₽`} />
+        <Line label="Валовая прибыль по каналам" value={`${money(r.grossProfitPerMonth)} ₽`} bold />
         {full ? (
           <>
             {r.staffTotal > 0 && (
@@ -285,7 +236,7 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
               <Line label="Амортизация" value={`−${money(r.depreciationCost)} ₽`} />
             )}
             <Line label="Прибыль до налогов" value={`${money(r.profitBeforeTax)} ₽`} />
-            <Line label={r.taxLabel} value={`−${money(r.taxAmount)} ₽`} />
+            <Line label={`${r.taxLabel} (${taxLabel})`} value={`−${money(r.taxAmount)} ₽`} />
             <Line label="Чистая прибыль" value={`${money(r.netProfitPerMonth)} ₽`} accent top />
             <Line label="Чистая рентабельность" value={percent(r.netMarginPercent)} />
             {r.breakEvenOrders > 0 && (
@@ -296,10 +247,7 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
             )}
           </>
         ) : (
-          <>
-            <Line label="Прибыль с заказов" value={`${money(r.profitPerDay * 30)} ₽`} accent top />
-            <Line label="Маржинальность" value={percent(r.marginPercent)} />
-          </>
+          <Line label="Маржинальность" value={percent(r.marginPercent)} accent top />
         )}
       </Block>
 
@@ -331,7 +279,7 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
         )}
         {!full && (
           <p style={{ margin: "0 0 4px" }}>
-            Расчёт учитывает только удержания канала и себестоимость заказа. Зарплаты, аренда и
+            Расчёт учитывает только удержания каналов и себестоимость заказа. Зарплаты, аренда и
             налоги в нём не участвуют — для полной картины используйте калькулятор экономики
             доставки.
           </p>
