@@ -8,6 +8,7 @@ import { CALC_PAGES, VISIBLE_CALC_PAGES } from "../src/data/calculators";
 import { CHECKLIST_PAGES } from "../src/data/checklists";
 import { READ_CHANNELS } from "../src/data/channels";
 import { QUIZZES } from "../src/data/quizzes";
+import { getCityCase } from "../src/data/city-cases";
 
 const SITE = "https://agregatory.pro";
 const OUT = path.resolve(process.cwd(), "public");
@@ -94,12 +95,27 @@ for (const p of [...SERVICE_PAGES, ...CITY_PAGES]) {
   const bullets = p.bullets?.length
     ? `<ul>${p.bullets.map((b) => `<li>${esc(clean(b))}</li>`).join("")}</ul>`
     : "";
+  const cCase = p.kind === "city" ? getCityCase(p.slug) : undefined;
+  const caseHtml = cCase
+    ? `<h2>Наш кейс в ${esc(clean(cCase.cityIn))}</h2>
+<p><b>${esc(clean(cCase.place))}</b> — ${esc(clean(cCase.kind))}, ${esc(clean(cCase.period))}.</p>
+<p>${esc(clean(cCase.problem))}</p>
+<h3>Что сделали</h3><ul>${cCase.actions.map((a) => `<li>${esc(clean(a))}</li>`).join("")}</ul>
+<h3>Результат</h3><ul>${cCase.metrics
+        .map(
+          (m) =>
+            `<li>${esc(clean(m.label))}: ${esc(clean(m.value))}${m.note ? ` (${esc(clean(m.note))})` : ""}</li>`,
+        )
+        .join("")}</ul>
+<p>${esc(clean(cCase.result))}</p>`
+    : "";
+
   pages.push({
     route: `${prefix}/${p.slug}`,
     title: p.title,
     description: p.description,
     body: `<article><h1>${esc(clean(p.h1))}</h1><p>${esc(clean(p.lead))}</p>
-${blocks}${bullets}${faqToText(p.faq)}
+${blocks}${caseHtml}${bullets}${faqToText(p.faq)}
 <p>Телефон: +7 931 002-82-22</p></article>`,
   });
 }

@@ -118,6 +118,17 @@ const SeoLanding = () => {
                 <p className="mt-4 max-w-[680px] leading-relaxed text-cream-muted">{b.p}</p>
               </article>
             ))}
+
+            {cityCase && (
+              <article>
+                <h2 className="font-display text-[1.7em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.2em]">
+                  Наш кейс в {cityCase.cityIn}
+                </h2>
+                <div className="mt-5">
+                  <CityCaseBlock data={cityCase} city={page.navLabel} inline />
+                </div>
+              </article>
+            )}
           </div>
 
           <aside className="h-fit rounded-[28px] border border-cream/20 p-7">
@@ -140,13 +151,7 @@ const SeoLanding = () => {
         </div>
       </section>
 
-      {cityCase && (
-        <section className="px-5 pb-16 pt-16 md:px-14 md:pb-20 md:pt-24">
-          <CityCaseBlock data={cityCase} city={page.navLabel} />
-        </section>
-      )}
-
-      <div className={cityCase ? "" : "pt-16 md:pt-24"}>
+      <div className="pt-16 md:pt-24">
         <ExpertiseStrip />
       </div>
 

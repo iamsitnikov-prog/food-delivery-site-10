@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { useReveal } from "@/hooks/use-reveal";
 import { QUIZ_QUESTIONS } from "@/data/quiz";
+import { QUIZZES } from "@/data/quizzes";
 
 const PREVIEW = [
   "Знаете ли вы свой ДРР?",
@@ -32,7 +33,7 @@ const QuizTeaser = () => {
           </p>
 
           <Link
-            to="/test"
+            to="/testy/audit"
             className="mt-8 inline-flex items-center gap-2 rounded-xl bg-brand px-7 py-4 font-medium text-foreground transition-transform hover:-translate-y-0.5"
           >
             пройти тест
@@ -56,6 +57,45 @@ const QuizTeaser = () => {
               {QUIZ_QUESTIONS.length - PREVIEW.length} вопросов
             </li>
           </ul>
+        </div>
+
+        <div className="lg:col-span-2">
+          <div className="flex flex-col justify-between gap-3 border-t border-cream/15 pt-8 sm:flex-row sm:items-end">
+            <div className="min-w-0">
+              <h3 className="font-display text-[1.4em] font-semibold tracking-[-0.02em] md:text-[1.7em]">
+                а ещё — проверка знаний
+              </h3>
+              <p className="mt-2 max-w-[560px] leading-snug text-cream-muted">
+                Четыре теста по&nbsp;50&nbsp;вопросов о&nbsp;правилах сервиса, экономике доставки
+                и&nbsp;требованиях закона. С&nbsp;пояснениями к&nbsp;ответам.
+              </p>
+            </div>
+            <Link
+              to="/testy"
+              className="inline-flex shrink-0 items-center gap-2 self-start text-[0.92em] font-medium text-brand transition-colors hover:text-cream sm:self-auto"
+            >
+              все тесты
+              <Icon name="ArrowRight" size={16} />
+            </Link>
+          </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {QUIZZES.filter((q) => q.kind === "knowledge").map((q) => (
+              <Link
+                key={q.slug}
+                to={`/testy/${q.slug}`}
+                className="rounded-2xl border border-cream/15 p-5 transition-colors hover:border-brand hover:bg-brand/10"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <Icon name={q.icon} size={20} className="text-brand" />
+                  <span className="text-[0.76em] text-cream-muted">{q.questions.length} вопр.</span>
+                </div>
+                <span className="mt-3 block font-display text-[1.02em] font-semibold leading-tight">
+                  {q.navLabel}
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>
