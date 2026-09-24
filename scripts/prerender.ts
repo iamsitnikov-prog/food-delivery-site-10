@@ -3,6 +3,7 @@ import path from "path";
 import { BLOG_POSTS } from "../src/data/blog-posts";
 import { SERVICE_PAGES, CITY_PAGES } from "../src/data/seo-pages";
 import { PARTNERS } from "../src/data/partners";
+import { QUIZ_QUESTIONS } from "../src/data/quiz";
 
 const SITE = "https://agregatory.pro";
 const OUT = path.resolve(process.cwd(), "public");
@@ -128,6 +129,21 @@ pages.push({
 <ul>${CITY_PAGES.map(
     (p) => `<li><a href="${SITE}/goroda/${p.slug}">${esc(clean(p.h1))}</a> — ${esc(clean(p.description))}</li>`,
   ).join("")}</ul>`,
+});
+
+pages.push({
+  route: "/test",
+  title: "Тест: проверьте свой проект на агрегаторе за 2 минуты | agregatory.pro",
+  description:
+    "10 вопросов о работе вашего ресторана на Яндекс Еде и Деливери: рейтинг, ДРР, контент, отзывы и отчётность. В конце — оценка проекта и рекомендации.",
+  body: `<h1>Проверьте свой проект за 2 минуты</h1>
+<p>10 вопросов о работе вашего заведения на агрегаторе. В конце — оценка проекта и точки роста, с которых стоит начать.</p>
+<h2>О чём спрашиваем</h2>
+<ul>${QUIZ_QUESTIONS.map((q) => `<li>${esc(clean(q.question))}${q.note ? ` ${esc(clean(q.note))}` : ""}</li>`).join(
+    "",
+  )}</ul>
+<p>После теста предлагаем бесплатный разбор проекта: смотрим карточку глазами гостя, сравниваем с конкурентами в районе и показываем точки роста.</p>
+<p>Телефон: +7 931 002-82-22</p>`,
 });
 
 pages.push({

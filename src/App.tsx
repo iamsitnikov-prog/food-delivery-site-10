@@ -15,6 +15,7 @@ const SeoLanding = lazy(() => import("./pages/SeoLanding"));
 const Blog = lazy(() => import("./pages/Blog"));
 const PartnersPage = lazy(() => import("./pages/Partners"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
+const Quiz = lazy(() => import("./pages/Quiz"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => {
           <Route path="/blog" element={<Blog />} />
           <Route path="/partnery" element={<PartnersPage />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/test" element={<Quiz />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
