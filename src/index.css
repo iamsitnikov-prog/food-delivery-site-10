@@ -212,6 +212,8 @@
   body.printing-calc #calc-print,
   body.printing-calc #calc-print * {
     visibility: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
   body.printing-calc #calc-print {
     display: block !important;

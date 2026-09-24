@@ -24,6 +24,12 @@ export type CalcInput = {
   overheadEnabled: boolean;
   overheadTotal: number;
   overheadShare: number;
+  subscriptionShare: number;
+  royaltyShare: number;
+  suppliesPerOrder: number;
+  writeOffShare: number;
+  itPerMonth: number;
+  depreciationPerMonth: number;
   staffEnabled: boolean;
   managerCount: number;
   managerSalary: number;
@@ -96,6 +102,12 @@ export const DEFAULTS: CalcInput = {
   overheadEnabled: false,
   overheadTotal: 0,
   overheadShare: 25,
+  subscriptionShare: 1.44,
+  royaltyShare: 0,
+  suppliesPerOrder: 20,
+  writeOffShare: 0,
+  itPerMonth: 0,
+  depreciationPerMonth: 0,
   staffEnabled: false,
   managerCount: 1,
   managerSalary: 60000,
@@ -155,6 +167,16 @@ export const getVatTier = (yearRevenue: number): VatTier => {
 };
 
 export type CalcResult = {
+  subscriptionRub: number;
+  royaltyRub: number;
+  suppliesRub: number;
+  writeOffRub: number;
+  itCost: number;
+  depreciationCost: number;
+  grossProfitPerOrder: number;
+  grossMarginPercent: number;
+  ebitda: number;
+  ebitdaPercent: number;
   serviceFeeRub: number;
   deliveryPriceRub: number;
   guestPaysTotal: number;
@@ -251,11 +273,16 @@ export const calculate = (input: CalcInput): CalcResult => {
   const marketingRub = isAgg ? pct(input.marketingShare) : 0;
   const refundRub = pct(input.refundShare);
   const penaltyRub = isAgg ? pct(input.penaltyShare) : 0;
+  const subscriptionRub = isAgg ? pct(input.subscriptionShare) : 0;
+  const royaltyRub = (restaurantIncome * clamp(input.royaltyShare)) / 100;
   const foodCostRub = amount(input.foodCost, input.foodCostUnit);
   const packagingRub = clamp(input.packaging);
+  const suppliesRub = clamp(input.suppliesPerOrder);
+  const writeOffRub = pct(input.writeOffShare);
 
   const totalWithheldRub =
     commissionRub +
+    subscriptionRub +
     deliveryFeeRub +
     promoRub +
     adRub +
@@ -268,8 +295,11 @@ export const calculate = (input: CalcInput): CalcResult => {
   const payoutPerOrder = restaurantIncome - totalWithheldRub;
   const payoutPercent = restaurantIncome > 0 ? (payoutPerOrder / restaurantIncome) * 100 : 0;
 
-  const profitPerOrder = payoutPerOrder - foodCostRub - packagingRub;
+  const profitPerOrder =
+    payoutPerOrder - foodCostRub - packagingRub - suppliesRub - writeOffRub - royaltyRub;
   const marginPercent = restaurantIncome > 0 ? (profitPerOrder / restaurantIncome) * 100 : 0;
+  const grossProfitPerOrder = profitPerOrder;
+  const grossMarginPercent = marginPercent;
 
   const revenuePerDay = restaurantIncome * orders;
   const revenuePerMonth = revenuePerDay * 30;
@@ -292,9 +322,14 @@ export const calculate = (input: CalcInput): CalcResult => {
   const staffPerOrder = ordersPerMonth > 0 ? staffTotal / ordersPerMonth : 0;
   const overheadPerOrder = ordersPerMonth > 0 ? overheadCost / ordersPerMonth : 0;
 
+  const itCost = clamp(input.itPerMonth);
+  const depreciationCost = clamp(input.depreciationPerMonth);
+
   const profitPerDay = profitPerOrder * orders;
   const fixed = clamp(input.fixedPerMonth);
-  const profitPerMonth = profitPerDay * 30 - fixed - staffTotal - overheadCost;
+  const ebitda = profitPerDay * 30 - fixed - staffTotal - overheadCost - itCost;
+  const ebitdaPercent = revenuePerMonth > 0 ? (ebitda / revenuePerMonth) * 100 : 0;
+  const profitPerMonth = ebitda - depreciationCost;
 
   const drr = restaurantIncome > 0 ? ((adRub + marketingRub) / restaurantIncome) * 100 : 0;
   const drrVerdict: CalcResult["drrVerdict"] = drr <= 12 ? "good" : drr <= 15 ? "ok" : "bad";
@@ -307,12 +342,18 @@ export const calculate = (input: CalcInput): CalcResult => {
     promoRub -
     refundRub -
     penaltyRub -
+    subscriptionRub -
     foodCostRub -
-    packagingRub;
+    packagingRub -
+    suppliesRub -
+    writeOffRub -
+    royaltyRub;
   const drrLimit = restaurantIncome > 0 ? (marginBeforeAds / restaurantIncome) * 100 : 0;
 
   const breakEvenOrders =
-    profitPerOrder > 0 ? Math.ceil((fixed + staffTotal + overheadCost) / 30 / profitPerOrder) : 0;
+    profitPerOrder > 0
+      ? Math.ceil((fixed + staffTotal + overheadCost + itCost + depreciationCost) / 30 / profitPerOrder)
+      : 0;
 
   const profitBeforeTax = profitPerMonth;
   let taxAmount = 0;
@@ -392,6 +433,16 @@ export const calculate = (input: CalcInput): CalcResult => {
     adSpendPerMonth,
     breakEvenOrders,
     isProfitable: profitPerOrder > 0,
+    subscriptionRub,
+    royaltyRub,
+    suppliesRub,
+    writeOffRub,
+    itCost,
+    depreciationCost,
+    grossProfitPerOrder,
+    grossMarginPercent,
+    ebitda,
+    ebitdaPercent,
     serviceFeeRub,
     deliveryPriceRub,
     guestPaysTotal,
@@ -424,4 +475,6 @@ export const percent = (v: number, digits = 1) =>
   `${new Intl.NumberFormat("ru-RU", {
     maximumFractionDigits: digits,
     minimumFractionDigits: 0,
-  }).format(v)}%`;
+  })
+    .format(v)
+    .replace("-", "\u2212")}%`;

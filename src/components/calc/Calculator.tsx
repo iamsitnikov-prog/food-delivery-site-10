@@ -15,6 +15,8 @@ import {
   type CalcInput,
   type DeliveryType,
   type TaxMode,
+  type Channel,
+  type FeeOwner,
 } from "@/lib/calc";
 import { reachGoal } from "@/lib/metrika";
 
@@ -91,6 +93,17 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
   const show = (block: CalcMode) => mode === "all" || mode === block;
   const isVat = mode === "vat";
   const isFull = mode === "all" || mode === "breakeven";
+  const isAgg = input.channel === "aggregator";
+  const isSelf = input.channel === "self";
+
+  const setChannel = (v: Channel) => {
+    setInput((p) => ({
+      ...p,
+      channel: v,
+      deliveryPriceEnabled: v === "self" ? p.deliveryPriceEnabled : false,
+    }));
+    reachGoal("calc_use", { mode, field: "channel" });
+  };
 
   const handlePrint = () => {
     reachGoal("calc_print", { mode });
@@ -144,17 +157,43 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
             {!isVat && (
               <>
                 <CalcToggle
-                  label="Кто доставляет"
-                  value={input.deliveryType}
-                  onChange={setDelivery}
+                  label="Канал продаж"
+                  value={input.channel}
+                  onChange={setChannel}
                   options={[
-                    { value: "service" as DeliveryType, label: "Курьеры сервиса — 35%" },
-                    { value: "own" as DeliveryType, label: "Свои курьеры — 20%" },
+                    { value: "aggregator" as Channel, label: "Агрегатор" },
+                    { value: "self" as Channel, label: "Своя доставка" },
                   ]}
-                  hint="От способа доставки зависит ставка комиссии: курьерами сервиса — около 35%, своими силами — около 20%."
+                  hint="Агрегатор — Яндекс Еда, Купер и подобные. Своя доставка — заказы с вашего сайта, приложения или по телефону."
                 />
 
-                {input.deliveryType === "own" && (
+                {isSelf && (
+                  <CalcField
+                    label="Комиссия платформы"
+                    suffix="%"
+                    value={input.selfCommission}
+                    onChange={set("selfCommission")}
+                    max={100}
+                    step={0.5}
+                    hint="Если сайт или приложение работают на конструкторе с оплатой за заказ — укажите ставку. Если платформа бесплатная или с фиксированной абонплатой, оставьте 0."
+                    note="Собственный сайт без комиссии — оставьте 0"
+                  />
+                )}
+
+                {isAgg && (
+                  <CalcToggle
+                    label="Кто доставляет"
+                    value={input.deliveryType}
+                    onChange={setDelivery}
+                    options={[
+                      { value: "service" as DeliveryType, label: "Курьеры сервиса — 35%" },
+                      { value: "own" as DeliveryType, label: "Свои курьеры — 20%" },
+                    ]}
+                    hint="От способа доставки зависит ставка комиссии: курьерами сервиса — около 35%, своими силами — около 20%."
+                  />
+                )}
+
+                {isAgg && input.deliveryType === "own" && (
                   <CalcToggle
                     label="Кнопка вызова Яндекс Доставки"
                     value={input.useYandexDelivery ? 1 : 0}
@@ -170,6 +209,67 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                   />
                 )}
 
+                <div className="space-y-4 rounded-2xl border border-cream/15 p-5">
+                  <p className="text-[0.9em] font-medium text-cream">Доплаты гостя</p>
+                  <CalcCheck
+                    label="Сервисный сбор с гостя"
+                    hint="Надбавка к заказу, которая поступает в кассу ресторана."
+                    checked={input.serviceFeeEnabled}
+                    onChange={(v) => {
+                      setInput((p) => ({ ...p, serviceFeeEnabled: v }));
+                      reachGoal("calc_use", { mode, field: "serviceFeeEnabled" });
+                    }}
+                  />
+                  {input.serviceFeeEnabled && (
+                    <CalcField
+                      label="Размер сервисного сбора"
+                      suffix="₽"
+                      value={input.serviceFee}
+                      onChange={set("serviceFee")}
+                      step={10}
+                      unit={input.serviceFeeUnit}
+                      onUnitChange={(u) => setInput((p) => ({ ...p, serviceFeeUnit: u }))}
+                      hint="Сумма или процент от заказа. Сбор увеличивает доход ресторана."
+                    />
+                  )}
+
+                  <CalcCheck
+                    label="Платная доставка для гостя"
+                    hint="Гость платит за доставку отдельно. Важно указать, кому достаются эти деньги."
+                    checked={input.deliveryPriceEnabled}
+                    onChange={(v) => {
+                      setInput((p) => ({ ...p, deliveryPriceEnabled: v }));
+                      reachGoal("calc_use", { mode, field: "deliveryPriceEnabled" });
+                    }}
+                  />
+                  {input.deliveryPriceEnabled && (
+                    <>
+                      <CalcField
+                        label="Стоимость доставки"
+                        suffix="₽"
+                        value={input.deliveryPrice}
+                        onChange={set("deliveryPrice")}
+                        step={10}
+                        hint="Сколько гость платит за доставку сверх стоимости блюд."
+                      />
+                      <CalcToggle
+                        label="Кому идут деньги за доставку"
+                        value={input.deliveryPriceOwner}
+                        onChange={(v) => {
+                          setInput((p) => ({ ...p, deliveryPriceOwner: v as FeeOwner }));
+                          reachGoal("calc_use", { mode, field: "deliveryPriceOwner" });
+                        }}
+                        options={[
+                          { value: "restaurant" as FeeOwner, label: "В кассу ресторана" },
+                          { value: "courier" as FeeOwner, label: "Курьеру напрямую" },
+                        ]}
+                        hint="Если деньги забирает курьер, они не попадают в доход ресторана и в расчёте не участвуют."
+                      />
+                    </>
+                  )}
+                </div>
+
+                {isAgg && (
                 <CalcToggle
                   label="Маркетинг Ultima"
                   value={input.marketingShare}
@@ -181,33 +281,50 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                   ]}
                   hint="Для проектов в Ultima.Еда сервис оказывает маркетинговые услуги на выбор — 2% или 5% от заказа, оплачивает ресторан."
                 />
+                )}
 
                 <div className="grid gap-4 sm:grid-cols-2">
-                  <CalcField
-                    label="Комиссия сервиса"
-                    suffix="%"
-                    value={input.commission}
-                    onChange={set("commission")}
-                    max={100}
-                    step={0.5}
-                    hint="Подставляется по способу доставки. Уточните свою ставку в договоре — она может отличаться."
-                  />
+                  {isAgg && (
+                    <CalcField
+                      label="Комиссия сервиса"
+                      suffix="%"
+                      value={input.commission}
+                      onChange={set("commission")}
+                      step={0.5}
+                      unit={input.commissionUnit}
+                      onUnitChange={(u) => setInput((p) => ({ ...p, commissionUnit: u }))}
+                      hint="Подставляется по способу доставки. Уточните свою ставку в договоре — она может отличаться."
+                    />
+                  )}
+                  {isAgg && (
+                    <CalcField
+                      label="Подписка сервиса"
+                      suffix="%"
+                      value={input.subscriptionShare}
+                      onChange={set("subscriptionShare")}
+                      max={100}
+                      step={0.1}
+                      hint="Плата за подписку на сервис — обычно около 1,44% от заказа. Указана отдельной строкой в актах."
+                    />
+                  )}
                   <CalcField
                     label="Продвижение (CPA, буст)"
                     suffix="%"
                     value={input.adShare}
                     onChange={set("adShare")}
-                    max={100}
                     step={0.5}
-                    hint="Доля расходов на платное продвижение от суммы заказа. В отчётах это строки CPA-маркетинг и Буст."
+                    unit={input.adUnit}
+                    onUnitChange={(u) => setInput((p) => ({ ...p, adUnit: u }))}
+                    hint="Расходы на платное продвижение. В отчётах это строки CPA-маркетинг и Буст."
                   />
                   <CalcField
                     label="Скидки и акции"
                     suffix="%"
                     value={input.promoShare}
                     onChange={set("promoShare")}
-                    max={100}
                     step={0.5}
+                    unit={input.promoUnit}
+                    onUnitChange={(u) => setInput((p) => ({ ...p, promoUnit: u }))}
                     hint="Ваша доля софинансирования акций от суммы заказа."
                   />
                   <CalcField
@@ -219,22 +336,51 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                     step={0.1}
                     hint="Компенсации гостям за счёт заведения. По практике около 1% от оборота."
                   />
-                  <CalcField
-                    label="Штрафы и удержания"
-                    suffix="%"
-                    value={input.penaltyShare}
-                    onChange={set("penaltyShare")}
-                    max={100}
-                    step={0.1}
-                    hint="Удержания по п. 14.7 оферты и прочие штрафы. Обычно 0,1–0,5% от оборота."
-                  />
+                  {isAgg && (
+                    <CalcField
+                      label="Штрафы и удержания"
+                      suffix="%"
+                      value={input.penaltyShare}
+                      onChange={set("penaltyShare")}
+                      max={100}
+                      step={0.1}
+                      hint="Удержания по п. 14.7 оферты и прочие штрафы. Обычно 0,1–0,5% от оборота."
+                    />
+                  )}
                   <CalcField
                     label="Фудкост"
                     suffix="%"
                     value={input.foodCost}
                     onChange={set("foodCost")}
+                    unit={input.foodCostUnit}
+                    onUnitChange={(u) => setInput((p) => ({ ...p, foodCostUnit: u }))}
+                    hint="Себестоимость продуктов — в процентах от цены блюда или в рублях на заказ."
+                  />
+                  <CalcField
+                    label="Расходные материалы"
+                    suffix="₽"
+                    value={input.suppliesPerOrder}
+                    onChange={set("suppliesPerOrder")}
+                    step={5}
+                    hint="Перчатки, плёнка, фольга, салфетки — всё, что расходуется на приготовление заказа."
+                  />
+                  <CalcField
+                    label="Списания продуктов"
+                    suffix="%"
+                    value={input.writeOffShare}
+                    onChange={set("writeOffShare")}
                     max={100}
-                    hint="Себестоимость продуктов в процентах от цены блюда."
+                    step={0.5}
+                    hint="Списание продуктов с истекшим сроком годности, в процентах от выручки."
+                  />
+                  <CalcField
+                    label="Роялти по франшизе"
+                    suffix="%"
+                    value={input.royaltyShare}
+                    onChange={set("royaltyShare")}
+                    max={100}
+                    step={0.5}
+                    hint="Отчисления франчайзеру от выручки. Если не работаете по франшизе — оставьте 0."
                   />
                   <CalcField
                     label="Упаковка на заказ"
@@ -251,10 +397,65 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                       value={input.fixedPerMonth}
                       onChange={set("fixedPerMonth")}
                       step={5000}
-                      hint="Аренда и прочие расходы на доставку, кроме зарплат. Можно оставить 0."
+                      hint="Прочие расходы на доставку, кроме зарплат и общих расходов ресторана. Можно оставить 0."
+                    />
+                  )}
+                  {isFull && (
+                    <CalcField
+                      label="IT-системы"
+                      suffix="₽/мес"
+                      value={input.itPerMonth}
+                      onChange={set("itPerMonth")}
+                      step={1000}
+                      hint="Касса, POS-система, сайт, техподдержка — в части, которая относится к доставке."
+                    />
+                  )}
+                  {isFull && (
+                    <CalcField
+                      label="Амортизация оборудования"
+                      suffix="₽/мес"
+                      value={input.depreciationPerMonth}
+                      onChange={set("depreciationPerMonth")}
+                      step={5000}
+                      hint="Износ оборудования, отнесённый на доставку. Влияет на итоговую прибыль, но не на EBITDA."
                     />
                   )}
                 </div>
+
+                {isFull && (
+                  <CalcCheck
+                    label="Доля общих расходов ресторана"
+                    hint="Если доставка — часть ресторана, аренда и коммуналка делятся между залом и доставкой. Укажите общую сумму и долю, которая приходится на доставку."
+                    checked={input.overheadEnabled}
+                    onChange={(v) => {
+                      setInput((p) => ({ ...p, overheadEnabled: v }));
+                      reachGoal("calc_use", { mode, field: "overheadEnabled" });
+                    }}
+                  />
+                )}
+
+                {isFull && input.overheadEnabled && (
+                  <div className="grid gap-4 rounded-2xl border border-cream/15 p-5 sm:grid-cols-2">
+                    <CalcField
+                      label="Общие расходы ресторана"
+                      suffix="₽/мес"
+                      value={input.overheadTotal}
+                      onChange={set("overheadTotal")}
+                      step={10000}
+                      hint="Аренда, коммунальные услуги, управляющий персонал — всё, что тратит ресторан целиком."
+                    />
+                    <CalcField
+                      label="Доля доставки"
+                      suffix="%"
+                      value={input.overheadShare}
+                      onChange={set("overheadShare")}
+                      max={100}
+                      step={5}
+                      hint="Какая часть общих расходов приходится на доставку. Обычно считают по доле выручки или по площади и времени работы персонала."
+                      note={`На доставку: ${money((input.overheadTotal * input.overheadShare) / 100)} ₽/мес`}
+                    />
+                  </div>
+                )}
 
                 {isFull && (
                 <CalcCheck
@@ -388,7 +589,35 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
           {show("profit") && (
             <Card title="Что удерживает сервис" icon="Wallet">
               <Row label="Средний чек" value={`${money(input.avgCheck)} ₽`} muted />
-              <Row label="Комиссия сервиса" value={`−${money(r.commissionRub)} ₽`} muted />
+              {r.serviceFeeRub > 0 && (
+                <Row label="Сервисный сбор с гостя" value={`+${money(r.serviceFeeRub)} ₽`} muted />
+              )}
+              {r.deliveryPriceRub > 0 && (
+                <Row
+                  label={
+                    input.deliveryPriceOwner === "restaurant"
+                      ? "Платная доставка (в кассу)"
+                      : "Платная доставка (курьеру)"
+                  }
+                  value={
+                    input.deliveryPriceOwner === "restaurant"
+                      ? `+${money(r.deliveryPriceRub)} ₽`
+                      : "мимо кассы"
+                  }
+                  muted
+                />
+              )}
+              {r.restaurantIncome !== input.avgCheck && (
+                <Row label="Доход ресторана с заказа" value={`${money(r.restaurantIncome)} ₽`} />
+              )}
+              <Row
+                label={isAgg ? "Комиссия сервиса" : "Комиссия платформы"}
+                value={`−${money(r.commissionRub)} ₽`}
+                muted
+              />
+              {r.subscriptionRub > 0 && (
+                <Row label="Подписка сервиса" value={`−${money(r.subscriptionRub)} ₽`} muted />
+              )}
               {r.deliveryFeeRub > 0 && (
                 <Row label="Вызов Яндекс Доставки" value={`−${money(r.deliveryFeeRub)} ₽`} muted />
               )}
@@ -423,6 +652,15 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
               <Row label="Поступило на счёт" value={`${money(r.payoutPerOrder)} ₽`} muted />
               <Row label="Себестоимость блюд" value={`−${money(r.foodCostRub)} ₽`} muted />
               <Row label="Упаковка" value={`−${money(r.packagingRub)} ₽`} muted />
+              {r.suppliesRub > 0 && (
+                <Row label="Расходные материалы" value={`−${money(r.suppliesRub)} ₽`} muted />
+              )}
+              {r.writeOffRub > 0 && (
+                <Row label="Списания продуктов" value={`−${money(r.writeOffRub)} ₽`} muted />
+              )}
+              {r.royaltyRub > 0 && (
+                <Row label="Роялти" value={`−${money(r.royaltyRub)} ₽`} muted />
+              )}
               <Row label="Остаётся с заказа" value={`${money(r.profitPerOrder)} ₽`} accent strong />
               <Row label="Маржинальность" value={percent(r.marginPercent)} />
               {!r.isProfitable && (
@@ -481,10 +719,18 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
               {r.staffTotal > 0 && (
                 <Row label="Персонал доставки" value={`−${money(r.staffTotal)} ₽`} muted />
               )}
+              {r.overheadCost > 0 && (
+                <Row label="Доля общих расходов" value={`−${money(r.overheadCost)} ₽`} muted />
+              )}
               {input.fixedPerMonth > 0 && (
                 <Row label="Постоянные расходы" value={`−${money(input.fixedPerMonth)} ₽`} muted />
               )}
-              <Row label="Прибыль до налогов" value={`${money(r.profitBeforeTax)} ₽`} strong />
+              {r.itCost > 0 && <Row label="IT-системы" value={`−${money(r.itCost)} ₽`} muted />}
+              <Row label="EBITDA" value={`${money(r.ebitda)} ₽`} strong />
+              {r.depreciationCost > 0 && (
+                <Row label="Амортизация" value={`−${money(r.depreciationCost)} ₽`} muted />
+              )}
+              <Row label="Прибыль до налогов" value={`${money(r.profitBeforeTax)} ₽`} />
               <Row label={r.taxLabel} value={`−${money(r.taxAmount)} ₽`} muted />
               <Row label="Чистая прибыль в месяц" value={`${money(r.netProfitPerMonth)} ₽`} accent strong />
               <Row label="Чистая рентабельность" value={percent(r.netMarginPercent)} />

@@ -1,4 +1,5 @@
 import Icon from "@/components/ui/icon";
+import type { Unit } from "@/lib/calc";
 
 type Props = {
   label: string;
@@ -9,10 +10,27 @@ type Props = {
   min?: number;
   max?: number;
   step?: number;
+  unit?: Unit;
+  onUnitChange?: (u: Unit) => void;
+  note?: string;
 };
 
-const CalcField = ({ label, hint, value, onChange, suffix, min = 0, max, step = 1 }: Props) => {
+const CalcField = ({
+  label,
+  hint,
+  value,
+  onChange,
+  suffix,
+  min = 0,
+  max,
+  step = 1,
+  unit,
+  onUnitChange,
+  note,
+}: Props) => {
   const id = `f-${label.replace(/\s+/g, "-").toLowerCase()}`;
+  const hasUnits = !!unit && !!onUnitChange;
+  const shownSuffix = hasUnits ? undefined : suffix;
 
   return (
     <div>
@@ -34,20 +52,43 @@ const CalcField = ({ label, hint, value, onChange, suffix, min = 0, max, step = 
           inputMode="decimal"
           value={Number.isFinite(value) ? value : ""}
           min={min}
-          max={max}
+          max={unit === "percent" ? 100 : max}
           step={step}
           onChange={(e) => {
             const v = e.target.value === "" ? 0 : Number(e.target.value);
             onChange(Number.isFinite(v) ? v : 0);
           }}
-          className="h-13 w-full rounded-xl border border-cream/20 bg-cream/[0.06] py-3.5 pl-4 pr-12 text-[1.05em] font-medium text-cream outline-none transition-colors focus:border-brand [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          className={`h-13 w-full rounded-xl border border-cream/20 bg-cream/[0.06] py-3.5 pl-4 text-[1.05em] font-medium text-cream outline-none transition-colors focus:border-brand [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
+            hasUnits ? "pr-[92px]" : "pr-12"
+          }`}
         />
-        {suffix && (
+        {shownSuffix && (
           <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[0.92em] text-cream-muted">
-            {suffix}
+            {shownSuffix}
           </span>
         )}
+        {hasUnits && (
+          <div className="absolute right-2 top-1/2 flex -translate-y-1/2 overflow-hidden rounded-lg border border-cream/20">
+            {(["percent", "rub"] as Unit[]).map((u) => (
+              <button
+                key={u}
+                type="button"
+                aria-pressed={unit === u}
+                aria-label={u === "percent" ? "в процентах" : "в рублях"}
+                onClick={() => onUnitChange(u)}
+                className={`w-9 py-1.5 text-[0.9em] font-semibold transition-colors ${
+                  unit === u
+                    ? "bg-brand text-foreground"
+                    : "bg-transparent text-cream-muted hover:text-cream"
+                }`}
+              >
+                {u === "percent" ? "%" : "₽"}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
+      {note && <p className="mt-1.5 text-[0.82em] leading-snug text-cream-muted">{note}</p>}
     </div>
   );
 };

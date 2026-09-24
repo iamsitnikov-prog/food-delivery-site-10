@@ -7,34 +7,46 @@ type Props = {
   full?: boolean;
 };
 
+const DARK = "#23100B";
+const BRAND = "#FFD900";
+const CREAM = "#FFFAF5";
+const LINE = "#E6DFD9";
+
 const Line = ({
   label,
   value,
   bold,
   top,
+  accent,
 }: {
   label: string;
   value: string;
   bold?: boolean;
   top?: boolean;
+  accent?: boolean;
 }) => (
   <tr>
     <td
       style={{
-        padding: "5px 0",
-        borderTop: top ? "1.5px solid #111" : "1px solid #ddd",
-        fontWeight: bold ? 700 : 400,
+        padding: accent ? "8px 10px" : "6px 10px",
+        borderTop: top ? `1.5px solid ${DARK}` : `1px solid ${LINE}`,
+        fontWeight: bold || accent ? 700 : 400,
+        background: accent ? BRAND : "transparent",
+        borderRadius: accent ? "6px 0 0 6px" : 0,
       }}
     >
       {label}
     </td>
     <td
       style={{
-        padding: "5px 0",
-        borderTop: top ? "1.5px solid #111" : "1px solid #ddd",
+        padding: accent ? "8px 10px" : "6px 10px",
+        borderTop: top ? `1.5px solid ${DARK}` : `1px solid ${LINE}`,
         textAlign: "right",
         whiteSpace: "nowrap",
-        fontWeight: bold ? 700 : 400,
+        fontWeight: bold || accent ? 700 : 400,
+        fontSize: accent ? 13 : 12,
+        background: accent ? BRAND : "transparent",
+        borderRadius: accent ? "0 6px 6px 0" : 0,
       }}
     >
       {value}
@@ -43,8 +55,20 @@ const Line = ({
 );
 
 const Block = ({ head, children }: { head: string; children: React.ReactNode }) => (
-  <div style={{ marginTop: 18, breakInside: "avoid" }}>
-    <h2 style={{ fontSize: 13, margin: "0 0 6px", textTransform: "uppercase", letterSpacing: 0.4 }}>
+  <div style={{ marginTop: 16, breakInside: "avoid" }}>
+    <h2
+      style={{
+        fontSize: 11,
+        margin: "0 0 4px",
+        padding: "5px 10px",
+        textTransform: "uppercase",
+        letterSpacing: 0.6,
+        background: DARK,
+        color: CREAM,
+        borderRadius: 6,
+        fontWeight: 700,
+      }}
+    >
       {head}
     </h2>
     <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
@@ -60,45 +84,117 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
     year: "numeric",
   });
   const taxLabel = TAX_MODES.find((t) => t.value === input.taxMode)?.label || "—";
+  const isAgg = input.channel === "aggregator";
 
   return (
-    <div id="calc-print" style={{ display: "none", color: "#111", fontSize: 12 }}>
-      <div style={{ borderBottom: "2px solid #111", paddingBottom: 10, marginBottom: 6 }}>
-        <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: -0.5 }}>{title}</div>
-        <div style={{ fontSize: 11, marginTop: 4 }}>
-          Расчёт от {today} · agregatory.pro
+    <div
+      id="calc-print"
+      style={{ display: "none", color: DARK, fontSize: 12, lineHeight: 1.35 }}
+    >
+      <div
+        style={{
+          background: DARK,
+          color: CREAM,
+          borderRadius: 12,
+          padding: "16px 18px",
+          marginBottom: 4,
+        }}
+      >
+        <div style={{ fontSize: 21, fontWeight: 700, letterSpacing: -0.5, lineHeight: 1.15 }}>
+          {title}
+        </div>
+        <div style={{ fontSize: 10.5, marginTop: 5, color: "#BBB5B4" }}>
+          {today} · канал: {isAgg ? "агрегатор" : "своя доставка"} · agregatory
+          <span style={{ color: BRAND }}>.pro</span>
         </div>
       </div>
 
       <Block head="Исходные данные">
         <Line label="Средний чек" value={`${money(input.avgCheck)} ₽`} />
         <Line label="Заказов в день" value={`${money(input.ordersPerDay)} шт`} />
-        <Line
-          label="Доставка"
-          value={input.deliveryType === "service" ? "курьеры сервиса" : "свои курьеры"}
-        />
-        <Line label="Комиссия сервиса" value={percent(input.commission)} />
-        {input.deliveryType === "own" && input.useYandexDelivery && (
-          <Line label="Вызов Яндекс Доставки" value="2%" />
+        {isAgg ? (
+          <>
+            <Line
+              label="Доставка"
+              value={input.deliveryType === "service" ? "курьеры сервиса" : "свои курьеры"}
+            />
+            <Line label="Комиссия сервиса" value={percent(input.commission)} />
+            {input.subscriptionShare > 0 && (
+              <Line label="Подписка сервиса" value={percent(input.subscriptionShare)} />
+            )}
+            {input.deliveryType === "own" && input.useYandexDelivery && (
+              <Line label="Вызов Яндекс Доставки" value="2%" />
+            )}
+            {input.marketingShare > 0 && (
+              <Line label="Маркетинг Ultima" value={percent(input.marketingShare)} />
+            )}
+          </>
+        ) : (
+          <Line
+            label="Комиссия платформы"
+            value={input.selfCommission > 0 ? percent(input.selfCommission) : "нет"}
+          />
         )}
-        {input.marketingShare > 0 && (
-          <Line label="Маркетинг Ultima" value={percent(input.marketingShare)} />
+        {input.serviceFeeEnabled && (
+          <Line label="Сервисный сбор с гостя" value={`${money(r.serviceFeeRub)} ₽`} />
+        )}
+        {input.deliveryPriceEnabled && (
+          <Line
+            label="Платная доставка для гостя"
+            value={`${money(input.deliveryPrice)} ₽ — ${
+              input.deliveryPriceOwner === "restaurant" ? "в кассу" : "курьеру"
+            }`}
+          />
         )}
         <Line label="Продвижение (CPA, буст)" value={percent(input.adShare)} />
         {input.promoShare > 0 && <Line label="Скидки и акции" value={percent(input.promoShare)} />}
         <Line label="Возвраты за счёт ресторана" value={percent(input.refundShare)} />
-        <Line label="Штрафы и удержания" value={percent(input.penaltyShare)} />
+        {isAgg && <Line label="Штрафы и удержания" value={percent(input.penaltyShare)} />}
         <Line label="Фудкост" value={percent(input.foodCost)} />
         <Line label="Упаковка на заказ" value={`${money(input.packaging)} ₽`} />
+        {input.suppliesPerOrder > 0 && (
+          <Line label="Расходные материалы" value={`${money(input.suppliesPerOrder)} ₽`} />
+        )}
+        {input.royaltyShare > 0 && (
+          <Line label="Роялти по франшизе" value={percent(input.royaltyShare)} />
+        )}
         {full && input.fixedPerMonth > 0 && (
           <Line label="Постоянные расходы" value={`${money(input.fixedPerMonth)} ₽/мес`} />
         )}
         {full && <Line label="Система налогообложения" value={taxLabel} />}
       </Block>
 
-      <Block head="Что удерживает сервис (с одного заказа)">
+      <Block head={isAgg ? "Что удерживает сервис (с заказа)" : "Расходы канала (с заказа)"}>
         <Line label="Средний чек" value={`${money(input.avgCheck)} ₽`} />
-        <Line label="Комиссия сервиса" value={`−${money(r.commissionRub)} ₽`} />
+        {r.serviceFeeRub > 0 && (
+          <Line label="Сервисный сбор с гостя" value={`+${money(r.serviceFeeRub)} ₽`} />
+        )}
+        {r.deliveryPriceRub > 0 && (
+          <Line
+            label={
+              input.deliveryPriceOwner === "restaurant"
+                ? "Платная доставка (в кассу)"
+                : "Платная доставка (курьеру)"
+            }
+            value={
+              input.deliveryPriceOwner === "restaurant"
+                ? `+${money(r.deliveryPriceRub)} ₽`
+                : "мимо кассы"
+            }
+          />
+        )}
+        {r.restaurantIncome !== input.avgCheck && (
+          <Line label="Доход ресторана с заказа" value={`${money(r.restaurantIncome)} ₽`} bold />
+        )}
+        {r.commissionRub > 0 && (
+          <Line
+            label={isAgg ? "Комиссия сервиса" : "Комиссия платформы"}
+            value={`−${money(r.commissionRub)} ₽`}
+          />
+        )}
+        {r.subscriptionRub > 0 && (
+          <Line label="Подписка сервиса" value={`−${money(r.subscriptionRub)} ₽`} />
+        )}
         {r.deliveryFeeRub > 0 && (
           <Line label="Вызов Яндекс Доставки" value={`−${money(r.deliveryFeeRub)} ₽`} />
         )}
@@ -108,16 +204,25 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
         )}
         {r.promoRub > 0 && <Line label="Скидки и акции" value={`−${money(r.promoRub)} ₽`} />}
         <Line label="Возвраты гостям" value={`−${money(r.refundRub)} ₽`} />
-        <Line label="Штрафы и удержания" value={`−${money(r.penaltyRub)} ₽`} />
-        <Line label="Придёт на счёт с заказа" value={`${money(r.payoutPerOrder)} ₽`} bold top />
-        <Line label="Доля от суммы заказа" value={percent(r.payoutPercent)} />
+        {r.penaltyRub > 0 && (
+          <Line label="Штрафы и удержания" value={`−${money(r.penaltyRub)} ₽`} />
+        )}
+        <Line label="Придёт на счёт с заказа" value={`${money(r.payoutPerOrder)} ₽`} accent top />
+        <Line label="Доля от дохода с заказа" value={percent(r.payoutPercent)} />
       </Block>
 
       <Block head="Рентабельность заказа">
         <Line label="Поступило на счёт" value={`${money(r.payoutPerOrder)} ₽`} />
         <Line label="Себестоимость блюд" value={`−${money(r.foodCostRub)} ₽`} />
         <Line label="Упаковка" value={`−${money(r.packagingRub)} ₽`} />
-        <Line label="Остаётся с заказа" value={`${money(r.profitPerOrder)} ₽`} bold top />
+        {r.suppliesRub > 0 && (
+          <Line label="Расходные материалы" value={`−${money(r.suppliesRub)} ₽`} />
+        )}
+        {r.writeOffRub > 0 && (
+          <Line label="Списания продуктов" value={`−${money(r.writeOffRub)} ₽`} />
+        )}
+        {r.royaltyRub > 0 && <Line label="Роялти" value={`−${money(r.royaltyRub)} ₽`} />}
+        <Line label="Остаётся с заказа" value={`${money(r.profitPerOrder)} ₽`} accent top />
         <Line label="Маржинальность" value={percent(r.marginPercent)} />
       </Block>
 
@@ -160,17 +265,28 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
       <Block head="Итоги за месяц">
         <Line label="Оборот" value={`${money(r.revenuePerMonth)} ₽`} />
         <Line label="Поступит на счёт" value={`${money(r.payoutPerMonth)} ₽`} />
-        {full && r.staffTotal > 0 && (
-          <Line label="Персонал доставки" value={`−${money(r.staffTotal)} ₽`} />
-        )}
-        {full && input.fixedPerMonth > 0 && (
-          <Line label="Постоянные расходы" value={`−${money(input.fixedPerMonth)} ₽`} />
-        )}
         {full ? (
           <>
-            <Line label="Прибыль до налогов" value={`${money(r.profitBeforeTax)} ₽`} top />
+            {r.staffTotal > 0 && (
+              <Line label="Персонал доставки" value={`−${money(r.staffTotal)} ₽`} />
+            )}
+            {r.overheadCost > 0 && (
+              <Line
+                label={`Доля общих расходов (${percent(input.overheadShare)})`}
+                value={`−${money(r.overheadCost)} ₽`}
+              />
+            )}
+            {input.fixedPerMonth > 0 && (
+              <Line label="Постоянные расходы" value={`−${money(input.fixedPerMonth)} ₽`} />
+            )}
+            {r.itCost > 0 && <Line label="IT-системы" value={`−${money(r.itCost)} ₽`} />}
+            <Line label="EBITDA" value={`${money(r.ebitda)} ₽`} bold top />
+            {r.depreciationCost > 0 && (
+              <Line label="Амортизация" value={`−${money(r.depreciationCost)} ₽`} />
+            )}
+            <Line label="Прибыль до налогов" value={`${money(r.profitBeforeTax)} ₽`} />
             <Line label={r.taxLabel} value={`−${money(r.taxAmount)} ₽`} />
-            <Line label="Чистая прибыль" value={`${money(r.netProfitPerMonth)} ₽`} bold top />
+            <Line label="Чистая прибыль" value={`${money(r.netProfitPerMonth)} ₽`} accent top />
             <Line label="Чистая рентабельность" value={percent(r.netMarginPercent)} />
             {r.breakEvenOrders > 0 && (
               <Line
@@ -181,7 +297,7 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
           </>
         ) : (
           <>
-            <Line label="Прибыль с заказов" value={`${money(r.profitPerDay * 30)} ₽`} bold top />
+            <Line label="Прибыль с заказов" value={`${money(r.profitPerDay * 30)} ₽`} accent top />
             <Line label="Маржинальность" value={percent(r.marginPercent)} />
           </>
         )}
@@ -195,7 +311,18 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
         </Block>
       )}
 
-      <div style={{ marginTop: 14, fontSize: 10.5, lineHeight: 1.45, breakInside: "avoid" }}>
+      <div
+        style={{
+          marginTop: 14,
+          padding: "10px 12px",
+          background: "#FBF6F1",
+          borderLeft: `3px solid ${BRAND}`,
+          borderRadius: 6,
+          fontSize: 10,
+          lineHeight: 1.45,
+          breakInside: "avoid",
+        }}
+      >
         {full && (
           <p style={{ margin: "0 0 4px" }}>
             <b>Важно:</b> в доход для налогообложения засчитывается вся сумма заказа, оплаченная
@@ -204,7 +331,7 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
         )}
         {!full && (
           <p style={{ margin: "0 0 4px" }}>
-            Расчёт учитывает только удержания агрегатора и себестоимость заказа. Зарплаты, аренда и
+            Расчёт учитывает только удержания канала и себестоимость заказа. Зарплаты, аренда и
             налоги в нём не участвуют — для полной картины используйте калькулятор экономики
             доставки.
           </p>
@@ -216,16 +343,34 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
 
       <div
         style={{
-          marginTop: 16,
-          paddingTop: 10,
-          borderTop: "2px solid #111",
-          fontSize: 11,
+          marginTop: 14,
+          background: DARK,
+          color: CREAM,
+          borderRadius: 12,
+          padding: "14px 18px",
           breakInside: "avoid",
         }}
       >
-        <b>agregatory.pro</b> — продвижение ресторанов на агрегаторах доставки
-        <br />
-        Бесплатный разбор вашего проекта: +7 931 002-82-22 · Telegram @sitnikovy
+        <div style={{ fontSize: 15, fontWeight: 700, letterSpacing: -0.3 }}>
+          agregatory<span style={{ color: BRAND }}>.pro</span>
+        </div>
+        <div style={{ fontSize: 10.5, marginTop: 3, color: "#BBB5B4" }}>
+          Продвижение ресторанов на агрегаторах доставки
+        </div>
+        <div
+          style={{
+            marginTop: 9,
+            paddingTop: 9,
+            borderTop: "1px solid rgba(255,250,245,.18)",
+            fontSize: 11,
+          }}
+        >
+          <span style={{ color: BRAND, fontWeight: 700 }}>Бесплатный разбор вашего проекта</span>
+          <br />
+          <span style={{ fontSize: 10.5 }}>
+            +7 931 002-82-22 · Telegram @sitnikovy · agregatory.pro
+          </span>
+        </div>
       </div>
     </div>
   );
