@@ -28,6 +28,7 @@ type Page = {
   title: string;
   description: string;
   body: string;
+  jsonLd?: unknown[];
 };
 
 const blocksToText = (blocks: any[]): string => {
@@ -80,6 +81,37 @@ for (const p of BLOG_POSTS) {
     route: `/blog/${p.slug}`,
     title: p.title,
     description: p.description,
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: clean(p.h1),
+        description: clean(p.description),
+        datePublished: p.date,
+        dateModified: p.date,
+        author: { "@type": "Organization", name: "agregatory.pro", url: SITE },
+        publisher: {
+          "@type": "Organization",
+          name: "agregatory.pro",
+          logo: { "@type": "ImageObject", url: `${SITE}/favicon.svg` },
+        },
+        mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE}/blog/${p.slug}` },
+        inLanguage: "ru-RU",
+      },
+      ...(p.faq?.length
+        ? [
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: p.faq.map((f) => ({
+                "@type": "Question",
+                name: clean(f.q),
+                acceptedAnswer: { "@type": "Answer", text: clean(f.a) },
+              })),
+            },
+          ]
+        : []),
+    ],
     body: `<article><h1>${esc(clean(p.h1))}</h1><p>${esc(clean(p.lead))}</p>
 <p>Рубрика: ${esc(clean(p.tag))}. Время чтения: ${esc(p.readTime)}.</p>
 ${blocksToText(p.blocks)}
@@ -119,6 +151,19 @@ for (const p of [...SERVICE_PAGES, ...CITY_PAGES]) {
     route: `${prefix}/${p.slug}`,
     title: p.title,
     description: p.description,
+    jsonLd: p.faq?.length
+      ? [
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: p.faq.map((f) => ({
+              "@type": "Question",
+              name: clean(f.q),
+              acceptedAnswer: { "@type": "Answer", text: clean(f.a) },
+            })),
+          },
+        ]
+      : undefined,
     body: `<article><h1>${esc(clean(p.h1))}</h1><p>${esc(clean(p.lead))}</p>
 ${blocks}${caseHtml}${bullets}${faqToText(p.faq)}
 <p>Телефон: +7 931 002-82-22</p></article>`,
@@ -286,6 +331,19 @@ for (const c of CHECKLIST_PAGES) {
     route: `/chek-listy/${c.slug}`,
     title: c.title,
     description: c.description,
+    jsonLd: c.faq?.length
+      ? [
+          {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: c.faq.map((f) => ({
+              "@type": "Question",
+              name: clean(f.q),
+              acceptedAnswer: { "@type": "Answer", text: clean(f.a) },
+            })),
+          },
+        ]
+      : undefined,
     body: `<h1>${esc(clean(c.h1))}</h1>
 <p>${esc(clean(c.lead))}</p>
 ${c.intro.map((t) => `<p>${esc(clean(t))}</p>`).join("")}
@@ -322,8 +380,58 @@ ${PARTNERS.map(
 
 const OG = `${SITE}/og-preview.jpg`;
 
+const ORG = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "agregatory.pro",
+  url: SITE,
+  logo: `${SITE}/favicon.svg`,
+  description: "Продвижение ресторанов на агрегаторах доставки",
+  telephone: "+7 931 002-82-22",
+  areaServed: "RU",
+  sameAs: [
+    "https://t.me/vnutri_edy_channel",
+    "https://t.me/Kovalchuk_dostavka",
+    "https://dzen.ru/id/669050347cf47c302ba6bd98",
+  ],
+};
+
+const crumbs = (route: string, title: string) => {
+  const parts = route.split("/").filter(Boolean);
+  const items: unknown[] = [{ "@type": "ListItem", position: 1, name: "Главная", item: `${SITE}/` }];
+  const NAMES: Record<string, string> = {
+    blog: "Блог",
+    uslugi: "Услуги",
+    goroda: "Города",
+    kalkulyatory: "Калькуляторы",
+    "chek-listy": "Чек-листы",
+    testy: "Тесты",
+    pochitat: "Почитать",
+    partnery: "Партнёры",
+  };
+  let acc = "";
+  parts.forEach((seg, i) => {
+    acc += `/${seg}`;
+    const last = i === parts.length - 1;
+    items.push({
+      "@type": "ListItem",
+      position: i + 2,
+      name: last ? title : NAMES[seg] || seg,
+      item: `${SITE}${acc}`,
+    });
+  });
+  return { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: items };
+};
+
 const render = (p: Page) => {
   const url = `${SITE}${p.route}`;
+  const ld: unknown[] = [];
+  if (p.route === "/") ld.push(ORG);
+  else ld.push(crumbs(p.route, p.title.split("|")[0].split("—")[0].trim()));
+  if (p.jsonLd?.length) ld.push(...p.jsonLd);
+  const ldTags = ld
+    .map((x) => `<script type="application/ld+json">${JSON.stringify(x)}</script>`)
+    .join("\n");
 
   return `<!DOCTYPE html>
 <html lang="ru">
@@ -348,6 +456,7 @@ const render = (p: Page) => {
 <meta name="twitter:description" content="${esc(p.description)}"/>
 <meta name="twitter:image" content="${OG}"/>
 <meta name="theme-color" content="#FFD600"/>
+${ldTags}
 <style>
   #pp-static{max-width:760px;margin:0 auto;padding:40px 20px;font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1a1a1a}
   #pp-static h1{font-size:2em;line-height:1.15;margin:0 0 .4em}

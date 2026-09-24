@@ -4,7 +4,7 @@ import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
-import { CHECKLIST_PAGES, countItems } from "@/data/checklists";
+import { CHECKLIST_META } from "@/data/checklist-meta";
 
 const ChecklistsPage = () => {
   const { pathname } = useLocation();
@@ -58,7 +58,7 @@ const ChecklistsPage = () => {
 
       <section className="px-5 pb-16 md:px-14 md:pb-24">
         <div className="grid gap-4 md:grid-cols-2">
-          {CHECKLIST_PAGES.map((p) => (
+          {CHECKLIST_META.map((p) => (
             <Link
               key={p.slug}
               to={`/chek-listy/${p.slug}`}
@@ -67,7 +67,7 @@ const ChecklistsPage = () => {
               <div className="flex items-center justify-between gap-4">
                 <Icon name={p.icon} size={26} className="text-brand" />
                 <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[0.78em] font-medium text-cream-muted">
-                  {countItems(p)} пунктов
+                  {p.count} пунктов
                 </span>
               </div>
               <h2 className="mt-4 font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em]">

@@ -4,7 +4,7 @@ import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
-import { QUIZZES } from "@/data/quizzes";
+import { QUIZ_META } from "@/data/quiz-meta";
 
 const QuizzesPage = () => {
   const { pathname } = useLocation();
@@ -31,8 +31,8 @@ const QuizzesPage = () => {
     ],
   });
 
-  const audit = QUIZZES.filter((q) => q.kind === "audit");
-  const knowledge = QUIZZES.filter((q) => q.kind === "knowledge");
+  const audit = QUIZ_META.filter((q) => q.kind === "audit");
+  const knowledge = QUIZ_META.filter((q) => q.kind === "knowledge");
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
@@ -110,7 +110,7 @@ const QuizzesPage = () => {
               <div className="flex items-center justify-between gap-4">
                 <Icon name={q.icon} size={26} className="text-brand" />
                 <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[0.78em] font-medium text-cream-muted">
-                  {q.questions.length} вопросов
+                  {q.count} вопросов
                 </span>
               </div>
               <h3 className="mt-4 font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em]">

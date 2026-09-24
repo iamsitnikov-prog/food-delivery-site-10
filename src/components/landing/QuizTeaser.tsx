@@ -1,8 +1,7 @@
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { useReveal } from "@/hooks/use-reveal";
-import { QUIZ_QUESTIONS } from "@/data/quiz";
-import { QUIZZES } from "@/data/quizzes";
+import { QUIZ_META } from "@/data/quiz-meta";
 
 const PREVIEW = [
   "Знаете ли вы свой ДРР?",
@@ -10,6 +9,8 @@ const PREVIEW = [
   "Проверяете отчёты в срок?",
   "Есть канал заказов кроме агрегатора?",
 ];
+
+const AUDIT = QUIZ_META[0];
 
 const QuizTeaser = () => {
   const ref = useReveal<HTMLElement>();
@@ -29,7 +30,7 @@ const QuizTeaser = () => {
           </h2>
 
           <p className="mt-5 max-w-[500px] leading-relaxed text-cream-muted">
-            {QUIZ_QUESTIONS.length}&nbsp;вопросов о&nbsp;работе вашего заведения на&nbsp;агрегаторе: рейтинг, экономика, контент, отчётность и&nbsp;команда. В&nbsp;конце&nbsp;— оценка проекта и&nbsp;точки роста, с&nbsp;которых стоит начать.
+            {AUDIT.count}&nbsp;вопросов о&nbsp;работе вашего заведения на&nbsp;агрегаторе: рейтинг, экономика, контент, отчётность и&nbsp;команда. В&nbsp;конце&nbsp;— оценка проекта и&nbsp;точки роста, с&nbsp;которых стоит начать.
           </p>
 
           <Link
@@ -54,7 +55,7 @@ const QuizTeaser = () => {
             ))}
             <li className="flex gap-3 leading-snug text-cream-muted">
               <Icon name="MoreHorizontal" size={18} className="mt-0.5 shrink-0 text-brand" />и ещё{" "}
-              {QUIZ_QUESTIONS.length - PREVIEW.length} вопросов
+              {AUDIT.count - PREVIEW.length} вопросов
             </li>
           </ul>
         </div>
@@ -80,7 +81,7 @@ const QuizTeaser = () => {
           </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {QUIZZES.filter((q) => q.kind === "knowledge").map((q) => (
+            {QUIZ_META.filter((q) => q.kind === "knowledge").map((q) => (
               <Link
                 key={q.slug}
                 to={`/testy/${q.slug}`}
@@ -88,7 +89,7 @@ const QuizTeaser = () => {
               >
                 <div className="flex items-center justify-between gap-3">
                   <Icon name={q.icon} size={20} className="text-brand" />
-                  <span className="text-[0.76em] text-cream-muted">{q.questions.length} вопр.</span>
+                  <span className="text-[0.76em] text-cream-muted">{q.count} вопр.</span>
                 </div>
                 <span className="mt-3 block font-display text-[1.02em] font-semibold leading-tight">
                   {q.navLabel}

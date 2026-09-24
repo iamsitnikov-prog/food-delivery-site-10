@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
-import { getCityCase } from "@/data/city-cases";
+import { CASE_SLUGS } from "@/data/case-slugs";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
@@ -65,7 +65,7 @@ const SeoIndex = ({ kind }: Props) => {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {items.map((item, i) => {
             const light = i % 2 === 1;
-            const cityCase = kind === "city" ? getCityCase(item.slug) : undefined;
+            const cityCase = kind === "city" && CASE_SLUGS.includes(item.slug);
             return (
               <div
                 key={item.slug}

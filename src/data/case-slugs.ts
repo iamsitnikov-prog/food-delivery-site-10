@@ -1,0 +1,1 @@
+export const CASE_SLUGS: string[] = ["moskva","sankt-peterburg","samara","cherepovets","novosibirsk","ekaterinburg","kazan","nizhniy-novgorod","krasnodar","rostov-na-donu","chelyabinsk","ufa","krasnoyarsk","voronezh","surgut","nefteyugansk","perm","tyumen","sochi"];

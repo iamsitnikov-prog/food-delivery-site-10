@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { useReveal } from "@/hooks/use-reveal";
-import { CHECKLIST_PAGES, countItems } from "@/data/checklists";
+import { CHECKLIST_META } from "@/data/checklist-meta";
 
 const ChecklistTeaser = () => {
   const ref = useReveal<HTMLElement>();
@@ -30,7 +30,7 @@ const ChecklistTeaser = () => {
         </div>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {CHECKLIST_PAGES.map((p) => (
+          {CHECKLIST_META.map((p) => (
             <Link
               key={p.slug}
               to={`/chek-listy/${p.slug}`}
@@ -39,7 +39,7 @@ const ChecklistTeaser = () => {
               <div className="flex items-center justify-between gap-3">
                 <Icon name={p.icon} size={24} className="text-brand" />
                 <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[0.74em] font-medium text-cream-muted">
-                  {countItems(p)} пунктов
+                  {p.count} пунктов
                 </span>
               </div>
               <h3 className="mt-4 font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em]">
