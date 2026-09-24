@@ -38,59 +38,75 @@ const PartnersPage = () => {
       </div>
 
       <section className="px-5 pb-16 md:px-14 md:pb-24">
-        <div className="space-y-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {PARTNERS.map((p) => (
-            <article key={p.slug} className="grid gap-8 rounded-[32px] bg-surface p-7 text-cream md:p-11 lg:grid-cols-[1fr_340px]">
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-3">
-                  <h2 className="font-display text-[2em] font-semibold tracking-[-0.03em] md:text-[2.6em]">{p.name}</h2>
-                  <span className="rounded-lg bg-brand px-3 py-1.5 text-[0.8em] font-medium text-foreground">
-                    {p.category}
+            <article
+              key={p.slug}
+              className="flex flex-col rounded-[28px] bg-surface p-7 text-cream md:p-8"
+            >
+              <div className="flex flex-wrap items-center gap-2.5">
+                <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.03em]">{p.name}</h2>
+                <span className="rounded-lg bg-brand px-2.5 py-1 text-[0.75em] font-medium text-foreground">
+                  {p.category}
+                </span>
+                {p.isNew && (
+                  <span className="rounded-lg border border-brand px-2.5 py-1 text-[0.75em] font-medium uppercase tracking-wide text-brand">
+                    новое
                   </span>
-                  {p.isNew && (
-                    <span className="rounded-lg border border-brand px-3 py-1.5 text-[0.8em] font-medium uppercase tracking-wide text-brand">
-                      новое
-                    </span>
-                  )}
+                )}
+              </div>
+
+              <p className="mt-4 min-h-[2.6em] text-[1.02em] leading-snug">{p.tagline}</p>
+
+              {p.promo && (
+                <div className="mb-6 mt-5 inline-flex w-fit items-center gap-2.5 rounded-xl border border-brand/40 px-3.5 py-2.5">
+                  <span className="text-[0.75em] uppercase tracking-wide text-cream-muted">промокод</span>
+                  <span className="font-display text-[1.05em] font-semibold tracking-[-0.01em] text-brand">
+                    {p.promo.code}
+                  </span>
                 </div>
+              )}
 
-                <p className="mt-4 text-[1.15em] leading-snug">{p.tagline}</p>
-                <p className="mt-5 leading-relaxed text-cream-muted">{p.description}</p>
+              <details className="group mt-auto border-t border-cream/15 pt-5">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[0.9em] font-medium text-cream-muted transition-colors hover:text-cream [&::-webkit-details-marker]:hidden">
+                  подробнее
+                  <Icon
+                    name="ChevronDown"
+                    size={17}
+                    className="shrink-0 transition-transform duration-300 group-open:rotate-180"
+                  />
+                </summary>
 
-                <ul className="mt-8 space-y-3 border-t border-cream/20 pt-7">
+                <p className="mt-4 text-[0.92em] leading-relaxed text-cream-muted">{p.description}</p>
+
+                <ul className="mt-5 space-y-2.5">
                   {p.points.map((point) => (
-                    <li key={point} className="flex gap-3 leading-snug text-cream-muted">
-                      <Icon name="Check" size={18} className="mt-0.5 shrink-0 text-brand" />
+                    <li key={point} className="flex gap-2.5 text-[0.9em] leading-snug text-cream-muted">
+                      <Icon name="Check" size={16} className="mt-0.5 shrink-0 text-brand" />
                       {point}
                     </li>
                   ))}
                 </ul>
-              </div>
 
-              <aside className="flex h-fit flex-col gap-6 rounded-[24px] bg-cream/[0.06] p-6">
-                <div>
-                  <h3 className="font-display text-[1.1em] font-semibold">кому подойдёт</h3>
-                  <p className="mt-3 text-[0.95em] leading-relaxed text-cream-muted">{p.forWhom}</p>
+                <div className="mt-5 rounded-[18px] bg-cream/[0.06] p-4">
+                  <div className="text-[0.78em] uppercase tracking-wide text-cream-muted">кому подойдёт</div>
+                  <p className="mt-2 text-[0.9em] leading-relaxed text-cream-muted">{p.forWhom}</p>
                 </div>
+
                 {p.promo && (
-                  <div className="rounded-[18px] border border-brand/40 p-5">
-                    <div className="text-[0.78em] uppercase tracking-wide text-cream-muted">промокод</div>
-                    <div className="mt-2 font-display text-[1.5em] font-semibold tracking-[-0.02em] text-brand">
-                      {p.promo.code}
-                    </div>
-                    <p className="mt-2.5 text-[0.85em] leading-snug text-cream-muted">{p.promo.text}</p>
-                  </div>
+                  <p className="mt-4 text-[0.85em] leading-snug text-cream-muted">{p.promo.text}</p>
                 )}
-                <a
-                  href={p.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 font-medium text-foreground transition-transform hover:-translate-y-0.5"
-                >
-                  перейти на сайт
-                  <Icon name="ArrowUpRight" size={18} />
-                </a>
-              </aside>
+              </details>
+
+              <a
+                href={p.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3 font-medium text-foreground transition-transform hover:-translate-y-0.5"
+              >
+                перейти на сайт
+                <Icon name="ArrowUpRight" size={18} />
+              </a>
             </article>
           ))}
         </div>
