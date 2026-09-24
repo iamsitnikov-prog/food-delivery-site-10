@@ -49,13 +49,15 @@ const ModelCard = ({
   m,
   icon,
   isWinner,
+  compact,
 }: {
   m: ModelResult;
   icon: string;
   isWinner: boolean;
+  compact?: boolean;
 }) => (
   <div
-    className={`rounded-[24px] p-6 transition-colors ${
+    className={`rounded-[24px] p-5 transition-colors md:p-6 ${
       isWinner ? "bg-brand/15 ring-2 ring-brand" : "bg-cream/[0.06]"
     }`}
   >
@@ -68,19 +70,27 @@ const ModelCard = ({
         </span>
       )}
     </div>
+    {m.note && <p className="mt-1.5 text-[0.85em] leading-snug text-cream-muted">{m.note}</p>}
     <div className="mt-3">
       <Row label="Комиссия · commission" value={`−${money(m.commissionRub)} ₽`} muted />
       {m.deliveryFeeRub > 0 && (
         <Row label="Кнопка Яндекс Доставки" value={`−${money(m.deliveryFeeRub)} ₽`} muted />
       )}
       <Row label="Продвижение · ad spend" value={`−${money(m.adRub)} ₽`} muted />
-      <Row label="Придёт на счёт · payout" value={`${money(m.payoutPerOrder)} ₽`} />
-      <Row label="Себестоимость · food cost" value={`−${money(m.foodCostRub)} ₽`} muted />
-      <Row label="Упаковка · packaging" value={`−${money(m.packagingRub)} ₽`} muted />
+      {!compact && (
+        <>
+          <Row label="Придёт на счёт · payout" value={`${money(m.payoutPerOrder)} ₽`} />
+          <Row label="Себестоимость · food cost" value={`−${money(m.foodCostRub)} ₽`} muted />
+          <Row label="Упаковка · packaging" value={`−${money(m.packagingRub)} ₽`} muted />
+        </>
+      )}
       <Row label="Валовая с заказа" value={`${money(m.grossPerOrder)} ₽`} strong />
       <Row label="Валовая за месяц" value={`${money(m.grossPerMonth)} ₽`} muted />
-      {m.deliveryCostPerMonth > 0 && (
-        <Row label="Доставка за месяц" value={`−${money(m.deliveryCostPerMonth)} ₽`} muted />
+      {m.staffCost > 0 && (
+        <Row label="Свои курьеры" value={`−${money(m.staffCost)} ₽`} muted />
+      )}
+      {m.yandexCost > 0 && (
+        <Row label="Яндекс Доставка" value={`−${money(m.yandexCost)} ₽`} muted />
       )}
       {m.deliveryCostPerOrder > 0 && (
         <Row label="Доставка на заказ" value={`−${money(m.deliveryCostPerOrder)} ₽`} muted />
@@ -113,9 +123,7 @@ const CompareCalc = () => {
   const verdict =
     r.winner === "equal"
       ? "Модели равны по деньгам"
-      : r.winner === "own"
-        ? `${r.ownDeliveryLabel} выгоднее на ${money(Math.abs(r.diffPerMonth))} ₽ в месяц`
-        : `Курьеры сервиса выгоднее на ${money(Math.abs(r.diffPerMonth))} ₽ в месяц`;
+      : `${r.best.label} выгоднее на ${money(Math.abs(r.diffPerMonth))} ₽ в месяц`;
 
   return (
     <div className="rounded-[32px] bg-surface p-6 text-cream md:p-10">
@@ -123,7 +131,7 @@ const CompareCalc = () => {
         <div>
           <h2 className="font-display text-[1.5em] font-semibold tracking-[-0.02em]">ваши данные</h2>
           <p className="mt-2 text-[0.92em] leading-snug text-cream-muted">
-            Сравним две модели на одних и тех же заказах.
+            Сравним три модели доставки на одних и тех же заказах.
           </p>
 
           <div className="mt-6 space-y-5">
@@ -341,6 +349,57 @@ const CompareCalc = () => {
 
             <div className="rounded-2xl border border-cream/15 p-5">
               <p className="flex items-center gap-2 text-[0.95em] font-semibold text-cream">
+                <Icon name="Shuffle" size={16} className="text-brand" />
+                Модель 3 — гибрид
+              </p>
+              <div className="mt-4 space-y-4">
+                <CalcCheck
+                  label="Считать гибридную модель"
+                  hint="Часть заказов везут свои курьеры, пиковые отдаются Яндекс Доставке. Так работает большинство заведений."
+                  checked={input.hybridEnabled}
+                  onChange={flag("hybridEnabled")}
+                />
+                {input.hybridEnabled && (
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <CalcField
+                      label="Курьеров в штате"
+                      suffix="чел"
+                      value={input.hybridCourierCount}
+                      onChange={set("hybridCourierCount")}
+                      hint="Сколько курьеров держите постоянно. Обычно меньше, чем при полностью своей доставке."
+                    />
+                    <CalcField
+                      label="Доля своих курьеров"
+                      suffix="%"
+                      value={input.hybridOwnShare}
+                      onChange={set("hybridOwnShare")}
+                      max={100}
+                      step={5}
+                      hint="Какую часть заказов закрывают свои курьеры. Остальное уходит Яндекс Доставке."
+                      note={`Свои: ${money(r.hybridOwnOrders)} зак. · Яндекс: ${money(r.hybridYandexOrders)} зак. в месяц`}
+                    />
+                  </div>
+                )}
+                {input.hybridEnabled && input.ownMode === "yandex" && (
+                  <p className="flex gap-2 rounded-xl bg-brand/15 p-3 text-[0.86em] leading-snug text-cream">
+                    <Icon name="Info" size={16} className="mt-0.5 shrink-0 text-brand" />
+                    Стоимость доставки для гибрида берётся из полей модели 2 —{" "}
+                    {money(r.yandexPerOrder)} ₽ за заказ.
+                  </p>
+                )}
+                {input.hybridEnabled && input.ownMode === "staff" && (
+                  <p className="flex gap-2 rounded-xl bg-brand/15 p-3 text-[0.86em] leading-snug text-cream">
+                    <Icon name="Info" size={16} className="mt-0.5 shrink-0 text-brand" />
+                    Чтобы посчитать гибрид точно, переключите модель 2 на Яндекс Доставку и укажите
+                    её стоимость — она подставится сюда. Сейчас: {money(r.yandexPerOrder)} ₽ за
+                    заказ.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-cream/15 p-5">
+              <p className="flex items-center gap-2 text-[0.95em] font-semibold text-cream">
                 <Icon name="ChefHat" size={16} className="text-brand" />
                 Себестоимость заказа
               </p>
@@ -397,7 +456,7 @@ const CompareCalc = () => {
             </p>
             {r.winner !== "equal" && (
               <p className="mt-2 text-[0.95em] leading-snug text-foreground/80">
-                Это {money(Math.abs(r.diffPerOrder))} ₽ с каждого заказа и{" "}
+                Обгоняет «{r.second.label}» на {money(Math.abs(r.diffPerOrder))} ₽ с заказа — это{" "}
                 {money(Math.abs(r.diffPerMonth) * 12)} ₽ за год.
               </p>
             )}
@@ -416,6 +475,9 @@ const CompareCalc = () => {
 
           <ModelCard m={r.service} icon="Truck" isWinner={r.winner === "service"} />
           <ModelCard m={r.own} icon="Bike" isWinner={r.winner === "own"} />
+          {r.hybrid && (
+            <ModelCard m={r.hybrid} icon="Shuffle" isWinner={r.winner === "hybrid"} />
+          )}
         </div>
       </div>
 
