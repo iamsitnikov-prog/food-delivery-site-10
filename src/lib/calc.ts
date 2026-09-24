@@ -1,6 +1,19 @@
 export type DeliveryType = "service" | "own";
 
+export type TaxMode = "usn6" | "usn15" | "patent" | "osno" | "none";
+
 export type CalcInput = {
+  staffEnabled: boolean;
+  managerCount: number;
+  managerSalary: number;
+  courierCount: number;
+  courierSalary: number;
+  fuelPerCourier: number;
+  packerCount: number;
+  packerSalary: number;
+  insuranceRate: number;
+  taxMode: TaxMode;
+  patentCost: number;
   avgCheck: number;
   ordersPerDay: number;
   deliveryType: DeliveryType;
@@ -20,8 +33,44 @@ export const COMMISSION_SERVICE = 35;
 export const COMMISSION_OWN = 20;
 export const YANDEX_DELIVERY_FEE = 2;
 export const MARKETING_OPTIONS = [0, 2, 5];
+export const INSURANCE_RATE_DEFAULT = 30;
+
+export const TAX_MODES: { value: TaxMode; label: string; hint: string }[] = [
+  {
+    value: "usn6",
+    label: "УСН «Доходы» 6%",
+    hint: "Налог считается со всего оборота, включая комиссию сервиса. Можно уменьшить на страховые взносы, но не более чем вдвое.",
+  },
+  {
+    value: "usn15",
+    label: "УСН «Доходы минус расходы» 15%",
+    hint: "Налог с разницы между доходами и расходами. Есть минимальный налог — 1% от дохода, если он выше расчётного.",
+  },
+  {
+    value: "patent",
+    label: "Патент",
+    hint: "Фиксированная стоимость патента в месяц. Доставка через агрегатор под патент обычно не подпадает — уточните у бухгалтера.",
+  },
+  {
+    value: "osno",
+    label: "ОСНО 20%",
+    hint: "Налог на прибыль 20% с разницы между доходами и расходами.",
+  },
+  { value: "none", label: "Не учитывать", hint: "Расчёт без налога на прибыль." },
+];
 
 export const DEFAULTS: CalcInput = {
+  staffEnabled: false,
+  managerCount: 1,
+  managerSalary: 60000,
+  courierCount: 2,
+  courierSalary: 55000,
+  fuelPerCourier: 8000,
+  packerCount: 1,
+  packerSalary: 45000,
+  insuranceRate: INSURANCE_RATE_DEFAULT,
+  taxMode: "usn6",
+  patentCost: 5000,
   avgCheck: 1200,
   ordersPerDay: 25,
   deliveryType: "service",
@@ -97,11 +146,33 @@ export type CalcResult = {
   adSpendPerMonth: number;
   breakEvenOrders: number;
   isProfitable: boolean;
+  managersCost: number;
+  couriersCost: number;
+  fuelCost: number;
+  packersCost: number;
+  salaryFund: number;
+  insuranceCost: number;
+  staffTotal: number;
+  staffPerOrder: number;
+  profitBeforeTax: number;
+  taxAmount: number;
+  taxLabel: string;
+  taxNote: string;
+  netProfitPerMonth: number;
+  netMarginPercent: number;
   vat: VatTier;
   vatAmountPerYear: number;
   ordersToVatLimit: number | null;
   daysToVatLimit: number | null;
 };
+
+export const money = (v: number, digits = 0) =>
+  new Intl.NumberFormat("ru-RU", {
+    maximumFractionDigits: digits,
+    minimumFractionDigits: digits,
+  })
+    .format(Math.round(v * 10 ** digits) / 10 ** digits)
+    .replace("-", "\u2212");
 
 const clamp = (v: number, min = 0) => (Number.isFinite(v) && v > min ? v : min);
 
@@ -142,9 +213,20 @@ export const calculate = (input: CalcInput): CalcResult => {
   const revenuePerYear = revenuePerDay * 365;
   const payoutPerMonth = payoutPerOrder * orders * 30;
 
+  const on = input.staffEnabled;
+  const managersCost = on ? clamp(input.managerCount) * clamp(input.managerSalary) : 0;
+  const couriersCost = on ? clamp(input.courierCount) * clamp(input.courierSalary) : 0;
+  const fuelCost = on ? clamp(input.courierCount) * clamp(input.fuelPerCourier) : 0;
+  const packersCost = on ? clamp(input.packerCount) * clamp(input.packerSalary) : 0;
+  const salaryFund = managersCost + couriersCost + packersCost;
+  const insuranceCost = (salaryFund * clamp(input.insuranceRate)) / 100;
+  const staffTotal = salaryFund + insuranceCost + fuelCost;
+  const ordersPerMonth = orders * 30;
+  const staffPerOrder = ordersPerMonth > 0 ? staffTotal / ordersPerMonth : 0;
+
   const profitPerDay = profitPerOrder * orders;
   const fixed = clamp(input.fixedPerMonth);
-  const profitPerMonth = profitPerDay * 30 - fixed;
+  const profitPerMonth = profitPerDay * 30 - fixed - staffTotal;
 
   const adTotalShare = clamp(input.adShare) + clamp(input.marketingShare);
   const drr = adTotalShare;
@@ -162,7 +244,46 @@ export const calculate = (input: CalcInput): CalcResult => {
     packagingRub;
   const drrLimit = avgCheck > 0 ? (marginBeforeAds / avgCheck) * 100 : 0;
 
-  const breakEvenOrders = profitPerOrder > 0 ? Math.ceil(fixed / 30 / profitPerOrder) : 0;
+  const breakEvenOrders =
+    profitPerOrder > 0 ? Math.ceil((fixed + staffTotal) / 30 / profitPerOrder) : 0;
+
+  const profitBeforeTax = profitPerMonth;
+  let taxAmount = 0;
+  let taxLabel = "без налога";
+  let taxNote = "Налог на прибыль в расчёте не учитывается.";
+
+  if (input.taxMode === "usn6") {
+    const raw = revenuePerMonth * 0.06;
+    const reduction = Math.min(insuranceCost, raw / 2);
+    taxAmount = raw - reduction;
+    taxLabel = "УСН 6%";
+    taxNote =
+      insuranceCost > 0
+        ? `Налог считается со всего оборота (${money(revenuePerMonth)} ₽), а не с того, что пришло на счёт. Уменьшен на страховые взносы, но не более чем наполовину.`
+        : `Налог считается со всего оборота (${money(revenuePerMonth)} ₽), включая комиссию сервиса, — а не с суммы, поступившей на счёт.`;
+  } else if (input.taxMode === "usn15") {
+    const base = Math.max(profitBeforeTax, 0);
+    const calculated = base * 0.15;
+    const minimal = revenuePerMonth * 0.01;
+    taxAmount = Math.max(calculated, minimal);
+    taxLabel = "УСН 15%";
+    taxNote =
+      taxAmount === minimal && minimal > calculated
+        ? `Расчётный налог ниже минимального, поэтому применяется минимальный налог — 1% от дохода (${money(minimal)} ₽).`
+        : "Налог с разницы между доходами и расходами. Учтите: не все расходы можно принять к вычету — уточните у бухгалтера.";
+  } else if (input.taxMode === "patent") {
+    taxAmount = clamp(input.patentCost);
+    taxLabel = "Патент";
+    taxNote =
+      "Фиксированная стоимость патента. Важно: продажа через агрегатор обычно не подпадает под патент — проверьте применимость с бухгалтером.";
+  } else if (input.taxMode === "osno") {
+    taxAmount = Math.max(profitBeforeTax, 0) * 0.2;
+    taxLabel = "Налог на прибыль 20%";
+    taxNote = "Налог на прибыль с разницы между доходами и расходами. НДС считается отдельно.";
+  }
+
+  const netProfitPerMonth = profitBeforeTax - taxAmount;
+  const netMarginPercent = revenuePerMonth > 0 ? (netProfitPerMonth / revenuePerMonth) * 100 : 0;
 
   const vat = getVatTier(revenuePerYear);
   const vatAmountPerYear =
@@ -204,6 +325,20 @@ export const calculate = (input: CalcInput): CalcResult => {
     adSpendPerMonth,
     breakEvenOrders,
     isProfitable: profitPerOrder > 0,
+    managersCost,
+    couriersCost,
+    fuelCost,
+    packersCost,
+    salaryFund,
+    insuranceCost,
+    staffTotal,
+    staffPerOrder,
+    profitBeforeTax,
+    taxAmount,
+    taxLabel,
+    taxNote,
+    netProfitPerMonth,
+    netMarginPercent,
     vat,
     vatAmountPerYear,
     ordersToVatLimit,
@@ -211,11 +346,6 @@ export const calculate = (input: CalcInput): CalcResult => {
   };
 };
 
-export const money = (v: number, digits = 0) =>
-  new Intl.NumberFormat("ru-RU", {
-    maximumFractionDigits: digits,
-    minimumFractionDigits: digits,
-  }).format(Math.round(v * 10 ** digits) / 10 ** digits);
 
 export const percent = (v: number, digits = 1) =>
   `${new Intl.NumberFormat("ru-RU", {

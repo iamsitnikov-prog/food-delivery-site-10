@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import Icon from "@/components/ui/icon";
 import CalcField from "./CalcField";
 import CalcToggle from "./CalcToggle";
+import CalcCheck from "./CalcCheck";
 import {
   calculate,
   DEFAULTS,
@@ -9,8 +10,10 @@ import {
   percent,
   COMMISSION_SERVICE,
   COMMISSION_OWN,
+  TAX_MODES,
   type CalcInput,
   type DeliveryType,
+  type TaxMode,
 } from "@/lib/calc";
 import { reachGoal } from "@/lib/metrika";
 
@@ -233,9 +236,114 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                     value={input.fixedPerMonth}
                     onChange={set("fixedPerMonth")}
                     step={5000}
-                    hint="Аренда, зарплаты и прочие расходы, которые относите на доставку. Можно оставить 0."
+                    hint="Аренда и прочие расходы на доставку, кроме зарплат. Можно оставить 0."
                   />
                 </div>
+
+                {(mode === "all" || mode === "breakeven") && (
+                <CalcCheck
+                  label="Считать персонал доставки"
+                  hint="Отметьте, если сотрудники заняты только доставкой. Если они совмещают работу с залом, их зарплату сюда включать не нужно."
+                  checked={input.staffEnabled}
+                  onChange={(v) => {
+                    setInput((p) => ({ ...p, staffEnabled: v }));
+                    reachGoal("calc_use", { mode, field: "staffEnabled" });
+                  }}
+                />
+                )}
+
+                {input.staffEnabled && (mode === "all" || mode === "breakeven") && (
+                  <div className="space-y-4 rounded-2xl border border-cream/15 p-5">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <CalcField
+                        label="Менеджеров доставки"
+                        suffix="чел"
+                        value={input.managerCount}
+                        onChange={set("managerCount")}
+                        hint="Сотрудники, которые ведут кабинет, следят за заказами и отвечают на отзывы."
+                      />
+                      <CalcField
+                        label="Ставка менеджера"
+                        suffix="₽/мес"
+                        value={input.managerSalary}
+                        onChange={set("managerSalary")}
+                        step={5000}
+                        hint="Зарплата одного менеджера в месяц до вычета налогов."
+                      />
+                      <CalcField
+                        label="Курьеров"
+                        suffix="чел"
+                        value={input.courierCount}
+                        onChange={set("courierCount")}
+                        hint="Штатные курьеры заведения. Если доставляет сервис — оставьте 0."
+                      />
+                      <CalcField
+                        label="Ставка курьера"
+                        suffix="₽/мес"
+                        value={input.courierSalary}
+                        onChange={set("courierSalary")}
+                        step={5000}
+                        hint="Зарплата одного курьера в месяц."
+                      />
+                      <CalcField
+                        label="Компенсация топлива"
+                        suffix="₽/мес"
+                        value={input.fuelPerCourier}
+                        onChange={set("fuelPerCourier")}
+                        step={1000}
+                        hint="Компенсация бензина или транспорта на одного курьера. Если не платите — поставьте 0."
+                      />
+                      <CalcField
+                        label="Сборщиков заказов"
+                        suffix="чел"
+                        value={input.packerCount}
+                        onChange={set("packerCount")}
+                        hint="Сотрудники на сборке и упаковке заказов доставки."
+                      />
+                      <CalcField
+                        label="Ставка сборщика"
+                        suffix="₽/мес"
+                        value={input.packerSalary}
+                        onChange={set("packerSalary")}
+                        step={5000}
+                        hint="Зарплата одного сборщика в месяц."
+                      />
+                      <CalcField
+                        label="Страховые взносы"
+                        suffix="%"
+                        value={input.insuranceRate}
+                        onChange={set("insuranceRate")}
+                        max={100}
+                        step={0.5}
+                        hint="Взносы с фонда оплаты труда. Стандартная ставка — 30%, для малого бизнеса часть выплат облагается по 15%."
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {(mode === "all" || mode === "breakeven") && (
+                <CalcToggle
+                  label="Система налогообложения"
+                  value={input.taxMode}
+                  onChange={(v) => {
+                    setInput((p) => ({ ...p, taxMode: v as TaxMode }));
+                    reachGoal("calc_use", { mode, field: "taxMode" });
+                  }}
+                  options={TAX_MODES.map((t) => ({ value: t.value, label: t.label }))}
+                  hint="От режима зависит, с какой суммы считается налог. На УСН «Доходы» налог берётся со всего оборота, включая комиссию сервиса."
+                />
+                )}
+
+                {input.taxMode === "patent" && (mode === "all" || mode === "breakeven") && (
+                  <CalcField
+                    label="Стоимость патента"
+                    suffix="₽/мес"
+                    value={input.patentCost}
+                    onChange={set("patentCost")}
+                    step={1000}
+                    hint="Стоимость патента в пересчёте на месяц."
+                  />
+                )}
               </>
             )}
           </div>
@@ -320,20 +428,51 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
             </Card>
           )}
 
+          {show("breakeven") && input.staffEnabled && (
+            <Card title="Персонал доставки" icon="Users">
+              {r.managersCost > 0 && (
+                <Row label="Менеджеры" value={`${money(r.managersCost)} ₽`} muted />
+              )}
+              {r.couriersCost > 0 && (
+                <Row label="Курьеры" value={`${money(r.couriersCost)} ₽`} muted />
+              )}
+              {r.fuelCost > 0 && (
+                <Row label="Компенсация топлива" value={`${money(r.fuelCost)} ₽`} muted />
+              )}
+              {r.packersCost > 0 && (
+                <Row label="Сборщики" value={`${money(r.packersCost)} ₽`} muted />
+              )}
+              <Row label="Страховые взносы" value={`${money(r.insuranceCost)} ₽`} muted />
+              <Row label="Всего на персонал" value={`${money(r.staffTotal)} ₽`} accent strong />
+              <Row label="В пересчёте на заказ" value={`${money(r.staffPerOrder)} ₽`} />
+            </Card>
+          )}
+
           {show("breakeven") && (
             <Card title="Окупаемость канала" icon="TrendingUp">
               <Row label="Оборот в месяц" value={`${money(r.revenuePerMonth)} ₽`} muted />
               <Row label="Поступит на счёт" value={`${money(r.payoutPerMonth)} ₽`} muted />
-              <Row label="Прибыль в день" value={`${money(r.profitPerDay)} ₽`} muted />
-              <Row label="Прибыль в месяц" value={`${money(r.profitPerMonth)} ₽`} accent strong />
-              {input.fixedPerMonth > 0 ? (
+              {r.staffTotal > 0 && (
+                <Row label="Персонал доставки" value={`−${money(r.staffTotal)} ₽`} muted />
+              )}
+              {input.fixedPerMonth > 0 && (
+                <Row label="Постоянные расходы" value={`−${money(input.fixedPerMonth)} ₽`} muted />
+              )}
+              <Row label="Прибыль до налогов" value={`${money(r.profitBeforeTax)} ₽`} strong />
+              <Row label={r.taxLabel} value={`−${money(r.taxAmount)} ₽`} muted />
+              <Row label="Чистая прибыль в месяц" value={`${money(r.netProfitPerMonth)} ₽`} accent strong />
+              <Row label="Чистая рентабельность" value={percent(r.netMarginPercent)} />
+              {input.fixedPerMonth + r.staffTotal > 0 && (
                 <Row
                   label="Заказов в день для выхода в ноль"
                   value={r.breakEvenOrders > 0 ? `${money(r.breakEvenOrders)} шт` : "не окупится"}
                 />
-              ) : (
-                <p className="mt-3 text-[0.86em] leading-snug text-cream-muted">
-                  Укажите постоянные расходы, чтобы увидеть, сколько заказов в день нужно для выхода в ноль.
+              )}
+              <p className="mt-3 text-[0.86em] leading-snug text-cream-muted">{r.taxNote}</p>
+              {r.netProfitPerMonth < 0 && (
+                <p className="mt-3 flex gap-2 rounded-xl bg-red-500/15 p-3 text-[0.88em] leading-snug text-red-200">
+                  <Icon name="TriangleAlert" size={17} className="mt-0.5 shrink-0" />
+                  С учётом всех расходов и налогов канал работает в убыток.
                 </p>
               )}
             </Card>
