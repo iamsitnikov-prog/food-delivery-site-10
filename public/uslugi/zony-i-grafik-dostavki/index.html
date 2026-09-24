@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Настройка зон доставки и графика работы ресторана в Яндекс Еде</title>
+<meta name="description" content="Настраиваем зоны доставки и график работы заведения на агрегаторе: радиус, стоимость по зонам, часы работы, перерывы, работа в праздники и часы пик."/>
+<meta name="author" content="agregatory.pro"/>
+<link rel="canonical" href="https://agregatory.pro/uslugi/zony-i-grafik-dostavki"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="alternate" type="application/rss+xml" title="Блог agregatory.pro" href="https://agregatory.pro/rss.xml"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="agregatory.pro"/>
+<meta property="og:locale" content="ru_RU"/>
+<meta property="og:title" content="Настройка зон доставки и графика работы ресторана в Яндекс Еде"/>
+<meta property="og:description" content="Настраиваем зоны доставки и график работы заведения на агрегаторе: радиус, стоимость по зонам, часы работы, перерывы, работа в праздники и часы пик."/>
+<meta property="og:url" content="https://agregatory.pro/uslugi/zony-i-grafik-dostavki"/>
+<meta property="og:image" content="https://agregatory.pro/og-preview.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Настройка зон доставки и графика работы ресторана в Яндекс Еде"/>
+<meta name="twitter:description" content="Настраиваем зоны доставки и график работы заведения на агрегаторе: радиус, стоимость по зонам, часы работы, перерывы, работа в праздники и часы пик."/>
+<meta name="twitter:image" content="https://agregatory.pro/og-preview.jpg"/>
+<meta name="theme-color" content="#FFD600"/>
+<style>
+  #pp-static{max-width:760px;margin:0 auto;padding:40px 20px;font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1a1a1a}
+  #pp-static h1{font-size:2em;line-height:1.15;margin:0 0 .4em}
+  #pp-static table{border-collapse:collapse;width:100%}
+  #pp-static td,#pp-static th{border:1px solid #ddd;padding:6px 10px;text-align:left}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<div id="pp-static">
+<article><h1>Настройка зон и графика доставки</h1><p>Определяем, куда и когда возить выгодно, а куда — только в убыток.</p>
+<h2>Зона — это про экономику</h2><p>Слишком узкая зона отсекает заказы, слишком широкая — приводит остывшую еду и негативные отзывы из дальних районов. Подбираем радиус по реальному времени доставки и плотности спроса вокруг вас.</p><h2>График под кухню</h2><p>Настраиваем часы работы с учётом реальной загрузки: когда кухня может держать поток, а когда лучше закрыться, чем собирать отмены. Отдельно — перерывы, праздничные дни и высокий сезон.</p><h2>Часы пик без потерь</h2><p>В пиковые часы заведения чаще всего и теряют рейтинг. Настраиваем время приготовления и правила приёма заказов так, чтобы кухня успевала, а гость получал заказ вовремя.</p><ul><li>расчёт радиуса по времени доставки</li><li>стоимость доставки по зонам</li><li>график работы под возможности кухни</li><li>настройка перерывов и выходных</li><li>работа в праздники и высокий сезон</li><li>правила приёма заказов в часы пик</li></ul><h2>Частые вопросы</h2><h3>Стоит ли расширять зону доставки?</h3><p>Только если кухня и логистика выдержат время в пути. Иначе расширение обернётся отменами, остывшей едой и падением рейтинга.</p><h3>Можно ли работать только в обед?</h3><p>Да, и для многих форматов это выгоднее круглосуточной работы. Главное — стабильность заявленного графика.</p>
+<p>Телефон: +7 931 002-82-22</p></article>
+</div>
+
+<script>
+(function () {
+  var s = document.getElementById("pp-static");
+  fetch("/?pp-shell=1", { cache: "no-cache" })
+    .then(function (r) { return r.text(); })
+    .then(function (html) {
+      var doc = new DOMParser().parseFromString(html, "text/html");
+      doc.querySelectorAll('link[rel="stylesheet"],link[rel="preconnect"],link[rel="preload"]')
+        .forEach(function (l) { document.head.appendChild(l.cloneNode(true)); });
+      if (s) s.remove();
+      doc.querySelectorAll("script").forEach(function (old) {
+        if (old.src && old.src.indexOf("inspector-min") !== -1) return;
+        var n = document.createElement("script");
+        if (old.type) n.type = old.type;
+        if (old.src) n.src = old.src; else n.textContent = old.textContent;
+        document.body.appendChild(n);
+      });
+    })
+    .catch(function () {});
+})();
+</script>
+</body>
+</html>

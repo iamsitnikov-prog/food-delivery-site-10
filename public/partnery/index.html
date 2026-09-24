@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Партнёры agregatory.pro — сервисы для ресторанов</title>
+<meta name="description" content="Сервисы, которые мы советуем клиентам и используем сами в работе с проектами."/>
+<meta name="author" content="agregatory.pro"/>
+<link rel="canonical" href="https://agregatory.pro/partnery"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="alternate" type="application/rss+xml" title="Блог agregatory.pro" href="https://agregatory.pro/rss.xml"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="agregatory.pro"/>
+<meta property="og:locale" content="ru_RU"/>
+<meta property="og:title" content="Партнёры agregatory.pro — сервисы для ресторанов"/>
+<meta property="og:description" content="Сервисы, которые мы советуем клиентам и используем сами в работе с проектами."/>
+<meta property="og:url" content="https://agregatory.pro/partnery"/>
+<meta property="og:image" content="https://agregatory.pro/og-preview.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Партнёры agregatory.pro — сервисы для ресторанов"/>
+<meta name="twitter:description" content="Сервисы, которые мы советуем клиентам и используем сами в работе с проектами."/>
+<meta name="twitter:image" content="https://agregatory.pro/og-preview.jpg"/>
+<meta name="theme-color" content="#FFD600"/>
+<style>
+  #pp-static{max-width:760px;margin:0 auto;padding:40px 20px;font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1a1a1a}
+  #pp-static h1{font-size:2em;line-height:1.15;margin:0 0 .4em}
+  #pp-static table{border-collapse:collapse;width:100%}
+  #pp-static td,#pp-static th{border:1px solid #ddd;padding:6px 10px;text-align:left}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<div id="pp-static">
+<h1>С кем работаем</h1>
+<h2>STARTER</h2><p>Приложение, сайт и программа лояльности для ресторана</p><p>Платформа для запуска собственной доставки: мобильное приложение, сайт заказа, CRM и программа лояльности в одной системе. Работает рядом с агрегаторами: заказы приходят напрямую, без комиссии сервиса.</p><ul><li>Своё приложение и сайт заказа под ваш бренд</li><li>CRM с RFM-анализом и рассылками по сегментам</li><li>Программа лояльности и встроенная геймификация</li><li>Безлимитные SMS-авторизации и push-уведомления</li><li>Готовые интеграции с iiko и r_keeper</li><li>Техподдержка 24/7, обработка более 20 000 заказов в день</li></ul><h2>ProLens</h2><p>Аналитика прибыли для партнёров Яндекс Еды</p><p>Расширение для браузера, которое показывает честную экономику заведения прямо в кабинете Яндекс Еды: комиссии, акции, продвижение и штрафы уже вычтены — остаётся чистый доход по каждому ресторану.</p><ul><li>Чистая прибыль после всех удержаний сервиса</li><li>Расходы на продвижение и акции на одной шкале с заказами</li><li>Отмены, штрафы и удержания — в рублях по каждой точке</li><li>ABC-анализ меню: какие блюда дают 80% выручки</li><li>Вся сеть или каждый ресторан отдельно, выгрузка в Excel</li></ul>
+</div>
+
+<script>
+(function () {
+  var s = document.getElementById("pp-static");
+  fetch("/?pp-shell=1", { cache: "no-cache" })
+    .then(function (r) { return r.text(); })
+    .then(function (html) {
+      var doc = new DOMParser().parseFromString(html, "text/html");
+      doc.querySelectorAll('link[rel="stylesheet"],link[rel="preconnect"],link[rel="preload"]')
+        .forEach(function (l) { document.head.appendChild(l.cloneNode(true)); });
+      if (s) s.remove();
+      doc.querySelectorAll("script").forEach(function (old) {
+        if (old.src && old.src.indexOf("inspector-min") !== -1) return;
+        var n = document.createElement("script");
+        if (old.type) n.type = old.type;
+        if (old.src) n.src = old.src; else n.textContent = old.textContent;
+        document.body.appendChild(n);
+      });
+    })
+    .catch(function () {});
+})();
+</script>
+</body>
+</html>
