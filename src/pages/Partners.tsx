@@ -58,8 +58,10 @@ const PartnersPage = () => {
 
               <p className="mt-4 min-h-[2.6em] text-[1.02em] leading-snug">{p.tagline}</p>
 
+              <p className="mt-4 flex-1 text-[0.92em] leading-relaxed text-cream-muted">{p.description}</p>
+
               {p.promo && (
-                <div className="mb-6 mt-5 inline-flex w-fit items-center gap-2.5 rounded-xl border border-brand/40 px-3.5 py-2.5">
+                <div className="mt-5 inline-flex w-fit items-center gap-2.5 rounded-xl border border-brand/40 px-3.5 py-2.5">
                   <span className="text-[0.75em] uppercase tracking-wide text-cream-muted">промокод</span>
                   <span className="font-display text-[1.05em] font-semibold tracking-[-0.01em] text-brand">
                     {p.promo.code}
@@ -67,17 +69,15 @@ const PartnersPage = () => {
                 </div>
               )}
 
-              <details className="group mt-auto border-t border-cream/15 pt-5">
+              <details className="group mt-6 border-t border-cream/15 pt-5">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[0.9em] font-medium text-cream-muted transition-colors hover:text-cream [&::-webkit-details-marker]:hidden">
-                  подробнее
+                  что входит
                   <Icon
                     name="ChevronDown"
                     size={17}
                     className="shrink-0 transition-transform duration-300 group-open:rotate-180"
                   />
                 </summary>
-
-                <p className="mt-4 text-[0.92em] leading-relaxed text-cream-muted">{p.description}</p>
 
                 <ul className="mt-5 space-y-2.5">
                   {p.points.map((point) => (
