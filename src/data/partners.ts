@@ -1,6 +1,7 @@
 export type Partner = {
   slug: string;
   name: string;
+  logo: string;
   tagline: string;
   url: string;
   category: string;
@@ -15,6 +16,7 @@ export const PARTNERS: Partner[] = [
   {
     slug: "starter",
     name: "STARTER",
+    logo: "/partners/starter.png",
     tagline: "Приложение, сайт и программа лояльности для ресторана",
     url: "https://www.starterapp.ru/?utm_source=partners&utm_medium=sitnikov",
     category: "своя доставка",
@@ -39,6 +41,7 @@ export const PARTNERS: Partner[] = [
   {
     slug: "prolens",
     name: "ProLens",
+    logo: "/partners/prolens.svg",
     tagline: "Аналитика прибыли для партнёров Яндекс Еды",
     url: "https://prolens.pro/",
     category: "аналитика",
@@ -58,6 +61,7 @@ export const PARTNERS: Partner[] = [
   {
     slug: "outline",
     name: "Outline",
+    logo: "/partners/outline.png",
     tagline: "Продвижение ресторана на Яндекс Картах и 2ГИС",
     url: "https://outlineagency.ru/",
     category: "геомаркетинг",

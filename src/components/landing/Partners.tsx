@@ -26,16 +26,31 @@ const Partners = () => {
             rel="noopener noreferrer"
             className="reveal group flex flex-col rounded-[28px] bg-surface p-7 text-cream transition-transform duration-500 hover:-translate-y-1 md:p-8"
           >
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="font-display text-[1.5em] font-semibold tracking-[-0.03em]">{p.name}</span>
-              <span className="rounded-lg bg-brand px-3 py-1.5 text-[0.78em] font-medium text-foreground">
-                {p.category}
-              </span>
-              {p.isNew && (
-                <span className="rounded-lg border border-brand px-3 py-1.5 text-[0.78em] font-medium uppercase tracking-wide text-brand">
-                  новое
+            <div className="flex items-start gap-4">
+              <img
+                src={p.logo}
+                alt={`Логотип ${p.name}`}
+                width={96}
+                height={96}
+                loading="lazy"
+                decoding="async"
+                className="h-12 w-12 shrink-0 rounded-xl bg-cream/[0.07] object-contain p-2"
+              />
+              <div className="min-w-0 flex-1">
+                <span className="font-display text-[1.5em] font-semibold leading-tight tracking-[-0.03em]">
+                  {p.name}
                 </span>
-              )}
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  <span className="rounded-lg bg-brand px-3 py-1.5 text-[0.78em] font-medium text-foreground">
+                    {p.category}
+                  </span>
+                  {p.isNew && (
+                    <span className="rounded-lg border border-brand px-3 py-1.5 text-[0.78em] font-medium uppercase tracking-wide text-brand">
+                      новое
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
 
             <p className="mt-4 text-[1.05em] leading-snug">{p.tagline}</p>

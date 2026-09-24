@@ -44,16 +44,31 @@ const PartnersPage = () => {
               key={p.slug}
               className="flex flex-col rounded-[28px] bg-surface p-7 text-cream md:p-8"
             >
-              <div className="flex flex-wrap items-center gap-2.5">
-                <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.03em]">{p.name}</h2>
-                <span className="rounded-lg bg-brand px-2.5 py-1 text-[0.75em] font-medium text-foreground">
-                  {p.category}
-                </span>
-                {p.isNew && (
-                  <span className="rounded-lg border border-brand px-2.5 py-1 text-[0.75em] font-medium uppercase tracking-wide text-brand">
-                    новое
-                  </span>
-                )}
+              <div className="flex items-start gap-4">
+                <img
+                  src={p.logo}
+                  alt={`Логотип ${p.name}`}
+                  width={96}
+                  height={96}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-12 w-12 shrink-0 rounded-xl bg-cream/[0.07] object-contain p-2"
+                />
+                <div className="min-w-0 flex-1">
+                  <h2 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.03em]">
+                    {p.name}
+                  </h2>
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    <span className="rounded-lg bg-brand px-2.5 py-1 text-[0.75em] font-medium text-foreground">
+                      {p.category}
+                    </span>
+                    {p.isNew && (
+                      <span className="rounded-lg border border-brand px-2.5 py-1 text-[0.75em] font-medium uppercase tracking-wide text-brand">
+                        новое
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
 
               <p className="mt-4 min-h-[2.6em] text-[1.02em] leading-snug">{p.tagline}</p>
