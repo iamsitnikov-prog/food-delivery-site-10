@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 import CalcField from "./CalcField";
 import CalcToggle from "./CalcToggle";
 import CalcCheck from "./CalcCheck";
+import CalcPrint from "./CalcPrint";
 import {
   calculate,
   DEFAULTS,
@@ -89,6 +90,18 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
 
   const show = (block: CalcMode) => mode === "all" || mode === block;
   const isVat = mode === "vat";
+
+  const handlePrint = () => {
+    reachGoal("calc_print", { mode });
+    document.body.classList.add("printing-calc");
+    const cleanup = () => {
+      document.body.classList.remove("printing-calc");
+      window.removeEventListener("afterprint", cleanup);
+    };
+    window.addEventListener("afterprint", cleanup);
+    window.print();
+    setTimeout(cleanup, 1500);
+  };
 
   const drrColor =
     r.drrVerdict === "good" ? "text-brand" : r.drrVerdict === "ok" ? "text-cream" : "text-red-400";
@@ -348,14 +361,24 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
             )}
           </div>
 
-          <button
-            type="button"
-            onClick={() => setInput(DEFAULTS)}
-            className="mt-6 inline-flex items-center gap-2 text-[0.88em] text-cream-muted transition-colors hover:text-cream"
-          >
-            <Icon name="RotateCcw" size={15} />
-            сбросить значения
-          </button>
+          <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <button
+              type="button"
+              onClick={() => setInput(DEFAULTS)}
+              className="inline-flex items-center gap-2 text-[0.88em] text-cream-muted transition-colors hover:text-cream"
+            >
+              <Icon name="RotateCcw" size={15} />
+              сбросить значения
+            </button>
+            <button
+              type="button"
+              onClick={handlePrint}
+              className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-4 py-2.5 text-[0.88em] font-medium text-cream transition-colors hover:border-brand hover:bg-brand hover:text-foreground"
+            >
+              <Icon name="Download" size={15} />
+              сохранить расчёт в PDF
+            </button>
+          </div>
         </div>
 
         <div className="space-y-4">
@@ -524,6 +547,8 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
           </a>
         </div>
       </div>
+
+      <CalcPrint input={input} r={r} title="Экономика доставки — расчёт" />
     </div>
   );
 };

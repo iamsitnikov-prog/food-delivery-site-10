@@ -204,3 +204,32 @@
     transform: none;
   }
 }
+
+@media print {
+  body.printing-calc * {
+    visibility: hidden !important;
+  }
+  body.printing-calc #calc-print,
+  body.printing-calc #calc-print * {
+    visibility: visible !important;
+  }
+  body.printing-calc #calc-print {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    color: #111;
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  body.printing-calc {
+    background: #fff !important;
+  }
+  @page {
+    size: A4;
+    margin: 14mm 14mm 12mm;
+  }
+}
