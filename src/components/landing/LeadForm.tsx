@@ -183,7 +183,19 @@ const LeadForm = () => {
 
               <div>
                 <p className="mb-2 text-[0.86em] text-cream-muted">Выберите услугу</p>
-                <div className="flex flex-wrap gap-2">
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  aria-label="Выберите услугу"
+                  className="h-12 w-full rounded-xl border border-cream/25 bg-transparent px-4 text-[0.95em] text-cream sm:hidden"
+                >
+                  {STATUSES.map((s) => (
+                    <option key={s} value={s} className="bg-surface text-cream">
+                      {s}
+                    </option>
+                  ))}
+                </select>
+                <div className="hidden flex-wrap gap-2 sm:flex">
                   {STATUSES.map((s) => (
                     <button
                       type="button"

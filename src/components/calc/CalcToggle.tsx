@@ -29,7 +29,9 @@ const CalcToggle = <T extends string | number>({
         </span>
       )}
     </span>
-    <div className="mt-2 flex flex-wrap gap-2">
+    <div
+      className={`mt-2 gap-2 ${options.length > 3 ? "grid grid-cols-1 min-[400px]:grid-cols-2 sm:flex sm:flex-wrap" : "flex flex-wrap"}`}
+    >
       {options.map((o) => (
         <button
           key={String(o.value)}

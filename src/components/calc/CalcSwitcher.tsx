@@ -21,7 +21,10 @@ const CalcSwitcher = ({ active }: { active?: string }) => {
   ];
 
   return (
-    <nav aria-label="Калькуляторы" className="flex flex-wrap gap-2.5">
+    <nav
+      aria-label="Калькуляторы"
+      className="-mx-5 flex gap-2.5 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:flex-wrap md:overflow-visible md:px-0"
+    >
       {items.map((p) => {
         const isActive = (active || "") === p.slug;
         return (
@@ -29,7 +32,7 @@ const CalcSwitcher = ({ active }: { active?: string }) => {
             key={p.slug || "all"}
             to={p.slug ? `/kalkulyatory/${p.slug}` : "/kalkulyatory"}
             aria-current={isActive ? "page" : undefined}
-            className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-[0.88em] font-medium transition-colors ${
+            className={`inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl border px-4 py-2.5 text-[0.88em] font-medium transition-colors ${
               isActive
                 ? "border-foreground bg-foreground text-brand"
                 : p.accent

@@ -140,10 +140,10 @@ const Blog = () => {
       )}
 
       <section className="px-5 pb-16 md:px-14 md:pb-24">
-        <div className="mb-10 flex flex-wrap gap-2">
+        <div className="mb-10 -mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
           <button
             onClick={() => setGroup(null)}
-            className={`rounded-xl px-4 py-2.5 text-[0.9em] transition-colors ${
+            className={`shrink-0 whitespace-nowrap rounded-xl px-4 py-2.5 text-[0.9em] transition-colors ${
               group === null ? "bg-primary text-primary-foreground" : "border border-primary/30 hover:bg-pale"
             }`}
           >
@@ -159,7 +159,7 @@ const Blog = () => {
               <button
                 key={g.id}
                 onClick={() => setGroup(g.id)}
-                className={`inline-flex items-center rounded-xl px-4 py-2.5 text-[0.9em] transition-colors ${
+                className={`inline-flex shrink-0 items-center whitespace-nowrap rounded-xl px-4 py-2.5 text-[0.9em] transition-colors ${
                   active ? "bg-primary text-primary-foreground" : "border border-primary/30 hover:bg-pale"
                 }`}
               >

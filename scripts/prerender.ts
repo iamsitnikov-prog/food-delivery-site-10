@@ -7,6 +7,7 @@ import { QUIZ_QUESTIONS } from "../src/data/quiz";
 import { CALC_PAGES, VISIBLE_CALC_PAGES } from "../src/data/calculators";
 import { CHECKLIST_PAGES } from "../src/data/checklists";
 import { READ_CHANNELS } from "../src/data/channels";
+import { QUIZZES } from "../src/data/quizzes";
 
 const SITE = "https://agregatory.pro";
 const OUT = path.resolve(process.cwd(), "public");
@@ -150,6 +151,37 @@ pages.push({
 <p>После теста предлагаем бесплатный разбор проекта: смотрим карточку глазами гостя, сравниваем с конкурентами в районе и показываем точки роста.</p>
 <p>Телефон: +7 931 002-82-22</p>`,
 });
+
+pages.push({
+  route: "/testy",
+  title: "Тесты для ресторанов на агрегаторах доставки | agregatory.pro",
+  description:
+    "Бесплатные тесты: экспресс-аудит заведения, знание кабинета Яндекс Еды, экономика доставки, качество и рейтинг, требования 289-ФЗ. С разбором ответов.",
+  body: `<h1>Тесты о работе с агрегаторами</h1>
+<p>Проверьте своё заведение или собственные знания. Все тесты бесплатны, регистрация не нужна.</p>
+<ul>${QUIZZES.map(
+    (q) =>
+      `<li><a href="/testy/${q.slug}">${esc(clean(q.navLabel))}</a> — ${esc(clean(q.lead))}</li>`,
+  ).join("")}</ul>
+<p>Телефон: +7 931 002-82-22</p>`,
+});
+
+for (const q of QUIZZES) {
+  pages.push({
+    route: `/testy/${q.slug}`,
+    title: q.title,
+    description: q.description,
+    body: `<h1>${esc(clean(q.h1))}</h1>
+<p>${esc(clean(q.intro))}</p>
+<p>Вопросов: ${q.questions.length}. Время прохождения: ${esc(clean(q.minutes))}.</p>
+<h2>О чём спрашиваем</h2>
+<ul>${q.questions
+      .map((x) => `<li>${esc(clean(x.question))}${x.note ? ` ${esc(clean(x.note))}` : ""}</li>`)
+      .join("")}</ul>
+<p><a href="/testy">Все тесты</a></p>
+<p>Телефон: +7 931 002-82-22</p>`,
+  });
+}
 
 pages.push({
   route: "/kalkulyatory",

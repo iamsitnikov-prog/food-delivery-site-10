@@ -16,6 +16,7 @@ const Blog = lazy(() => import("./pages/Blog"));
 const PartnersPage = lazy(() => import("./pages/Partners"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Quiz = lazy(() => import("./pages/Quiz"));
+const Quizzes = lazy(() => import("./pages/Quizzes"));
 const Calculators = lazy(() => import("./pages/Calculators"));
 const CalculatorPage = lazy(() => import("./pages/CalculatorPage"));
 const Checklists = lazy(() => import("./pages/Checklists"));
@@ -47,6 +48,8 @@ const App = () => {
           <Route path="/partnery" element={<PartnersPage />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/test" element={<Quiz />} />
+          <Route path="/testy" element={<Quizzes />} />
+          <Route path="/testy/:slug" element={<Quiz />} />
           <Route path="/kalkulyatory" element={<Calculators />} />
           <Route path="/kalkulyatory/:slug" element={<CalculatorPage />} />
           <Route path="/chek-listy" element={<Checklists />} />

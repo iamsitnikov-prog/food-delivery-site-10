@@ -6,6 +6,9 @@ import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
 import ChannelsBlock from "@/components/shared/ChannelsBlock";
+import CityCaseBlock from "@/components/seo/CityCaseBlock";
+import LinkCloud from "@/components/seo/LinkCloud";
+import { getCityCase } from "@/data/city-cases";
 import ExpertiseStrip from "@/components/landing/ExpertiseStrip";
 import useSeo from "@/hooks/use-seo";
 import { CITY_PAGES, SERVICE_PAGES, findPage } from "@/data/seo-pages";
@@ -66,6 +69,7 @@ const SeoLanding = () => {
   if (!page) return <Navigate to="/404" replace />;
 
   const others = (page.kind === "service" ? SERVICE_PAGES : CITY_PAGES).filter((p) => p.slug !== page.slug);
+  const cityCase = page.kind === "city" ? getCityCase(page.slug) : undefined;
   const cross = page.kind === "service" ? CITY_PAGES : SERVICE_PAGES;
   const base = page.kind === "service" ? "/uslugi" : "/goroda";
   const crossBase = page.kind === "service" ? "/goroda" : "/uslugi";
@@ -136,7 +140,13 @@ const SeoLanding = () => {
         </div>
       </section>
 
-      <div className="pt-16 md:pt-24">
+      {cityCase && (
+        <section className="px-5 pb-16 pt-16 md:px-14 md:pb-20 md:pt-24">
+          <CityCaseBlock data={cityCase} city={page.navLabel} />
+        </section>
+      )}
+
+      <div className={cityCase ? "" : "pt-16 md:pt-24"}>
         <ExpertiseStrip />
       </div>
 
@@ -168,18 +178,7 @@ const SeoLanding = () => {
                 Это лишь часть городов&nbsp;— работаем с&nbsp;ресторанами по&nbsp;всей России, от&nbsp;Калининграда до&nbsp;Дальнего Востока.
               </p>
             )}
-            <ul className="mt-5 flex flex-wrap gap-2">
-              {others.map((o) => (
-                <li key={o.slug}>
-                  <Link
-                    to={`${base}/${o.slug}`}
-                    className="inline-flex rounded-xl border border-primary/30 px-4 py-2.5 text-[0.92em] transition-colors hover:bg-primary hover:text-primary-foreground"
-                  >
-                    {o.navLabel}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <LinkCloud items={others} base={base} />
           </div>
           <div>
             <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
@@ -190,18 +189,7 @@ const SeoLanding = () => {
                 Обучение и&nbsp;поддержка проходят онлайн, поэтому подключаем и&nbsp;ведём рестораны в&nbsp;любом городе страны. Ниже&nbsp;— города, по&nbsp;которым мы&nbsp;расписали местную специфику.
               </p>
             )}
-            <ul className="mt-5 flex flex-wrap gap-2">
-              {cross.map((o) => (
-                <li key={o.slug}>
-                  <Link
-                    to={`${crossBase}/${o.slug}`}
-                    className="inline-flex rounded-xl border border-primary/30 px-4 py-2.5 text-[0.92em] transition-colors hover:bg-primary hover:text-primary-foreground"
-                  >
-                    {o.navLabel}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <LinkCloud items={cross} base={crossBase} />
           </div>
         </div>
       </section>
