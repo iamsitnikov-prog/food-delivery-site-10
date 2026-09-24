@@ -5,6 +5,7 @@ import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
 import Calculator from "@/components/calc/Calculator";
 import useSeo from "@/hooks/use-seo";
+import CalcSwitcher from "@/components/calc/CalcSwitcher";
 import { CALC_PAGES } from "@/data/calculators";
 
 const CalculatorsPage = () => {
@@ -54,17 +55,8 @@ const CalculatorsPage = () => {
             Введите свои цифры один раз&nbsp;— увидите рентабельность заказа, ДРР, окупаемость канала и&nbsp;порог по&nbsp;НДС. Бесплатно, без регистрации, данные никуда не&nbsp;отправляются.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-2.5">
-            {CALC_PAGES.map((p) => (
-              <Link
-                key={p.slug}
-                to={`/kalkulyatory/${p.slug}`}
-                className="inline-flex items-center gap-2 rounded-xl border border-foreground/20 px-4 py-2.5 text-[0.88em] font-medium transition-colors hover:bg-foreground hover:text-brand"
-              >
-                <Icon name={p.icon} size={16} />
-                {p.navLabel}
-              </Link>
-            ))}
+          <div className="mt-8">
+            <CalcSwitcher />
           </div>
         </section>
       </div>

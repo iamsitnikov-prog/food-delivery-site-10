@@ -90,46 +90,48 @@ const Section = ({
 
 const ChannelBlock = ({ c, title }: { c: ChannelResult; title: string }) => (
   <>
-    <Row label="Средний чек" value={`${money(c.avgCheck)} ₽`} muted />
+    <Row label="Средний чек · average check" value={`${money(c.avgCheck)} ₽`} muted />
+    <Row label="Заказов в день · orders" value={`${money(c.orders)} шт`} muted />
+    <Row label="Выручка в месяц · revenue" value={`${money(c.revenuePerMonth)} ₽`} />
     {c.serviceFeeRub > 0 && (
-      <Row label="Сервисный сбор с гостя" value={`+${money(c.serviceFeeRub)} ₽`} muted />
+      <Row label="Сервисный сбор · service fee" value={`+${money(c.serviceFeeRub)} ₽`} muted />
     )}
     {c.serviceFeeRub > 0 && <Row label="Доход с заказа" value={`${money(c.income)} ₽`} />}
-    {c.commissionRub > 0 && <Row label="Комиссия" value={`−${money(c.commissionRub)} ₽`} muted />}
+    {c.commissionRub > 0 && <Row label="Комиссия · commission" value={`−${money(c.commissionRub)} ₽`} muted />}
     {c.subscriptionRub > 0 && (
-      <Row label="Подписка сервиса" value={`−${money(c.subscriptionRub)} ₽`} muted />
+      <Row label="Подписка · subscription" value={`−${money(c.subscriptionRub)} ₽`} muted />
     )}
     {c.deliveryFeeRub > 0 && (
       <Row label="Вызов Яндекс Доставки" value={`−${money(c.deliveryFeeRub)} ₽`} muted />
     )}
-    {c.adRub > 0 && <Row label="Продвижение" value={`−${money(c.adRub)} ₽`} muted />}
+    {c.adRub > 0 && <Row label="Продвижение · ad spend" value={`−${money(c.adRub)} ₽`} muted />}
     {c.marketingRub > 0 && (
       <Row label="Маркетинг Ultima" value={`−${money(c.marketingRub)} ₽`} muted />
     )}
-    {c.promoRub > 0 && <Row label="Скидки и акции" value={`−${money(c.promoRub)} ₽`} muted />}
-    {c.refundRub > 0 && <Row label="Возвраты гостям" value={`−${money(c.refundRub)} ₽`} muted />}
+    {c.promoRub > 0 && <Row label="Скидки и акции · promo" value={`−${money(c.promoRub)} ₽`} muted />}
+    {c.refundRub > 0 && <Row label="Возвраты · refunds" value={`−${money(c.refundRub)} ₽`} muted />}
     {c.penaltyRub > 0 && (
-      <Row label="Штрафы и удержания" value={`−${money(c.penaltyRub)} ₽`} muted />
+      <Row label="Штрафы · penalties" value={`−${money(c.penaltyRub)} ₽`} muted />
     )}
-    <Row label="Придёт на счёт" value={`${money(c.payoutPerOrder)} ₽`} accent strong />
+    <Row label="Придёт на счёт · payout" value={`${money(c.payoutPerOrder)} ₽`} accent strong />
     <Row label="Доля от дохода" value={percent(c.payoutPercent)} />
-    <Row label="Себестоимость блюд" value={`−${money(c.foodCostRub)} ₽`} muted />
-    <Row label="Упаковка" value={`−${money(c.packagingRub)} ₽`} muted />
+    <Row label="Себестоимость · food cost" value={`−${money(c.foodCostRub)} ₽`} muted />
+    <Row label="Упаковка · packaging" value={`−${money(c.packagingRub)} ₽`} muted />
     {c.suppliesRub > 0 && (
-      <Row label="Расходные материалы" value={`−${money(c.suppliesRub)} ₽`} muted />
+      <Row label="Расходники · supplies" value={`−${money(c.suppliesRub)} ₽`} muted />
     )}
     {c.writeOffRub > 0 && (
-      <Row label="Списания продуктов" value={`−${money(c.writeOffRub)} ₽`} muted />
+      <Row label="Списания · write-offs" value={`−${money(c.writeOffRub)} ₽`} muted />
     )}
-    {c.royaltyRub > 0 && <Row label="Роялти" value={`−${money(c.royaltyRub)} ₽`} muted />}
+    {c.royaltyRub > 0 && <Row label="Роялти · royalty" value={`−${money(c.royaltyRub)} ₽`} muted />}
     <Row
       label={`Остаётся с заказа — ${title}`}
       value={`${money(c.profitPerOrder)} ₽`}
       accent
       strong
     />
-    <Row label="Маржинальность" value={percent(c.marginPercent)} />
-    <Row label="Валовая прибыль за месяц" value={`${money(c.profitPerMonth)} ₽`} />
+    <Row label="Маржинальность · margin" value={percent(c.marginPercent)} />
+    <Row label="Валовая прибыль · gross profit" value={`${money(c.profitPerMonth)} ₽`} />
   </>
 );
 
@@ -206,7 +208,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
               <Section title="Агрегатор" icon="Store">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <CalcField
-                    label="Средний чек"
+                    label="Средний чек · average check"
                     suffix="₽"
                     value={input.aggAvgCheck}
                     onChange={set("aggAvgCheck")}
@@ -214,12 +216,20 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                     hint="Средняя сумма заказа на агрегаторе по данным кабинета."
                   />
                   <CalcField
-                    label="Заказов в день"
+                    label="Заказов в день · orders"
                     suffix="шт"
                     value={input.aggOrdersPerDay}
                     onChange={set("aggOrdersPerDay")}
                     hint="Среднее количество заказов с агрегатора за день."
                   />
+                </div>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 rounded-xl bg-brand/12 px-4 py-3">
+                  <span className="text-[0.88em] text-cream-muted">
+                    Выручка · revenue в месяц
+                  </span>
+                  <span className="font-display text-[1.15em] font-semibold tabular-nums text-brand">
+                    {money(r.agg.revenuePerMonth)} ₽
+                  </span>
                 </div>
 
                 {!isVat && (
@@ -265,7 +275,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
 
                     <div className="grid gap-4 sm:grid-cols-2">
                       <CalcField
-                        label="Комиссия сервиса"
+                        label="Комиссия · commission"
                         suffix="%"
                         value={input.commission}
                         onChange={set("commission")}
@@ -275,16 +285,17 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                         hint="Подставляется по способу доставки. Уточните свою ставку в договоре."
                       />
                       <CalcField
-                        label="Подписка сервиса"
+                        label="Подписка · subscription"
                         suffix="%"
                         value={input.subscriptionShare}
                         onChange={set("subscriptionShare")}
-                        max={100}
                         step={0.1}
+                        unit={input.subscriptionUnit}
+                        onUnitChange={(u) => setInput((p) => ({ ...p, subscriptionUnit: u }))}
                         hint="Плата за подписку — обычно около 1,44% от заказа. Указана отдельной строкой в актах."
                       />
                       <CalcField
-                        label="Продвижение (CPA, буст)"
+                        label="Продвижение · ad spend (CPA)"
                         suffix="%"
                         value={input.aggAdShare}
                         onChange={set("aggAdShare")}
@@ -294,7 +305,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                         hint="Расходы на платное продвижение внутри сервиса."
                       />
                       <CalcField
-                        label="Скидки и акции"
+                        label="Скидки и акции · promo"
                         suffix="%"
                         value={input.aggPromoShare}
                         onChange={set("aggPromoShare")}
@@ -304,21 +315,23 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                         hint="Ваша доля софинансирования акций."
                       />
                       <CalcField
-                        label="Возвраты за счёт ресторана"
+                        label="Возвраты · refunds"
                         suffix="%"
                         value={input.refundShare}
                         onChange={set("refundShare")}
-                        max={100}
                         step={0.1}
+                        unit={input.refundUnit}
+                        onUnitChange={(u) => setInput((p) => ({ ...p, refundUnit: u }))}
                         hint="Компенсации гостям за счёт заведения. По практике около 1% от оборота."
                       />
                       <CalcField
-                        label="Штрафы и удержания"
+                        label="Штрафы · penalties"
                         suffix="%"
                         value={input.penaltyShare}
                         onChange={set("penaltyShare")}
-                        max={100}
                         step={0.1}
+                        unit={input.penaltyUnit}
+                        onUnitChange={(u) => setInput((p) => ({ ...p, penaltyUnit: u }))}
                         hint="Удержания по п. 14.7 оферты и прочие штрафы."
                       />
                     </div>
@@ -338,7 +351,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
               <Section title="Собственная доставка" icon="House">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <CalcField
-                    label="Средний чек"
+                    label="Средний чек · average check"
                     suffix="₽"
                     value={input.selfAvgCheck}
                     onChange={set("selfAvgCheck")}
@@ -346,23 +359,32 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                     hint="Средний чек заказа на собственной доставке."
                   />
                   <CalcField
-                    label="Заказов в день"
+                    label="Заказов в день · orders"
                     suffix="шт"
                     value={input.selfOrdersPerDay}
                     onChange={set("selfOrdersPerDay")}
                     hint="Среднее количество заказов со своих каналов за день."
                   />
                 </div>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 rounded-xl bg-brand/12 px-4 py-3">
+                  <span className="text-[0.88em] text-cream-muted">
+                    Выручка · revenue в месяц
+                  </span>
+                  <span className="font-display text-[1.15em] font-semibold tabular-nums text-brand">
+                    {money(r.self.revenuePerMonth)} ₽
+                  </span>
+                </div>
 
                 {!isVat && (
                   <>
                     <CalcField
-                      label="Комиссия платформы"
+                      label="Комиссия платформы · commission"
                       suffix="%"
                       value={input.selfCommission}
                       onChange={set("selfCommission")}
-                      max={100}
                       step={0.5}
+                      unit={input.selfCommissionUnit}
+                      onUnitChange={(u) => setInput((p) => ({ ...p, selfCommissionUnit: u }))}
                       hint="Если сайт или приложение работают на конструкторе с оплатой за заказ — укажите ставку."
                       note="Свой сайт без комиссии — оставьте 0"
                     />
@@ -388,7 +410,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
 
                     <div className="grid gap-4 sm:grid-cols-2">
                       <CalcField
-                        label="Продвижение"
+                        label="Продвижение · ad spend"
                         suffix="%"
                         value={input.selfAdShare}
                         onChange={set("selfAdShare")}
@@ -398,21 +420,23 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                         hint="Реклама своих каналов: контекст, таргет, рассылки."
                       />
                       <CalcField
-                        label="Скидки и акции"
+                        label="Скидки и акции · promo"
                         suffix="%"
                         value={input.selfPromoShare}
                         onChange={set("selfPromoShare")}
-                        max={100}
                         step={0.5}
+                        unit={input.selfPromoUnit}
+                        onUnitChange={(u) => setInput((p) => ({ ...p, selfPromoUnit: u }))}
                         hint="Промокоды и скидки на своих каналах."
                       />
                       <CalcField
-                        label="Роялти по франшизе"
+                        label="Роялти · royalty"
                         suffix="%"
                         value={input.royaltyShare}
                         onChange={set("royaltyShare")}
-                        max={100}
                         step={0.5}
+                        unit={input.royaltyUnit}
+                        onUnitChange={(u) => setInput((p) => ({ ...p, royaltyUnit: u }))}
                         hint="Отчисления франчайзеру с выручки собственных каналов. Нет франшизы — оставьте 0."
                       />
                     </div>
@@ -432,7 +456,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
               <Section title="Себестоимость заказа" icon="ChefHat">
                 <div className="grid gap-4 sm:grid-cols-2">
                   <CalcField
-                    label="Фудкост"
+                    label="Фудкост · food cost"
                     suffix="%"
                     value={input.foodCost}
                     onChange={set("foodCost")}
@@ -441,7 +465,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                     hint="Себестоимость продуктов — в процентах от цены блюда или в рублях на заказ."
                   />
                   <CalcField
-                    label="Упаковка на заказ"
+                    label="Упаковка · packaging"
                     suffix="₽"
                     value={input.packaging}
                     onChange={set("packaging")}
@@ -449,7 +473,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                     hint="Коробки, контейнеры, приборы, пакеты."
                   />
                   <CalcField
-                    label="Расходные материалы"
+                    label="Расходники · supplies"
                     suffix="₽"
                     value={input.suppliesPerOrder}
                     onChange={set("suppliesPerOrder")}
@@ -457,12 +481,13 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                     hint="Перчатки, плёнка, фольга, салфетки на один заказ."
                   />
                   <CalcField
-                    label="Списания продуктов"
+                    label="Списания · write-offs"
                     suffix="%"
                     value={input.writeOffShare}
                     onChange={set("writeOffShare")}
-                    max={100}
                     step={0.5}
+                    unit={input.writeOffUnit}
+                    onUnitChange={(u) => setInput((p) => ({ ...p, writeOffUnit: u }))}
                     hint="Списание продуктов с истекшим сроком годности, в процентах от выручки."
                   />
                 </div>
@@ -538,7 +563,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                       hint="Зарплата одного сборщика в месяц."
                     />
                     <CalcField
-                      label="Страховые взносы"
+                      label="Страховые взносы · payroll tax"
                       suffix="%"
                       value={input.insuranceRate}
                       onChange={set("insuranceRate")}
@@ -559,7 +584,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                 {input.overheadEnabled && (
                   <div className="grid gap-4 sm:grid-cols-2">
                     <CalcField
-                      label="Общие расходы ресторана"
+                      label="Общие расходы · overhead"
                       suffix="₽/мес"
                       value={input.overheadTotal}
                       onChange={set("overheadTotal")}
@@ -581,7 +606,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <CalcField
-                    label="Постоянные расходы"
+                    label="Постоянные расходы · fixed costs"
                     suffix="₽/мес"
                     value={input.fixedPerMonth}
                     onChange={set("fixedPerMonth")}
@@ -589,7 +614,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                     hint="Прочие расходы на доставку, кроме зарплат и общих расходов ресторана."
                   />
                   <CalcField
-                    label="IT-системы"
+                    label="IT-системы · IT costs"
                     suffix="₽/мес"
                     value={input.itPerMonth}
                     onChange={set("itPerMonth")}
@@ -597,7 +622,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                     hint="Касса, POS-система, сайт, техподдержка — в части, относящейся к доставке."
                   />
                   <CalcField
-                    label="Амортизация оборудования"
+                    label="Амортизация · depreciation"
                     suffix="₽/мес"
                     value={input.depreciationPerMonth}
                     onChange={set("depreciationPerMonth")}
@@ -607,7 +632,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                 </div>
 
                 <CalcToggle
-                  label="Система налогообложения"
+                  label="Налоговый режим · tax system"
                   value={input.taxMode}
                   onChange={(v) => {
                     setInput((p) => ({ ...p, taxMode: v as TaxMode }));
@@ -666,17 +691,17 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
 
           {show("profit") && r.bothChannels && (
             <Card title="Итого по каналам" icon="Layers">
-              <Row label="Заказов в день" value={`${money(r.ordersPerDay)} шт`} muted />
-              <Row label="Средний чек" value={`${money(r.avgCheck)} ₽`} muted />
-              <Row label="Оборот в месяц" value={`${money(r.revenuePerMonth)} ₽`} />
+              <Row label="Заказов в день · orders" value={`${money(r.ordersPerDay)} шт`} muted />
+              <Row label="Средний чек · average check" value={`${money(r.avgCheck)} ₽`} muted />
+              <Row label="Выручка в месяц · revenue" value={`${money(r.revenuePerMonth)} ₽`} />
               <Row label="Поступит на счёт" value={`${money(r.payoutPerMonth)} ₽`} muted />
               <Row
-                label="Валовая прибыль"
+                label="Валовая прибыль · gross profit"
                 value={`${money(r.grossProfitPerMonth)} ₽`}
                 accent
                 strong
               />
-              <Row label="Средняя маржинальность" value={percent(r.marginPercent)} />
+              <Row label="Маржинальность · margin" value={percent(r.marginPercent)} />
             </Card>
           )}
 
@@ -688,7 +713,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
           )}
 
           {show("drr") && r.anyChannel && (
-            <Card title="ДРР — доля рекламных расходов" icon="Percent">
+            <Card title="ДРР · доля рекламных расходов" icon="Percent">
               <div className="flex flex-wrap items-end gap-3">
                 <span className={`font-display text-[2.6em] font-semibold leading-none ${drrColor}`}>
                   {percent(r.drr)}
@@ -703,11 +728,12 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                   </>
                 )}
                 <Row
-                  label="Расходы на рекламу в месяц"
+                  label="Расходы на рекламу · ad spend"
                   value={`${money(r.adSpendPerMonth)} ₽`}
                   muted
                 />
-                <Row label="Оборот в месяц" value={`${money(r.revenuePerMonth)} ₽`} muted />
+                <Row label="Выручка · revenue" value={`${money(r.revenuePerMonth)} ₽`} muted />
+                <Row label="ROMI · возврат на маркетинг" value={percent(r.romi, 0)} />
                 <Row label="Предельный ДРР при вашей марже" value={percent(r.drrLimit)} />
               </div>
               <p className="mt-3 text-[0.86em] leading-snug text-cream-muted">
@@ -731,15 +757,15 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
               {r.packersCost > 0 && (
                 <Row label="Сборщики" value={`${money(r.packersCost)} ₽`} muted />
               )}
-              <Row label="Страховые взносы" value={`${money(r.insuranceCost)} ₽`} muted />
-              <Row label="Всего на персонал" value={`${money(r.staffTotal)} ₽`} accent strong />
+              <Row label="Страховые взносы · payroll tax" value={`${money(r.insuranceCost)} ₽`} muted />
+              <Row label="Всего · payroll" value={`${money(r.staffTotal)} ₽`} accent strong />
               <Row label="В пересчёте на заказ" value={`${money(r.staffPerOrder)} ₽`} />
             </Card>
           )}
 
           {show("breakeven") && r.anyChannel && (
             <Card title="Итоги за месяц" icon="TrendingUp">
-              <Row label="Оборот" value={`${money(r.revenuePerMonth)} ₽`} muted />
+              <Row label="Выручка · revenue" value={`${money(r.revenuePerMonth)} ₽`} muted />
               {r.bothChannels && (
                 <>
                   <Row
@@ -754,12 +780,12 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                   />
                 </>
               )}
-              <Row label="Валовая прибыль" value={`${money(r.grossProfitPerMonth)} ₽`} strong />
+              <Row label="Валовая прибыль · gross profit" value={`${money(r.grossProfitPerMonth)} ₽`} strong />
               {r.staffTotal > 0 && (
-                <Row label="Персонал доставки" value={`−${money(r.staffTotal)} ₽`} muted />
+                <Row label="Персонал · payroll" value={`−${money(r.staffTotal)} ₽`} muted />
               )}
               {r.overheadCost > 0 && (
-                <Row label="Доля общих расходов" value={`−${money(r.overheadCost)} ₽`} muted />
+                <Row label="Общие расходы · overhead" value={`−${money(r.overheadCost)} ₽`} muted />
               )}
               {input.fixedPerMonth > 0 && (
                 <Row label="Постоянные расходы" value={`−${money(input.fixedPerMonth)} ₽`} muted />
@@ -767,11 +793,11 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
               {r.itCost > 0 && <Row label="IT-системы" value={`−${money(r.itCost)} ₽`} muted />}
               <Row label="EBITDA" value={`${money(r.ebitda)} ₽`} strong />
               {r.depreciationCost > 0 && (
-                <Row label="Амортизация" value={`−${money(r.depreciationCost)} ₽`} muted />
+                <Row label="Амортизация · depreciation" value={`−${money(r.depreciationCost)} ₽`} muted />
               )}
               <Row label={r.taxLabel} value={`−${money(r.taxAmount)} ₽`} muted />
-              <Row label="Чистая прибыль" value={`${money(r.netProfitPerMonth)} ₽`} accent strong />
-              <Row label="Чистая рентабельность" value={percent(r.netMarginPercent)} />
+              <Row label="Чистая прибыль · net profit" value={`${money(r.netProfitPerMonth)} ₽`} accent strong />
+              <Row label="Рентабельность · net margin" value={percent(r.netMarginPercent)} />
               {r.operatingTotal > 0 && (
                 <Row
                   label="Заказов в день для выхода в ноль"
@@ -790,7 +816,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
 
           {show("vat") && r.anyChannel && (
             <Card title="НДС при работе на УСН" icon="Receipt">
-              <Row label="Оборот за год" value={`${money(r.revenuePerYear)} ₽`} muted />
+              <Row label="Выручка за год · annual revenue" value={`${money(r.revenuePerYear)} ₽`} muted />
               <Row label="Ваша ставка НДС" value={r.vat.label} accent />
               {r.vat.rate > 0 && (
                 <>

@@ -86,34 +86,34 @@ const Block = ({ head, children }: { head: string; children: React.ReactNode }) 
 
 const ChannelLines = ({ c }: { c: ChannelResult }) => (
   <>
-    <Line label="Средний чек" value={`${money(c.avgCheck)} ₽`} />
-    <Line label="Заказов в день" value={`${money(c.orders)} шт`} />
+    <Line label="Средний чек · average check" value={`${money(c.avgCheck)} ₽`} />
+    <Line label="Заказов в день · orders" value={`${money(c.orders)} шт`} />
+    <Line label="Выручка в месяц · revenue" value={`${money(c.revenuePerMonth)} ₽`} bold />
     {c.serviceFeeRub > 0 && (
-      <Line label="Сервисный сбор с гостя" value={`+${money(c.serviceFeeRub)} ₽`} />
+      <Line label="Сервисный сбор · service fee" value={`+${money(c.serviceFeeRub)} ₽`} />
     )}
     {c.serviceFeeRub > 0 && <Line label="Доход с заказа" value={`${money(c.income)} ₽`} bold />}
-    {c.commissionRub > 0 && <Line label="Комиссия" value={`−${money(c.commissionRub)} ₽`} />}
+    {c.commissionRub > 0 && <Line label="Комиссия · commission" value={`−${money(c.commissionRub)} ₽`} />}
     {c.subscriptionRub > 0 && (
-      <Line label="Подписка сервиса" value={`−${money(c.subscriptionRub)} ₽`} />
+      <Line label="Подписка · subscription" value={`−${money(c.subscriptionRub)} ₽`} />
     )}
     {c.deliveryFeeRub > 0 && (
       <Line label="Вызов Яндекс Доставки" value={`−${money(c.deliveryFeeRub)} ₽`} />
     )}
-    {c.adRub > 0 && <Line label="Продвижение" value={`−${money(c.adRub)} ₽`} />}
+    {c.adRub > 0 && <Line label="Продвижение · ad spend" value={`−${money(c.adRub)} ₽`} />}
     {c.marketingRub > 0 && <Line label="Маркетинг Ultima" value={`−${money(c.marketingRub)} ₽`} />}
-    {c.promoRub > 0 && <Line label="Скидки и акции" value={`−${money(c.promoRub)} ₽`} />}
-    {c.refundRub > 0 && <Line label="Возвраты гостям" value={`−${money(c.refundRub)} ₽`} />}
-    {c.penaltyRub > 0 && <Line label="Штрафы и удержания" value={`−${money(c.penaltyRub)} ₽`} />}
-    <Line label="Придёт на счёт" value={`${money(c.payoutPerOrder)} ₽`} bold top />
-    <Line label="Себестоимость блюд" value={`−${money(c.foodCostRub)} ₽`} />
-    <Line label="Упаковка" value={`−${money(c.packagingRub)} ₽`} />
-    {c.suppliesRub > 0 && <Line label="Расходные материалы" value={`−${money(c.suppliesRub)} ₽`} />}
-    {c.writeOffRub > 0 && <Line label="Списания продуктов" value={`−${money(c.writeOffRub)} ₽`} />}
-    {c.royaltyRub > 0 && <Line label="Роялти" value={`−${money(c.royaltyRub)} ₽`} />}
-    <Line label="Остаётся с заказа" value={`${money(c.profitPerOrder)} ₽`} accent top />
-    <Line label="Маржинальность" value={percent(c.marginPercent)} />
-    <Line label="Оборот за месяц" value={`${money(c.revenuePerMonth)} ₽`} />
-    <Line label="Валовая прибыль за месяц" value={`${money(c.profitPerMonth)} ₽`} bold />
+    {c.promoRub > 0 && <Line label="Скидки · promo" value={`−${money(c.promoRub)} ₽`} />}
+    {c.refundRub > 0 && <Line label="Возвраты · refunds" value={`−${money(c.refundRub)} ₽`} />}
+    {c.penaltyRub > 0 && <Line label="Штрафы · penalties" value={`−${money(c.penaltyRub)} ₽`} />}
+    <Line label="Придёт на счёт · payout" value={`${money(c.payoutPerOrder)} ₽`} bold top />
+    <Line label="Себестоимость · food cost" value={`−${money(c.foodCostRub)} ₽`} />
+    <Line label="Упаковка · packaging" value={`−${money(c.packagingRub)} ₽`} />
+    {c.suppliesRub > 0 && <Line label="Расходники · supplies" value={`−${money(c.suppliesRub)} ₽`} />}
+    {c.writeOffRub > 0 && <Line label="Списания · write-offs" value={`−${money(c.writeOffRub)} ₽`} />}
+    {c.royaltyRub > 0 && <Line label="Роялти · royalty" value={`−${money(c.royaltyRub)} ₽`} />}
+    <Line label="Остаётся с заказа · profit" value={`${money(c.profitPerOrder)} ₽`} accent top />
+    <Line label="Маржинальность · margin" value={percent(c.marginPercent)} />
+    <Line label="Валовая прибыль · gross profit" value={`${money(c.profitPerMonth)} ₽`} bold />
   </>
 );
 
@@ -168,9 +168,9 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
         <Block head="Итого по каналам">
           <Line label="Заказов в день" value={`${money(r.ordersPerDay)} шт`} />
           <Line label="Средний чек" value={`${money(r.avgCheck)} ₽`} />
-          <Line label="Оборот в месяц" value={`${money(r.revenuePerMonth)} ₽`} bold />
+          <Line label="Выручка · revenue" value={`${money(r.revenuePerMonth)} ₽`} bold />
           <Line label="Поступит на счёт" value={`${money(r.payoutPerMonth)} ₽`} />
-          <Line label="Валовая прибыль" value={`${money(r.grossProfitPerMonth)} ₽`} accent top />
+          <Line label="Валовая прибыль · gross profit" value={`${money(r.grossProfitPerMonth)} ₽`} accent top />
           <Line label="Средняя маржинальность" value={percent(r.marginPercent)} />
         </Block>
       )}
@@ -180,7 +180,8 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
         {r.bothChannels && <Line label="ДРР агрегатора" value={percent(r.agg.drr)} />}
         {r.bothChannels && <Line label="ДРР своей доставки" value={percent(r.self.drr)} />}
         <Line label="Предельный ДРР при вашей марже" value={percent(r.drrLimit)} />
-        <Line label="Расходы на рекламу в месяц" value={`${money(r.adSpendPerMonth)} ₽`} />
+        <Line label="Расходы на рекламу · ad spend" value={`${money(r.adSpendPerMonth)} ₽`} />
+        <Line label="ROMI · возврат на маркетинг" value={percent(r.romi, 0)} />
       </Block>
 
       {full && input.staffEnabled && (
@@ -214,12 +215,12 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
       )}
 
       <Block head="Итоги за месяц">
-        <Line label="Оборот" value={`${money(r.revenuePerMonth)} ₽`} />
-        <Line label="Валовая прибыль по каналам" value={`${money(r.grossProfitPerMonth)} ₽`} bold />
+        <Line label="Выручка · revenue" value={`${money(r.revenuePerMonth)} ₽`} />
+        <Line label="Валовая прибыль · gross profit" value={`${money(r.grossProfitPerMonth)} ₽`} bold />
         {full ? (
           <>
             {r.staffTotal > 0 && (
-              <Line label="Персонал доставки" value={`−${money(r.staffTotal)} ₽`} />
+              <Line label="Персонал · payroll" value={`−${money(r.staffTotal)} ₽`} />
             )}
             {r.overheadCost > 0 && (
               <Line
@@ -233,12 +234,12 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
             {r.itCost > 0 && <Line label="IT-системы" value={`−${money(r.itCost)} ₽`} />}
             <Line label="EBITDA" value={`${money(r.ebitda)} ₽`} bold top />
             {r.depreciationCost > 0 && (
-              <Line label="Амортизация" value={`−${money(r.depreciationCost)} ₽`} />
+              <Line label="Амортизация · depreciation" value={`−${money(r.depreciationCost)} ₽`} />
             )}
             <Line label="Прибыль до налогов" value={`${money(r.profitBeforeTax)} ₽`} />
             <Line label={`${r.taxLabel} (${taxLabel})`} value={`−${money(r.taxAmount)} ₽`} />
-            <Line label="Чистая прибыль" value={`${money(r.netProfitPerMonth)} ₽`} accent top />
-            <Line label="Чистая рентабельность" value={percent(r.netMarginPercent)} />
+            <Line label="Чистая прибыль · net profit" value={`${money(r.netProfitPerMonth)} ₽`} accent top />
+            <Line label="Рентабельность · net margin" value={percent(r.netMarginPercent)} />
             {r.breakEvenOrders > 0 && (
               <Line
                 label="Заказов в день для выхода в ноль"
@@ -253,7 +254,7 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
 
       {full && (
         <Block head="НДС при работе на УСН">
-          <Line label="Оборот за год" value={`${money(r.revenuePerYear)} ₽`} />
+          <Line label="Выручка за год · annual revenue" value={`${money(r.revenuePerYear)} ₽`} />
           <Line label="Ставка НДС" value={r.vat.label} bold />
           {r.vat.rate > 0 && <Line label="НДС за год" value={`${money(r.vatAmountPerYear)} ₽`} />}
         </Block>

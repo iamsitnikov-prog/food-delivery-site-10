@@ -12,6 +12,7 @@ export type CalcInput = {
   commission: number;
   commissionUnit: Unit;
   subscriptionShare: number;
+  subscriptionUnit: Unit;
   useYandexDelivery: boolean;
   marketingShare: number;
   aggAdShare: number;
@@ -19,25 +20,31 @@ export type CalcInput = {
   aggPromoShare: number;
   aggPromoUnit: Unit;
   refundShare: number;
+  refundUnit: Unit;
   penaltyShare: number;
+  penaltyUnit: Unit;
 
   selfEnabled: boolean;
   selfOrdersPerDay: number;
   selfAvgCheck: number;
   selfCommission: number;
+  selfCommissionUnit: Unit;
   serviceFeeEnabled: boolean;
   serviceFee: number;
   serviceFeeUnit: Unit;
   selfAdShare: number;
   selfAdUnit: Unit;
   selfPromoShare: number;
+  selfPromoUnit: Unit;
   royaltyShare: number;
+  royaltyUnit: Unit;
 
   foodCost: number;
   foodCostUnit: Unit;
   packaging: number;
   suppliesPerOrder: number;
   writeOffShare: number;
+  writeOffUnit: Unit;
 
   overheadEnabled: boolean;
   overheadTotal: number;
@@ -95,6 +102,7 @@ export const DEFAULTS: CalcInput = {
   commission: COMMISSION_SERVICE,
   commissionUnit: "percent",
   subscriptionShare: 1.44,
+  subscriptionUnit: "percent",
   useYandexDelivery: false,
   marketingShare: 0,
   aggAdShare: 15,
@@ -102,25 +110,31 @@ export const DEFAULTS: CalcInput = {
   aggPromoShare: 0,
   aggPromoUnit: "percent",
   refundShare: 1,
+  refundUnit: "percent",
   penaltyShare: 0.2,
+  penaltyUnit: "percent",
 
   selfEnabled: false,
   selfOrdersPerDay: 10,
   selfAvgCheck: 1400,
   selfCommission: 0,
+  selfCommissionUnit: "percent",
   serviceFeeEnabled: false,
   serviceFee: 0,
   serviceFeeUnit: "rub",
   selfAdShare: 5,
   selfAdUnit: "percent",
   selfPromoShare: 0,
+  selfPromoUnit: "percent",
   royaltyShare: 0,
+  royaltyUnit: "percent",
 
   foodCost: 30,
   foodCostUnit: "percent",
   packaging: 60,
   suppliesPerOrder: 20,
   writeOffShare: 0,
+  writeOffUnit: "percent",
 
   overheadEnabled: false,
   overheadTotal: 0,
@@ -204,6 +218,7 @@ export type ChannelResult = {
   adSpendPerMonth: number;
   drr: number;
   drrLimit: number;
+  romi: number;
 };
 
 export type CalcResult = {
@@ -227,6 +242,7 @@ export type CalcResult = {
   drrVerdict: "good" | "ok" | "bad";
   drrLimit: number;
   adSpendPerMonth: number;
+  romi: number;
   isProfitable: boolean;
   managersCost: number;
   couriersCost: number;
@@ -305,6 +321,7 @@ const EMPTY_CHANNEL: ChannelResult = {
   adSpendPerMonth: 0,
   drr: 0,
   drrLimit: 0,
+  romi: 0,
 };
 
 type ChannelParams = {
@@ -315,6 +332,7 @@ type ChannelParams = {
   commission: number;
   commissionUnit?: Unit;
   subscriptionShare?: number;
+  subscriptionUnit?: Unit;
   deliveryFeeShare?: number;
   adShare: number;
   adUnit?: Unit;
@@ -322,8 +340,11 @@ type ChannelParams = {
   promoUnit?: Unit;
   marketingShare?: number;
   refundShare?: number;
+  refundUnit?: Unit;
   penaltyShare?: number;
+  penaltyUnit?: Unit;
   royaltyShare?: number;
+  royaltyUnit?: Unit;
 };
 
 const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
@@ -339,14 +360,17 @@ const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
   const income = avgCheck + serviceFeeRub;
 
   const commissionRub = amount(p.commission, p.commissionUnit);
-  const subscriptionRub = pct(p.subscriptionShare ?? 0);
+  const subscriptionRub = amount(p.subscriptionShare ?? 0, p.subscriptionUnit);
   const deliveryFeeRub = pct(p.deliveryFeeShare ?? 0);
   const adRub = amount(p.adShare, p.adUnit);
   const promoRub = amount(p.promoShare, p.promoUnit);
   const marketingRub = pct(p.marketingShare ?? 0);
-  const refundRub = pct(p.refundShare ?? 0);
-  const penaltyRub = pct(p.penaltyShare ?? 0);
-  const royaltyRub = (income * clamp(p.royaltyShare ?? 0)) / 100;
+  const refundRub = amount(p.refundShare ?? 0, p.refundUnit);
+  const penaltyRub = amount(p.penaltyShare ?? 0, p.penaltyUnit);
+  const royaltyRub =
+    p.royaltyUnit === "rub"
+      ? clamp(p.royaltyShare ?? 0)
+      : (income * clamp(p.royaltyShare ?? 0)) / 100;
 
   const totalWithheldRub =
     commissionRub +
@@ -368,7 +392,10 @@ const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
       : (avgCheck * clamp(shared.foodCost)) / 100;
   const packagingRub = clamp(shared.packaging);
   const suppliesRub = clamp(shared.suppliesPerOrder);
-  const writeOffRub = pct(shared.writeOffShare);
+  const writeOffRub =
+    shared.writeOffUnit === "rub"
+      ? clamp(shared.writeOffShare)
+      : (avgCheck * clamp(shared.writeOffShare)) / 100;
 
   const profitPerOrder =
     payoutPerOrder - foodCostRub - packagingRub - suppliesRub - writeOffRub - royaltyRub;
@@ -394,6 +421,8 @@ const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
     suppliesRub -
     writeOffRub;
   const drrLimit = income > 0 ? (marginBeforeAds / income) * 100 : 0;
+  const adPerOrder = adRub + marketingRub + promoRub;
+  const romi = adPerOrder > 0 ? (profitPerOrder / adPerOrder) * 100 : 0;
 
   return {
     enabled: true,
@@ -426,6 +455,7 @@ const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
     adSpendPerMonth,
     drr,
     drrLimit,
+    romi,
   };
 };
 
@@ -441,6 +471,7 @@ export const calculate = (input: CalcInput): CalcResult => {
       commission: input.commission,
       commissionUnit: input.commissionUnit,
       subscriptionShare: input.subscriptionShare,
+      subscriptionUnit: input.subscriptionUnit,
       deliveryFeeShare:
         input.deliveryType === "own" && input.useYandexDelivery ? YANDEX_DELIVERY_FEE : 0,
       adShare: input.aggAdShare,
@@ -449,7 +480,9 @@ export const calculate = (input: CalcInput): CalcResult => {
       promoUnit: input.aggPromoUnit,
       marketingShare: input.marketingShare,
       refundShare: input.refundShare,
+      refundUnit: input.refundUnit,
       penaltyShare: input.penaltyShare,
+      penaltyUnit: input.penaltyUnit,
     },
     input,
   );
@@ -467,10 +500,13 @@ export const calculate = (input: CalcInput): CalcResult => {
       avgCheck: input.selfAvgCheck,
       serviceFeeRub: selfServiceFee,
       commission: input.selfCommission,
+      commissionUnit: input.selfCommissionUnit,
       adShare: input.selfAdShare,
       adUnit: input.selfAdUnit,
       promoShare: input.selfPromoShare,
+      promoUnit: input.selfPromoUnit,
       royaltyShare: input.royaltyShare,
+      royaltyUnit: input.royaltyUnit,
     },
     input,
   );
@@ -493,6 +529,8 @@ export const calculate = (input: CalcInput): CalcResult => {
   const adSpendPerMonth = agg.adSpendPerMonth + self.adSpendPerMonth;
   const drr = revenuePerMonth > 0 ? (adSpendPerMonth / revenuePerMonth) * 100 : 0;
   const drrVerdict: CalcResult["drrVerdict"] = drr <= 12 ? "good" : drr <= 15 ? "ok" : "bad";
+  const romi =
+    adSpendPerMonth > 0 ? (grossProfitPerMonth / adSpendPerMonth) * 100 : 0;
   const drrLimit =
     revenuePerMonth > 0
       ? (agg.drrLimit * agg.revenuePerMonth + self.drrLimit * self.revenuePerMonth) /
@@ -594,6 +632,7 @@ export const calculate = (input: CalcInput): CalcResult => {
     drrVerdict,
     drrLimit,
     adSpendPerMonth,
+    romi,
     isProfitable: profitPerOrder > 0,
     managersCost,
     couriersCost,

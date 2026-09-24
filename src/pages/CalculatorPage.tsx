@@ -11,6 +11,7 @@ import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
 import Calculator from "@/components/calc/Calculator";
 import useSeo from "@/hooks/use-seo";
+import CalcSwitcher from "@/components/calc/CalcSwitcher";
 import { CALC_PAGES, getCalcPage } from "@/data/calculators";
 
 const SITE = "https://agregatory.pro";
@@ -87,6 +88,9 @@ const CalculatorPage = () => {
           <p className="mt-6 max-w-[620px] text-[1.08em] leading-snug text-muted-foreground">
             {page.lead}
           </p>
+          <div className="mt-8">
+            <CalcSwitcher active={page.slug} />
+          </div>
         </section>
       </div>
 

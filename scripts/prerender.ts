@@ -171,7 +171,12 @@ for (const c of CALC_PAGES) {
 ${c.intro.map((t) => `<p>${esc(clean(t))}</p>`).join("")}
 <h2>Частые вопросы</h2>
 ${c.faq.map((f) => `<h3>${esc(clean(f.q))}</h3><p>${esc(clean(f.a))}</p>`).join("")}
-<p><a href="/kalkulyatory">Все калькуляторы</a></p>
+<h2>Другие калькуляторы</h2>
+<ul><li><a href="/kalkulyatory">Общая экономика доставки</a></li>${CALC_PAGES.filter(
+      (o) => o.slug !== c.slug,
+    )
+      .map((o) => `<li><a href="/kalkulyatory/${o.slug}">${esc(clean(o.navLabel))}</a></li>`)
+      .join("")}</ul>
 <p>Телефон: +7 931 002-82-22</p>`,
   });
 }
