@@ -123,6 +123,9 @@ const BlogPost = () => {
           <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-20 lg:items-start">
             <div className="min-w-0">
               <PostBody blocks={post.blocks} slug={post.slug} />
+              <div className="mt-12">
+                <ChannelsBlock source={`blog:${post.slug}`} />
+              </div>
               <PostFeedback slug={post.slug} title={post.h1} />
               <PostAuthor />
             </div>
@@ -179,10 +182,6 @@ const BlogPost = () => {
             </AccordionItem>
           ))}
         </Accordion>
-      </section>
-
-      <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">
-        <ChannelsBlock source={`blog:${post.slug}`} />
       </section>
 
       <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">
