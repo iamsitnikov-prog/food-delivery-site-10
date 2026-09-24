@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { useReveal } from "@/hooks/use-reveal";
-import { CALC_PAGES } from "@/data/calculators";
+import { VISIBLE_CALC_PAGES } from "@/data/calculators";
 
 const CalcTeaser = () => {
   const ref = useReveal<HTMLElement>();
@@ -28,7 +28,7 @@ const CalcTeaser = () => {
         </div>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {CALC_PAGES.map((p) => (
+          {VISIBLE_CALC_PAGES.map((p) => (
             <Link
               key={p.slug}
               to={`/kalkulyatory/${p.slug}`}

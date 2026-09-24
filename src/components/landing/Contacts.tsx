@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
-import { NAV } from "./Header";
+import { NAV, USEFUL_LINKS } from "./Header";
 
 const CONTACTS = [
   { icon: "Phone", label: "телефон", value: "+7 931 002-82-22", href: "tel:+79310028222" },
@@ -84,6 +84,11 @@ const Contacts = () => {
           agregatory<span className="font-normal text-cream-muted">.pro</span>
         </a>
         <nav className="flex flex-wrap gap-x-6 gap-y-2">
+          {USEFUL_LINKS.map((l) => (
+            <a key={l.href} href={l.href} className="hover:text-cream">
+              {l.label}
+            </a>
+          ))}
           {NAV.map((n) => (
             <a key={n.href} href={to(n.href)} className="hover:text-cream">
               {n.label}

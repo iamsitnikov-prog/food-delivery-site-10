@@ -3,13 +3,18 @@ import { useLocation } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import Icon from "@/components/ui/icon";
 
+export const USEFUL_LINKS = [
+  { href: "/kalkulyatory", label: "калькуляторы", icon: "Calculator" },
+  { href: "/chek-listy", label: "чек-листы", icon: "ListChecks" },
+  { href: "/test", label: "тесты", icon: "CircleHelp" },
+];
+
 export const NAV = [
   { href: "/uslugi", label: "услуги" },
   { href: "/goroda", label: "города" },
   { href: "/blog", label: "блог" },
   { href: "/partnery", label: "партнёры" },
-  { href: "/test", label: "тест" },
-  { href: "/kalkulyatory", label: "калькуляторы" },
+  { href: "#results", label: "кейсы" },
   { href: "#pricing", label: "стоимость" },
   { href: "#free-audit", label: "бесплатный анализ" },
   { href: "#team", label: "кто мы" },
@@ -20,8 +25,7 @@ const MOBILE_NAV = [
   { href: "/uslugi", label: "услуги" },
   { href: "/goroda", label: "города" },
   { href: "/blog", label: "блог" },
-  { href: "/test", label: "тест" },
-  { href: "/kalkulyatory", label: "калькуляторы" },
+  { href: "#results", label: "кейсы" },
   { href: "#free-audit", label: "бесплатный анализ" },
   { href: "#pricing", label: "стоимость" },
   { href: "#contacts", label: "контакты" },
@@ -38,14 +42,52 @@ const Header = () => {
   const { pathname } = useLocation();
   const home = pathname === "/" ? "" : "/";
   const to = (href: string) => (href.startsWith("#") ? `${home}${href}` : href);
+  const usefulActive = USEFUL_LINKS.some((l) => pathname.startsWith(l.href));
 
   return (
     <header className="relative z-20 flex items-center justify-between gap-4 px-5 pt-[22px] md:px-14">
-      <a href={to("#top")} className="flex items-baseline gap-[2px] font-display text-[1.3em] font-semibold tracking-[-0.02em]">
+      <a
+        href={to("#top")}
+        className="flex items-baseline gap-[2px] font-display text-[1.3em] font-semibold tracking-[-0.02em]"
+      >
         agregatory<span className="font-normal text-muted-foreground">.pro</span>
       </a>
 
-      <nav aria-label="Разделы" className="hidden gap-4 whitespace-nowrap text-[0.88em] xl:flex 2xl:gap-5 2xl:text-[0.9em]">
+      <nav
+        aria-label="Разделы"
+        className="hidden items-center gap-4 whitespace-nowrap text-[0.88em] xl:flex 2xl:gap-5 2xl:text-[0.9em]"
+      >
+        <div className="group relative">
+          <button
+            type="button"
+            aria-haspopup="true"
+            className={`inline-flex items-center gap-1 transition-opacity hover:opacity-100 ${
+              usefulActive ? "opacity-100" : "opacity-[.85]"
+            }`}
+          >
+            полезное
+            <Icon
+              name="ChevronDown"
+              size={14}
+              className="transition-transform group-hover:rotate-180"
+            />
+          </button>
+          <div className="invisible absolute left-0 top-full z-30 w-[210px] pt-3 opacity-0 transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+            <div className="overflow-hidden rounded-2xl border border-foreground/10 bg-background shadow-xl">
+              {USEFUL_LINKS.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  className="flex items-center gap-2.5 border-b border-foreground/8 px-4 py-3.5 text-[0.95em] transition-colors last:border-b-0 hover:bg-foreground hover:text-brand"
+                >
+                  <Icon name={l.icon} size={16} />
+                  {l.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {NAV.map((n) => (
           <a
             key={n.href}
@@ -95,6 +137,20 @@ const Header = () => {
               agregatory<span className="font-normal text-muted-foreground">.pro</span>
             </SheetTitle>
             <nav className="mt-10 flex flex-col gap-1">
+              <p className="pb-2 text-[0.85em] font-medium uppercase tracking-wide text-muted-foreground">
+                полезное
+              </p>
+              {USEFUL_LINKS.map((l) => (
+                <a
+                  key={l.href}
+                  href={l.href}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2.5 border-b border-border py-4 font-display text-2xl font-semibold tracking-tight"
+                >
+                  <Icon name={l.icon} size={20} className="text-primary" />
+                  {l.label}
+                </a>
+              ))}
               {MOBILE_NAV.map((n) => (
                 <a
                   key={n.href}

@@ -5,6 +5,7 @@ import { SERVICE_PAGES, CITY_PAGES } from "../src/data/seo-pages";
 import { PARTNERS } from "../src/data/partners";
 import { QUIZ_QUESTIONS } from "../src/data/quiz";
 import { CALC_PAGES, VISIBLE_CALC_PAGES } from "../src/data/calculators";
+import { CHECKLIST_PAGES } from "../src/data/checklists";
 
 const SITE = "https://agregatory.pro";
 const OUT = path.resolve(process.cwd(), "public");
@@ -177,6 +178,43 @@ ${c.faq.map((f) => `<h3>${esc(clean(f.q))}</h3><p>${esc(clean(f.a))}</p>`).join(
     )
       .map((o) => `<li><a href="/kalkulyatory/${o.slug}">${esc(clean(o.navLabel))}</a></li>`)
       .join("")}</ul>
+<p>Телефон: +7 931 002-82-22</p>`,
+  });
+}
+
+pages.push({
+  route: "/chek-listy",
+  title: "Чек-листы для ресторанов на агрегаторах | agregatory.pro",
+  description:
+    "Бесплатные чек-листы для доставки: запуск на агрегаторе и проверка карточки ресторана. Отмечайте пункты — прогресс сохраняется.",
+  body: `<h1>Чек-листы для доставки</h1>
+<p>Пошаговые списки без воды: что проверить при запуске и что чинить, если заказы просели.</p>
+<ul>${CHECKLIST_PAGES.map(
+    (c) =>
+      `<li><a href="/chek-listy/${c.slug}">${esc(clean(c.navLabel))}</a> — ${esc(clean(c.lead))}</li>`,
+  ).join("")}</ul>
+<p>Телефон: +7 931 002-82-22</p>`,
+});
+
+for (const c of CHECKLIST_PAGES) {
+  pages.push({
+    route: `/chek-listy/${c.slug}`,
+    title: c.title,
+    description: c.description,
+    body: `<h1>${esc(clean(c.h1))}</h1>
+<p>${esc(clean(c.lead))}</p>
+${c.intro.map((t) => `<p>${esc(clean(t))}</p>`).join("")}
+${c.groups
+  .map(
+    (g) =>
+      `<h2>${esc(clean(g.title))}</h2><ul>${g.items
+        .map((it) => `<li>${esc(clean(it.text))}${it.hint ? ` — ${esc(clean(it.hint))}` : ""}</li>`)
+        .join("")}</ul>`,
+  )
+  .join("")}
+<h2>Частые вопросы</h2>
+${c.faq.map((f) => `<h3>${esc(clean(f.q))}</h3><p>${esc(clean(f.a))}</p>`).join("")}
+<p><a href="/chek-listy">Все чек-листы</a></p>
 <p>Телефон: +7 931 002-82-22</p>`,
   });
 }

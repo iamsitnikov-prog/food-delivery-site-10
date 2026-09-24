@@ -18,6 +18,8 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Quiz = lazy(() => import("./pages/Quiz"));
 const Calculators = lazy(() => import("./pages/Calculators"));
 const CalculatorPage = lazy(() => import("./pages/CalculatorPage"));
+const Checklists = lazy(() => import("./pages/Checklists"));
+const ChecklistPage = lazy(() => import("./pages/ChecklistPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -46,6 +48,8 @@ const App = () => {
           <Route path="/test" element={<Quiz />} />
           <Route path="/kalkulyatory" element={<Calculators />} />
           <Route path="/kalkulyatory/:slug" element={<CalculatorPage />} />
+          <Route path="/chek-listy" element={<Checklists />} />
+          <Route path="/chek-listy/:slug" element={<ChecklistPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
