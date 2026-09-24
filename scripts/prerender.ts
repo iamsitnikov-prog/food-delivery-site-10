@@ -6,6 +6,7 @@ import { PARTNERS } from "../src/data/partners";
 import { QUIZ_QUESTIONS } from "../src/data/quiz";
 import { CALC_PAGES, VISIBLE_CALC_PAGES } from "../src/data/calculators";
 import { CHECKLIST_PAGES } from "../src/data/checklists";
+import { READ_CHANNELS } from "../src/data/channels";
 
 const SITE = "https://agregatory.pro";
 const OUT = path.resolve(process.cwd(), "public");
@@ -80,6 +81,8 @@ for (const p of BLOG_POSTS) {
 <p>Рубрика: ${esc(clean(p.tag))}. Время чтения: ${esc(p.readTime)}.</p>
 ${blocksToText(p.blocks)}
 ${faqToText(p.faq)}
+<h2>Пишем о доставке каждый день</h2>
+${READ_CHANNELS.map((c) => `<p><a href="${c.href}" rel="noopener">${esc(clean(c.label))}</a> — ${esc(clean(c.short))}</p>`).join("")}
 <p><a href="${SITE}/blog">Все статьи блога</a></p></article>`,
   });
 }
@@ -183,6 +186,21 @@ ${c.faq.map((f) => `<h3>${esc(clean(f.q))}</h3><p>${esc(clean(f.a))}</p>`).join(
 }
 
 pages.push({
+  route: "/pochitat",
+  title: "Почитать о доставке: наши каналы и блог | agregatory.pro",
+  description:
+    "Telegram-каналы и Дзен о работе ресторанов с агрегаторами: разборы обновлений, механики акций, рейтинг и отзывы, экономика доставки.",
+  body: `<h1>Почитать о доставке</h1>
+<p>Пишем о том, как устроены агрегаторы изнутри: обновления сервисов, механики акций, работа с рейтингом и честная экономика доставки.</p>
+${READ_CHANNELS.map(
+    (c) =>
+      `<h2>${esc(clean(c.label))} — ${esc(clean(c.handle))}</h2><p>${esc(clean(c.author))}. ${esc(clean(c.description))}</p><p><a href="${c.href}" rel="noopener">${esc(clean(c.label))}</a></p>`,
+  ).join("")}
+<p><a href="/blog">Блог</a> · <a href="/kalkulyatory">Калькуляторы</a> · <a href="/chek-listy">Чек-листы</a></p>
+<p>Телефон: +7 931 002-82-22</p>`,
+});
+
+pages.push({
   route: "/chek-listy",
   title: "Чек-листы для ресторанов на агрегаторах | agregatory.pro",
   description:
@@ -214,6 +232,8 @@ ${c.groups
   .join("")}
 <h2>Частые вопросы</h2>
 ${c.faq.map((f) => `<h3>${esc(clean(f.q))}</h3><p>${esc(clean(f.a))}</p>`).join("")}
+<h2>Пишем о доставке каждый день</h2>
+${READ_CHANNELS.map((c) => `<p><a href="${c.href}" rel="noopener">${esc(clean(c.label))}</a> — ${esc(clean(c.short))}</p>`).join("")}
 <p><a href="/chek-listy">Все чек-листы</a></p>
 <p>Телефон: +7 931 002-82-22</p>`,
   });

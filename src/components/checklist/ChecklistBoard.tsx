@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Icon from "@/components/ui/icon";
+import ChecklistDownload from "./ChecklistDownload";
+import ChecklistPrint from "./ChecklistPrint";
+import ChannelsBlock from "@/components/shared/ChannelsBlock";
 import { countItems, type ChecklistPage } from "@/data/checklists";
 import { reachGoal } from "@/lib/metrika";
 
@@ -141,7 +144,15 @@ const ChecklistBoard = ({ page }: { page: ChecklistPage }) => {
         })}
       </div>
 
-      <div className="mt-8 rounded-[24px] bg-brand p-6 text-foreground md:p-8">
+      <div className="mt-8 flex flex-wrap items-start gap-4">
+        <ChecklistDownload page={page} />
+      </div>
+
+      <div className="mt-8">
+        <ChannelsBlock source={`checklist:${page.slug}`} variant="light" />
+      </div>
+
+      <div className="mt-4 rounded-[24px] bg-brand p-6 text-foreground md:p-8">
         <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between md:gap-8">
           <div className="min-w-0">
             <h3 className="font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.7em]">
@@ -162,6 +173,8 @@ const ChecklistBoard = ({ page }: { page: ChecklistPage }) => {
           </a>
         </div>
       </div>
+
+      <ChecklistPrint page={page} />
     </div>
   );
 };

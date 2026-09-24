@@ -8,6 +8,7 @@ import Contacts from "@/components/landing/Contacts";
 import PostBody from "@/components/blog/PostBody";
 import PostAuthor from "@/components/blog/PostAuthor";
 import PostFeedback from "@/components/blog/PostFeedback";
+import ChannelsBlock from "@/components/shared/ChannelsBlock";
 import useSeo from "@/hooks/use-seo";
 import { BLOG_POSTS, findPost } from "@/data/blog-posts";
 import { PEOPLE } from "@/data/team";
@@ -178,6 +179,10 @@ const BlogPost = () => {
             </AccordionItem>
           ))}
         </Accordion>
+      </section>
+
+      <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">
+        <ChannelsBlock source={`blog:${post.slug}`} />
       </section>
 
       <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">

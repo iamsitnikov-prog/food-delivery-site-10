@@ -230,6 +230,30 @@
   body.printing-calc {
     background: #fff !important;
   }
+  body.printing-checklist * {
+    visibility: hidden !important;
+  }
+  body.printing-checklist #checklist-print,
+  body.printing-checklist #checklist-print * {
+    visibility: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body.printing-checklist #checklist-print {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    color: #111;
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  body.printing-checklist {
+    background: #fff !important;
+  }
   @page {
     size: A4;
     margin: 14mm 14mm 12mm;

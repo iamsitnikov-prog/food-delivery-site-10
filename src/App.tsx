@@ -20,6 +20,7 @@ const Calculators = lazy(() => import("./pages/Calculators"));
 const CalculatorPage = lazy(() => import("./pages/CalculatorPage"));
 const Checklists = lazy(() => import("./pages/Checklists"));
 const ChecklistPage = lazy(() => import("./pages/ChecklistPage"));
+const Read = lazy(() => import("./pages/Read"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -50,6 +51,7 @@ const App = () => {
           <Route path="/kalkulyatory/:slug" element={<CalculatorPage />} />
           <Route path="/chek-listy" element={<Checklists />} />
           <Route path="/chek-listy/:slug" element={<ChecklistPage />} />
+          <Route path="/pochitat" element={<Read />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

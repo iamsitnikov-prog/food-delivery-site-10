@@ -7,6 +7,7 @@ export const USEFUL_LINKS = [
   { href: "/kalkulyatory", label: "калькуляторы", icon: "Calculator" },
   { href: "/chek-listy", label: "чек-листы", icon: "ListChecks" },
   { href: "/test", label: "тесты", icon: "CircleHelp" },
+  { href: "/pochitat", label: "почитать", icon: "BookOpen" },
 ];
 
 export const NAV = [
