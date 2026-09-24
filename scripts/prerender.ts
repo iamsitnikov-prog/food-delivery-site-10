@@ -74,7 +74,7 @@ for (const p of BLOG_POSTS) {
     title: p.title,
     description: p.description,
     body: `<article><h1>${esc(clean(p.h1))}</h1><p>${esc(clean(p.lead))}</p>
-<p>Опубликовано: ${esc(p.dateLabel)}. Рубрика: ${esc(clean(p.tag))}. Время чтения: ${esc(p.readTime)}.</p>
+<p>Рубрика: ${esc(clean(p.tag))}. Время чтения: ${esc(p.readTime)}.</p>
 ${blocksToText(p.blocks)}
 ${faqToText(p.faq)}
 <p><a href="${SITE}/blog">Все статьи блога</a></p></article>`,

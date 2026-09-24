@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { PEOPLE, COURSE } from "@/data/team";
 
-const PostAuthor = ({ dateLabel }: { dateLabel: string }) => (
+const PostAuthor = () => (
   <aside className="mt-14 rounded-[28px] bg-pale p-7 md:p-9">
     <div className="text-[0.8em] font-medium uppercase tracking-wide text-foreground/55">
       материал подготовили
@@ -40,7 +40,6 @@ const PostAuthor = ({ dateLabel }: { dateLabel: string }) => (
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-5 text-[0.85em] text-foreground/55">
-        <span>обновлено {dateLabel}</span>
         <Link to="/#team" className="underline underline-offset-4 hover:text-foreground">
           о нас
         </Link>

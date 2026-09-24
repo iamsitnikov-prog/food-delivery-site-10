@@ -89,7 +89,6 @@ const BlogPost = () => {
 
           <div className="flex flex-wrap items-center gap-4 text-[0.85em] text-muted-foreground">
             <span className="rounded-lg bg-pale px-3 py-1.5 font-medium text-foreground">{post.tag}</span>
-            <span>{post.dateLabel}</span>
             <span className="flex items-center gap-1.5">
               <Icon name="Clock" size={15} /> {post.readTime}
             </span>
@@ -124,7 +123,7 @@ const BlogPost = () => {
             <div className="min-w-0">
               <PostBody blocks={post.blocks} slug={post.slug} />
               <PostFeedback slug={post.slug} title={post.h1} />
-              <PostAuthor dateLabel={post.dateLabel} />
+              <PostAuthor />
             </div>
 
             <aside className="order-first rounded-[28px] bg-pale p-6 lg:order-last lg:sticky lg:top-8">
