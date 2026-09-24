@@ -188,10 +188,10 @@ const QuizPage = () => {
                 <a
                   href="#lead"
                   onClick={() => reachGoal("quiz_to_lead", { level: level.label })}
-                  className="mt-6 inline-flex items-center gap-2 rounded-xl bg-primary px-7 py-4 font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
+                  className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 text-center font-medium text-primary-foreground transition-transform hover:-translate-y-0.5 sm:w-auto sm:px-7"
                 >
                   получить бесплатный анализ
-                  <Icon name="ArrowRight" size={18} />
+                  <Icon name="ArrowRight" size={18} className="hidden shrink-0 min-[360px]:block" />
                 </a>
               </div>
 

@@ -8,12 +8,13 @@ export const NAV = [
   { href: "/goroda", label: "города" },
   { href: "/blog", label: "блог" },
   { href: "/partnery", label: "партнёры" },
-  { href: "#guarantees", label: "гарантии" },
+  { href: "/test", label: "тест" },
+  { href: "#guarantees", label: "гарантии", wide: true },
   { href: "#results", label: "результаты" },
   { href: "#pricing", label: "стоимость" },
   { href: "#free-audit", label: "бесплатный анализ" },
-  { href: "#team", label: "кто мы" },
-  { href: "#reviews", label: "отзывы" },
+  { href: "#team", label: "кто мы", wide: true },
+  { href: "#reviews", label: "отзывы", wide: true },
   { href: "#contacts", label: "контакты" },
 ];
 
@@ -21,6 +22,7 @@ const MOBILE_NAV = [
   { href: "/uslugi", label: "услуги" },
   { href: "/goroda", label: "города" },
   { href: "/blog", label: "блог" },
+  { href: "/test", label: "тест" },
   { href: "#free-audit", label: "бесплатный анализ" },
   { href: "#pricing", label: "стоимость" },
   { href: "#contacts", label: "контакты" },
@@ -44,9 +46,15 @@ const Header = () => {
         agregatory<span className="font-normal text-muted-foreground">.pro</span>
       </a>
 
-      <nav aria-label="Разделы" className="hidden gap-5 text-[0.9em] xl:flex">
+      <nav aria-label="Разделы" className="hidden gap-4 whitespace-nowrap text-[0.88em] xl:flex 2xl:gap-5 2xl:text-[0.9em]">
         {NAV.map((n) => (
-          <a key={n.href} href={to(n.href)} className="opacity-[.85] transition-opacity hover:opacity-100">
+          <a
+            key={n.href}
+            href={to(n.href)}
+            className={`opacity-[.85] transition-opacity hover:opacity-100${
+              n.wide ? " hidden 2xl:inline" : ""
+            }`}
+          >
             {n.label}
           </a>
         ))}

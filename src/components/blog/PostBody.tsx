@@ -128,8 +128,9 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
         );
 
       return (
-        <div key={i} className="mt-8 overflow-x-auto rounded-[24px] border border-primary/25">
-          <table className="w-full min-w-[520px] border-collapse text-left text-[0.95em]">
+        <div key={i} className="mt-8">
+          <div className="overflow-x-auto rounded-[24px] border border-primary/25">
+            <table className="w-full min-w-[520px] border-collapse text-left text-[0.95em]">
             <thead>
               <tr className="bg-surface text-cream">
                 {b.head.map((h) => (
@@ -149,8 +150,13 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
                   ))}
                 </tr>
               ))}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-2.5 flex items-center gap-1.5 text-[0.82em] text-muted-foreground md:hidden">
+            <Icon name="MoveHorizontal" size={14} />
+            таблицу можно прокрутить вбок
+          </p>
         </div>
       );
     })}
