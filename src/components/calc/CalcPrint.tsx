@@ -4,6 +4,7 @@ type Props = {
   input: CalcInput;
   r: CalcResult;
   title: string;
+  full?: boolean;
 };
 
 const Line = ({
@@ -52,7 +53,7 @@ const Block = ({ head, children }: { head: string; children: React.ReactNode }) 
   </div>
 );
 
-const CalcPrint = ({ input, r, title }: Props) => {
+const CalcPrint = ({ input, r, title, full = true }: Props) => {
   const today = new Date().toLocaleDateString("ru-RU", {
     day: "numeric",
     month: "long",
@@ -89,10 +90,10 @@ const CalcPrint = ({ input, r, title }: Props) => {
         <Line label="Штрафы и удержания" value={percent(input.penaltyShare)} />
         <Line label="Фудкост" value={percent(input.foodCost)} />
         <Line label="Упаковка на заказ" value={`${money(input.packaging)} ₽`} />
-        {input.fixedPerMonth > 0 && (
+        {full && input.fixedPerMonth > 0 && (
           <Line label="Постоянные расходы" value={`${money(input.fixedPerMonth)} ₽/мес`} />
         )}
-        <Line label="Система налогообложения" value={taxLabel} />
+        {full && <Line label="Система налогообложения" value={taxLabel} />}
       </Block>
 
       <Block head="Что удерживает сервис (с одного заказа)">
@@ -126,7 +127,7 @@ const CalcPrint = ({ input, r, title }: Props) => {
         <Line label="Расходы на рекламу в месяц" value={`${money(r.adSpendPerMonth)} ₽`} />
       </Block>
 
-      {input.staffEnabled && (
+      {full && input.staffEnabled && (
         <Block head="Персонал доставки (в месяц)">
           {r.managersCost > 0 && (
             <Line
@@ -159,32 +160,55 @@ const CalcPrint = ({ input, r, title }: Props) => {
       <Block head="Итоги за месяц">
         <Line label="Оборот" value={`${money(r.revenuePerMonth)} ₽`} />
         <Line label="Поступит на счёт" value={`${money(r.payoutPerMonth)} ₽`} />
-        {r.staffTotal > 0 && (
+        {full && r.staffTotal > 0 && (
           <Line label="Персонал доставки" value={`−${money(r.staffTotal)} ₽`} />
         )}
-        {input.fixedPerMonth > 0 && (
+        {full && input.fixedPerMonth > 0 && (
           <Line label="Постоянные расходы" value={`−${money(input.fixedPerMonth)} ₽`} />
         )}
-        <Line label="Прибыль до налогов" value={`${money(r.profitBeforeTax)} ₽`} top />
-        <Line label={r.taxLabel} value={`−${money(r.taxAmount)} ₽`} />
-        <Line label="Чистая прибыль" value={`${money(r.netProfitPerMonth)} ₽`} bold top />
-        <Line label="Чистая рентабельность" value={percent(r.netMarginPercent)} />
-        {r.breakEvenOrders > 0 && (
-          <Line label="Заказов в день для выхода в ноль" value={`${money(r.breakEvenOrders)} шт`} />
+        {full ? (
+          <>
+            <Line label="Прибыль до налогов" value={`${money(r.profitBeforeTax)} ₽`} top />
+            <Line label={r.taxLabel} value={`−${money(r.taxAmount)} ₽`} />
+            <Line label="Чистая прибыль" value={`${money(r.netProfitPerMonth)} ₽`} bold top />
+            <Line label="Чистая рентабельность" value={percent(r.netMarginPercent)} />
+            {r.breakEvenOrders > 0 && (
+              <Line
+                label="Заказов в день для выхода в ноль"
+                value={`${money(r.breakEvenOrders)} шт`}
+              />
+            )}
+          </>
+        ) : (
+          <>
+            <Line label="Прибыль с заказов" value={`${money(r.profitPerDay * 30)} ₽`} bold top />
+            <Line label="Маржинальность" value={percent(r.marginPercent)} />
+          </>
         )}
       </Block>
 
-      <Block head="НДС при работе на УСН">
-        <Line label="Оборот за год" value={`${money(r.revenuePerYear)} ₽`} />
-        <Line label="Ставка НДС" value={r.vat.label} bold />
-        {r.vat.rate > 0 && <Line label="НДС за год" value={`${money(r.vatAmountPerYear)} ₽`} />}
-      </Block>
+      {full && (
+        <Block head="НДС при работе на УСН">
+          <Line label="Оборот за год" value={`${money(r.revenuePerYear)} ₽`} />
+          <Line label="Ставка НДС" value={r.vat.label} bold />
+          {r.vat.rate > 0 && <Line label="НДС за год" value={`${money(r.vatAmountPerYear)} ₽`} />}
+        </Block>
+      )}
 
       <div style={{ marginTop: 14, fontSize: 10.5, lineHeight: 1.45, breakInside: "avoid" }}>
-        <p style={{ margin: "0 0 4px" }}>
-          <b>Важно:</b> в доход для налогообложения засчитывается вся сумма заказа, оплаченная
-          гостем, а не деньги, поступившие на счёт после удержания комиссии.
-        </p>
+        {full && (
+          <p style={{ margin: "0 0 4px" }}>
+            <b>Важно:</b> в доход для налогообложения засчитывается вся сумма заказа, оплаченная
+            гостем, а не деньги, поступившие на счёт после удержания комиссии.
+          </p>
+        )}
+        {!full && (
+          <p style={{ margin: "0 0 4px" }}>
+            Расчёт учитывает только удержания агрегатора и себестоимость заказа. Зарплаты, аренда и
+            налоги в нём не участвуют — для полной картины используйте калькулятор экономики
+            доставки.
+          </p>
+        )}
         <p style={{ margin: 0 }}>
           Расчёт носит справочный характер и не заменяет консультацию бухгалтера.
         </p>

@@ -90,6 +90,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
 
   const show = (block: CalcMode) => mode === "all" || mode === block;
   const isVat = mode === "vat";
+  const isFull = mode === "all" || mode === "breakeven";
 
   const handlePrint = () => {
     reachGoal("calc_print", { mode });
@@ -243,17 +244,19 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                     step={10}
                     hint="Средние затраты на упаковку одного заказа."
                   />
-                  <CalcField
-                    label="Постоянные расходы"
-                    suffix="₽/мес"
-                    value={input.fixedPerMonth}
-                    onChange={set("fixedPerMonth")}
-                    step={5000}
-                    hint="Аренда и прочие расходы на доставку, кроме зарплат. Можно оставить 0."
-                  />
+                  {isFull && (
+                    <CalcField
+                      label="Постоянные расходы"
+                      suffix="₽/мес"
+                      value={input.fixedPerMonth}
+                      onChange={set("fixedPerMonth")}
+                      step={5000}
+                      hint="Аренда и прочие расходы на доставку, кроме зарплат. Можно оставить 0."
+                    />
+                  )}
                 </div>
 
-                {(mode === "all" || mode === "breakeven") && (
+                {isFull && (
                 <CalcCheck
                   label="Считать персонал доставки"
                   hint="Отметьте, если сотрудники заняты только доставкой. Если они совмещают работу с залом, их зарплату сюда включать не нужно."
@@ -265,7 +268,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                 />
                 )}
 
-                {input.staffEnabled && (mode === "all" || mode === "breakeven") && (
+                {input.staffEnabled && isFull && (
                   <div className="space-y-4 rounded-2xl border border-cream/15 p-5">
                     <div className="grid gap-4 sm:grid-cols-2">
                       <CalcField
@@ -334,7 +337,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                   </div>
                 )}
 
-                {(mode === "all" || mode === "breakeven") && (
+                {isFull && (
                 <CalcToggle
                   label="Система налогообложения"
                   value={input.taxMode}
@@ -347,7 +350,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
                 />
                 )}
 
-                {input.taxMode === "patent" && (mode === "all" || mode === "breakeven") && (
+                {input.taxMode === "patent" && isFull && (
                   <CalcField
                     label="Стоимость патента"
                     suffix="₽/мес"
@@ -548,7 +551,12 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
         </div>
       </div>
 
-      <CalcPrint input={input} r={r} title="Экономика доставки — расчёт" />
+      <CalcPrint
+        input={input}
+        r={r}
+        full={isFull}
+        title={isFull ? "Экономика доставки — расчёт" : "Рентабельность заказа — расчёт"}
+      />
     </div>
   );
 };
