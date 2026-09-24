@@ -29,11 +29,11 @@ const Index = () => {
       <Extra />
       <AfterLaunch />
       <FreeAudit />
+      <Team />
+      <Reviews />
       <QuizTeaser />
       <CalcTeaser />
       <ChecklistTeaser />
-      <Team />
-      <Reviews />
       <Faq />
       <LeadForm />
       <Contacts />

@@ -120,7 +120,7 @@ const SeoLanding = () => {
             ))}
 
             {cityCase && (
-              <article>
+              <article id="case" className="scroll-mt-8">
                 <h2 className="font-display text-[1.7em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.2em]">
                   Наш кейс в {cityCase.cityIn}
                 </h2>

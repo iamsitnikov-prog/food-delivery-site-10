@@ -10,6 +10,7 @@ import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
 import ChecklistBoard from "@/components/checklist/ChecklistBoard";
+import ChecklistCases from "@/components/checklist/ChecklistCases";
 import useSeo from "@/hooks/use-seo";
 import { CHECKLIST_PAGES, getChecklistPage } from "@/data/checklists";
 
@@ -101,6 +102,8 @@ const ChecklistDetailPage = () => {
           </p>
         ))}
       </section>
+
+      <ChecklistCases slug={page.slug} />
 
       <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">
         <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">

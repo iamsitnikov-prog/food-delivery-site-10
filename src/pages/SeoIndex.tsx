@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
+import { getCityCase } from "@/data/city-cases";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
@@ -64,25 +65,52 @@ const SeoIndex = ({ kind }: Props) => {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {items.map((item, i) => {
             const light = i % 2 === 1;
+            const cityCase = kind === "city" ? getCityCase(item.slug) : undefined;
             return (
-              <Link
+              <div
                 key={item.slug}
-                to={`${copy.base}/${item.slug}`}
                 className={`group flex flex-col rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 md:p-8 ${
                   light ? "bg-pale text-foreground" : "bg-surface text-cream"
                 }`}
               >
-                <h2 className="font-display text-[1.45em] font-semibold leading-[1.05] tracking-[-0.025em]">
-                  {item.navLabel}
-                </h2>
-                <p className={`mt-4 flex-1 text-[0.95em] leading-relaxed ${light ? "text-foreground/75" : "text-cream-muted"}`}>
-                  {item.lead}
-                </p>
-                <span className={`mt-6 inline-flex items-center gap-2 text-[0.92em] font-medium ${light ? "text-foreground" : "text-brand"}`}>
-                  подробнее
-                  <Icon name="ArrowRight" size={17} className="transition-transform group-hover:translate-x-1" />
-                </span>
-              </Link>
+                <Link to={`${copy.base}/${item.slug}`} className="flex flex-1 flex-col">
+                  <h2 className="font-display text-[1.45em] font-semibold leading-[1.05] tracking-[-0.025em]">
+                    {item.navLabel}
+                  </h2>
+                  <p
+                    className={`mt-4 flex-1 text-[0.95em] leading-relaxed ${light ? "text-foreground/75" : "text-cream-muted"}`}
+                  >
+                    {item.lead}
+                  </p>
+                </Link>
+
+                <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+                  <Link
+                    to={`${copy.base}/${item.slug}`}
+                    className={`inline-flex items-center gap-2 text-[0.92em] font-medium ${light ? "text-foreground" : "text-brand"}`}
+                  >
+                    подробнее
+                    <Icon
+                      name="ArrowRight"
+                      size={17}
+                      className="transition-transform group-hover:translate-x-1"
+                    />
+                  </Link>
+                  {cityCase && (
+                    <Link
+                      to={`${copy.base}/${item.slug}#case`}
+                      className={`inline-flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-[0.86em] font-medium transition-colors ${
+                        light
+                          ? "border-foreground/25 hover:bg-foreground hover:text-brand"
+                          : "border-cream/25 hover:border-brand hover:bg-brand hover:text-foreground"
+                      }`}
+                    >
+                      <Icon name="TrendingUp" size={15} />
+                      читать кейс
+                    </Link>
+                  )}
+                </div>
+              </div>
             );
           })}
         </div>

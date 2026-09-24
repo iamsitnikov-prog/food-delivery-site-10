@@ -8,7 +8,7 @@ import { CALC_PAGES, VISIBLE_CALC_PAGES } from "../src/data/calculators";
 import { CHECKLIST_PAGES } from "../src/data/checklists";
 import { READ_CHANNELS } from "../src/data/channels";
 import { QUIZZES } from "../src/data/quizzes";
-import { getCityCase } from "../src/data/city-cases";
+import { getCityCase, CITY_CASES } from "../src/data/city-cases";
 import { getChecklistPage } from "../src/data/checklists";
 
 const SITE = "https://agregatory.pro";
@@ -267,6 +267,20 @@ pages.push({
 <p>Телефон: +7 931 002-82-22</p>`,
 });
 
+const clCases = (slug: string) => {
+  const list = Object.entries(CITY_CASES).filter(([, x]) => x.checklist === slug).slice(0, 3);
+  if (!list.length) return "";
+  return `<h2>Это работает на практике</h2><ul>${list
+    .map(
+      ([citySlug, x]) =>
+        `<li><a href="/goroda/${citySlug}">${esc(clean(x.place))}</a>, ${esc(clean(x.cityIn))} — ${x.metrics
+          .slice(0, 2)
+          .map((m) => `${esc(clean(m.label))}: ${esc(clean(m.value))}`)
+          .join(", ")}</li>`,
+    )
+    .join("")}</ul>`;
+};
+
 for (const c of CHECKLIST_PAGES) {
   pages.push({
     route: `/chek-listy/${c.slug}`,
@@ -285,6 +299,7 @@ ${c.groups
   .join("")}
 <h2>Частые вопросы</h2>
 ${c.faq.map((f) => `<h3>${esc(clean(f.q))}</h3><p>${esc(clean(f.a))}</p>`).join("")}
+${clCases(c.slug)}
 <h2>Пишем о доставке каждый день</h2>
 ${READ_CHANNELS.map((c) => `<p><a href="${c.href}" rel="noopener">${esc(clean(c.label))}</a> — ${esc(clean(c.short))}</p>`).join("")}
 <p><a href="/chek-listy">Все чек-листы</a></p>
