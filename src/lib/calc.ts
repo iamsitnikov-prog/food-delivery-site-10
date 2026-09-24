@@ -2,7 +2,28 @@ export type DeliveryType = "service" | "own";
 
 export type TaxMode = "usn6" | "usn15" | "patent" | "osno" | "none";
 
+export type Channel = "aggregator" | "self";
+
+export type FeeOwner = "restaurant" | "courier";
+
+export type Unit = "percent" | "rub";
+
 export type CalcInput = {
+  channel: Channel;
+  selfCommission: number;
+  serviceFeeEnabled: boolean;
+  serviceFee: number;
+  serviceFeeUnit: Unit;
+  deliveryPriceEnabled: boolean;
+  deliveryPrice: number;
+  deliveryPriceOwner: FeeOwner;
+  commissionUnit: Unit;
+  adUnit: Unit;
+  promoUnit: Unit;
+  foodCostUnit: Unit;
+  overheadEnabled: boolean;
+  overheadTotal: number;
+  overheadShare: number;
   staffEnabled: boolean;
   managerCount: number;
   managerSalary: number;
@@ -60,6 +81,21 @@ export const TAX_MODES: { value: TaxMode; label: string; hint: string }[] = [
 ];
 
 export const DEFAULTS: CalcInput = {
+  channel: "aggregator",
+  selfCommission: 0,
+  serviceFeeEnabled: false,
+  serviceFee: 0,
+  serviceFeeUnit: "rub",
+  deliveryPriceEnabled: false,
+  deliveryPrice: 0,
+  deliveryPriceOwner: "restaurant",
+  commissionUnit: "percent",
+  adUnit: "percent",
+  promoUnit: "percent",
+  foodCostUnit: "percent",
+  overheadEnabled: false,
+  overheadTotal: 0,
+  overheadShare: 25,
   staffEnabled: false,
   managerCount: 1,
   managerSalary: 60000,
@@ -119,6 +155,12 @@ export const getVatTier = (yearRevenue: number): VatTier => {
 };
 
 export type CalcResult = {
+  serviceFeeRub: number;
+  deliveryPriceRub: number;
+  guestPaysTotal: number;
+  restaurantIncome: number;
+  overheadCost: number;
+  overheadPerOrder: number;
   commissionRub: number;
   deliveryFeeRub: number;
   promoRub: number;
@@ -180,16 +222,36 @@ export const calculate = (input: CalcInput): CalcResult => {
   const avgCheck = clamp(input.avgCheck);
   const orders = clamp(input.ordersPerDay);
   const pct = (share: number) => (avgCheck * clamp(share)) / 100;
+  const amount = (value: number, unit: Unit) =>
+    unit === "rub" ? clamp(value) : pct(value);
 
-  const commissionRub = pct(input.commission);
+  const isAgg = input.channel === "aggregator";
+
+  const serviceFeeRub = input.serviceFeeEnabled
+    ? amount(input.serviceFee, input.serviceFeeUnit)
+    : 0;
+  const deliveryPriceRub = input.deliveryPriceEnabled ? clamp(input.deliveryPrice) : 0;
+  const deliveryToRestaurant =
+    input.deliveryPriceEnabled && input.deliveryPriceOwner === "restaurant"
+      ? deliveryPriceRub
+      : 0;
+
+  const guestPaysTotal = avgCheck + serviceFeeRub + deliveryPriceRub;
+  const restaurantIncome = avgCheck + serviceFeeRub + deliveryToRestaurant;
+
+  const commissionRub = isAgg
+    ? amount(input.commission, input.commissionUnit)
+    : pct(input.selfCommission);
   const deliveryFeeRub =
-    input.deliveryType === "own" && input.useYandexDelivery ? pct(YANDEX_DELIVERY_FEE) : 0;
-  const promoRub = pct(input.promoShare);
-  const adRub = pct(input.adShare);
-  const marketingRub = pct(input.marketingShare);
+    isAgg && input.deliveryType === "own" && input.useYandexDelivery
+      ? pct(YANDEX_DELIVERY_FEE)
+      : 0;
+  const promoRub = amount(input.promoShare, input.promoUnit);
+  const adRub = amount(input.adShare, input.adUnit);
+  const marketingRub = isAgg ? pct(input.marketingShare) : 0;
   const refundRub = pct(input.refundShare);
-  const penaltyRub = pct(input.penaltyShare);
-  const foodCostRub = pct(input.foodCost);
+  const penaltyRub = isAgg ? pct(input.penaltyShare) : 0;
+  const foodCostRub = amount(input.foodCost, input.foodCostUnit);
   const packagingRub = clamp(input.packaging);
 
   const totalWithheldRub =
@@ -200,18 +262,23 @@ export const calculate = (input: CalcInput): CalcResult => {
     marketingRub +
     refundRub +
     penaltyRub;
-  const withheldPercent = avgCheck > 0 ? (totalWithheldRub / avgCheck) * 100 : 0;
+  const withheldPercent =
+    restaurantIncome > 0 ? (totalWithheldRub / restaurantIncome) * 100 : 0;
 
-  const payoutPerOrder = avgCheck - totalWithheldRub;
-  const payoutPercent = avgCheck > 0 ? (payoutPerOrder / avgCheck) * 100 : 0;
+  const payoutPerOrder = restaurantIncome - totalWithheldRub;
+  const payoutPercent = restaurantIncome > 0 ? (payoutPerOrder / restaurantIncome) * 100 : 0;
 
   const profitPerOrder = payoutPerOrder - foodCostRub - packagingRub;
-  const marginPercent = avgCheck > 0 ? (profitPerOrder / avgCheck) * 100 : 0;
+  const marginPercent = restaurantIncome > 0 ? (profitPerOrder / restaurantIncome) * 100 : 0;
 
-  const revenuePerDay = avgCheck * orders;
+  const revenuePerDay = restaurantIncome * orders;
   const revenuePerMonth = revenuePerDay * 30;
   const revenuePerYear = revenuePerDay * 365;
   const payoutPerMonth = payoutPerOrder * orders * 30;
+
+  const overheadCost = input.overheadEnabled
+    ? (clamp(input.overheadTotal) * clamp(input.overheadShare)) / 100
+    : 0;
 
   const on = input.staffEnabled;
   const managersCost = on ? clamp(input.managerCount) * clamp(input.managerSalary) : 0;
@@ -223,18 +290,18 @@ export const calculate = (input: CalcInput): CalcResult => {
   const staffTotal = salaryFund + insuranceCost + fuelCost;
   const ordersPerMonth = orders * 30;
   const staffPerOrder = ordersPerMonth > 0 ? staffTotal / ordersPerMonth : 0;
+  const overheadPerOrder = ordersPerMonth > 0 ? overheadCost / ordersPerMonth : 0;
 
   const profitPerDay = profitPerOrder * orders;
   const fixed = clamp(input.fixedPerMonth);
-  const profitPerMonth = profitPerDay * 30 - fixed - staffTotal;
+  const profitPerMonth = profitPerDay * 30 - fixed - staffTotal - overheadCost;
 
-  const adTotalShare = clamp(input.adShare) + clamp(input.marketingShare);
-  const drr = adTotalShare;
+  const drr = restaurantIncome > 0 ? ((adRub + marketingRub) / restaurantIncome) * 100 : 0;
   const drrVerdict: CalcResult["drrVerdict"] = drr <= 12 ? "good" : drr <= 15 ? "ok" : "bad";
   const adSpendPerMonth = (adRub + marketingRub) * orders * 30;
 
   const marginBeforeAds =
-    avgCheck -
+    restaurantIncome -
     commissionRub -
     deliveryFeeRub -
     promoRub -
@@ -242,10 +309,10 @@ export const calculate = (input: CalcInput): CalcResult => {
     penaltyRub -
     foodCostRub -
     packagingRub;
-  const drrLimit = avgCheck > 0 ? (marginBeforeAds / avgCheck) * 100 : 0;
+  const drrLimit = restaurantIncome > 0 ? (marginBeforeAds / restaurantIncome) * 100 : 0;
 
   const breakEvenOrders =
-    profitPerOrder > 0 ? Math.ceil((fixed + staffTotal) / 30 / profitPerOrder) : 0;
+    profitPerOrder > 0 ? Math.ceil((fixed + staffTotal + overheadCost) / 30 / profitPerOrder) : 0;
 
   const profitBeforeTax = profitPerMonth;
   let taxAmount = 0;
@@ -325,6 +392,12 @@ export const calculate = (input: CalcInput): CalcResult => {
     adSpendPerMonth,
     breakEvenOrders,
     isProfitable: profitPerOrder > 0,
+    serviceFeeRub,
+    deliveryPriceRub,
+    guestPaysTotal,
+    restaurantIncome,
+    overheadCost,
+    overheadPerOrder,
     managersCost,
     couriersCost,
     fuelCost,
