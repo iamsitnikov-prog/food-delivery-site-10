@@ -149,7 +149,7 @@ const BlogPost = () => {
                 className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-foreground/20 px-5 py-3.5 text-[0.92em] font-medium transition-colors hover:bg-foreground hover:text-brand"
               >
                 <Icon name="ClipboardCheck" size={16} />
-                тест за 2 минуты
+                тест за 3 минуты
               </Link>
             </aside>
           </div>

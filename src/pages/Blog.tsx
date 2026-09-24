@@ -77,7 +77,7 @@ const Blog = () => {
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-[0.88em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
             >
               <Icon name="ClipboardCheck" size={16} />
-              проверить свой проект за 2 минуты
+              проверить свой проект за 3 минуты
             </Link>
             <a
               href="/rss.xml"

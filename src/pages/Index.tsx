@@ -5,6 +5,7 @@ import Results from "@/components/landing/Results";
 import Pricing from "@/components/landing/Pricing";
 import Extra from "@/components/landing/Extra";
 import FreeAudit from "@/components/landing/FreeAudit";
+import QuizTeaser from "@/components/landing/QuizTeaser";
 import Guarantees from "@/components/landing/Guarantees";
 import AfterLaunch from "@/components/landing/AfterLaunch";
 import StickyCta from "@/components/landing/StickyCta";
@@ -27,6 +28,7 @@ const Index = () => {
       <Extra />
       <AfterLaunch />
       <FreeAudit />
+      <QuizTeaser />
       <Partners />
       <Team />
       <Reviews />
