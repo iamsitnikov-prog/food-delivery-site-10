@@ -544,8 +544,8 @@ export const GROWTH_POSTS: BlogPost[] = [
       {
         type: "partner",
         name: "STARTER",
-        url: "https://starterapp.ru/?promocode=SITNIKOV10",
-        promo: "SITNIKOV10",
+        url: "https://www.starterapp.ru/?utm_source=partners&utm_medium=sitnikov",
+        promo: "AGREGATORYPRO",
         text: "Самовывоз — хороший повод познакомить гостя со своим каналом заказа. Мы советуем клиентам STARTER: приложение и сайт под ваш бренд с программой лояльности, чтобы постоянные гости заказывали напрямую, а не через агрегатор с комиссией.",
         cta: "узнать про STARTER",
       },

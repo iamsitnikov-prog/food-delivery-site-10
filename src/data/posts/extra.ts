@@ -363,8 +363,8 @@ export const EXTRA_POSTS: BlogPost[] = [
       {
         type: "partner",
         name: "STARTER",
-        url: "https://starterapp.ru/?promocode=SITNIKOV10",
-        promo: "SITNIKOV10",
+        url: "https://www.starterapp.ru/?utm_source=partners&utm_medium=sitnikov",
+        promo: "AGREGATORYPRO",
         text: "Следующий шаг после работы с возвращаемостью — перевести постоянных гостей на прямые заказы. Мы советуем клиентам STARTER: своё приложение и сайт заказа под ваш бренд, CRM с сегментацией и программа лояльности. Агрегатор приводит новых гостей, а повторные заказы приходят напрямую, без комиссии сервиса.",
         cta: "узнать про STARTER",
       },

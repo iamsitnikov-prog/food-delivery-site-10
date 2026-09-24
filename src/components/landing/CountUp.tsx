@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
 type Props = {
   value: string;
@@ -37,13 +37,9 @@ const format = (n: number, decimals: number, sep: string, grouped: boolean) => {
 
 const CountUp = ({ value, className, duration = 1600 }: Props) => {
   const ref = useRef<HTMLSpanElement>(null);
-  const [text, setText] = useState(() => {
-    const p = parse(value);
-    if (!p) return value;
-    return p.prefix + format(0, p.decimals, p.sep, p.grouped) + p.suffix;
-  });
+  const [text, setText] = useState(value);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const node = ref.current;
     const p = parse(value);
     if (!node || !p) return;
@@ -58,6 +54,7 @@ const CountUp = ({ value, className, duration = 1600 }: Props) => {
       (entries) => {
         if (!entries[0].isIntersecting) return;
         io.disconnect();
+        setText(p.prefix + format(0, p.decimals, p.sep, p.grouped) + p.suffix);
         const start = performance.now();
         const tick = (now: number) => {
           const t = Math.min(1, (now - start) / duration);

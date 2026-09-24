@@ -136,8 +136,8 @@ export const DELIVERY_POSTS: BlogPost[] = [
       {
         type: "partner",
         name: "STARTER",
-        url: "https://starterapp.ru/?promocode=SITNIKOV10",
-        promo: "SITNIKOV10",
+        url: "https://www.starterapp.ru/?utm_source=partners&utm_medium=sitnikov",
+        promo: "AGREGATORYPRO",
         text: "Для собственного канала продаж мы советуем клиентам STARTER — платформу для запуска своей доставки: приложение, сайт заказа, CRM и лояльность в одной системе, с готовой интеграцией с iiko и r_keeper. Заказы приходят напрямую, комиссия сервиса с них не удерживается.",
         cta: "узнать про STARTER",
       },

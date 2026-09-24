@@ -16,11 +16,11 @@ export const PARTNERS: Partner[] = [
     slug: "starter",
     name: "STARTER",
     tagline: "Приложение, сайт и программа лояльности для ресторана",
-    url: "https://starterapp.ru/?promocode=SITNIKOV10",
+    url: "https://www.starterapp.ru/?utm_source=partners&utm_medium=sitnikov",
     category: "своя доставка",
     isNew: true,
     promo: {
-      code: "SITNIKOV10",
+      code: "AGREGATORYPRO",
       text: "Промокод на подключение — назовите его при обращении или перейдите по нашей ссылке, он подставится автоматически.",
     },
     description:
