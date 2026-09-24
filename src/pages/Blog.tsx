@@ -79,6 +79,13 @@ const Blog = () => {
               <Icon name="ClipboardCheck" size={16} />
               проверить свой проект за 3 минуты
             </Link>
+            <Link
+              to="/kalkulyatory"
+              className="inline-flex items-center gap-2 rounded-xl border border-foreground/20 px-4 py-2.5 text-[0.88em] font-medium transition-colors hover:bg-foreground hover:text-brand"
+            >
+              <Icon name="Calculator" size={16} />
+              калькуляторы
+            </Link>
             <a
               href="/rss.xml"
               target="_blank"

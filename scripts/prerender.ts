@@ -4,6 +4,7 @@ import { BLOG_POSTS } from "../src/data/blog-posts";
 import { SERVICE_PAGES, CITY_PAGES } from "../src/data/seo-pages";
 import { PARTNERS } from "../src/data/partners";
 import { QUIZ_QUESTIONS } from "../src/data/quiz";
+import { CALC_PAGES } from "../src/data/calculators";
 
 const SITE = "https://agregatory.pro";
 const OUT = path.resolve(process.cwd(), "public");
@@ -145,6 +146,35 @@ pages.push({
 <p>После теста предлагаем бесплатный разбор проекта: смотрим карточку глазами гостя, сравниваем с конкурентами в районе и показываем точки роста.</p>
 <p>Телефон: +7 931 002-82-22</p>`,
 });
+
+pages.push({
+  route: "/kalkulyatory",
+  title: "Калькуляторы для ресторанов на агрегаторах | agregatory.pro",
+  description:
+    "Бесплатные калькуляторы для доставки: рентабельность заказа, ДРР, порог по НДС и окупаемость канала. Введите свои цифры и получите расчёт сразу.",
+  body: `<h1>Калькуляторы экономики доставки</h1>
+<p>Введите свои цифры один раз — увидите рентабельность заказа, ДРР, окупаемость канала и порог по НДС. Бесплатно, без регистрации.</p>
+<ul>${CALC_PAGES.map(
+    (c) =>
+      `<li><a href="/kalkulyatory/${c.slug}">${esc(clean(c.navLabel))}</a> — ${esc(clean(c.lead))}</li>`,
+  ).join("")}</ul>
+<p>Телефон: +7 931 002-82-22</p>`,
+});
+
+for (const c of CALC_PAGES) {
+  pages.push({
+    route: `/kalkulyatory/${c.slug}`,
+    title: c.title,
+    description: c.description,
+    body: `<h1>${esc(clean(c.h1))}</h1>
+<p>${esc(clean(c.lead))}</p>
+${c.intro.map((t) => `<p>${esc(clean(t))}</p>`).join("")}
+<h2>Частые вопросы</h2>
+${c.faq.map((f) => `<h3>${esc(clean(f.q))}</h3><p>${esc(clean(f.a))}</p>`).join("")}
+<p><a href="/kalkulyatory">Все калькуляторы</a></p>
+<p>Телефон: +7 931 002-82-22</p>`,
+  });
+}
 
 pages.push({
   route: "/partnery",

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Калькулятор рентабельности заказа на агрегаторе | agregatory.pro</title>
+<meta name="description" content="Рассчитайте, сколько реально остаётся с заказа в Яндекс Еде после комиссии, акций, продвижения, упаковки и себестоимости. Бесплатно и без регистрации."/>
+<meta name="author" content="agregatory.pro"/>
+<link rel="canonical" href="https://agregatory.pro/kalkulyatory/rentabelnost-zakaza"/>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="alternate" type="application/rss+xml" title="Блог agregatory.pro" href="https://agregatory.pro/rss.xml"/>
+<meta property="og:type" content="website"/>
+<meta property="og:site_name" content="agregatory.pro"/>
+<meta property="og:locale" content="ru_RU"/>
+<meta property="og:title" content="Калькулятор рентабельности заказа на агрегаторе | agregatory.pro"/>
+<meta property="og:description" content="Рассчитайте, сколько реально остаётся с заказа в Яндекс Еде после комиссии, акций, продвижения, упаковки и себестоимости. Бесплатно и без регистрации."/>
+<meta property="og:url" content="https://agregatory.pro/kalkulyatory/rentabelnost-zakaza"/>
+<meta property="og:image" content="https://agregatory.pro/og-preview.jpg"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Калькулятор рентабельности заказа на агрегаторе | agregatory.pro"/>
+<meta name="twitter:description" content="Рассчитайте, сколько реально остаётся с заказа в Яндекс Еде после комиссии, акций, продвижения, упаковки и себестоимости. Бесплатно и без регистрации."/>
+<meta name="twitter:image" content="https://agregatory.pro/og-preview.jpg"/>
+<meta name="theme-color" content="#FFD600"/>
+<style>
+  #pp-static{max-width:760px;margin:0 auto;padding:40px 20px;font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1a1a1a}
+  #pp-static h1{font-size:2em;line-height:1.15;margin:0 0 .4em}
+  #pp-static table{border-collapse:collapse;width:100%}
+  #pp-static td,#pp-static th{border:1px solid #ddd;padding:6px 10px;text-align:left}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<div id="pp-static">
+<h1>Калькулятор рентабельности заказа в доставке</h1>
+<p>Посчитайте, сколько остаётся с заказа после комиссии сервиса, акций, продвижения, упаковки и себестоимости блюд.</p>
+<p>Выручка в кабинете агрегатора и деньги, которые доходят до ресторана, — разные суммы. Между ними комиссия сервиса, ваша доля в акциях, расходы на продвижение и упаковка.</p><p>Частая ошибка — смотреть только на оборот. Заведение видит рост заказов, радуется динамике, а прибыль при этом не растёт или уходит в минус. Калькулятор показывает, что остаётся с одного заказа после всех удержаний.</p>
+<h2>Частые вопросы</h2>
+<h3>Какая маржинальность считается нормальной для доставки?</h3><p>Устойчивой считается маржа от 15% после всех удержаний, включая продвижение. От 20% — хороший показатель. Ниже 10% канал слишком чувствителен к любому изменению комиссии или акций.</p><h3>Нужно ли учитывать зарплату и аренду?</h3><p>В расчёте заказа — нет, там считается маржа с одного заказа. Постоянные расходы вынесены в отдельное поле: они влияют на прибыль за месяц и на точку безубыточности.</p><h3>Почему прибыль отрицательная при нормальном чеке?</h3><p>Чаще всего складываются три фактора: высокая комиссия, участие в акциях со своей скидкой и завышенная ставка продвижения. По отдельности каждый терпим, вместе они съедают всю маржу.</p>
+<p><a href="/kalkulyatory">Все калькуляторы</a></p>
+<p>Телефон: +7 931 002-82-22</p>
+</div>
+
+<script>
+(function () {
+  var s = document.getElementById("pp-static");
+  fetch("/?pp-shell=1", { cache: "no-cache" })
+    .then(function (r) { return r.text(); })
+    .then(function (html) {
+      var doc = new DOMParser().parseFromString(html, "text/html");
+      doc.querySelectorAll('link[rel="stylesheet"],link[rel="preconnect"],link[rel="preload"]')
+        .forEach(function (l) { document.head.appendChild(l.cloneNode(true)); });
+      if (s) s.remove();
+      doc.querySelectorAll("script").forEach(function (old) {
+        if (old.src && old.src.indexOf("inspector-min") !== -1) return;
+        var n = document.createElement("script");
+        if (old.type) n.type = old.type;
+        if (old.src) n.src = old.src; else n.textContent = old.textContent;
+        document.body.appendChild(n);
+      });
+    })
+    .catch(function () {});
+})();
+</script>
+</body>
+</html>
