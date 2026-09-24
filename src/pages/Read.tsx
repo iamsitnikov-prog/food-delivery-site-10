@@ -77,7 +77,19 @@ const ReadPage = () => {
               <h2 className="mt-4 font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em]">
                 {c.label}
               </h2>
-              <p className="mt-1.5 text-[0.88em] text-cream-muted">{c.author}</p>
+              <div className="mt-3 flex items-center gap-3">
+                {c.photo && (
+                  <img
+                    src={c.photo}
+                    alt={c.author}
+                    width={48}
+                    height={48}
+                    loading="lazy"
+                    className="h-12 w-12 shrink-0 rounded-full object-cover"
+                  />
+                )}
+                <span className="text-[0.92em] leading-snug text-cream-muted">{c.author}</span>
+              </div>
               <p className="mt-3 flex-1 leading-relaxed text-cream-muted">{c.description}</p>
               <span className="mt-5 inline-flex items-center gap-2 text-[0.92em] font-medium text-brand">
                 открыть

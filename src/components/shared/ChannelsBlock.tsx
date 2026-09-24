@@ -40,12 +40,26 @@ const ChannelsBlock = ({
             onClick={() => reachGoal("channel_click", { channel: c.id, source })}
             className="group flex flex-col rounded-2xl border border-cream/15 p-5 transition-colors hover:border-brand hover:bg-brand/10"
           >
-            <div className="flex items-center gap-2">
-              <Icon name={c.icon} size={18} className="text-brand" />
-              <span className="font-display text-[1.05em] font-semibold">{c.label}</span>
+            <div className="flex items-center gap-3">
+              {c.photo && (
+                <img
+                  src={c.photo}
+                  alt={c.author}
+                  width={44}
+                  height={44}
+                  loading="lazy"
+                  className="h-11 w-11 shrink-0 rounded-full object-cover"
+                />
+              )}
+              <span className="min-w-0">
+                <span className="flex items-center gap-1.5">
+                  <Icon name={c.icon} size={15} className="shrink-0 text-brand" />
+                  <span className="font-display text-[1.05em] font-semibold">{c.label}</span>
+                </span>
+                <span className="mt-0.5 block text-[0.8em] text-cream-muted">{c.handle}</span>
+              </span>
             </div>
-            <span className="mt-1 text-[0.82em] text-cream-muted">{c.handle}</span>
-            <span className="mt-2.5 text-[0.9em] leading-snug text-cream-muted">{c.short}</span>
+            <span className="mt-3 text-[0.9em] leading-snug text-cream-muted">{c.short}</span>
             <span className="mt-4 inline-flex items-center gap-1.5 text-[0.88em] font-medium text-brand">
               открыть
               <Icon name="ArrowUpRight" size={15} />

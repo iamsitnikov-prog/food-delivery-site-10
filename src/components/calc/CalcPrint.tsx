@@ -6,6 +6,7 @@ import {
   type CalcResult,
   type ChannelResult,
 } from "@/lib/calc";
+import { READ_CHANNELS } from "@/data/channels";
 
 type Props = {
   input: CalcInput;
@@ -319,6 +320,32 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
           <span style={{ fontSize: 10.5 }}>
             +7 931 002-82-22 · Telegram @sitnikovy · agregatory.pro
           </span>
+        </div>
+
+        <div
+          style={{
+            marginTop: 11,
+            paddingTop: 10,
+            borderTop: "1px solid rgba(255,250,245,.18)",
+          }}
+        >
+          <div style={{ fontSize: 11, fontWeight: 700, color: BRAND }}>
+            Пишем о доставке каждый день
+          </div>
+          <div style={{ fontSize: 9.5, color: "#BBB5B4", marginTop: 2 }}>
+            Наведите камеру телефона на код, чтобы открыть канал
+          </div>
+          <div style={{ display: "flex", gap: 14, marginTop: 8 }}>
+            {READ_CHANNELS.map((c) => (
+              <div key={c.id} style={{ width: 146 }}>
+                <div style={{ background: "#fff", padding: 3, borderRadius: 5, width: 72 }}>
+                  <img src={c.qr} alt={c.label} width={66} height={66} style={{ display: "block" }} />
+                </div>
+                <div style={{ fontSize: 10, fontWeight: 700, marginTop: 4 }}>{c.label}</div>
+                <div style={{ fontSize: 9, color: "#BBB5B4", lineHeight: 1.25 }}>{c.short}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

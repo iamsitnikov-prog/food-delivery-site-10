@@ -66,17 +66,23 @@ const ChecklistPrint = ({ page }: { page: ChecklistPage }) => (
         breakInside: "avoid",
       }}
     >
-      <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 5 }}>
+      <div style={{ fontSize: 12, fontWeight: 700, marginBottom: 2 }}>
         Пишем о доставке каждый день
       </div>
-      {READ_CHANNELS.map((c) => (
-        <div key={c.id} style={{ fontSize: 10.5, marginBottom: 3 }}>
-          <b>{c.label}</b> — {c.short}
-          <span style={{ display: "block", opacity: 0.75 }}>{c.href}</span>
-        </div>
-      ))}
-      <div style={{ fontSize: 10, marginTop: 8, opacity: 0.8 }}>
-        Бесплатный разбор вашего заведения — agregatory.pro
+      <div style={{ fontSize: 10, marginBottom: 8, opacity: 0.8 }}>
+        Наведите камеру телефона на код, чтобы открыть канал
+      </div>
+      <div style={{ display: "flex", gap: 14 }}>
+        {READ_CHANNELS.map((c) => (
+          <div key={c.id} style={{ width: 150, breakInside: "avoid" }}>
+            <img src={c.qr} alt={c.label} width={78} height={78} style={{ display: "block" }} />
+            <div style={{ fontSize: 10.5, fontWeight: 700, marginTop: 3 }}>{c.label}</div>
+            <div style={{ fontSize: 9.5, opacity: 0.8, lineHeight: 1.25 }}>{c.short}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ fontSize: 10, marginTop: 10, opacity: 0.8 }}>
+        Бесплатный разбор вашего заведения — agregatory.pro · +7 931 002-82-22
       </div>
     </div>
   </div>

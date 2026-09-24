@@ -5,6 +5,7 @@ import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
+import ChannelsBlock from "@/components/shared/ChannelsBlock";
 import ExpertiseStrip from "@/components/landing/ExpertiseStrip";
 import useSeo from "@/hooks/use-seo";
 import { CITY_PAGES, SERVICE_PAGES, findPage } from "@/data/seo-pages";
@@ -203,6 +204,10 @@ const SeoLanding = () => {
             </ul>
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">
+        <ChannelsBlock source={`seo:${page.slug}`} />
       </section>
 
       <LeadForm />
