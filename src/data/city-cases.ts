@@ -6,6 +6,7 @@ export type CaseMetric = {
 
 export type CityCase = {
   cityIn: string;
+  checklist: string;
   place: string;
   kind: string;
   period: string;
@@ -17,6 +18,7 @@ export type CityCase = {
 
 export const CITY_CASES: Record<string, CityCase> = {
   moskva: {
+    checklist: "kontent-i-kartochka",
     cityIn: "Москве",
     place: "кафе «Зарина»",
     kind: "кавказская кухня",
@@ -39,6 +41,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Заказы выросли более чем вдвое при том же рекламном бюджете — просто деньги перестали уходить на показы, которые не доходили до корзины.",
   },
   "sankt-peterburg": {
+    checklist: "ekonomika-dostavki",
     cityIn: "Санкт-Петербурге",
     place: "пекарня «Тесто и Дело»",
     kind: "выпечка и завтраки",
@@ -61,6 +64,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Заведение стало зарабатывать во второй половине дня, не нанимая людей и не расширяя меню закупкой новых продуктов.",
   },
   samara: {
+    checklist: "kachestvo-i-reyting",
     cityIn: "Самаре",
     place: "бургерная «Волга Гриль»",
     kind: "бургеры и стритфуд",
@@ -83,6 +87,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Рейтинг вернулся выше 4,8 за три месяца — после этого та же ставка стала приводить в полтора раза больше заказов.",
   },
   cherepovets: {
+    checklist: "ekonomika-dostavki",
     cityIn: "Череповце",
     place: "суши-бар «Море рядом»",
     kind: "японская кухня",
@@ -105,6 +110,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Выручка выросла скромно, а прибыль почти удвоилась — заведение перестало покупать заказы себе в убыток.",
   },
   novosibirsk: {
+    checklist: "kontent-i-kartochka",
     cityIn: "Новосибирске",
     place: "пельменная «Сибирский двор»",
     kind: "домашняя кухня",
@@ -127,6 +133,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Сокращение меню вдвое увеличило заказы — гость перестал теряться в выборе, а кухня начала успевать.",
   },
   ekaterinburg: {
+    checklist: "ekonomika-dostavki",
     cityIn: "Екатеринбурге",
     place: "кафе «Гранат»",
     kind: "восточная кухня",
@@ -149,6 +156,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "После разделения каналов стало видно, где терялись деньги. Перевод части потока на свою доставку дал экономию на комиссии без потери объёма.",
   },
   kazan: {
+    checklist: "sezonnyy-pik",
     cityIn: "Казани",
     place: "кафе «Чак-Чак Хаус»",
     kind: "татарская кухня",
@@ -171,6 +179,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Впервые прошли праздники без просадки рейтинга — и сохранили выросший поток заказов после окончания сезона.",
   },
   "nizhniy-novgorod": {
+    checklist: "ekonomika-dostavki",
     cityIn: "Нижнем Новгороде",
     place: "пиццерия «Печь»",
     kind: "пицца и паста",
@@ -193,6 +202,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Расходы на рекламу сократились более чем вдвое, а заказов стало больше — бюджет перестал идти на позиции, которые не зарабатывали.",
   },
   krasnodar: {
+    checklist: "kontent-i-kartochka",
     cityIn: "Краснодаре",
     place: "кафе «Южный дворик»",
     kind: "европейская кухня",
@@ -215,6 +225,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Теги открыли заведению внутренний поиск агрегатора — источник трафика, который до этого не работал вообще.",
   },
   "rostov-na-donu": {
+    checklist: "ekonomika-dostavki",
     cityIn: "Ростове-на-Дону",
     place: "шашлычная «Донской мангал»",
     kind: "мангал и гриль",
@@ -237,6 +248,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Гибридная модель закрыла и будни, и пики: постоянные зарплаты сократились, а в часы наплыва заказы стал возить сервис.",
   },
   chelyabinsk: {
+    checklist: "ekonomika-dostavki",
     cityIn: "Челябинске",
     place: "столовая «Обед на Урале»",
     kind: "домашние обеды",
@@ -259,6 +271,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Заказов стало ненамного больше, но каждый из них начал приносить в пять раз больше денег.",
   },
   ufa: {
+    checklist: "kachestvo-i-reyting",
     cityIn: "Уфе",
     place: "кафе «Агидель»",
     kind: "национальная кухня",
@@ -281,6 +294,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Систематическая работа с удержаниями вернула деньги за прошлый период и почти остановила новые списания.",
   },
   krasnoyarsk: {
+    checklist: "zapusk-na-agregatore",
     cityIn: "Красноярске",
     place: "кафе «Столбы»",
     kind: "сибирская кухня",
@@ -303,6 +317,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Повышенный ДРР на старте окупился за два месяца: заведение набрало позиции и историю, после чего стоимость привлечения упала втрое.",
   },
   voronezh: {
+    checklist: "kachestvo-i-reyting",
     cityIn: "Воронеже",
     place: "кофейня «Зёрна»",
     kind: "кофе и десерты",
@@ -325,6 +340,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Сужение зоны сократило охват, но выросли рейтинг и возвращаемость — в итоге заказов стало больше, чем было.",
   },
   surgut: {
+    checklist: "ekonomika-dostavki",
     cityIn: "Сургуте",
     place: "кафе «Север»",
     kind: "домашняя кухня",
@@ -347,6 +363,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Заказов стало меньше, а денег — существенно больше: отказались от тех, что приносили убыток на каждой доставке.",
   },
   nefteyugansk: {
+    checklist: "ekonomika-dostavki",
     cityIn: "Нефтеюганске",
     place: "пиццерия «Огонёк»",
     kind: "пицца и роллы",
@@ -369,6 +386,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Отказ от глубоких скидок не обрушил заказы — гости остались, а с каждого заказа заведение стало зарабатывать втрое больше.",
   },
   perm: {
+    checklist: "ekonomika-dostavki",
     cityIn: "Перми",
     place: "кафе «Кама»",
     kind: "европейская кухня",
@@ -391,6 +409,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Переход через порог по НДС прошёл без провала в прибыли — цены и экономика были пересобраны заранее, а не по факту.",
   },
   tyumen: {
+    checklist: "proverka-kartochki",
     cityIn: "Тюмени",
     place: "кафе «Тюменский дворик»",
     kind: "домашняя кухня",
@@ -413,6 +432,7 @@ export const CITY_CASES: Record<string, CityCase> = {
       "Никаких новых вложений — только регламент работы с кабинетом. Рейтинг и заказы выросли на дисциплине.",
   },
   sochi: {
+    checklist: "sezonnyy-pik",
     cityIn: "Сочи",
     place: "кафе «Прибой»",
     kind: "морская кухня",

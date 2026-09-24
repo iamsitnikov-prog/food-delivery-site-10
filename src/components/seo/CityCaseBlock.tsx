@@ -1,5 +1,7 @@
+import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import type { CityCase } from "@/data/city-cases";
+import { getChecklistPage, countItems } from "@/data/checklists";
 
 const CityCaseBlock = ({
   data,
@@ -9,7 +11,10 @@ const CityCaseBlock = ({
   data: CityCase;
   city: string;
   inline?: boolean;
-}) => (
+}) => {
+  const checklist = getChecklistPage(data.checklist);
+
+  return (
   <div
     className={
       inline
@@ -75,7 +80,34 @@ const CityCaseBlock = ({
     </div>
 
     <p className="mt-7 rounded-2xl bg-brand/12 p-5 leading-relaxed text-cream">{data.result}</p>
+
+    {checklist && (
+      <Link
+        to={`/chek-listy/${checklist.slug}`}
+        className="group mt-4 flex flex-col gap-4 rounded-2xl border border-cream/20 p-5 transition-colors hover:border-brand hover:bg-brand/10 sm:flex-row sm:items-center sm:justify-between"
+      >
+        <span className="flex min-w-0 gap-3">
+          <Icon name={checklist.icon} size={20} className="mt-0.5 shrink-0 text-brand" />
+          <span className="min-w-0">
+            <span className="block text-[0.82em] uppercase tracking-wide text-cream-muted">
+              сделайте то же самое у себя
+            </span>
+            <span className="mt-1 block font-display text-[1.05em] font-semibold text-cream">
+              Чек-лист «{checklist.navLabel}»
+            </span>
+            <span className="mt-1 block text-[0.88em] leading-snug text-cream-muted">
+              {countItems(checklist)} пунктов · отметки сохраняются
+            </span>
+          </span>
+        </span>
+        <span className="inline-flex shrink-0 items-center gap-2 text-[0.9em] font-medium text-brand">
+          открыть
+          <Icon name="ArrowRight" size={16} className="transition-transform group-hover:translate-x-1" />
+        </span>
+      </Link>
+    )}
   </div>
-);
+  );
+};
 
 export default CityCaseBlock;

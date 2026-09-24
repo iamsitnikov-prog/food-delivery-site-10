@@ -9,6 +9,7 @@ import { CHECKLIST_PAGES } from "../src/data/checklists";
 import { READ_CHANNELS } from "../src/data/channels";
 import { QUIZZES } from "../src/data/quizzes";
 import { getCityCase } from "../src/data/city-cases";
+import { getChecklistPage } from "../src/data/checklists";
 
 const SITE = "https://agregatory.pro";
 const OUT = path.resolve(process.cwd(), "public");
@@ -96,6 +97,10 @@ for (const p of [...SERVICE_PAGES, ...CITY_PAGES]) {
     ? `<ul>${p.bullets.map((b) => `<li>${esc(clean(b))}</li>`).join("")}</ul>`
     : "";
   const cCase = p.kind === "city" ? getCityCase(p.slug) : undefined;
+  const cl = cCase ? getChecklistPage(cCase.checklist) : undefined;
+  const caseChecklist = cl
+    ? `<p>Сделайте то же самое у себя: <a href="/chek-listy/${cl.slug}">чек-лист «${esc(clean(cl.navLabel))}»</a> — ${esc(clean(cl.lead))}</p>`
+    : "";
   const caseHtml = cCase
     ? `<h2>Наш кейс в ${esc(clean(cCase.cityIn))}</h2>
 <p><b>${esc(clean(cCase.place))}</b> — ${esc(clean(cCase.kind))}, ${esc(clean(cCase.period))}.</p>
@@ -107,7 +112,7 @@ for (const p of [...SERVICE_PAGES, ...CITY_PAGES]) {
             `<li>${esc(clean(m.label))}: ${esc(clean(m.value))}${m.note ? ` (${esc(clean(m.note))})` : ""}</li>`,
         )
         .join("")}</ul>
-<p>${esc(clean(cCase.result))}</p>`
+<p>${esc(clean(cCase.result))}</p>${caseChecklist}`
     : "";
 
   pages.push({
