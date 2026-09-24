@@ -1,15 +1,18 @@
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
-import { CALC_PAGES } from "@/data/calculators";
+import { VISIBLE_CALC_PAGES } from "@/data/calculators";
 
 const ALL = {
   slug: "",
   icon: "LayoutGrid",
-  navLabel: "Общая экономика доставки",
+  navLabel: "Все калькуляторы",
 };
 
 const CalcSwitcher = ({ active }: { active?: string }) => {
-  const items = [ALL, ...CALC_PAGES.map((p) => ({ slug: p.slug, icon: p.icon, navLabel: p.navLabel }))];
+  const items = [
+    ALL,
+    ...VISIBLE_CALC_PAGES.map((p) => ({ slug: p.slug, icon: p.icon, navLabel: p.navLabel })),
+  ];
 
   return (
     <nav aria-label="Калькуляторы" className="flex flex-wrap gap-2.5">

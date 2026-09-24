@@ -6,7 +6,7 @@ import Contacts from "@/components/landing/Contacts";
 import Calculator from "@/components/calc/Calculator";
 import useSeo from "@/hooks/use-seo";
 import CalcSwitcher from "@/components/calc/CalcSwitcher";
-import { CALC_PAGES } from "@/data/calculators";
+import { VISIBLE_CALC_PAGES } from "@/data/calculators";
 
 const CalculatorsPage = () => {
   const { pathname } = useLocation();
@@ -71,7 +71,7 @@ const CalculatorsPage = () => {
           <span className="pl-3 text-muted-foreground">калькуляторы</span>
         </h2>
         <div className="mt-8 grid gap-4 md:grid-cols-2">
-          {CALC_PAGES.map((p) => (
+          {VISIBLE_CALC_PAGES.map((p) => (
             <Link
               key={p.slug}
               to={`/kalkulyatory/${p.slug}`}

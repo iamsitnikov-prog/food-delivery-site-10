@@ -10,9 +10,10 @@ import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
 import Calculator from "@/components/calc/Calculator";
+import CompareCalc from "@/components/calc/CompareCalc";
 import useSeo from "@/hooks/use-seo";
 import CalcSwitcher from "@/components/calc/CalcSwitcher";
-import { CALC_PAGES, getCalcPage } from "@/data/calculators";
+import { VISIBLE_CALC_PAGES, getCalcPage } from "@/data/calculators";
 
 const SITE = "https://agregatory.pro";
 
@@ -61,7 +62,7 @@ const CalculatorPage = () => {
 
   if (!page) return <Navigate to="/kalkulyatory" replace />;
 
-  const others = CALC_PAGES.filter((p) => p.slug !== page.slug);
+  const others = VISIBLE_CALC_PAGES.filter((p) => p.slug !== page.slug);
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
@@ -95,7 +96,7 @@ const CalculatorPage = () => {
       </div>
 
       <section className="px-5 pb-14 md:px-14 md:pb-20">
-        <Calculator mode={page.mode} />
+        {page.mode === "compare" ? <CompareCalc /> : <Calculator mode={page.mode} />}
       </section>
 
       <section className="mx-auto max-w-[820px] px-5 pb-16 md:px-14 md:pb-24">

@@ -19,7 +19,7 @@ import {
 } from "@/lib/calc";
 import { reachGoal } from "@/lib/metrika";
 
-export type CalcMode = "all" | "profit" | "drr" | "vat" | "breakeven";
+export type CalcMode = "all" | "profit" | "drr" | "vat" | "breakeven" | "compare";
 
 const Row = ({
   label,

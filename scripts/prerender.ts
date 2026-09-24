@@ -4,7 +4,7 @@ import { BLOG_POSTS } from "../src/data/blog-posts";
 import { SERVICE_PAGES, CITY_PAGES } from "../src/data/seo-pages";
 import { PARTNERS } from "../src/data/partners";
 import { QUIZ_QUESTIONS } from "../src/data/quiz";
-import { CALC_PAGES } from "../src/data/calculators";
+import { CALC_PAGES, VISIBLE_CALC_PAGES } from "../src/data/calculators";
 
 const SITE = "https://agregatory.pro";
 const OUT = path.resolve(process.cwd(), "public");
@@ -154,7 +154,7 @@ pages.push({
     "Бесплатные калькуляторы для доставки: рентабельность заказа, ДРР, порог по НДС и окупаемость канала. Введите свои цифры и получите расчёт сразу.",
   body: `<h1>Калькуляторы экономики доставки</h1>
 <p>Введите свои цифры один раз — увидите рентабельность заказа, ДРР, окупаемость канала и порог по НДС. Бесплатно, без регистрации.</p>
-<ul>${CALC_PAGES.map(
+<ul>${VISIBLE_CALC_PAGES.map(
     (c) =>
       `<li><a href="/kalkulyatory/${c.slug}">${esc(clean(c.navLabel))}</a> — ${esc(clean(c.lead))}</li>`,
   ).join("")}</ul>
@@ -172,7 +172,7 @@ ${c.intro.map((t) => `<p>${esc(clean(t))}</p>`).join("")}
 <h2>Частые вопросы</h2>
 ${c.faq.map((f) => `<h3>${esc(clean(f.q))}</h3><p>${esc(clean(f.a))}</p>`).join("")}
 <h2>Другие калькуляторы</h2>
-<ul><li><a href="/kalkulyatory">Общая экономика доставки</a></li>${CALC_PAGES.filter(
+<ul><li><a href="/kalkulyatory">Все калькуляторы</a></li>${VISIBLE_CALC_PAGES.filter(
       (o) => o.slug !== c.slug,
     )
       .map((o) => `<li><a href="/kalkulyatory/${o.slug}">${esc(clean(o.navLabel))}</a></li>`)
