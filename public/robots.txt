@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /preview/
 
 Sitemap: https://agregatory.pro/sitemap.xml
 Sitemap: https://agregatory.pro/rss.xml
