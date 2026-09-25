@@ -11,8 +11,10 @@ export type CalcInput = {
   deliveryType: DeliveryType;
   commission: number;
   commissionUnit: Unit;
+  subscriptionPlan: SubscriptionPlan;
   subscriptionShare: number;
   subscriptionUnit: Unit;
+  restaurantCount: number;
   useYandexDelivery: boolean;
   marketingShare: number;
   aggAdShare: number;
@@ -94,6 +96,36 @@ export const TAX_MODES: { value: TaxMode; label: string; hint: string }[] = [
   { value: "none", label: "Не учитывать", hint: "Расчёт без налога на прибыль." },
 ];
 
+export type SubscriptionPlan = "none" | "standard" | "business";
+
+export const SUBSCRIPTION_RATE = 1.64;
+export const BUSINESS_BASE_FEE = 1333;
+export const BUSINESS_EXTRA_FEE = 583;
+export const BUSINESS_BASE_COUNT = 3;
+
+export const SUBSCRIPTION_PLANS: {
+  value: SubscriptionPlan;
+  label: string;
+  hint: string;
+}[] = [
+  { value: "none", label: "Нет", hint: "Подписка не подключена — инструменты лояльности, отзывов и аналитики недоступны." },
+  {
+    value: "standard",
+    label: "Стандарт",
+    hint: "1,64% + НДС от месячной суммы заказов. Ежедневные выплаты, программа лояльности, ответы на отзывы, аналитика конкурентов, отчёты в мессенджере.",
+  },
+  {
+    value: "business",
+    label: "Бизнес",
+    hint: "1,64% + НДС от суммы заказов плюс фиксированная часть: 1 333 ₽ в месяц за первые три ресторана и 583 ₽ за каждый следующий. Добавляется личный менеджер.",
+  },
+];
+
+export const businessFixedFee = (restaurants: number): number => {
+  const n = Math.max(1, Math.round(restaurants || 1));
+  return BUSINESS_BASE_FEE + Math.max(0, n - BUSINESS_BASE_COUNT) * BUSINESS_EXTRA_FEE;
+};
+
 export const DEFAULTS: CalcInput = {
   aggEnabled: true,
   aggOrdersPerDay: 25,
@@ -101,8 +133,10 @@ export const DEFAULTS: CalcInput = {
   deliveryType: "service",
   commission: COMMISSION_SERVICE,
   commissionUnit: "percent",
-  subscriptionShare: 1.44,
+  subscriptionPlan: "standard",
+  subscriptionShare: SUBSCRIPTION_RATE,
   subscriptionUnit: "percent",
+  restaurantCount: 1,
   useYandexDelivery: false,
   marketingShare: 0,
   aggAdShare: 15,
@@ -195,6 +229,7 @@ export type ChannelResult = {
   income: number;
   commissionRub: number;
   subscriptionRub: number;
+  subscriptionFixedPerMonth: number;
   deliveryFeeRub: number;
   adRub: number;
   promoRub: number;
@@ -298,6 +333,7 @@ const EMPTY_CHANNEL: ChannelResult = {
   income: 0,
   commissionRub: 0,
   subscriptionRub: 0,
+  subscriptionFixedPerMonth: 0,
   deliveryFeeRub: 0,
   adRub: 0,
   promoRub: 0,
@@ -333,6 +369,7 @@ type ChannelParams = {
   commissionUnit?: Unit;
   subscriptionShare?: number;
   subscriptionUnit?: Unit;
+  subscriptionFixedPerMonth?: number;
   deliveryFeeShare?: number;
   adShare: number;
   adUnit?: Unit;
@@ -360,7 +397,12 @@ const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
   const income = avgCheck + serviceFeeRub;
 
   const commissionRub = amount(p.commission, p.commissionUnit);
-  const subscriptionRub = amount(p.subscriptionShare ?? 0, p.subscriptionUnit);
+  const ordersPerMonthRaw = clamp(p.orders) * 30;
+  const subscriptionFixedPerMonth = clamp(p.subscriptionFixedPerMonth ?? 0);
+  const subscriptionFixedPerOrder =
+    ordersPerMonthRaw > 0 ? subscriptionFixedPerMonth / ordersPerMonthRaw : 0;
+  const subscriptionRub =
+    amount(p.subscriptionShare ?? 0, p.subscriptionUnit) + subscriptionFixedPerOrder;
   const deliveryFeeRub = pct(p.deliveryFeeShare ?? 0);
   const adRub = amount(p.adShare, p.adUnit);
   const promoRub = amount(p.promoShare, p.promoUnit);
@@ -449,6 +491,7 @@ const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
     writeOffRub,
     profitPerOrder,
     marginPercent,
+    subscriptionFixedPerMonth,
     revenuePerMonth,
     payoutPerMonth,
     profitPerMonth,
@@ -470,8 +513,10 @@ export const calculate = (input: CalcInput): CalcResult => {
       avgCheck: input.aggAvgCheck,
       commission: input.commission,
       commissionUnit: input.commissionUnit,
-      subscriptionShare: input.subscriptionShare,
+      subscriptionShare: input.subscriptionPlan === "none" ? 0 : input.subscriptionShare,
       subscriptionUnit: input.subscriptionUnit,
+      subscriptionFixedPerMonth:
+        input.subscriptionPlan === "business" ? businessFixedFee(input.restaurantCount) : 0,
       deliveryFeeShare:
         input.deliveryType === "own" && input.useYandexDelivery ? YANDEX_DELIVERY_FEE : 0,
       adShare: input.aggAdShare,

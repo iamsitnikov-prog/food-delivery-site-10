@@ -8,7 +8,9 @@ import {
   DEFAULTS,
   COMMISSION_SERVICE,
   COMMISSION_OWN,
+  SUBSCRIPTION_RATE,
   type CalcInput,
+  type SubscriptionPlan,
   type DeliveryType,
   type TaxMode,
   type Unit,
@@ -49,6 +51,16 @@ const Calculator = ({ mode = "all", hideCta = false }: { mode?: CalcMode; hideCt
   const setYandexDelivery = (v: number) => {
     setInput((p) => ({ ...p, useYandexDelivery: v === 1 }));
     reachGoal("calc_use", { mode, field: "useYandexDelivery" });
+  };
+
+  const setSubscriptionPlan = (v: SubscriptionPlan) => {
+    setInput((p) => ({
+      ...p,
+      subscriptionPlan: v,
+      subscriptionShare: v === "none" ? 0 : SUBSCRIPTION_RATE,
+      subscriptionUnit: "percent",
+    }));
+    reachGoal("calc_use", { mode, field: "subscriptionPlan" });
   };
 
   const setTaxMode = (v: TaxMode) => {
@@ -93,6 +105,7 @@ const Calculator = ({ mode = "all", hideCta = false }: { mode?: CalcMode; hideCt
             setDelivery={setDelivery}
             setYandexDelivery={setYandexDelivery}
             setTaxMode={setTaxMode}
+            setSubscriptionPlan={setSubscriptionPlan}
           />
 
           <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">

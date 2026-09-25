@@ -6,7 +6,10 @@ import { Section, RevenueBadge } from "./CalcParts";
 import {
   money,
   TAX_MODES,
+  SUBSCRIPTION_PLANS,
+  businessFixedFee,
   type CalcInput,
+  type SubscriptionPlan,
   type CalcResult,
   type DeliveryType,
   type TaxMode,
@@ -24,6 +27,7 @@ type Props = {
   setDelivery: (v: DeliveryType) => void;
   setYandexDelivery: (v: number) => void;
   setTaxMode: (v: TaxMode) => void;
+  setSubscriptionPlan: (v: SubscriptionPlan) => void;
 };
 
 const CalcForm = ({
@@ -37,6 +41,7 @@ const CalcForm = ({
   setDelivery,
   setYandexDelivery,
   setTaxMode,
+  setSubscriptionPlan,
 }: Props) => {
   const aggOn = input.aggEnabled;
   const selfOn = input.selfEnabled;
@@ -99,6 +104,33 @@ const CalcForm = ({
               )}
 
               <CalcToggle
+                label="Тариф Подписки"
+                value={input.subscriptionPlan}
+                onChange={setSubscriptionPlan}
+                options={SUBSCRIPTION_PLANS.map((p) => ({ value: p.value, label: p.label }))}
+                hint={SUBSCRIPTION_PLANS.find((p) => p.value === input.subscriptionPlan)?.hint}
+              />
+
+              {input.subscriptionPlan === "business" && (
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <CalcField
+                    label="Ресторанов в Подписке"
+                    suffix="шт"
+                    value={input.restaurantCount}
+                    onChange={set("restaurantCount")}
+                    step={1}
+                    hint="Фиксированная часть тарифа «Бизнес»: 1 333 ₽ в месяц за первые три ресторана и 583 ₽ за каждый следующий."
+                  />
+                  <div className="flex flex-col justify-center rounded-2xl bg-cream/5 px-4 py-3">
+                    <span className="text-[0.82em] text-cream-muted">фиксированная часть</span>
+                    <span className="mt-0.5 font-display text-[1.25em] font-semibold text-brand">
+                      {money(businessFixedFee(input.restaurantCount))} ₽/мес
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <CalcToggle
                 label="Маркетинг Ultima"
                 value={input.marketingShare}
                 onChange={set("marketingShare")}
@@ -121,16 +153,18 @@ const CalcForm = ({
                   onUnitChange={setUnit("commissionUnit")}
                   hint="Подставляется по способу доставки. Уточните свою ставку в договоре."
                 />
-                <CalcField
-                  label="Подписка · subscription"
-                  suffix="%"
-                  value={input.subscriptionShare}
-                  onChange={set("subscriptionShare")}
-                  step={0.1}
-                  unit={input.subscriptionUnit}
-                  onUnitChange={setUnit("subscriptionUnit")}
-                  hint="Плата за подписку — обычно около 1,44% от заказа. Указана отдельной строкой в актах."
-                />
+                {input.subscriptionPlan !== "none" && (
+                  <CalcField
+                    label="Подписка · subscription"
+                    suffix="%"
+                    value={input.subscriptionShare}
+                    onChange={set("subscriptionShare")}
+                    step={0.01}
+                    unit={input.subscriptionUnit}
+                    onUnitChange={setUnit("subscriptionUnit")}
+                    hint="Процент от суммы заказов. По текущим условиям — 1,64% плюс НДС. Указан отдельной строкой «Услуги подписки» в актах."
+                  />
+                )}
                 <CalcField
                   label="Продвижение · ad spend (CPA)"
                   suffix="%"
