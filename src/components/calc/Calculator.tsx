@@ -12,6 +12,7 @@ import {
   type CalcInput,
   type SubscriptionPlan,
   type AdBase,
+  type Platform,
   type DeliveryType,
   type TaxMode,
   type Unit,
@@ -69,6 +70,15 @@ const Calculator = ({ mode = "all", hideCta = false }: { mode?: CalcMode; hideCt
     reachGoal("calc_use", { mode, field: "aggAdBase" });
   };
 
+  const setPlatform = (v: Platform) => {
+    setInput((p) => ({
+      ...p,
+      platform: v,
+      marketingShare: v === "ultima" ? (p.marketingShare > 0 ? p.marketingShare : 2) : 0,
+    }));
+    reachGoal("calc_use", { mode, field: "platform" });
+  };
+
   const setTaxMode = (v: TaxMode) => {
     setInput((p) => ({ ...p, taxMode: v }));
     reachGoal("calc_use", { mode, field: "taxMode" });
@@ -113,6 +123,7 @@ const Calculator = ({ mode = "all", hideCta = false }: { mode?: CalcMode; hideCt
             setTaxMode={setTaxMode}
             setSubscriptionPlan={setSubscriptionPlan}
             setAdBase={setAdBase}
+            setPlatform={setPlatform}
           />
 
           <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">

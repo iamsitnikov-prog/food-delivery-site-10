@@ -8,10 +8,12 @@ import {
   TAX_MODES,
   SUBSCRIPTION_PLANS,
   AD_BASES,
+  PLATFORMS,
   businessFixedFee,
   type CalcInput,
   type SubscriptionPlan,
   type AdBase,
+  type Platform,
   type CalcResult,
   type DeliveryType,
   type TaxMode,
@@ -31,6 +33,7 @@ type Props = {
   setTaxMode: (v: TaxMode) => void;
   setSubscriptionPlan: (v: SubscriptionPlan) => void;
   setAdBase: (v: AdBase) => void;
+  setPlatform: (v: Platform) => void;
 };
 
 const CalcForm = ({
@@ -46,6 +49,7 @@ const CalcForm = ({
   setTaxMode,
   setSubscriptionPlan,
   setAdBase,
+  setPlatform,
 }: Props) => {
   const aggOn = input.aggEnabled;
   const selfOn = input.selfEnabled;
@@ -61,6 +65,14 @@ const CalcForm = ({
 
       {aggOn && (
         <Section title="Агрегатор" icon="Store">
+          <CalcToggle
+            label="Где работает ресторан"
+            value={input.platform}
+            onChange={setPlatform}
+            options={PLATFORMS.map((p) => ({ value: p.value, label: p.label }))}
+            hint={PLATFORMS.find((p) => p.value === input.platform)?.hint}
+          />
+
           <div className="grid gap-4 sm:grid-cols-2">
             <CalcField
               label="Средний чек · average check"
@@ -142,17 +154,18 @@ const CalcForm = ({
                 hint={AD_BASES.find((b) => b.value === input.aggAdBase)?.hint}
               />
 
-              <CalcToggle
-                label="Маркетинг Ultima"
-                value={input.marketingShare}
-                onChange={set("marketingShare")}
-                options={[
-                  { value: 0, label: "Нет" },
-                  { value: 2, label: "2%" },
-                  { value: 5, label: "5%" },
-                ]}
-                hint="Для проектов в Ultima.Еда сервис оказывает маркетинговые услуги на выбор — 2% или 5% от заказа, оплачивает ресторан."
-              />
+              {input.platform === "ultima" && (
+                <CalcToggle
+                  label="Маркетинговые услуги Ultima"
+                  value={input.marketingShare}
+                  onChange={set("marketingShare")}
+                  options={[
+                    { value: 2, label: "2%" },
+                    { value: 5, label: "5%" },
+                  ]}
+                  hint="В Ultima.Еда сервис оказывает маркетинговые услуги на выбор ресторана — 2% или 5% от стоимости заказа. Списываются дополнительно к комиссии."
+                />
+              )}
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <CalcField

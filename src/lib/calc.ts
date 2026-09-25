@@ -6,6 +6,7 @@ export type Unit = "percent" | "rub";
 
 export type CalcInput = {
   aggEnabled: boolean;
+  platform: Platform;
   aggOrdersPerDay: number;
   aggAvgCheck: number;
   deliveryType: DeliveryType;
@@ -98,6 +99,21 @@ export const TAX_MODES: { value: TaxMode; label: string; hint: string }[] = [
   { value: "none", label: "Не учитывать", hint: "Расчёт без налога на прибыль." },
 ];
 
+export type Platform = "eda" | "ultima";
+
+export const PLATFORMS: { value: Platform; label: string; hint: string }[] = [
+  {
+    value: "eda",
+    label: "Яндекс Еда",
+    hint: "Обычная витрина Яндекс Еды. Комиссия по договору, маркетинговые услуги Ultima не применяются.",
+  },
+  {
+    value: "ultima",
+    label: "Ultima.Еда",
+    hint: "Отдельная витрина для ресторанов премиального сегмента. Дополнительно оплачиваются маркетинговые услуги сервиса — 2% или 5% от заказа на выбор ресторана.",
+  },
+];
+
 export type AdBase = "all" | "promoted";
 
 export const AD_BASES: { value: AdBase; label: string; hint: string }[] = [
@@ -145,6 +161,7 @@ export const businessFixedFee = (restaurants: number): number => {
 
 export const DEFAULTS: CalcInput = {
   aggEnabled: true,
+  platform: "eda",
   aggOrdersPerDay: 25,
   aggAvgCheck: 1200,
   deliveryType: "service",
@@ -545,7 +562,7 @@ export const calculate = (input: CalcInput): CalcResult => {
       adReach: input.aggAdBase === "promoted" ? input.aggAdReach : 100,
       promoShare: input.aggPromoShare,
       promoUnit: input.aggPromoUnit,
-      marketingShare: input.marketingShare,
+      marketingShare: input.platform === "ultima" ? input.marketingShare : 0,
       refundShare: input.refundShare,
       refundUnit: input.refundUnit,
       penaltyShare: input.penaltyShare,
