@@ -4,8 +4,8 @@ import { VISIBLE_CALC_PAGES } from "@/data/calculators";
 
 const ALL = {
   slug: "",
-  icon: "LayoutGrid",
-  navLabel: "Все калькуляторы",
+  icon: "TrendingUp",
+  navLabel: "Окупаемость канала",
   accent: false,
 };
 

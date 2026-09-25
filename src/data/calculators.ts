@@ -116,7 +116,7 @@ export const CALC_PAGES: CalcPage[] = [
   {
     slug: "okupaemost",
     mode: "breakeven",
-    primary: true,
+    hidden: true,
     icon: "TrendingUp",
     navLabel: "Окупаемость канала",
     h1: "Общая экономика доставки",
