@@ -63,10 +63,11 @@ const CalcForm = ({
             />
             <CalcField
               label="Заказов в день · orders"
-              suffix="шт"
+              suffix="шт в день"
               value={input.aggOrdersPerDay}
               onChange={set("aggOrdersPerDay")}
-              hint="Среднее количество заказов с агрегатора за день."
+              hint="Среднее количество заказов с агрегатора ЗА ОДИН ДЕНЬ, не за месяц. Если знаете месячное число — разделите его на 30."
+              note={`≈ ${Math.round((input.aggOrdersPerDay || 0) * 30).toLocaleString("ru-RU")} заказов в месяц`}
             />
           </div>
           <RevenueBadge value={r.agg.revenuePerMonth} />
@@ -196,10 +197,11 @@ const CalcForm = ({
             />
             <CalcField
               label="Заказов в день · orders"
-              suffix="шт"
+              suffix="шт в день"
               value={input.selfOrdersPerDay}
               onChange={set("selfOrdersPerDay")}
-              hint="Среднее количество заказов со своих каналов за день."
+              hint="Среднее количество заказов со своих каналов ЗА ОДИН ДЕНЬ, не за месяц. Если знаете месячное число — разделите его на 30."
+              note={`≈ ${Math.round((input.selfOrdersPerDay || 0) * 30).toLocaleString("ru-RU")} заказов в месяц`}
             />
           </div>
           <RevenueBadge value={r.self.revenuePerMonth} />
