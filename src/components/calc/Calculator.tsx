@@ -17,7 +17,7 @@ import { reachGoal } from "@/lib/metrika";
 
 export type CalcMode = "all" | "profit" | "drr" | "vat" | "breakeven" | "compare";
 
-const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
+const Calculator = ({ mode = "all", hideCta = false }: { mode?: CalcMode; hideCta?: boolean }) => {
   const [input, setInput] = useState<CalcInput>(DEFAULTS);
   const r = useMemo(() => calculate(input), [input]);
 
@@ -118,6 +118,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
         <CalcOutput input={input} r={r} show={show} />
       </div>
 
+      {!hideCta && (
       <div className="mt-8 rounded-[24px] bg-brand p-6 text-foreground md:p-8">
         <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between md:gap-8">
           <div className="min-w-0">
@@ -139,6 +140,7 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
           </a>
         </div>
       </div>
+      )}
 
       <CalcPrint
         input={input}

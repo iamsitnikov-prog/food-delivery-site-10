@@ -10,7 +10,7 @@ import {
 } from "@/lib/compare";
 import { reachGoal } from "@/lib/metrika";
 
-const CompareCalc = () => {
+const CompareCalc = ({ hideCta = false }: { hideCta?: boolean }) => {
   const [input, setInput] = useState<CompareInput>(DEFAULT_COMPARE);
   const r = useMemo(() => calculateCompare(input), [input]);
 
@@ -65,6 +65,7 @@ const CompareCalc = () => {
         <CompareResults r={r} />
       </div>
 
+      {!hideCta && (
       <div className="mt-8 rounded-[24px] bg-cream/[0.06] p-6 md:p-8">
         <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between md:gap-8">
           <div className="min-w-0">
@@ -86,6 +87,7 @@ const CompareCalc = () => {
           </a>
         </div>
       </div>
+      )}
     </div>
   );
 };

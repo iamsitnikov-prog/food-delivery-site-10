@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Icon from "@/components/ui/icon";
 import Calculator from "@/components/calc/Calculator";
 import CalcSwitcher from "@/components/calc/CalcSwitcher";
+import CompareCalc from "@/components/calc/CompareCalc";
 import useSeo from "@/hooks/use-seo";
 import { VISIBLE_CALC_PAGES, CALC_PAGES } from "@/data/calculators";
 
@@ -64,7 +65,7 @@ const CalcPreview = () => {
           </section>
 
           <section className="px-5 pb-16 md:px-14 md:pb-24">
-            <Calculator mode="all" />
+            <Calculator mode="all" hideCta />
           </section>
 
           <section className="px-5 pb-16 md:px-14 md:pb-24">
@@ -129,7 +130,7 @@ const CalcPreview = () => {
           </section>
 
           <section className="px-5 pb-16 md:px-14 md:pb-24">
-            <Calculator mode={page.mode} />
+            {page.mode === "compare" ? <CompareCalc hideCta /> : <Calculator mode={page.mode} hideCta />}
           </section>
 
           {page.intro?.length > 0 && (
