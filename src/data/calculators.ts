@@ -58,9 +58,8 @@ export const CALC_PAGES: CalcPage[] = [
   {
     slug: "drr",
     mode: "drr",
-    hidden: true,
     icon: "Percent",
-    navLabel: "ДРР",
+    navLabel: "ДРР и окупаемость рекламы",
     h1: "Калькулятор ДРР для ресторана на агрегаторе",
     title: "Калькулятор ДРР: доля рекламных расходов в доставке | agregatory.pro",
     description:
@@ -119,7 +118,7 @@ export const CALC_PAGES: CalcPage[] = [
     mode: "breakeven",
     primary: true,
     icon: "TrendingUp",
-    navLabel: "Общая экономика доставки",
+    navLabel: "Окупаемость канала",
     h1: "Общая экономика доставки",
     title: "Калькулятор экономики доставки для ресторана | agregatory.pro",
     description:

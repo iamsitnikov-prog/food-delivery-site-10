@@ -56,7 +56,8 @@ const Calculator = ({ mode = "all" }: { mode?: CalcMode }) => {
     reachGoal("calc_use", { mode, field: "taxMode" });
   };
 
-  const show = (block: CalcMode) => mode === "all" || mode === block;
+  const show = (block: CalcMode) =>
+    mode === "all" || mode === block || (mode === "breakeven" && block === "drr");
   const isVat = mode === "vat";
   const isFull = mode === "all" || mode === "breakeven";
 
