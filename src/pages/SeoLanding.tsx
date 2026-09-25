@@ -8,6 +8,7 @@ import Contacts from "@/components/landing/Contacts";
 import ChannelsBlock from "@/components/shared/ChannelsBlock";
 import CityCaseBlock from "@/components/seo/CityCaseBlock";
 import LinkCloud from "@/components/seo/LinkCloud";
+import ResourceLinks from "@/components/seo/ResourceLinks";
 import { getCityCase } from "@/data/city-cases";
 import ExpertiseStrip from "@/components/landing/ExpertiseStrip";
 import useSeo from "@/hooks/use-seo";
@@ -171,6 +172,8 @@ const SeoLanding = () => {
           ))}
         </Accordion>
       </section>
+
+      <ResourceLinks slug={page.slug} kind={page.kind} />
 
       <section className="px-5 pb-16 md:px-14 md:pb-24">
         <div className="grid gap-10 md:grid-cols-2">

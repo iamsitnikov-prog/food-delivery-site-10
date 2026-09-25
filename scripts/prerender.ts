@@ -11,6 +11,7 @@ import { QUIZZES } from "../src/data/quizzes";
 import { getCityCase, CITY_CASES } from "../src/data/city-cases";
 import { getChecklistPage } from "../src/data/checklists";
 import { GLOSSARY } from "../src/data/glossary";
+import { getServiceResources } from "../src/data/service-resources";
 import { AGGREGATORS, SCENARIOS, CONCLUSIONS } from "../src/data/comparison";
 
 const SITE = "https://agregatory.pro";
@@ -168,6 +169,13 @@ for (const p of [...SERVICE_PAGES, ...CITY_PAGES]) {
       : undefined,
     body: `<article><h1>${esc(clean(p.h1))}</h1><p>${esc(clean(p.lead))}</p>
 ${blocks}${caseHtml}${bullets}${faqToText(p.faq)}
+<h2>Полезное по теме</h2>
+<ul>${getServiceResources(p.slug, p.kind)
+      .map(
+        (r) =>
+          `<li><a href="${r.to}">${esc(clean(r.label))}</a> — ${esc(clean(r.note))}</li>`,
+      )
+      .join("")}</ul>
 <p>Телефон: +7 931 002-82-22</p></article>`,
   });
 }
