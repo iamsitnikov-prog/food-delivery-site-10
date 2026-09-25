@@ -19,12 +19,15 @@ TG_IPS = [
 ]
 
 
-def send_email(subject, text):
+def send_email(subject, text, budget=2.0):
     host = os.environ.get('SMTP_HOST')
     user = os.environ.get('SMTP_USER')
     password = os.environ.get('SMTP_PASSWORD')
     to = os.environ.get('LEAD_EMAIL_TO')
     if not host or not user or not password or not to:
+        return False
+    if budget <= 0.3:
+        print('email skipped: no time budget')
         return False
     msg = EmailMessage()
     msg['Subject'] = subject
@@ -32,7 +35,7 @@ def send_email(subject, text):
     msg['To'] = to
     msg.set_content(text)
     try:
-        with smtplib.SMTP_SSL(host, 465, timeout=2.5) as s:
+        with smtplib.SMTP_SSL(host, 465, timeout=budget) as s:
             s.login(user, password)
             s.send_message(msg)
         return True
@@ -85,10 +88,13 @@ def mark_sent(lead_id):
         print(f'db update error: {exc}')
 
 
-def send_telegram(lines):
+def send_telegram(lines, budget=2.2):
     token = os.environ.get('TELEGRAM_BOT_TOKEN')
     chat_id = os.environ.get('TELEGRAM_CHAT_ID')
     if not token or not chat_id:
+        return False
+    if budget <= 0.3:
+        print('telegram skipped: no time budget')
         return False
     payload = urllib.parse.urlencode({
         'chat_id': chat_id,
@@ -104,17 +110,17 @@ def send_telegram(lines):
     except Exception as exc:
         print(f'telegram dns error: {exc}')
 
-    deadline = time.monotonic() + 6.0
-    attempts = targets + targets
-    for ip in attempts:
-        if time.monotonic() > deadline:
+    deadline = time.monotonic() + budget
+    for ip in targets:
+        left = deadline - time.monotonic()
+        if left <= 0.3:
             print('telegram: time budget exceeded')
             break
         try:
             ctx = ssl.create_default_context()
-            raw = socket.create_connection((ip, 443), timeout=1.5)
+            raw = socket.create_connection((ip, 443), timeout=min(1.2, left))
             sock = ctx.wrap_socket(raw, server_hostname='api.telegram.org')
-            conn = http.client.HTTPSConnection('api.telegram.org', timeout=2.5)
+            conn = http.client.HTTPSConnection('api.telegram.org', timeout=max(0.5, deadline - time.monotonic()))
             conn.sock = sock
             conn.request('POST', f'/bot{token}/sendMessage', body=payload,
                          headers={'Content-Type': 'application/x-www-form-urlencoded'})
@@ -195,12 +201,32 @@ def handler(event, context):
     if comment:
         lines.append(f'<b>Комментарий:</b> {comment}')
 
+    started = time.monotonic()
+    total_budget = 4.2
+
     lead_id = save_lead(name, phone, place, status, channel, comment, False)
     plain = '\n'.join(l.replace('<b>', '').replace('</b>', '') for l in lines)
-    mailed = send_email(f'Заявка с сайта: {name}', plain)
-    sent = send_telegram(lines)
+
+    left = total_budget - (time.monotonic() - started)
+    sent = send_telegram(lines, budget=min(2.2, left))
+
+    left = total_budget - (time.monotonic() - started)
+    mailed = send_email(f'Заявка с сайта: {name}', plain, budget=left)
+
     if sent and lead_id:
         mark_sent(lead_id)
+
+    if not mailed and not sent and not lead_id:
+        print(f'LEAD LOST: {plain}')
+        return {
+            'statusCode': 502,
+            'headers': cors,
+            'isBase64Encoded': False,
+            'body': json.dumps({'ok': False, 'error': 'delivery failed'}),
+        }
+
+    if not mailed and not sent:
+        print(f'LEAD SAVED BUT NOT DELIVERED id={lead_id}')
 
     return {
         'statusCode': 200,
