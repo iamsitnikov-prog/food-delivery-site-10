@@ -25,7 +25,7 @@ const ChecklistPage = lazy(() => import("./pages/ChecklistPage"));
 const Read = lazy(() => import("./pages/Read"));
 const Glossary = lazy(() => import("./pages/Glossary"));
 const Comparison = lazy(() => import("./pages/Comparison"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+const NotFound = lazy(() => import("./pages/PageNotFound"));
 
 const queryClient = new QueryClient();
 

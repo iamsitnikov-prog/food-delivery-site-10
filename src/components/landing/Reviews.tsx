@@ -66,15 +66,17 @@ const Reviews = () => {
                 <div className="font-display text-[1.15em] font-semibold">{r.author}</div>
                 <div className="text-[0.88em] text-cream-muted">{r.place}</div>
               </div>
-              <a
-                href={r.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.88em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
-              >
-                открыть оригинал
-                <Icon name="ArrowUpRight" size={16} />
-              </a>
+              {r.link && r.link !== "#" && (
+                <a
+                  href={r.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.88em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
+                >
+                  открыть оригинал
+                  <Icon name="ArrowUpRight" size={16} />
+                </a>
+              )}
             </div>
           </article>
         ))}

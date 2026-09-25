@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Link, Navigate, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
@@ -12,6 +12,7 @@ import ResourceLinks from "@/components/seo/ResourceLinks";
 import { getCityCase } from "@/data/city-cases";
 import ExpertiseStrip from "@/components/landing/ExpertiseStrip";
 import useSeo from "@/hooks/use-seo";
+import PageNotFound from "@/pages/PageNotFound";
 import { CITY_PAGES, SERVICE_PAGES, findPage } from "@/data/seo-pages";
 import { PEOPLE } from "@/data/team";
 
@@ -67,7 +68,7 @@ const SeoLanding = () => {
     jsonLd,
   });
 
-  if (!page) return <Navigate to="/404" replace />;
+  if (!page) return <PageNotFound />;
 
   const others = (page.kind === "service" ? SERVICE_PAGES : CITY_PAGES).filter((p) => p.slug !== page.slug);
   const cityCase = page.kind === "city" ? getCityCase(page.slug) : undefined;

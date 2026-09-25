@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Link, Navigate, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
@@ -10,6 +10,7 @@ import PostAuthor from "@/components/blog/PostAuthor";
 import PostFeedback from "@/components/blog/PostFeedback";
 import ChannelsBlock from "@/components/shared/ChannelsBlock";
 import useSeo from "@/hooks/use-seo";
+import PageNotFound from "@/pages/PageNotFound";
 import { BLOG_POSTS, findPost } from "@/data/blog-posts";
 import { PEOPLE } from "@/data/team";
 
@@ -66,7 +67,7 @@ const BlogPost = () => {
 
   useSeo({ title: post?.title || "", description: post?.description || "", path: pathname, jsonLd });
 
-  if (!post) return <Navigate to="/404" replace />;
+  if (!post) return <PageNotFound />;
 
   const rest = BLOG_POSTS.filter((p) => p.slug !== post.slug);
   const sameTag = rest.filter((p) => p.tag === post.tag);
