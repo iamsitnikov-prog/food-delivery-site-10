@@ -11,6 +11,7 @@ import PostFeedback from "@/components/blog/PostFeedback";
 import ChannelsBlock from "@/components/shared/ChannelsBlock";
 import useSeo from "@/hooks/use-seo";
 import PageNotFound from "@/pages/PageNotFound";
+import { isPreviewMode, isScheduled, visiblePosts, formatDate, exitPreview } from "@/lib/schedule";
 import { BLOG_POSTS, findPost } from "@/data/blog-posts";
 import { PEOPLE } from "@/data/team";
 
@@ -69,7 +70,11 @@ const BlogPost = () => {
 
   if (!post) return <PageNotFound />;
 
-  const rest = BLOG_POSTS.filter((p) => p.slug !== post.slug);
+  const preview = isPreviewMode();
+  const scheduled = isScheduled(post);
+  if (scheduled && !preview) return <PageNotFound />;
+
+  const rest = visiblePosts(BLOG_POSTS).filter((p) => p.slug !== post.slug);
   const sameTag = rest.filter((p) => p.tag === post.tag);
   const others = [...sameTag, ...rest.filter((p) => p.tag !== post.tag)].slice(0, 4);
 
@@ -77,6 +82,21 @@ const BlogPost = () => {
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <div id="top">
         <Header />
+        {scheduled && (
+          <div className="mx-5 mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-surface px-5 py-4 text-cream md:mx-14">
+            <Icon name="Clock" size={18} className="text-brand" />
+            <span className="text-[0.95em]">
+              Черновик. Статья появится на сайте {formatDate(post.date)} — сейчас её видите только вы.
+            </span>
+            <button
+              type="button"
+              onClick={exitPreview}
+              className="ml-auto text-[0.9em] text-brand underline underline-offset-4"
+            >
+              выйти из предпросмотра
+            </button>
+          </div>
+        )}
 
         <article className="mx-auto max-w-[1240px] px-5 pb-16 pt-12 md:px-14 md:pb-24 md:pt-16">
           <nav aria-label="Хлебные крошки" className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">

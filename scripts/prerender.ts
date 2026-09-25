@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { BLOG_POSTS } from "../src/data/blog-posts";
+import { BLOG_POSTS as ALL_POSTS } from "../src/data/blog-posts";
+
 import { SERVICE_PAGES, CITY_PAGES } from "../src/data/seo-pages";
 import { PARTNERS } from "../src/data/partners";
 import { QUIZ_QUESTIONS } from "../src/data/quiz";
@@ -13,6 +14,9 @@ import { getChecklistPage } from "../src/data/checklists";
 import { GLOSSARY } from "../src/data/glossary";
 import { getServiceResources } from "../src/data/service-resources";
 import { AGGREGATORS, SCENARIOS, CONCLUSIONS } from "../src/data/comparison";
+
+const todayISO = () => new Date().toISOString().slice(0, 10);
+const BLOG_POSTS = ALL_POSTS.filter((p) => !p.date || p.date <= todayISO());
 
 const SITE = "https://agregatory.pro";
 const OUT = path.resolve(process.cwd(), "public");

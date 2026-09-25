@@ -11,10 +11,12 @@ import { FRESH_POSTS } from "./posts/fresh";
 import { SETUP_POSTS } from "./posts/setup";
 import { FINANCE_POSTS } from "./posts/finance";
 import { OFERTA_POSTS } from "./posts/oferta";
+import { PLANNED_POSTS } from "./posts/planned";
 
 export type { PostBlock, BlogPost } from "./blog-types";
 
 export const BLOG_POSTS: BlogPost[] = [
+  ...PLANNED_POSTS,
   ...OFERTA_POSTS,
   ...FRESH_POSTS,
   ...CORE_POSTS,

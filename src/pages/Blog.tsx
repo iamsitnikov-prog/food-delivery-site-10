@@ -6,6 +6,7 @@ import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
 import { BLOG_POSTS } from "@/data/blog-posts";
+import { visiblePosts, isPreviewMode, isScheduled, formatDate, exitPreview } from "@/lib/schedule";
 import { BLOG_GROUPS } from "@/data/blog-groups";
 
 const REACTIONS_API = "https://functions.poehali.dev/5384928e-d232-4529-9e00-cfdcc6458060";
@@ -17,7 +18,7 @@ const Blog = () => {
   const [likes, setLikes] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    const slugs = BLOG_POSTS.map((p) => p.slug).join(",");
+    const slugs = visiblePosts(BLOG_POSTS).map((p) => p.slug).join(",");
     fetch(`${REACTIONS_API}?slugs=${slugs}`)
       .then((r) => r.json())
       .then((d) => setLikes(d?.likes ?? {}))
@@ -26,18 +27,24 @@ const Blog = () => {
 
   const top = useMemo(
     () =>
-      BLOG_POSTS.filter((p) => (likes[p.slug] ?? 0) >= TOP_MIN_LIKES)
+      visiblePosts(BLOG_POSTS).filter((p) => (likes[p.slug] ?? 0) >= TOP_MIN_LIKES)
         .sort((a, b) => (likes[b.slug] ?? 0) - (likes[a.slug] ?? 0))
         .slice(0, 3),
     [likes],
   );
 
+  const preview = isPreviewMode();
+  const live = useMemo(() => visiblePosts(BLOG_POSTS), []);
+
   const sorted = useMemo(
     () =>
-      [...BLOG_POSTS].sort(
-        (a, b) => Number(!!b.pinned) - Number(!!a.pinned) || Number(!!b.isNew) - Number(!!a.isNew),
+      [...live].sort(
+        (a, b) =>
+          Number(isScheduled(a)) - Number(isScheduled(b)) ||
+          Number(!!b.pinned) - Number(!!a.pinned) ||
+          Number(!!b.isNew) - Number(!!a.isNew),
       ),
-    [],
+    [live],
   );
 
   const posts = useMemo(() => {
@@ -57,6 +64,21 @@ const Blog = () => {
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <div id="top">
         <Header />
+        {preview && (
+          <div className="mx-5 mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-surface px-5 py-4 text-cream md:mx-14">
+            <Icon name="Eye" size={18} className="text-brand" />
+            <span className="text-[0.95em]">
+              Режим предпросмотра: видны запланированные статьи. Посетители их не видят.
+            </span>
+            <button
+              type="button"
+              onClick={exitPreview}
+              className="ml-auto text-[0.9em] text-brand underline underline-offset-4"
+            >
+              выйти
+            </button>
+          </div>
+        )}
         <section className="px-5 pb-14 pt-12 md:px-14 md:pb-20 md:pt-16">
           <nav aria-label="Хлебные крошки" className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
@@ -149,11 +171,11 @@ const Blog = () => {
           >
             все материалы
             <span className={group === null ? "pl-2 text-primary-foreground/50" : "pl-2 text-muted-foreground"}>
-              {BLOG_POSTS.length}
+              {live.length}
             </span>
           </button>
           {BLOG_GROUPS.map((g) => {
-            const count = BLOG_POSTS.filter((p) => g.tags.includes(p.tag)).length;
+            const count = live.filter((p) => g.tags.includes(p.tag)).length;
             const active = group === g.id;
             return (
               <button
@@ -198,10 +220,17 @@ const Blog = () => {
                 >
                   {post.tag}
                 </span>
-                {post.isNew && (
-                  <span className="rounded-lg bg-brand px-3 py-1.5 font-medium uppercase tracking-wide text-foreground">
-                    новое
+                {isScheduled(post) ? (
+                  <span className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 font-medium text-primary-foreground">
+                    <Icon name="Clock" size={12} />
+                    выйдет {formatDate(post.date)}
                   </span>
+                ) : (
+                  post.isNew && (
+                    <span className="rounded-lg bg-brand px-3 py-1.5 font-medium uppercase tracking-wide text-foreground">
+                      новое
+                    </span>
+                  )
                 )}
                 <span className={i % 2 === 1 ? "text-foreground/60" : "text-cream-muted"}>{post.readTime}</span>
                 {(likes[post.slug] ?? 0) > 0 && (
