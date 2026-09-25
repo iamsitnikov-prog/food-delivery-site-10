@@ -16,7 +16,7 @@ const QuizTeaser = () => {
   const ref = useReveal<HTMLElement>();
 
   return (
-    <section ref={ref} className="px-5 pb-20 md:px-14 md:pb-28">
+    <section ref={ref} className="px-5 pb-20 pt-16 md:px-14 md:pb-28 md:pt-24">
       <div className="reveal grid gap-8 rounded-[32px] bg-surface p-7 text-cream md:p-11 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-14">
         <div className="min-w-0">
           <span className="inline-flex items-center gap-2 rounded-lg bg-brand px-3 py-1.5 text-[0.78em] font-medium text-foreground">

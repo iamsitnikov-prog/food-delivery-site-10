@@ -9,6 +9,17 @@ import { reachGoal } from "@/lib/metrika";
 import { getQuiz, getQuizLevel, QUIZZES, AUDIT_QUIZ } from "@/data/quizzes";
 import { maxScore } from "@/data/quiz-types";
 
+const shuffle = <T,>(arr: T[], seed: number): T[] => {
+  const a = [...arr];
+  let s = seed;
+  for (let i = a.length - 1; i > 0; i--) {
+    s = (s * 1103515245 + 12345) & 0x7fffffff;
+    const j = s % (i + 1);
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
+
 const QuizPage = () => {
   const { pathname } = useLocation();
   const { slug } = useParams();
@@ -17,6 +28,7 @@ const QuizPage = () => {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [done, setDone] = useState(false);
+  const [seed] = useState(() => Math.floor(Math.random() * 100000) + 1);
 
   useSeo({
     title: quiz?.title || "",
@@ -35,6 +47,7 @@ const QuizPage = () => {
   if (!quiz) return <Navigate to="/testy" replace />;
 
   const current = quiz.questions[step];
+  const options = shuffle(current.options, seed + step * 7919);
   const progress = done ? 100 : Math.round((step / total) * 100);
   const percent = max > 0 ? Math.round((score / max) * 100) : 0;
   const others = QUIZZES.filter((q) => q.slug !== quiz.slug);
@@ -142,7 +155,7 @@ const QuizPage = () => {
               )}
 
               <div className="mt-8 space-y-3">
-                {current.options.map((o) => (
+                {options.map((o) => (
                   <button
                     key={o.label}
                     type="button"
