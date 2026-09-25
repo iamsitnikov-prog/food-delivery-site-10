@@ -3,17 +3,20 @@ import type { PostBlock } from "@/data/blog-posts";
 import Icon from "@/components/ui/icon";
 import { INTERLINKS } from "@/data/interlinks";
 
-const linkify = (text: string, currentSlug: string, used: Set<string>) => {
-  const targets = INTERLINKS.filter((l) => l.slug !== currentSlug && !used.has(l.slug));
-  if (!targets.length) return text;
+type Node = string | JSX.Element;
 
-  let best: { idx: number; slug: string; phrase: string } | null = null;
+const linkify = (text: string, currentSlug: string, used: Set<string>): Node[] => {
+  const targets = INTERLINKS.filter((l) => l.slug !== currentSlug && !used.has(l.slug));
+  if (!targets.length) return [text];
+
+  let best: { idx: number; slug: string; phrase: string; to: string } | null = null;
   for (const t of targets) {
     const idx = text.toLowerCase().indexOf(t.phrase.toLowerCase());
     if (idx === -1) continue;
-    if (!best || idx < best.idx) best = { idx, slug: t.slug, phrase: t.phrase };
+    if (!best || idx < best.idx)
+      best = { idx, slug: t.slug, phrase: t.phrase, to: t.to ?? `/blog/${t.slug}` };
   }
-  if (!best) return text;
+  if (!best) return [text];
 
   const end = best.idx + best.phrase.length;
   const tail = text.slice(end).match(/^[а-яё]*/i)?.[0] ?? "";
@@ -23,12 +26,12 @@ const linkify = (text: string, currentSlug: string, used: Set<string>) => {
     text.slice(0, best.idx),
     <Link
       key={best.slug}
-      to={`/blog/${best.slug}`}
+      to={best.to}
       className="underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary"
     >
       {text.slice(best.idx, end) + tail}
     </Link>,
-    linkify(text.slice(end + tail.length), currentSlug, used),
+    ...linkify(text.slice(end + tail.length), currentSlug, used),
   ];
 };
 

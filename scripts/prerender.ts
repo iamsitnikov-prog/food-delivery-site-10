@@ -120,7 +120,7 @@ ${blocksToText(p.blocks)}
 ${faqToText(p.faq)}
 <h2>Пишем о доставке каждый день</h2>
 ${READ_CHANNELS.map((c) => `<p><a href="${c.href}" rel="noopener">${esc(clean(c.label))}</a> — ${esc(clean(c.short))}</p>`).join("")}
-<p><a href="${SITE}/blog">Все статьи блога</a></p></article>`,
+<p><a href="${SITE}/blog">Все статьи блога</a> · <a href="${SITE}/slovar">Словарь терминов доставки</a> · <a href="${SITE}/sravnenie-agregatorov">Сравнение агрегаторов</a> · <a href="${SITE}/kalkulyatory">Калькуляторы</a></p></article>`,
   });
 }
 

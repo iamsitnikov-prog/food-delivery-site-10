@@ -162,6 +162,20 @@ const BlogPost = () => {
                 <Icon name="Calculator" size={16} />
                 калькуляторы
               </Link>
+              <Link
+                to="/slovar"
+                className="mt-2.5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-foreground/20 px-5 py-3.5 text-[0.92em] font-medium transition-colors hover:bg-foreground hover:text-brand"
+              >
+                <Icon name="BookA" size={16} />
+                словарь терминов
+              </Link>
+              <Link
+                to="/sravnenie-agregatorov"
+                className="mt-2.5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-foreground/20 px-5 py-3.5 text-[0.92em] font-medium transition-colors hover:bg-foreground hover:text-brand"
+              >
+                <Icon name="GitCompare" size={16} />
+                сравнение агрегаторов
+              </Link>
             </aside>
           </div>
         </article>
