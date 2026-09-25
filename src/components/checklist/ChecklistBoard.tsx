@@ -101,7 +101,7 @@ const ChecklistBoard = ({ page }: { page: ChecklistPage }) => {
                   const id = `${gi}-${ii}`;
                   const checked = !!done[id];
                   return (
-                    <li key={item.text}>
+                    <li key={item.text} id={`${gi + 1}-${ii + 1}`} className="scroll-mt-24">
                       <button
                         type="button"
                         role="checkbox"

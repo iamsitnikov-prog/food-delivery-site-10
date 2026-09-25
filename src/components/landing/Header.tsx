@@ -7,6 +7,8 @@ export const USEFUL_LINKS = [
   { href: "/kalkulyatory", label: "калькуляторы", icon: "Calculator" },
   { href: "/chek-listy", label: "чек-листы", icon: "ListChecks" },
   { href: "/testy", label: "тесты", icon: "CircleHelp" },
+  { href: "/slovar", label: "словарь", icon: "BookA" },
+  { href: "/sravnenie-agregatorov", label: "сравнение", icon: "GitCompare" },
   { href: "/pochitat", label: "почитать", icon: "BookOpen" },
 ];
 

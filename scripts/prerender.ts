@@ -10,6 +10,8 @@ import { READ_CHANNELS } from "../src/data/channels";
 import { QUIZZES } from "../src/data/quizzes";
 import { getCityCase, CITY_CASES } from "../src/data/city-cases";
 import { getChecklistPage } from "../src/data/checklists";
+import { GLOSSARY } from "../src/data/glossary";
+import { AGGREGATORS, SCENARIOS, CONCLUSIONS } from "../src/data/comparison";
 
 const SITE = "https://agregatory.pro";
 const OUT = path.resolve(process.cwd(), "public");
@@ -284,6 +286,104 @@ ${c.faq.map((f) => `<h3>${esc(clean(f.q))}</h3><p>${esc(clean(f.a))}</p>`).join(
 }
 
 pages.push({
+  route: "/slovar",
+  jsonLd: [
+    {
+      "@context": "https://schema.org",
+      "@type": "DefinedTermSet",
+      name: "Словарь терминов доставки и агрегаторов",
+      inLanguage: "ru-RU",
+      url: `${SITE}/slovar`,
+      hasDefinedTerm: GLOSSARY.map((g) => ({
+        "@type": "DefinedTerm",
+        "@id": `${SITE}/slovar#${g.slug}`,
+        name: clean(g.term),
+        description: clean(g.short),
+        inDefinedTermSet: `${SITE}/slovar`,
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: GLOSSARY.map((g) => ({
+        "@type": "Question",
+        name: `Что такое ${clean(g.term)}?`,
+        acceptedAnswer: { "@type": "Answer", text: clean(g.full) },
+      })),
+    },
+  ],
+  title: "Словарь терминов доставки и агрегаторов | agregatory.pro",
+  description:
+    "ДРР, ROMI, медианное место, фудкост, индекс качества — термины доставки простым языком с формулами и примерами расчёта.",
+  body: `<h1>Словарь терминов доставки</h1>
+<p>Понятия, которые встречаются в кабинете агрегатора и в разговорах с менеджерами — простым языком, с формулами и примерами.</p>
+${GLOSSARY.map(
+    (t) =>
+      `<h2>${esc(clean(t.term))}</h2><p>${esc(clean(t.short))}</p><p>${esc(clean(t.full))}</p>${
+        t.formula ? `<p>Формула: ${esc(clean(t.formula))}</p>` : ""
+      }${t.example ? `<p>Пример. ${esc(clean(t.example))}</p>` : ""}${
+        t.links && t.links.length
+          ? `<p>${t.links
+              .map((l) => `<a href="${l.to}">${esc(clean(l.label))}</a>`)
+              .join(" · ")}</p>`
+          : ""
+      }`,
+  ).join("")}
+<p><a href="/kalkulyatory">Калькуляторы</a> · <a href="/sravnenie-agregatorov">Сравнение агрегаторов</a> · <a href="/blog">Блог</a></p>
+<p>Телефон: +7 931 002-82-22</p>`,
+});
+
+pages.push({
+  route: "/sravnenie-agregatorov",
+  jsonLd: [
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "Агрегаторы доставки для ресторанов",
+      itemListElement: AGGREGATORS.map((a, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: clean(a.name),
+        description: clean(a.tagline),
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: SCENARIOS.map((s) => ({
+        "@type": "Question",
+        name: clean(s.title),
+        acceptedAnswer: { "@type": "Answer", text: `${clean(s.situation)} ${clean(s.verdict)}` },
+      })),
+    },
+  ],
+  title: "Яндекс Еда, Купер или Чиббис: что выгоднее ресторану | agregatory.pro",
+  description:
+    "Сравнение агрегаторов доставки для ресторанов: комиссии, география, курьеры, сроки подключения. Разбор по сценариям и выводы, какой сервис выбрать.",
+  body: `<h1>Яндекс Еда, Купер или Чиббис: что выгоднее ресторану</h1>
+<p>Сравнили три агрегатора по комиссиям, географии и логистике. Только цифры, сценарии и честные выводы, кому что подходит.</p>
+${AGGREGATORS.map(
+    (a) =>
+      `<h2>${esc(clean(a.name))} — ${esc(clean(a.tagline))}</h2>
+<p>Комиссия с курьерами сервиса: ${esc(clean(a.commissionCourier))}. Комиссия со своими курьерами: ${esc(clean(a.commissionSelf))}.</p>
+<p>Курьеры: ${esc(clean(a.couriers))}. География: ${esc(clean(a.geography))}.</p>
+<p>Подключение: ${esc(clean(a.launch))}. Выплаты: ${esc(clean(a.payouts))}. Продвижение: ${esc(clean(a.promo))}.</p>
+<h3>Сильные стороны</h3><ul>${a.strong.map((s) => `<li>${esc(clean(s))}</li>`).join("")}</ul>
+<h3>Слабые стороны</h3><ul>${a.weak.map((s) => `<li>${esc(clean(s))}</li>`).join("")}</ul>
+<p>Кому подходит: ${esc(clean(a.bestFor))}</p>`,
+  ).join("")}
+<h2>Что выбрать в вашем случае</h2>
+${SCENARIOS.map(
+    (s) =>
+      `<h3>${esc(clean(s.title))}</h3><p>${esc(clean(s.situation))}</p><p>${esc(clean(s.verdict))}</p><p>Выбор: ${esc(clean(s.winner))}</p>`,
+  ).join("")}
+<h2>Выводы</h2>
+${CONCLUSIONS.map((c) => `<h3>${esc(clean(c.h))}</h3><p>${esc(clean(c.p))}</p>`).join("")}
+<p><a href="/kalkulyatory/rentabelnost-zakaza">Калькулятор рентабельности</a> · <a href="/kalkulyatory/model-dostavki">Модели доставки</a> · <a href="/slovar">Словарь терминов</a></p>
+<p>Телефон: +7 931 002-82-22</p>`,
+});
+
+pages.push({
   route: "/pochitat",
   title: "Почитать о доставке: наши каналы и блог | agregatory.pro",
   description:
@@ -331,19 +431,42 @@ for (const c of CHECKLIST_PAGES) {
     route: `/chek-listy/${c.slug}`,
     title: c.title,
     description: c.description,
-    jsonLd: c.faq?.length
-      ? [
-          {
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: c.faq.map((f) => ({
-              "@type": "Question",
-              name: clean(f.q),
-              acceptedAnswer: { "@type": "Answer", text: clean(f.a) },
-            })),
-          },
-        ]
-      : undefined,
+    jsonLd: [
+      ...(c.faq?.length
+        ? [
+            {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: c.faq.map((f) => ({
+                "@type": "Question",
+                name: clean(f.q),
+                acceptedAnswer: { "@type": "Answer", text: clean(f.a) },
+              })),
+            },
+          ]
+        : []),
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        name: clean(c.h1),
+        description: clean(c.description),
+        totalTime: "PT7D",
+        inLanguage: "ru-RU",
+        url: `${SITE}/chek-listy/${c.slug}`,
+        step: c.groups.map((g, gi) => ({
+          "@type": "HowToSection",
+          position: gi + 1,
+          name: clean(g.title),
+          itemListElement: g.items.map((it, ii) => ({
+            "@type": "HowToStep",
+            position: ii + 1,
+            name: clean(it.text),
+            text: it.hint ? `${clean(it.text)}. ${clean(it.hint)}` : clean(it.text),
+            url: `${SITE}/chek-listy/${c.slug}#${gi + 1}-${ii + 1}`,
+          })),
+        })),
+      },
+    ],
     body: `<h1>${esc(clean(c.h1))}</h1>
 <p>${esc(clean(c.lead))}</p>
 ${c.intro.map((t) => `<p>${esc(clean(t))}</p>`).join("")}
@@ -407,6 +530,8 @@ const crumbs = (route: string, title: string) => {
     "chek-listy": "Чек-листы",
     testy: "Тесты",
     pochitat: "Почитать",
+    slovar: "Словарь",
+    "sravnenie-agregatorov": "Сравнение агрегаторов",
     partnery: "Партнёры",
   };
   let acc = "";

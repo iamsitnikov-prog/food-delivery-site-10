@@ -55,6 +55,27 @@ const ChecklistDetailPage = () => {
               acceptedAnswer: { "@type": "Answer", text: f.a },
             })),
           },
+          {
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            name: page.h1,
+            description: page.description,
+            totalTime: "PT7D",
+            inLanguage: "ru-RU",
+            url: `${SITE}/chek-listy/${page.slug}`,
+            step: page.groups.map((g, gi) => ({
+              "@type": "HowToSection",
+              position: gi + 1,
+              name: g.title,
+              itemListElement: g.items.map((it, ii) => ({
+                "@type": "HowToStep",
+                position: ii + 1,
+                name: it.text,
+                text: it.hint ? `${it.text}. ${it.hint}` : it.text,
+                url: `${SITE}/chek-listy/${page.slug}#${gi + 1}-${ii + 1}`,
+              })),
+            })),
+          },
         ]
       : undefined,
   });
