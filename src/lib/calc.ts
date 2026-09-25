@@ -19,6 +19,8 @@ export type CalcInput = {
   marketingShare: number;
   aggAdShare: number;
   aggAdUnit: Unit;
+  aggAdBase: AdBase;
+  aggAdReach: number;
   aggPromoShare: number;
   aggPromoUnit: Unit;
   refundShare: number;
@@ -96,6 +98,21 @@ export const TAX_MODES: { value: TaxMode; label: string; hint: string }[] = [
   { value: "none", label: "Не учитывать", hint: "Расчёт без налога на прибыль." },
 ];
 
+export type AdBase = "all" | "promoted";
+
+export const AD_BASES: { value: AdBase; label: string; hint: string }[] = [
+  {
+    value: "promoted",
+    label: "С заказов по рекламе",
+    hint: "Так работает продвижение с оплатой за заказы: ставка списывается только с тех заказов, которые пришли из платной выдачи. Укажите ниже, какую долю всех заказов они составляют.",
+  },
+  {
+    value: "all",
+    label: "От всей выручки",
+    hint: "Считать ставку от каждого заказа канала. Подходит, если вы знаете только итоговую сумму расходов на продвижение за месяц и её долю в общей выручке.",
+  },
+];
+
 export type SubscriptionPlan = "none" | "standard" | "business";
 
 export const SUBSCRIPTION_RATE = 1.64;
@@ -141,6 +158,8 @@ export const DEFAULTS: CalcInput = {
   marketingShare: 0,
   aggAdShare: 15,
   aggAdUnit: "percent",
+  aggAdBase: "promoted",
+  aggAdReach: 100,
   aggPromoShare: 0,
   aggPromoUnit: "percent",
   refundShare: 1,
@@ -373,6 +392,7 @@ type ChannelParams = {
   deliveryFeeShare?: number;
   adShare: number;
   adUnit?: Unit;
+  adReach?: number;
   promoShare: number;
   promoUnit?: Unit;
   marketingShare?: number;
@@ -404,7 +424,8 @@ const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
   const subscriptionRub =
     amount(p.subscriptionShare ?? 0, p.subscriptionUnit) + subscriptionFixedPerOrder;
   const deliveryFeeRub = pct(p.deliveryFeeShare ?? 0);
-  const adRub = amount(p.adShare, p.adUnit);
+  const adReachFactor = Math.min(100, Math.max(0, p.adReach ?? 100)) / 100;
+  const adRub = amount(p.adShare, p.adUnit) * adReachFactor;
   const promoRub = amount(p.promoShare, p.promoUnit);
   const marketingRub = pct(p.marketingShare ?? 0);
   const refundRub = amount(p.refundShare ?? 0, p.refundUnit);
@@ -521,6 +542,7 @@ export const calculate = (input: CalcInput): CalcResult => {
         input.deliveryType === "own" && input.useYandexDelivery ? YANDEX_DELIVERY_FEE : 0,
       adShare: input.aggAdShare,
       adUnit: input.aggAdUnit,
+      adReach: input.aggAdBase === "promoted" ? input.aggAdReach : 100,
       promoShare: input.aggPromoShare,
       promoUnit: input.aggPromoUnit,
       marketingShare: input.marketingShare,

@@ -7,9 +7,11 @@ import {
   money,
   TAX_MODES,
   SUBSCRIPTION_PLANS,
+  AD_BASES,
   businessFixedFee,
   type CalcInput,
   type SubscriptionPlan,
+  type AdBase,
   type CalcResult,
   type DeliveryType,
   type TaxMode,
@@ -28,6 +30,7 @@ type Props = {
   setYandexDelivery: (v: number) => void;
   setTaxMode: (v: TaxMode) => void;
   setSubscriptionPlan: (v: SubscriptionPlan) => void;
+  setAdBase: (v: AdBase) => void;
 };
 
 const CalcForm = ({
@@ -42,6 +45,7 @@ const CalcForm = ({
   setYandexDelivery,
   setTaxMode,
   setSubscriptionPlan,
+  setAdBase,
 }: Props) => {
   const aggOn = input.aggEnabled;
   const selfOn = input.selfEnabled;
@@ -131,6 +135,14 @@ const CalcForm = ({
               )}
 
               <CalcToggle
+                label="Как считать продвижение"
+                value={input.aggAdBase}
+                onChange={setAdBase}
+                options={AD_BASES.map((b) => ({ value: b.value, label: b.label }))}
+                hint={AD_BASES.find((b) => b.value === input.aggAdBase)?.hint}
+              />
+
+              <CalcToggle
                 label="Маркетинг Ultima"
                 value={input.marketingShare}
                 onChange={set("marketingShare")}
@@ -173,8 +185,18 @@ const CalcForm = ({
                   step={0.5}
                   unit={input.aggAdUnit}
                   onUnitChange={setUnit("aggAdUnit")}
-                  hint="Расходы на платное продвижение внутри сервиса."
+                  hint="Ставка продвижения внутри сервиса. По модели оплаты за заказы списывается только с заказов, пришедших из платной выдачи."
                 />
+                {input.aggAdBase === "promoted" && (
+                  <CalcField
+                    label="Доля заказов из рекламы"
+                    suffix="%"
+                    value={input.aggAdReach}
+                    onChange={set("aggAdReach")}
+                    step={5}
+                    hint="Какая часть всех заказов канала приходит из платного продвижения. Посмотрите в кабинете: Статистика → Продвижение. Если не знаете точно, оставьте 100% — расчёт будет с запасом."
+                  />
+                )}
                 <CalcField
                   label="Скидки и акции · promo"
                   suffix="%"

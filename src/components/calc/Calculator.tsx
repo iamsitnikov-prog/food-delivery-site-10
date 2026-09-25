@@ -11,6 +11,7 @@ import {
   SUBSCRIPTION_RATE,
   type CalcInput,
   type SubscriptionPlan,
+  type AdBase,
   type DeliveryType,
   type TaxMode,
   type Unit,
@@ -63,6 +64,11 @@ const Calculator = ({ mode = "all", hideCta = false }: { mode?: CalcMode; hideCt
     reachGoal("calc_use", { mode, field: "subscriptionPlan" });
   };
 
+  const setAdBase = (v: AdBase) => {
+    setInput((p) => ({ ...p, aggAdBase: v, aggAdReach: v === "all" ? 100 : p.aggAdReach }));
+    reachGoal("calc_use", { mode, field: "aggAdBase" });
+  };
+
   const setTaxMode = (v: TaxMode) => {
     setInput((p) => ({ ...p, taxMode: v }));
     reachGoal("calc_use", { mode, field: "taxMode" });
@@ -106,6 +112,7 @@ const Calculator = ({ mode = "all", hideCta = false }: { mode?: CalcMode; hideCt
             setYandexDelivery={setYandexDelivery}
             setTaxMode={setTaxMode}
             setSubscriptionPlan={setSubscriptionPlan}
+            setAdBase={setAdBase}
           />
 
           <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3">
