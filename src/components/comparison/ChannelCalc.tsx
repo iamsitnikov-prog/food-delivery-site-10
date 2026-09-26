@@ -3,6 +3,13 @@ import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 
 type Model = "service" | "own";
+type City = "million" | "big" | "small";
+
+const CITY: { key: City; label: string }[] = [
+  { key: "million", label: "Миллионник" },
+  { key: "big", label: "От 300 тысяч" },
+  { key: "small", label: "Меньше 300 тысяч" },
+];
 
 const CHANNELS = [
   {
@@ -10,18 +17,21 @@ const CHANNELS = [
     name: "Яндекс Еда",
     note: "максимальный трафик",
     rate: { service: 0.35, own: 0.2 },
+    reach: { million: 1, big: 1, small: 1 },
   },
   {
     slug: "kuper",
     name: "Купер",
-    note: "второй канал",
+    note: "витрина внутри доставки продуктов",
     rate: { service: 0.35, own: 0.2 },
+    reach: { million: 0.35, big: 0.25, small: 0.1 },
   },
   {
     slug: "chibbis",
     name: "Чиббис",
-    note: "низкая ставка",
+    note: "низкая ставка, меньше спроса",
     rate: { service: null, own: 0.17 },
+    reach: { million: 0.15, big: 0.45, small: 0.75 },
   },
 ] as const;
 
@@ -78,13 +88,11 @@ const ChannelCalc = () => {
   const [foodcost, setFoodcost] = useState(35);
   const [model, setModel] = useState<Model>("service");
   const [courierCost, setCourierCost] = useState(150);
+  const [city, setCity] = useState<City>("million");
 
   const revenue = check * orders * 30;
 
   const rows = useMemo(() => {
-    const cogs = revenue * (foodcost / 100);
-    const monthOrders = orders * 30;
-
     return CHANNELS.map((c) => {
       const rate = model === "service" ? c.rate.service : c.rate.own;
       if (rate === null) {
@@ -95,21 +103,31 @@ const ChannelCalc = () => {
           commission: 0,
           delivery: 0,
           margin: 0,
+          chanOrders: 0,
+          chanRevenue: 0,
+          rate: 0,
         };
       }
-      const commission = revenue * rate;
-      const delivery = model === "own" ? monthOrders * courierCost : 0;
-      const profit = revenue - cogs - commission - delivery;
+      const share = c.reach[city];
+      const chanOrders = Math.round(orders * share) * 30;
+      const chanRevenue = check * chanOrders;
+      const cogs = chanRevenue * (foodcost / 100);
+      const commission = chanRevenue * rate;
+      const delivery = model === "own" ? chanOrders * courierCost : 0;
+      const profit = chanRevenue - cogs - commission - delivery;
       return {
         ...c,
         available: true as const,
         profit,
         commission,
         delivery,
-        margin: revenue > 0 ? (profit / revenue) * 100 : 0,
+        chanOrders,
+        chanRevenue,
+        rate,
+        margin: chanRevenue > 0 ? (profit / chanRevenue) * 100 : 0,
       };
     });
-  }, [revenue, foodcost, orders, model, courierCost]);
+  }, [check, foodcost, orders, model, courierCost, city]);
 
   const available = rows.filter((r) => r.available);
   const best = available.length ? Math.max(...available.map((r) => r.profit)) : 0;
@@ -118,7 +136,6 @@ const ChannelCalc = () => {
     : 0;
   const spread = best - worst;
   const bestName = available.find((r) => r.profit === best)?.name ?? "";
-  const loss = rows.find((r) => !r.available);
 
   return (
     <section className="px-5 pb-16 md:px-14 md:pb-24">
@@ -144,14 +161,37 @@ const ChannelCalc = () => {
               step={50}
             />
             <Field
-              label="Заказов в день"
+              label="Заказов в день на Яндекс Еде"
               value={orders}
               onChange={setOrders}
               suffix="шт"
               min={5}
               max={200}
-              note={`Выручка за месяц — ${rub(revenue)} ₽`}
+              note={`Выручка за месяц — ${rub(revenue)} ₽. Объём на других площадках подставится по их охвату.`}
             />
+
+            <div>
+              <span className="text-[0.9em] font-medium text-cream">
+                Размер города
+              </span>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {CITY.map((c) => (
+                  <button
+                    key={c.key}
+                    type="button"
+                    aria-pressed={city === c.key}
+                    onClick={() => setCity(c.key)}
+                    className={`rounded-xl px-3.5 py-2.5 text-[0.85em] font-medium transition-colors ${
+                      city === c.key
+                        ? "bg-brand text-foreground"
+                        : "bg-cream/[0.06] text-cream-muted hover:text-cream"
+                    }`}
+                  >
+                    {c.label}
+                  </button>
+                ))}
+              </div>
+            </div>
             <Field
               label="Себестоимость блюд"
               value={foodcost}
@@ -264,10 +304,10 @@ const ChannelCalc = () => {
                           isBest ? "text-foreground/70" : "text-cream-muted"
                         }`}
                       >
-                        комиссия {rub(r.commission)} ₽
+                        {Math.round(r.chanOrders / 30)} заказов в день ·{" "}
+                        {(r.rate * 100).toFixed(0)}% комиссии ={" "}
+                        {rub(r.commission)} ₽
                         {r.delivery > 0 && ` · доставка ${rub(r.delivery)} ₽`}
-                        {" · маржа "}
-                        {r.margin.toFixed(0)}%
                       </p>
                     )}
                   </div>
@@ -277,27 +317,20 @@ const ChannelCalc = () => {
           </div>
 
           <p className="mt-6 rounded-2xl bg-cream/[0.06] p-5 text-[0.92em] leading-snug">
-            {model === "service" ? (
-              <>
-                <span className="text-brand">Ставки равны — решает трафик. </span>
-                С курьерами сервиса Яндекс и Купер берут одинаковые 35%, поэтому
-                выигрывает тот, кто даст больше заказов. {loss?.name} в этом
-                режиме недоступен: у него нет своего курьерского парка.
-              </>
-            ) : spread > 0 ? (
+            {spread > 0 ? (
               <>
                 <span className="text-brand">
-                  Разница {rub(spread)} ₽ в месяц.{" "}
+                  {bestName} даёт на {rub(spread)} ₽ в месяц больше.{" "}
                 </span>
-                На ваших цифрах выгоднее всего {bestName} — это{" "}
-                {rub(spread * 12)} ₽ за год относительно самого дорогого
-                варианта. Своя доставка обходится в {rub(orders * 30 * courierCost)} ₽
-                в месяц, её тоже держите в расчёте.
+                За год разница с самым слабым каналом — {rub(spread * 12)} ₽.
+                Дело не в комиссии, а в потоке: ставка Чиббиса ниже, но заказов
+                через него приходит меньше, и низкий процент не успевает
+                отыграть разницу в объёме.
               </>
             ) : (
               <>
-                <span className="text-brand">Каналы равны. </span>
-                При текущих значениях прибыль совпадает — двигайте чек и число
+                <span className="text-brand">Каналы сравнялись. </span>
+                При таких значениях прибыль совпадает — подвигайте чек и число
                 заказов, чтобы увидеть разницу.
               </>
             )}
