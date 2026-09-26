@@ -5,6 +5,7 @@ import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
 import ChannelCalc from "@/components/comparison/ChannelCalc";
+import ChannelPicker from "@/components/comparison/ChannelPicker";
 import useSeo from "@/hooks/use-seo";
 import {
   AGGREGATORS,
@@ -33,14 +34,6 @@ const FAQ = [
     a: "Формально он работает в крупных городах, но объём заказов там заметно ниже, чем у Яндекса. В миллионниках Чиббис имеет смысл как дополнительный канал с дешёвой комиссией, а не как основной источник трафика.",
   },
   {
-    q: "Выгоднее ли свой сайт и приложение вместо агрегатора?",
-    a: "По деньгам с заказа — да: собственный канал вроде STARTER не берёт процент, вы платите фиксированную абонентскую плату. Но агрегатор приводит новых гостей, а свой сайт только удерживает существующих. Поэтому это не замена, а второй слой: агрегатор для привлечения, своё приложение для повторных заказов. Точку окупаемости легко увидеть в калькуляторе выше.",
-  },
-  {
-    q: "Сколько постоянных гостей нужно, чтобы свой канал окупился?",
-    a: "Считайте так: абонентская плата делится на среднюю комиссию с заказа. При чеке 1 200 ₽ и комиссии 20% агрегатор забирает около 240 ₽ с заказа, значит подписка окупается примерно на шестидесяти прямых заказах в месяц — это два заказа в день. Всё, что сверх, остаётся у вас.",
-  },
-  {
     q: "Что выгоднее: низкая комиссия или большой трафик?",
     a: "Считать нужно в рублях прибыли, а не в процентах комиссии. Канал с комиссией 17% и десятью заказами в день принесёт меньше, чем канал с 35% и пятьюдесятью заказами. Прогоните оба варианта через калькулятор рентабельности на своих цифрах.",
   },
@@ -49,7 +42,7 @@ const FAQ = [
 type Filter = "all" | "service" | "own";
 
 const FILTERS: { key: Filter; label: string; note: string }[] = [
-  { key: "all", label: "все каналы", note: "Четыре способа принимать заказы" },
+  { key: "all", label: "все агрегаторы", note: "Три площадки для приёма заказов" },
   {
     key: "service",
     label: "курьеры сервиса",
@@ -77,9 +70,9 @@ const Comparison = () => {
   }, [filter]);
 
   useSeo({
-    title: "Яндекс Еда, Купер, Чиббис или свой сайт: что выгоднее ресторану | agregatory.pro",
+    title: "Яндекс Еда, Купер или Чиббис: что выгоднее ресторану | agregatory.pro",
     description:
-      "Сравнение каналов доставки для ресторанов: комиссии агрегаторов и своё приложение STARTER без комиссии. Калькулятор прибыли, разбор по сценариям и выводы.",
+      "Сравнение агрегаторов доставки для ресторанов: комиссии, география, курьеры, сроки подключения. Калькулятор прибыли, разбор по сценариям и честные выводы.",
     path: pathname,
     jsonLd: [
       {
@@ -107,7 +100,7 @@ const Comparison = () => {
       {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        name: "Каналы приёма заказов для ресторанов",
+        name: "Агрегаторы доставки для ресторанов",
         itemListElement: AGGREGATORS.map((a, i) => ({
           "@type": "ListItem",
           position: i + 1,
@@ -134,12 +127,11 @@ const Comparison = () => {
             <span className="text-foreground">сравнение агрегаторов</span>
           </nav>
           <h1 className="max-w-[20ch] font-display text-[36px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
-            Яндекс Еда, Купер, Чиббис или свой сайт: что выгоднее ресторану
+            Яндекс Еда, Купер или Чиббис: что выгоднее ресторану
           </h1>
           <p className="mt-6 max-w-[660px] text-[1.08em] leading-snug text-muted-foreground">
-            Сравнили три агрегатора и собственный канал заказов по комиссиям, географии и
-            логистике. Без рекламы сервисов: только цифры, калькулятор на ваших данных и честные
-            выводы, кому что подходит.
+            Сравнили три агрегатора по комиссиям, географии и логистике. Без рекламы сервисов:
+            только цифры, калькулятор на ваших данных и честные выводы, кому что подходит.
           </p>
         </section>
       </div>
@@ -180,11 +172,6 @@ const Comparison = () => {
                     <span className="mt-1.5 block text-[0.8em] font-normal leading-snug text-brand">
                       {a.tagline}
                     </span>
-                    {a.kind === "platform" && (
-                      <span className="mt-2 inline-block rounded-md bg-cream/15 px-2 py-0.5 text-[0.7em] font-normal text-cream-muted">
-                        свой канал
-                      </span>
-                    )}
                   </th>
                 ))}
               </tr>
@@ -217,7 +204,7 @@ const Comparison = () => {
           сильные и слабые
           <span className="pl-3 text-muted-foreground">стороны</span>
         </h2>
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <div className="mt-8 grid gap-4 lg:grid-cols-3">
           {AGGREGATORS.map((a) => (
             <article key={a.slug} className="rounded-[28px] bg-surface p-7 text-cream md:p-8">
               <h3 className="font-display text-[1.4em] font-semibold leading-tight tracking-[-0.02em]">
@@ -249,27 +236,17 @@ const Comparison = () => {
                 <span className="text-brand">Кому подходит. </span>
                 {a.bestFor}
               </p>
-
-              {a.url && (
-                <a
-                  href={a.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-flex items-center gap-2 text-[0.9em] font-medium text-brand hover:underline"
-                >
-                  перейти на сайт {a.name}
-                  <Icon name="ArrowUpRight" size={16} />
-                </a>
-              )}
             </article>
           ))}
         </div>
       </section>
 
+      <ChannelPicker />
+
       <section className="px-5 pb-16 md:px-14 md:pb-24">
         <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
-          что выбрать
-          <span className="pl-3 text-muted-foreground">в вашем случае</span>
+          разборы
+          <span className="pl-3 text-muted-foreground">типичных ситуаций</span>
         </h2>
         <div className="mt-8 grid gap-4 md:grid-cols-2">
           {SCENARIOS.map((s) => (

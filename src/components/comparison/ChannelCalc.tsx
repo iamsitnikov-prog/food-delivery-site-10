@@ -1,8 +1,6 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
-
-const STARTER_URL =
-  "https://www.starterapp.ru/?utm_source=partners&utm_medium=sitnikov";
 
 type Model = "service" | "own";
 
@@ -12,32 +10,18 @@ const CHANNELS = [
     name: "Яндекс Еда",
     note: "максимальный трафик",
     rate: { service: 0.35, own: 0.2 },
-    needsOwnCourier: false,
-    fee: 0,
   },
   {
     slug: "kuper",
     name: "Купер",
     note: "второй канал",
     rate: { service: 0.35, own: 0.2 },
-    needsOwnCourier: false,
-    fee: 0,
   },
   {
     slug: "chibbis",
     name: "Чиббис",
     note: "низкая ставка",
     rate: { service: null, own: 0.17 },
-    needsOwnCourier: true,
-    fee: 0,
-  },
-  {
-    slug: "starter",
-    name: "STARTER",
-    note: "свой канал, 0% с заказа",
-    rate: { service: null, own: 0 },
-    needsOwnCourier: true,
-    fee: 15000,
   },
 ] as const;
 
@@ -104,21 +88,37 @@ const ChannelCalc = () => {
     return CHANNELS.map((c) => {
       const rate = model === "service" ? c.rate.service : c.rate.own;
       if (rate === null) {
-        return { ...c, available: false as const, profit: 0, commission: 0, delivery: 0 };
+        return {
+          ...c,
+          available: false as const,
+          profit: 0,
+          commission: 0,
+          delivery: 0,
+          margin: 0,
+        };
       }
       const commission = revenue * rate;
-      const delivery =
-        model === "own" || c.needsOwnCourier ? monthOrders * courierCost : 0;
-      const profit = revenue - cogs - commission - delivery - c.fee;
-      return { ...c, available: true as const, profit, commission, delivery };
+      const delivery = model === "own" ? monthOrders * courierCost : 0;
+      const profit = revenue - cogs - commission - delivery;
+      return {
+        ...c,
+        available: true as const,
+        profit,
+        commission,
+        delivery,
+        margin: revenue > 0 ? (profit / revenue) * 100 : 0,
+      };
     });
   }, [revenue, foodcost, orders, model, courierCost]);
 
-  const best = Math.max(...rows.filter((r) => r.available).map((r) => r.profit));
-  const starter = rows.find((r) => r.slug === "starter");
-  const yandex = rows.find((r) => r.slug === "yandex-eda");
-  const diff =
-    starter?.available && yandex?.available ? starter.profit - yandex.profit : 0;
+  const available = rows.filter((r) => r.available);
+  const best = available.length ? Math.max(...available.map((r) => r.profit)) : 0;
+  const worst = available.length
+    ? Math.min(...available.map((r) => r.profit))
+    : 0;
+  const spread = best - worst;
+  const bestName = available.find((r) => r.profit === best)?.name ?? "";
+  const loss = rows.find((r) => !r.available);
 
   return (
     <section className="px-5 pb-16 md:px-14 md:pb-24">
@@ -128,7 +128,7 @@ const ChannelCalc = () => {
       </h2>
       <p className="mt-5 max-w-[660px] leading-snug text-muted-foreground">
         Подвигайте ползунки — увидите, сколько остаётся в кассе за месяц на
-        каждом канале после комиссии, себестоимости и доставки.
+        каждом агрегаторе после комиссии, себестоимости и доставки.
       </p>
 
       <div className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,380px)_1fr]">
@@ -189,16 +189,18 @@ const ChannelCalc = () => {
               </div>
             </div>
 
-            <Field
-              label="Стоимость своей доставки"
-              value={courierCost}
-              onChange={setCourierCost}
-              suffix="₽ / заказ"
-              min={0}
-              max={500}
-              step={10}
-              note="Учитывается там, где везёте вы"
-            />
+            {model === "own" && (
+              <Field
+                label="Стоимость своей доставки"
+                value={courierCost}
+                onChange={setCourierCost}
+                suffix="₽ / заказ"
+                min={0}
+                max={500}
+                step={10}
+                note="Зарплата курьера и бензин в пересчёте на один заказ"
+              />
+            )}
           </div>
         </div>
 
@@ -206,78 +208,114 @@ const ChannelCalc = () => {
           <div className="space-y-3">
             {rows.map((r) => {
               const isBest = r.available && r.profit === best;
+              const width =
+                r.available && best > 0
+                  ? Math.max(4, (r.profit / best) * 100)
+                  : 0;
               return (
                 <div
                   key={r.slug}
-                  className={`rounded-2xl p-5 transition-colors ${
-                    isBest
-                      ? "bg-brand text-foreground"
-                      : r.available
-                        ? "bg-cream/[0.06]"
-                        : "bg-cream/[0.03]"
+                  className={`relative overflow-hidden rounded-2xl p-5 transition-colors ${
+                    r.available ? "bg-cream/[0.06]" : "bg-cream/[0.03]"
                   }`}
                 >
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                    <span className="font-display text-[1.1em] font-semibold">
-                      {r.name}
+                  {r.available && (
+                    <div
+                      aria-hidden
+                      className={`absolute inset-y-0 left-0 transition-all duration-500 ${
+                        isBest ? "bg-brand" : "bg-cream/[0.07]"
+                      }`}
+                      style={{ width: `${width}%` }}
+                    />
+                  )}
+                  <div className="relative">
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
                       <span
-                        className={`pl-2.5 text-[0.72em] font-normal ${
-                          isBest ? "text-foreground/60" : "text-cream-muted"
+                        className={`font-display text-[1.1em] font-semibold ${
+                          isBest ? "text-foreground" : ""
                         }`}
                       >
-                        {r.note}
+                        {r.name}
+                        <span
+                          className={`pl-2.5 text-[0.72em] font-normal ${
+                            isBest ? "text-foreground/60" : "text-cream-muted"
+                          }`}
+                        >
+                          {r.note}
+                        </span>
                       </span>
-                    </span>
-                    {r.available ? (
-                      <span className="font-display text-[1.35em] font-semibold tabular-nums">
-                        {rub(r.profit)} ₽
-                      </span>
-                    ) : (
-                      <span className="text-[0.85em] text-cream-muted">
-                        нужны свои курьеры
-                      </span>
+                      {r.available ? (
+                        <span
+                          className={`font-display text-[1.35em] font-semibold tabular-nums ${
+                            isBest ? "text-foreground" : ""
+                          }`}
+                        >
+                          {rub(r.profit)} ₽
+                        </span>
+                      ) : (
+                        <span className="text-[0.85em] text-cream-muted">
+                          нужны свои курьеры
+                        </span>
+                      )}
+                    </div>
+                    {r.available && (
+                      <p
+                        className={`mt-1.5 text-[0.82em] leading-snug ${
+                          isBest ? "text-foreground/70" : "text-cream-muted"
+                        }`}
+                      >
+                        комиссия {rub(r.commission)} ₽
+                        {r.delivery > 0 && ` · доставка ${rub(r.delivery)} ₽`}
+                        {" · маржа "}
+                        {r.margin.toFixed(0)}%
+                      </p>
                     )}
                   </div>
-                  {r.available && (
-                    <p
-                      className={`mt-1.5 text-[0.82em] leading-snug ${
-                        isBest ? "text-foreground/70" : "text-cream-muted"
-                      }`}
-                    >
-                      комиссия {rub(r.commission)} ₽
-                      {r.delivery > 0 && ` · доставка ${rub(r.delivery)} ₽`}
-                      {r.fee > 0 && ` · подписка ${rub(r.fee)} ₽`}
-                    </p>
-                  )}
                 </div>
               );
             })}
           </div>
 
-          {starter?.available && diff > 0 && (
-            <p className="mt-6 rounded-2xl bg-cream/[0.06] p-5 text-[0.92em] leading-snug">
-              <span className="text-brand">Свой канал выгоднее. </span>
-              На ваших цифрах прямые заказы через STARTER оставляют на{" "}
-              {rub(diff)} ₽ в месяц больше, чем Яндекс Еда. Но учтите: агрегатор
-              приводит новых гостей, а свой канал удерживает тех, кто уже
-              заказывал.
-            </p>
-          )}
+          <p className="mt-6 rounded-2xl bg-cream/[0.06] p-5 text-[0.92em] leading-snug">
+            {model === "service" ? (
+              <>
+                <span className="text-brand">Ставки равны — решает трафик. </span>
+                С курьерами сервиса Яндекс и Купер берут одинаковые 35%, поэтому
+                выигрывает тот, кто даст больше заказов. {loss?.name} в этом
+                режиме недоступен: у него нет своего курьерского парка.
+              </>
+            ) : spread > 0 ? (
+              <>
+                <span className="text-brand">
+                  Разница {rub(spread)} ₽ в месяц.{" "}
+                </span>
+                На ваших цифрах выгоднее всего {bestName} — это{" "}
+                {rub(spread * 12)} ₽ за год относительно самого дорогого
+                варианта. Своя доставка обходится в {rub(orders * 30 * courierCost)} ₽
+                в месяц, её тоже держите в расчёте.
+              </>
+            ) : (
+              <>
+                <span className="text-brand">Каналы равны. </span>
+                При текущих значениях прибыль совпадает — двигайте чек и число
+                заказов, чтобы увидеть разницу.
+              </>
+            )}
+          </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <a
-              href={STARTER_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/kalkulyatory/rentabelnost-zakaza"
               className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3.5 font-medium text-foreground transition-transform hover:-translate-y-0.5"
             >
-              посмотреть STARTER
-              <Icon name="ArrowUpRight" size={18} />
-            </a>
-            <span className="self-center text-[0.82em] text-cream-muted">
-              промокод AGREGATORYPRO
-            </span>
+              подробный расчёт с налогами
+              <Icon name="ArrowRight" size={18} />
+            </Link>
           </div>
+          <p className="mt-4 text-[0.78em] leading-snug text-cream-muted">
+            Расчёт приблизительный: без налогов, упаковки и бюджета на
+            продвижение. Ставки взяты усреднённые, ваши условия могут отличаться.
+          </p>
         </div>
       </div>
     </section>
