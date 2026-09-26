@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import Icon from "@/components/ui/icon";
 
 export type Builder = {
   slug: string;
@@ -12,6 +13,12 @@ export type Builder = {
   weak: string[];
   url?: string;
   promo?: string;
+  hasApp: boolean;
+  hasLoyalty: boolean;
+  hasCrm: boolean;
+  forNetwork: boolean;
+  retention: number;
+  bestFor: string;
 };
 
 export const BUILDERS: Builder[] = [
@@ -36,6 +43,13 @@ export const BUILDERS: Builder[] = [
     ],
     url: "https://www.starterapp.ru/?utm_source=partners&utm_medium=sitnikov",
     promo: "AGREGATORYPRO",
+    hasApp: true,
+    hasLoyalty: true,
+    hasCrm: true,
+    forNetwork: true,
+    retention: 4,
+    bestFor:
+      "Тем, кто хочет не просто сайт заказа, а систему удержания: приложение, лояльность, RFM-сегменты и безлимитные рассылки в одном месте.",
   },
   {
     slug: "sellkit",
@@ -55,6 +69,13 @@ export const BUILDERS: Builder[] = [
       "Стоимость выше входного уровня конкурентов",
       "Часть возможностей — в старших тарифах",
     ],
+    hasApp: true,
+    hasLoyalty: true,
+    hasCrm: true,
+    forNetwork: true,
+    retention: 3,
+    bestFor:
+      "Сетям, которым нужен готовый набор из сайта и приложения с понятной аналитикой продаж.",
   },
   {
     slug: "smartomato",
@@ -74,6 +95,13 @@ export const BUILDERS: Builder[] = [
       "Мобильное приложение — только в старших тарифах",
       "Функциональность лояльности скромнее, чем у лидеров",
     ],
+    hasApp: false,
+    hasLoyalty: false,
+    hasCrm: false,
+    forNetwork: false,
+    retention: 1,
+    bestFor:
+      "Одиночному заведению, которому нужен рабочий сайт заказа при минимальном бюджете.",
   },
   {
     slug: "foodpicasso",
@@ -93,6 +121,13 @@ export const BUILDERS: Builder[] = [
       "Акцент на сайте, приложение слабее конкурентов",
       "Меньше инструментов удержания и аналитики",
     ],
+    hasApp: false,
+    hasLoyalty: false,
+    hasCrm: false,
+    forNetwork: false,
+    retention: 1,
+    bestFor:
+      "Тем, кому нужно быстро запустить красивый сайт доставки и не тратиться на фотосъёмку.",
   },
 ];
 
@@ -143,10 +178,20 @@ const Field = ({
   </div>
 );
 
+type Need = "hasApp" | "hasLoyalty" | "hasCrm" | "forNetwork";
+
+const NEEDS: { key: Need; label: string; note: string }[] = [
+  { key: "hasApp", label: "Мобильное приложение", note: "Гость ставит иконку на экран и возвращается сам" },
+  { key: "hasLoyalty", label: "Программа лояльности", note: "Баллы и акции, чтобы возвращать гостей" },
+  { key: "hasCrm", label: "CRM и рассылки", note: "База гостей, сегменты, push и SMS" },
+  { key: "forNetwork", label: "Несколько точек", note: "Сеть или планы на вторую точку" },
+];
+
 const BuildersCalc = () => {
   const [check, setCheck] = useState(1200);
   const [orders, setOrders] = useState(20);
   const [aggCommission, setAggCommission] = useState(30);
+  const [needs, setNeeds] = useState<Need[]>(["hasApp", "hasLoyalty"]);
   const [fees, setFees] = useState<Record<string, number>>(
     Object.fromEntries(BUILDERS.map((b) => [b.slug, b.fee])),
   );
@@ -161,11 +206,22 @@ const BuildersCalc = () => {
       const cost = fee + revenue * (b.revenueShare / 100);
       const gain = savedCommission - cost;
       const breakEven = check > 0 ? cost / (check * (aggCommission / 100)) : 0;
-      return { ...b, fee, cost, gain, breakEven };
-    }).sort((a, b) => b.gain - a.gain);
-  }, [fees, revenue, savedCommission, check, aggCommission]);
+      const missing = needs.filter((n) => !b[n]);
+      const fits = missing.length === 0;
+      return { ...b, fee, cost, gain, breakEven, fits, missing };
+    }).sort((a, b) => {
+      if (a.fits !== b.fits) return a.fits ? -1 : 1;
+      if (needs.length > 0 && a.retention !== b.retention)
+        return b.retention - a.retention;
+      return b.gain - a.gain;
+    });
+  }, [fees, revenue, savedCommission, check, aggCommission, needs]);
 
   const best = rows[0];
+  const toggleNeed = (n: Need) =>
+    setNeeds((cur) =>
+      cur.includes(n) ? cur.filter((x) => x !== n) : [...cur, n],
+    );
 
   return (
     <div className="rounded-[32px] bg-surface p-6 text-cream md:p-10">
@@ -207,6 +263,49 @@ const BuildersCalc = () => {
               max={40}
               note={`На этих заказах агрегатор удержал бы ${rub(savedCommission)} ₽`}
             />
+          </div>
+
+          <div className="mt-7 border-t border-cream/12 pt-6">
+            <span className="text-[0.9em] font-medium text-cream">
+              Что вам нужно
+            </span>
+            <p className="mt-1.5 text-[0.8em] leading-snug text-cream-muted">
+              Платформы без этих возможностей уйдут вниз списка.
+            </p>
+            <div className="mt-4 space-y-2">
+              {NEEDS.map((n) => {
+                const on = needs.includes(n.key);
+                return (
+                  <button
+                    key={n.key}
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => toggleNeed(n.key)}
+                    className={`flex w-full items-start gap-3 rounded-xl p-3.5 text-left transition-colors ${
+                      on ? "bg-brand text-foreground" : "bg-cream/[0.06] hover:bg-cream/[0.1]"
+                    }`}
+                  >
+                    <span
+                      className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border ${
+                        on ? "border-foreground bg-foreground text-brand" : "border-cream/30"
+                      }`}
+                    >
+                      {on && <Icon name="Check" size={13} />}
+                    </span>
+                    <span>
+                      <span className="block text-[0.9em] font-medium">{n.label}</span>
+                      <span
+                        className={`mt-0.5 block text-[0.78em] leading-snug ${
+                          on ? "text-foreground/70" : "text-cream-muted"
+                        }`}
+                      >
+                        {n.note}
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <div className="mt-7 border-t border-cream/12 pt-6">
@@ -258,16 +357,23 @@ const BuildersCalc = () => {
           </h2>
           <p className="mt-2 text-[0.92em] leading-snug text-cream-muted">
             Выгода — это сэкономленная комиссия минус плата за платформу.
+            {needs.length > 0
+              ? " Сверху те, кто закрывает ваши задачи глубже, а не просто стоит дешевле."
+              : " Задачи не отмечены, поэтому сортировка только по деньгам."}
           </p>
 
           <div className="mt-7 space-y-3">
             {rows.map((b, i) => {
-              const isBest = i === 0 && b.gain > 0;
+              const isBest = i === 0 && b.gain > 0 && b.fits;
               return (
                 <div
                   key={b.slug}
                   className={`rounded-2xl p-5 transition-colors ${
-                    isBest ? "bg-brand text-foreground" : "bg-cream/[0.06]"
+                    isBest
+                      ? "bg-brand text-foreground"
+                      : b.fits
+                        ? "bg-cream/[0.06]"
+                        : "bg-cream/[0.03]"
                   }`}
                 >
                   <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
@@ -300,6 +406,24 @@ const BuildersCalc = () => {
                     {b.breakEven / 30 >= 1 &&
                       ` (${Math.ceil(b.breakEven / 30)} в день)`}
                   </p>
+
+                  {!b.fits && (
+                    <p className="mt-2.5 flex items-start gap-2 rounded-xl bg-cream/[0.06] p-3 text-[0.8em] leading-snug text-cream-muted">
+                      <Icon name="TriangleAlert" size={14} className="mt-0.5 shrink-0" />
+                      <span>
+                        Не закрывает:{" "}
+                        {b.missing
+                          .map((m) => NEEDS.find((n) => n.key === m)?.label.toLowerCase())
+                          .join(", ")}
+                      </span>
+                    </p>
+                  )}
+
+                  {isBest && (
+                    <p className="mt-2.5 text-[0.82em] leading-snug text-foreground/70">
+                      {b.bestFor}
+                    </p>
+                  )}
                 </div>
               );
             })}
@@ -310,12 +434,15 @@ const BuildersCalc = () => {
               {best.gain > 0 ? (
                 <>
                   <span className="text-brand">
-                    Выгода {rub(best.gain)} ₽ в месяц.{" "}
+                    {best.name}: выгода {rub(best.gain)} ₽ в месяц.{" "}
                   </span>
-                  На ваших цифрах лучший вариант — {best.name}: за год это{" "}
-                  {rub(best.gain * 12)} ₽. Разница между платформами здесь не
-                  так важна, как сам факт перехода: комиссия агрегатора растёт
-                  вместе с оборотом, а плата за платформу — нет.
+                  {needs.length > 0
+                    ? "Это единственный вариант, который закрывает все отмеченные задачи и при этом окупается. "
+                    : "На ваших цифрах это лучший вариант по деньгам. "}
+                  За год — {rub(best.gain * 12)} ₽. Но считать только по цене
+                  подписки не стоит: дешёвая платформа без приложения и
+                  лояльности не вернёт вам гостя, а значит и экономить будет не
+                  на чем.
                 </>
               ) : (
                 <>

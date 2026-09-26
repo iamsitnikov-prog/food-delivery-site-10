@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
-import { VISIBLE_CALC_PAGES, COMPARE_PAGES } from "@/data/calculators";
+import { VISIBLE_CALC_PAGES } from "@/data/calculators";
 
 type Item = {
   slug: string;
@@ -34,14 +34,6 @@ const CalcSwitcher = ({
       navLabel: p.navLabel,
       accent: !!p.accent,
       path: `/kalkulyatory/${p.slug}`,
-    })),
-    ...COMPARE_PAGES.map((p) => ({
-      slug: p.path,
-      icon: p.icon,
-      navLabel: p.navLabel,
-      accent: !!p.accent,
-      path: p.path,
-      external: !p.path.startsWith("/kalkulyatory"),
     })),
   ];
 

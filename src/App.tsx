@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import useContactGoals from "@/hooks/use-contact-goals";
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
@@ -20,12 +20,11 @@ const Quizzes = lazy(() => import("./pages/Quizzes"));
 const Calculators = lazy(() => import("./pages/Calculators"));
 const CalcPreview = lazy(() => import("./pages/CalcPreview"));
 const CalculatorPage = lazy(() => import("./pages/CalculatorPage"));
-const BuildersCompare = lazy(() => import("./pages/BuildersCompare"));
+const PlayersCompare = lazy(() => import("./pages/PlayersCompare"));
 const Checklists = lazy(() => import("./pages/Checklists"));
 const ChecklistPage = lazy(() => import("./pages/ChecklistPage"));
 const Read = lazy(() => import("./pages/Read"));
 const Glossary = lazy(() => import("./pages/Glossary"));
-const Comparison = lazy(() => import("./pages/Comparison"));
 const NotFound = lazy(() => import("./pages/PageNotFound"));
 
 const queryClient = new QueryClient();
@@ -56,16 +55,16 @@ const App = () => {
           <Route path="/testy/:slug" element={<Quiz />} />
           <Route path="/preview/kalkulyatory-a7f3k9" element={<CalcPreview />} />
           <Route path="/kalkulyatory" element={<Calculators />} />
-          <Route
-            path="/kalkulyatory/konstruktory-dostavki"
-            element={<BuildersCompare />}
-          />
           <Route path="/kalkulyatory/:slug" element={<CalculatorPage />} />
           <Route path="/chek-listy" element={<Checklists />} />
           <Route path="/chek-listy/:slug" element={<ChecklistPage />} />
           <Route path="/pochitat" element={<Read />} />
           <Route path="/slovar" element={<Glossary />} />
-          <Route path="/sravnenie-agregatorov" element={<Comparison />} />
+          <Route path="/sravnenie-agregatorov" element={<PlayersCompare />} />
+          <Route
+            path="/kalkulyatory/konstruktory-dostavki"
+            element={<Navigate to="/sravnenie-agregatorov" replace />}
+          />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
