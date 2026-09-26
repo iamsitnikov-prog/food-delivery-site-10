@@ -19,8 +19,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['"YS Text"', '"Golos Text"', 'Helvetica', 'Arial', 'sans-serif'],
-				display: ['"YS Text"', 'Onest', 'Helvetica', 'Arial', 'sans-serif'],
+				sans: ['"YS Text"', 'system-ui', '-apple-system', 'Segoe UI', 'Helvetica', 'Arial', 'sans-serif'],
+				display: ['"YS Text"', 'system-ui', '-apple-system', 'Segoe UI', 'Helvetica', 'Arial', 'sans-serif'],
 			},
 			colors: {
 				cream: {
