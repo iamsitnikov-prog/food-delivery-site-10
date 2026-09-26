@@ -35,6 +35,12 @@ export default defineConfig(({mode}) => ({
             "@": path.resolve(__dirname, "./src"),
         },
     },
+    build: {
+        target: ["es2019", "safari13", "chrome79", "firefox78", "edge79"],
+    },
+    esbuild: {
+        target: "es2019",
+    },
     server: {
         host: '0.0.0.0',
         port: 5173,
