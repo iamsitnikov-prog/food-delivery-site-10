@@ -1,8 +1,10 @@
+import { useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
+import ChannelCalc from "@/components/comparison/ChannelCalc";
 import useSeo from "@/hooks/use-seo";
 import {
   AGGREGATORS,
@@ -31,18 +33,53 @@ const FAQ = [
     a: "Формально он работает в крупных городах, но объём заказов там заметно ниже, чем у Яндекса. В миллионниках Чиббис имеет смысл как дополнительный канал с дешёвой комиссией, а не как основной источник трафика.",
   },
   {
+    q: "Выгоднее ли свой сайт и приложение вместо агрегатора?",
+    a: "По деньгам с заказа — да: собственный канал вроде STARTER не берёт процент, вы платите фиксированную абонентскую плату. Но агрегатор приводит новых гостей, а свой сайт только удерживает существующих. Поэтому это не замена, а второй слой: агрегатор для привлечения, своё приложение для повторных заказов. Точку окупаемости легко увидеть в калькуляторе выше.",
+  },
+  {
+    q: "Сколько постоянных гостей нужно, чтобы свой канал окупился?",
+    a: "Считайте так: абонентская плата делится на среднюю комиссию с заказа. При чеке 1 200 ₽ и комиссии 20% агрегатор забирает около 240 ₽ с заказа, значит подписка окупается примерно на шестидесяти прямых заказах в месяц — это два заказа в день. Всё, что сверх, остаётся у вас.",
+  },
+  {
     q: "Что выгоднее: низкая комиссия или большой трафик?",
     a: "Считать нужно в рублях прибыли, а не в процентах комиссии. Канал с комиссией 17% и десятью заказами в день принесёт меньше, чем канал с 35% и пятьюдесятью заказами. Прогоните оба варианта через калькулятор рентабельности на своих цифрах.",
   },
 ];
 
+type Filter = "all" | "service" | "own";
+
+const FILTERS: { key: Filter; label: string; note: string }[] = [
+  { key: "all", label: "все каналы", note: "Четыре способа принимать заказы" },
+  {
+    key: "service",
+    label: "курьеры сервиса",
+    note: "Логистику берёт на себя площадка — комиссия выше",
+  },
+  {
+    key: "own",
+    label: "своя доставка",
+    note: "Везёте сами, поэтому ставка ниже или её нет совсем",
+  },
+];
+
 const Comparison = () => {
   const { pathname } = useLocation();
+  const [filter, setFilter] = useState<Filter>("all");
+
+  const shown = useMemo(() => {
+    if (filter === "service")
+      return AGGREGATORS.filter(
+        (a) => a.commissionCourier !== "нет своих курьеров",
+      );
+    if (filter === "own")
+      return AGGREGATORS.filter((a) => a.commissionSelf !== "нет своих курьеров");
+    return AGGREGATORS;
+  }, [filter]);
 
   useSeo({
-    title: "Яндекс Еда, Купер или Чиббис: что выгоднее ресторану | agregatory.pro",
+    title: "Яндекс Еда, Купер, Чиббис или свой сайт: что выгоднее ресторану | agregatory.pro",
     description:
-      "Сравнение агрегаторов доставки для ресторанов: комиссии, география, курьеры, сроки подключения. Разбор по сценариям и выводы, какой сервис выбрать.",
+      "Сравнение каналов доставки для ресторанов: комиссии агрегаторов и своё приложение STARTER без комиссии. Калькулятор прибыли, разбор по сценариям и выводы.",
     path: pathname,
     jsonLd: [
       {
@@ -70,7 +107,7 @@ const Comparison = () => {
       {
         "@context": "https://schema.org",
         "@type": "ItemList",
-        name: "Агрегаторы доставки для ресторанов",
+        name: "Каналы приёма заказов для ресторанов",
         itemListElement: AGGREGATORS.map((a, i) => ({
           "@type": "ListItem",
           position: i + 1,
@@ -97,16 +134,37 @@ const Comparison = () => {
             <span className="text-foreground">сравнение агрегаторов</span>
           </nav>
           <h1 className="max-w-[20ch] font-display text-[36px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
-            Яндекс Еда, Купер или Чиббис: что выгоднее ресторану
+            Яндекс Еда, Купер, Чиббис или свой сайт: что выгоднее ресторану
           </h1>
           <p className="mt-6 max-w-[660px] text-[1.08em] leading-snug text-muted-foreground">
-            Сравнили три агрегатора по комиссиям, географии и логистике. Без рекламы сервисов:
-            только цифры, сценарии и честные выводы, кому что подходит.
+            Сравнили три агрегатора и собственный канал заказов по комиссиям, географии и
+            логистике. Без рекламы сервисов: только цифры, калькулятор на ваших данных и честные
+            выводы, кому что подходит.
           </p>
         </section>
       </div>
 
       <section className="px-5 pb-14 md:px-14 md:pb-20">
+        <div className="mb-5 flex flex-wrap items-center gap-2">
+          {FILTERS.map((f) => (
+            <button
+              key={f.key}
+              type="button"
+              aria-pressed={filter === f.key}
+              onClick={() => setFilter(f.key)}
+              className={`rounded-xl px-4 py-2.5 text-[0.9em] font-medium transition-colors ${
+                filter === f.key
+                  ? "bg-foreground text-background"
+                  : "border border-foreground/15 text-muted-foreground hover:border-foreground/40"
+              }`}
+            >
+              {f.label}
+            </button>
+          ))}
+          <span className="w-full text-[0.85em] leading-snug text-muted-foreground md:w-auto md:pl-2">
+            {FILTERS.find((f) => f.key === filter)?.note}
+          </span>
+        </div>
         <div className="overflow-x-auto rounded-[28px] bg-surface p-2 md:p-4">
           <table className="w-full min-w-[720px] border-collapse text-cream">
             <thead>
@@ -114,7 +172,7 @@ const Comparison = () => {
                 <th className="w-[210px] p-4 text-left align-bottom text-[0.85em] font-normal text-cream-muted">
                   Параметр
                 </th>
-                {AGGREGATORS.map((a) => (
+                {shown.map((a) => (
                   <th key={a.slug} className="p-4 text-left align-bottom">
                     <span className="block font-display text-[1.2em] font-semibold leading-tight">
                       {a.name}
@@ -122,6 +180,11 @@ const Comparison = () => {
                     <span className="mt-1.5 block text-[0.8em] font-normal leading-snug text-brand">
                       {a.tagline}
                     </span>
+                    {a.kind === "platform" && (
+                      <span className="mt-2 inline-block rounded-md bg-cream/15 px-2 py-0.5 text-[0.7em] font-normal text-cream-muted">
+                        свой канал
+                      </span>
+                    )}
                   </th>
                 ))}
               </tr>
@@ -132,7 +195,7 @@ const Comparison = () => {
                   <th className="p-4 text-left align-top text-[0.9em] font-medium text-cream-muted">
                     {row.label}
                   </th>
-                  {AGGREGATORS.map((a) => (
+                  {shown.map((a) => (
                     <td
                       key={a.slug}
                       className="p-4 align-top text-[0.92em] leading-snug text-cream"
@@ -147,12 +210,14 @@ const Comparison = () => {
         </div>
       </section>
 
+      <ChannelCalc />
+
       <section className="px-5 pb-16 md:px-14 md:pb-24">
         <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           сильные и слабые
           <span className="pl-3 text-muted-foreground">стороны</span>
         </h2>
-        <div className="mt-8 grid gap-4 lg:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
           {AGGREGATORS.map((a) => (
             <article key={a.slug} className="rounded-[28px] bg-surface p-7 text-cream md:p-8">
               <h3 className="font-display text-[1.4em] font-semibold leading-tight tracking-[-0.02em]">
@@ -184,6 +249,18 @@ const Comparison = () => {
                 <span className="text-brand">Кому подходит. </span>
                 {a.bestFor}
               </p>
+
+              {a.url && (
+                <a
+                  href={a.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-2 text-[0.9em] font-medium text-brand hover:underline"
+                >
+                  перейти на сайт {a.name}
+                  <Icon name="ArrowUpRight" size={16} />
+                </a>
+              )}
             </article>
           ))}
         </div>
