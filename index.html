@@ -137,13 +137,17 @@
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
 
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
-    <script src="https://cdn.poehali.dev/intertnal/js/pp-min-2.js"></script>
-    <script src="https://cdn.poehali.dev/intertnal/js/route-min.js"></script>
-    <script src="https://cdn.poehali.dev/intertnal/js/telemetry-min.js"></script>
+    <script defer src="https://cdn.poehali.dev/intertnal/js/pp-min-2.js"></script>
+    <script defer src="https://cdn.poehali.dev/intertnal/js/route-min.js"></script>
+    <script defer src="https://cdn.poehali.dev/intertnal/js/telemetry-min.js"></script>
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT! -->
 
     <meta name="pp-name" value="food-delivery-site-10">
+      <script defer src="https://cdn.poehali.dev/intertnal/js/inspector-min.js"></script>
+      <script src="https://cdn.poehali.dev/intertnal/js/pp-min-2.js"></script>
+      <script src="https://cdn.poehali.dev/intertnal/js/route-min.js"></script>
       <script src="https://cdn.poehali.dev/intertnal/js/inspector-min.js"></script>
+      <script src="https://cdn.poehali.dev/intertnal/js/telemetry-min.js"></script>
   </head>
 
 <body>
@@ -189,7 +193,11 @@
                 return;
             }
         }
-        k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        var load = function () {
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        };
+        if (m.document.readyState === "complete") { setTimeout(load, 1200); }
+        else { m.addEventListener("load", function () { setTimeout(load, 1200); }); }
     })
     (window, document, "script", "https://mc.yandex.ru/metrika/tag.js?id=112965538", "ym");
 
