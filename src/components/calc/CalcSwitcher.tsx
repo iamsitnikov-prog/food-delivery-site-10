@@ -1,12 +1,22 @@
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
-import { VISIBLE_CALC_PAGES } from "@/data/calculators";
+import { VISIBLE_CALC_PAGES, COMPARE_PAGES } from "@/data/calculators";
 
-const ALL = {
+type Item = {
+  slug: string;
+  icon: string;
+  navLabel: string;
+  accent: boolean;
+  path: string;
+  external?: boolean;
+};
+
+const ALL: Item = {
   slug: "",
   icon: "TrendingUp",
   navLabel: "Окупаемость канала",
   accent: false,
+  path: "/kalkulyatory",
 };
 
 const CalcSwitcher = ({
@@ -16,13 +26,22 @@ const CalcSwitcher = ({
   active?: string;
   onSelect?: (slug: string) => void;
 }) => {
-  const items = [
+  const items: Item[] = [
     ALL,
     ...VISIBLE_CALC_PAGES.map((p) => ({
       slug: p.slug,
       icon: p.icon,
       navLabel: p.navLabel,
       accent: !!p.accent,
+      path: `/kalkulyatory/${p.slug}`,
+    })),
+    ...COMPARE_PAGES.map((p) => ({
+      slug: p.path,
+      icon: p.icon,
+      navLabel: p.navLabel,
+      accent: !!p.accent,
+      path: p.path,
+      external: !p.path.startsWith("/kalkulyatory"),
     })),
   ];
 
@@ -41,7 +60,7 @@ const CalcSwitcher = ({
               : "border-foreground/20 hover:bg-foreground hover:text-brand"
         }`;
 
-        if (onSelect) {
+        if (onSelect && !p.external) {
           return (
             <button
               key={p.slug || "all"}
@@ -59,7 +78,7 @@ const CalcSwitcher = ({
         return (
           <Link
             key={p.slug || "all"}
-            to={p.slug ? `/kalkulyatory/${p.slug}` : "/kalkulyatory"}
+            to={p.path}
             aria-current={isActive ? "page" : undefined}
             className={cls}
           >

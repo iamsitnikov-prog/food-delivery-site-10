@@ -6,6 +6,7 @@ import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
 import ChannelCalc from "@/components/comparison/ChannelCalc";
 import ChannelPicker from "@/components/comparison/ChannelPicker";
+import CalcSwitcher from "@/components/calc/CalcSwitcher";
 import useSeo from "@/hooks/use-seo";
 import {
   AGGREGATORS,
@@ -83,6 +84,12 @@ const Comparison = () => {
           {
             "@type": "ListItem",
             position: 2,
+            name: "Калькуляторы и сравнения",
+            item: `${SITE}/kalkulyatory`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
             name: "Сравнение агрегаторов",
             item: `${SITE}/sravnenie-agregatorov`,
           },
@@ -124,6 +131,10 @@ const Comparison = () => {
               главная
             </Link>
             <Icon name="ChevronRight" size={14} />
+            <Link to="/kalkulyatory" className="hover:text-foreground">
+              калькуляторы и сравнения
+            </Link>
+            <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">сравнение агрегаторов</span>
           </nav>
           <h1 className="max-w-[20ch] font-display text-[36px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
@@ -133,6 +144,9 @@ const Comparison = () => {
             Сравнили три агрегатора по комиссиям, географии и логистике. Без рекламы сервисов:
             только цифры, калькулятор на ваших данных и честные выводы, кому что подходит.
           </p>
+          <div className="mt-8">
+            <CalcSwitcher active="/sravnenie-agregatorov" />
+          </div>
         </section>
       </div>
 

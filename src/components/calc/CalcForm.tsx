@@ -5,6 +5,8 @@ import CalcCheck from "./CalcCheck";
 import { Section, RevenueBadge } from "./CalcParts";
 import {
   money,
+  MONTHS,
+  daysInMonth,
   TAX_MODES,
   SUBSCRIPTION_PLANS,
   AD_BASES,
@@ -36,6 +38,9 @@ type Props = {
   setPlatform: (v: Platform) => void;
 };
 
+const CURRENT_YEAR = new Date().getFullYear();
+const YEARS = [CURRENT_YEAR - 1, CURRENT_YEAR, CURRENT_YEAR + 1];
+
 const CalcForm = ({
   input,
   r,
@@ -56,6 +61,48 @@ const CalcForm = ({
 
   return (
     <div className="mt-6 space-y-5">
+      {isFull && (
+        <div className="rounded-2xl border border-cream/15 p-5">
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            <span className="text-[0.9em] font-medium text-cream">
+              Период расчёта
+            </span>
+            <span className="text-[0.85em] text-cream-muted">
+              {daysInMonth(input.periodMonth, input.periodYear)} дней в месяце
+            </span>
+          </div>
+          <div className="mt-3 grid grid-cols-[1fr_auto] gap-2">
+            <select
+              aria-label="Месяц"
+              value={input.periodMonth}
+              onChange={(e) => set("periodMonth")(Number(e.target.value))}
+              className="h-12 rounded-xl border border-cream/20 bg-cream/[0.06] px-3 text-[0.95em] font-medium text-cream outline-none transition-colors focus:border-brand"
+            >
+              {MONTHS.map((m, i) => (
+                <option key={m} value={i} className="bg-[#1a1a1a]">
+                  {m}
+                </option>
+              ))}
+            </select>
+            <select
+              aria-label="Год"
+              value={input.periodYear}
+              onChange={(e) => set("periodYear")(Number(e.target.value))}
+              className="h-12 rounded-xl border border-cream/20 bg-cream/[0.06] px-3 text-[0.95em] font-medium text-cream outline-none transition-colors focus:border-brand"
+            >
+              {YEARS.map((y) => (
+                <option key={y} value={y} className="bg-[#1a1a1a]">
+                  {y}
+                </option>
+              ))}
+            </select>
+          </div>
+          <p className="mt-2 text-[0.8em] leading-snug text-cream-muted">
+            Все месячные суммы считаются на это количество дней, а не на условные 30.
+          </p>
+        </div>
+      )}
+
       <CalcCheck
         label="Заказы с агрегаторов"
         hint="Яндекс Еда, Купер и другие сервисы доставки."

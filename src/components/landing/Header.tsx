@@ -4,11 +4,10 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 import Icon from "@/components/ui/icon";
 
 export const USEFUL_LINKS = [
-  { href: "/kalkulyatory", label: "калькуляторы", icon: "Calculator" },
+  { href: "/kalkulyatory", label: "калькуляторы и сравнения", icon: "Calculator" },
   { href: "/chek-listy", label: "чек-листы", icon: "ListChecks" },
   { href: "/testy", label: "тесты", icon: "CircleHelp" },
   { href: "/slovar", label: "словарь", icon: "BookA" },
-  { href: "/sravnenie-agregatorov", label: "сравнение", icon: "GitCompare" },
   { href: "/pochitat", label: "почитать", icon: "BookOpen" },
 ];
 

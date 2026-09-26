@@ -226,6 +226,30 @@ export const CALC_PAGES: CalcPage[] = [
   },
 ];
 
+export type ComparePage = {
+  path: string;
+  icon: string;
+  navLabel: string;
+  lead: string;
+  accent?: boolean;
+};
+
+export const COMPARE_PAGES: ComparePage[] = [
+  {
+    path: "/kalkulyatory/konstruktory-dostavki",
+    icon: "LayoutGrid",
+    navLabel: "Конструкторы доставки",
+    lead: "Sellkit, STARTER, Смартомато и ФудПикассо: что выгоднее для своего приложения и сайта заказа.",
+    accent: true,
+  },
+  {
+    path: "/sravnenie-agregatorov",
+    icon: "GitCompare",
+    navLabel: "Сравнение агрегаторов",
+    lead: "Яндекс Еда, Купер и Чиббис: комиссии, охват и прибыль на ваших цифрах.",
+  },
+];
+
 export const getCalcPage = (slug: string) => CALC_PAGES.find((p) => p.slug === slug);
 
 export const VISIBLE_CALC_PAGES = [...CALC_PAGES]

@@ -20,6 +20,7 @@ const Quizzes = lazy(() => import("./pages/Quizzes"));
 const Calculators = lazy(() => import("./pages/Calculators"));
 const CalcPreview = lazy(() => import("./pages/CalcPreview"));
 const CalculatorPage = lazy(() => import("./pages/CalculatorPage"));
+const BuildersCompare = lazy(() => import("./pages/BuildersCompare"));
 const Checklists = lazy(() => import("./pages/Checklists"));
 const ChecklistPage = lazy(() => import("./pages/ChecklistPage"));
 const Read = lazy(() => import("./pages/Read"));
@@ -55,6 +56,10 @@ const App = () => {
           <Route path="/testy/:slug" element={<Quiz />} />
           <Route path="/preview/kalkulyatory-a7f3k9" element={<CalcPreview />} />
           <Route path="/kalkulyatory" element={<Calculators />} />
+          <Route
+            path="/kalkulyatory/konstruktory-dostavki"
+            element={<BuildersCompare />}
+          />
           <Route path="/kalkulyatory/:slug" element={<CalculatorPage />} />
           <Route path="/chek-listy" element={<Checklists />} />
           <Route path="/chek-listy/:slug" element={<ChecklistPage />} />

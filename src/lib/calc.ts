@@ -68,7 +68,17 @@ export type CalcInput = {
   depreciationPerMonth: number;
   taxMode: TaxMode;
   patentCost: number;
+  periodMonth: number;
+  periodYear: number;
 };
+
+export const MONTHS = [
+  "Январь","Февраль","Март","Апрель","Май","Июнь",
+  "Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь",
+];
+
+export const daysInMonth = (month: number, year: number) =>
+  new Date(year, month + 1, 0).getDate();
 
 export const COMMISSION_SERVICE = 35;
 export const COMMISSION_OWN = 20;
@@ -221,6 +231,9 @@ export const DEFAULTS: CalcInput = {
   fixedPerMonth: 0,
   itPerMonth: 0,
   depreciationPerMonth: 0,
+  periodMonth: new Date().getMonth(),
+  periodYear: new Date().getFullYear(),
+
   taxMode: "usn6",
   patentCost: 5000,
 };
@@ -434,7 +447,8 @@ const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
   const income = avgCheck + serviceFeeRub;
 
   const commissionRub = amount(p.commission, p.commissionUnit);
-  const ordersPerMonthRaw = clamp(p.orders) * 30;
+  const days = daysInMonth(shared.periodMonth, shared.periodYear);
+  const ordersPerMonthRaw = clamp(p.orders) * days;
   const subscriptionFixedPerMonth = clamp(p.subscriptionFixedPerMonth ?? 0);
   const subscriptionFixedPerOrder =
     ordersPerMonthRaw > 0 ? subscriptionFixedPerMonth / ordersPerMonthRaw : 0;
@@ -481,7 +495,7 @@ const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
     payoutPerOrder - foodCostRub - packagingRub - suppliesRub - writeOffRub - royaltyRub;
   const marginPercent = income > 0 ? (profitPerOrder / income) * 100 : 0;
 
-  const ordersPerMonth = orders * 30;
+  const ordersPerMonth = orders * days;
   const revenuePerMonth = income * ordersPerMonth;
   const payoutPerMonth = payoutPerOrder * ordersPerMonth;
   const profitPerMonth = profitPerOrder * ordersPerMonth;
@@ -595,10 +609,11 @@ export const calculate = (input: CalcInput): CalcResult => {
     input,
   );
 
+  const days = daysInMonth(input.periodMonth, input.periodYear);
   const ordersPerDay = agg.orders + self.orders;
-  const ordersPerMonth = ordersPerDay * 30;
+  const ordersPerMonth = ordersPerDay * days;
   const revenuePerMonth = agg.revenuePerMonth + self.revenuePerMonth;
-  const revenuePerDay = revenuePerMonth / 30;
+  const revenuePerDay = revenuePerMonth / days;
   const revenuePerYear = revenuePerDay * 365;
   const payoutPerMonth = agg.payoutPerMonth + self.payoutPerMonth;
   const grossProfitPerMonth = agg.profitPerMonth + self.profitPerMonth;
@@ -683,7 +698,9 @@ export const calculate = (input: CalcInput): CalcResult => {
   const netMarginPercent = revenuePerMonth > 0 ? (netProfitPerMonth / revenuePerMonth) * 100 : 0;
 
   const breakEvenOrders =
-    profitPerOrder > 0 ? Math.ceil((operatingTotal + depreciationCost) / 30 / profitPerOrder) : 0;
+    profitPerOrder > 0
+      ? Math.ceil((operatingTotal + depreciationCost) / days / profitPerOrder)
+      : 0;
 
   const vat = getVatTier(revenuePerYear);
   const vatAmountPerYear = vat.rate > 0 ? (revenuePerYear * vat.rate) / (100 + vat.rate) : 0;
