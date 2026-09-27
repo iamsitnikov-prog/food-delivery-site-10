@@ -1,5 +1,4 @@
 import { useCallback, useRef, useState } from "react";
-import Icon from "@/components/ui/icon";
 import {
   parseWorkbook,
   parseFulfilment,
@@ -7,6 +6,10 @@ import {
   type ParsedReport,
 } from "@/lib/report-parser";
 import { DEMO_REPORT } from "@/lib/demo-report";
+import UploadDropzone from "@/components/reports/UploadDropzone";
+import ResultHeader from "@/components/reports/ResultHeader";
+import SharePanel from "@/components/reports/SharePanel";
+import ReportBreakdown from "@/components/reports/ReportBreakdown";
 
 const readPdfText = async (file: File) => {
   const pdfjs = await import("pdfjs-dist");
@@ -24,26 +27,6 @@ const readPdfText = async (file: File) => {
     out += "\n";
   }
   return out;
-};
-
-const Bar = ({
-  value,
-  total,
-  accent,
-}: {
-  value: number;
-  total: number;
-  accent: boolean;
-}) => {
-  const pct = total > 0 ? Math.min(100, (Math.abs(value) / total) * 100) : 0;
-  return (
-    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-cream/10">
-      <div
-        className={`h-full rounded-full ${accent ? "bg-[#C7161B]" : "bg-brand"}`}
-        style={{ width: `${Math.max(pct, 1.5)}%` }}
-      />
-    </div>
-  );
 };
 
 const ReportUploader = () => {
@@ -227,490 +210,43 @@ const ReportUploader = () => {
   return (
     <div className="rounded-[32px] bg-surface p-6 text-cream md:p-10">
       {!report && (
-        <>
-          <h2 className="font-display text-[1.5em] font-semibold tracking-[-0.02em]">
-            загрузите свой отчёт
-          </h2>
-          <p className="mt-2 max-w-[640px] text-[0.95em] leading-snug text-cream-muted">
-            Подойдёт любой из четырёх документов: отчёт о платёжных поручениях,
-            информационный отчёт по заказам, расшифровка к отчёту или отчёт об
-            исполнении поручения в PDF. Выгрузите файл из личного кабинета без
-            изменений — не пересохраняйте и не редактируйте.
-          </p>
-
-          <div
-            onDragOver={(e) => {
-              e.preventDefault();
-              setDrag(true);
-            }}
-            onDragLeave={() => setDrag(false)}
-            onDrop={onDrop}
-            onClick={() => inputRef.current?.click()}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") inputRef.current?.click();
-            }}
-            className={`mt-7 cursor-pointer rounded-[24px] border-2 border-dashed p-10 text-center transition-colors md:p-14 ${
-              drag
-                ? "border-brand bg-brand/10"
-                : "border-cream/25 hover:border-cream/50 hover:bg-cream/[0.04]"
-            }`}
-          >
-            <Icon
-              name={busy ? "LoaderCircle" : "FileUp"}
-              size={40}
-              className={`mx-auto text-brand ${busy ? "animate-spin" : ""}`}
-            />
-            <p className="mt-5 font-display text-[1.25em] font-semibold">
-              {busy ? "читаю файл…" : "перетащите файл сюда"}
-            </p>
-            <p className="mt-2 text-[0.9em] text-cream-muted">
-              {busy ? fileName : "или нажмите, чтобы выбрать — xlsx, xls или pdf"}
-            </p>
-            <input
-              ref={inputRef}
-              type="file"
-              accept=".xlsx,.xls,.pdf"
-              className="hidden"
-              onChange={(e) => {
-                const f = e.target.files?.[0];
-                if (f) handleFile(f);
-              }}
-            />
-          </div>
-
-          <div className="mt-5 flex flex-wrap items-center gap-3 rounded-2xl bg-cream/[0.06] p-4">
-            <span className="text-[0.9em] leading-snug text-cream-muted">
-              Нет файла под рукой?
-            </span>
-            <button
-              type="button"
-              onClick={showDemo}
-              className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.9em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
-            >
-              <Icon name="Eye" size={16} />
-              посмотреть на примере
-            </button>
-            <span className="text-[0.82em] leading-snug text-cream-muted">
-              Откроем разбор на обезличенных данных
-            </span>
-          </div>
-
-          <p className="mt-4 flex items-start gap-2.5 rounded-2xl bg-cream/[0.06] p-4 text-[0.88em] leading-snug text-cream-muted">
-            <Icon name="ShieldCheck" size={18} className="mt-0.5 shrink-0 text-brand" />
-            <span>
-              <span className="text-cream">Файл никуда не отправляется.</span> Весь
-              разбор происходит прямо в вашем браузере: мы не загружаем документ на
-              сервер, не сохраняем и не видим его содержимое. Закроете вкладку —
-              данные исчезнут.
-            </span>
-          </p>
-
-          {error && (
-            <p className="mt-4 flex items-start gap-2.5 rounded-2xl bg-[#C7161B]/15 p-4 text-[0.9em] leading-snug">
-              <Icon name="CircleAlert" size={18} className="mt-0.5 shrink-0 text-[#ff6b6b]" />
-              <span>
-                {error}
-                <button
-                  type="button"
-                  onClick={reset}
-                  className="ml-2 underline hover:no-underline"
-                >
-                  попробовать другой файл
-                </button>
-              </span>
-            </p>
-          )}
-        </>
+        <UploadDropzone
+          busy={busy}
+          drag={drag}
+          setDrag={setDrag}
+          fileName={fileName}
+          error={error}
+          inputRef={inputRef}
+          onDrop={onDrop}
+          onFile={handleFile}
+          onShowDemo={showDemo}
+          onReset={reset}
+        />
       )}
 
       {report && (
         <div ref={resultRef}>
-          {isDemo && (
-            <div className="mb-6 flex flex-wrap items-center gap-3 rounded-2xl border border-brand/40 bg-brand/10 p-4">
-              <span className="inline-flex items-center gap-2 rounded-lg bg-brand px-3 py-1.5 text-[0.75em] font-bold uppercase tracking-wide text-foreground">
-                <Icon name="Eye" size={13} />
-                пример
-              </span>
-              <span className="min-w-0 flex-1 text-[0.9em] leading-snug text-cream-muted">
-                Так выглядит разбор. Цифры взяты из реального отчёта за неделю,
-                название и реквизиты убраны.
-              </span>
-              <button
-                type="button"
-                onClick={() => inputRef.current?.click()}
-                className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.88em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
-              >
-                <Icon name="FileUp" size={15} />
-                загрузить свой отчёт
-              </button>
-              <input
-                ref={inputRef}
-                type="file"
-                accept=".xlsx,.xls,.pdf"
-                className="hidden"
-                onChange={(e) => {
-                  const f = e.target.files?.[0];
-                  if (f) handleFile(f);
-                }}
-              />
-            </div>
-          )}
+          <ResultHeader
+            report={report}
+            isDemo={isDemo}
+            shareOpen={shareOpen}
+            inputRef={inputRef}
+            onFile={handleFile}
+            onToggleShare={() => setShareOpen((v) => !v)}
+            onDownload={download}
+            onReset={reset}
+          />
 
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <span className="inline-flex items-center gap-2 rounded-lg bg-brand px-3 py-1.5 text-[0.78em] font-bold uppercase tracking-wide text-foreground">
-                <Icon name="FileCheck" size={14} />
-                {report.kindLabel}
-              </span>
-              <h2 className="mt-4 font-display text-[1.5em] font-semibold tracking-[-0.02em]">
-                {report.company || "ваш отчёт"}
-              </h2>
-              <p className="mt-1.5 text-[0.88em] text-cream-muted">
-                {[
-                  report.period && `период ${report.period}`,
-                  report.contract && `договор ${report.contract}`,
-                  report.orders > 0 && `${report.orders} заказов`,
-                ]
-                  .filter(Boolean)
-                  .join(" · ")}
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2.5">
-              <button
-                type="button"
-                onClick={() => setShareOpen((v) => !v)}
-                aria-expanded={shareOpen}
-                className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.9em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
-              >
-                <Icon name="Share2" size={16} />
-                поделиться
-              </button>
-              <button
-                type="button"
-                onClick={download}
-                className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-4 py-2.5 text-[0.9em] transition-colors hover:border-cream/60"
-              >
-                <Icon name="Download" size={16} />
-                скачать
-              </button>
-              <button
-                type="button"
-                onClick={reset}
-                className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-4 py-2.5 text-[0.9em] transition-colors hover:border-cream/60"
-              >
-                <Icon name="RotateCcw" size={16} />
-                другой файл
-              </button>
-            </div>
-          </div>
+          {shareOpen && <SharePanel copied={copied} onShare={shareTo} />}
 
-          {shareOpen && (
-            <div className="mt-6 rounded-2xl bg-cream/[0.08] p-5">
-              <h3 className="flex items-center gap-2 font-display text-[1.1em] font-semibold">
-                <Icon name="Share2" size={17} className="text-brand" />
-                отправить разбор
-              </h3>
-              <p className="mt-2 text-[0.88em] leading-snug text-cream-muted">
-                Отправится текстовая сводка: оборот, фактическая нагрузка и
-                позиции, требующие проверки. Сам файл отчёта не передаётся.
-              </p>
-
-              <div className="mt-4 grid gap-3 md:grid-cols-2">
-                <div className="rounded-xl bg-cream/[0.06] p-4">
-                  <span className="text-[0.85em] font-medium text-cream">
-                    С названием компании
-                  </span>
-                  <p className="mt-1 text-[0.8em] leading-snug text-cream-muted">
-                    Для бухгалтера или управляющего
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() => shareTo("tg", false)}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3 py-2 text-[0.85em] font-medium text-foreground"
-                    >
-                      <Icon name="Send" size={14} />
-                      Telegram
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => shareTo("wa", false)}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-cream/25 px-3 py-2 text-[0.85em] transition-colors hover:border-cream/60"
-                    >
-                      <Icon name="MessageCircle" size={14} />
-                      WhatsApp
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => shareTo("copy", false)}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-cream/25 px-3 py-2 text-[0.85em] transition-colors hover:border-cream/60"
-                    >
-                      <Icon name={copied ? "Check" : "Copy"} size={14} />
-                      {copied ? "скопировано" : "копировать"}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="rounded-xl bg-cream/[0.06] p-4">
-                  <span className="text-[0.85em] font-medium text-cream">
-                    Без названия компании
-                  </span>
-                  <p className="mt-1 text-[0.8em] leading-snug text-cream-muted">
-                    Для чатов и коллег — только цифры
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() => shareTo("tg", true)}
-                      className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3 py-2 text-[0.85em] font-medium text-foreground"
-                    >
-                      <Icon name="Send" size={14} />
-                      Telegram
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => shareTo("wa", true)}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-cream/25 px-3 py-2 text-[0.85em] transition-colors hover:border-cream/60"
-                    >
-                      <Icon name="MessageCircle" size={14} />
-                      WhatsApp
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => shareTo("copy", true)}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-cream/25 px-3 py-2 text-[0.85em] transition-colors hover:border-cream/60"
-                    >
-                      <Icon name={copied ? "Check" : "Copy"} size={14} />
-                      {copied ? "скопировано" : "копировать"}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            <div className="rounded-2xl bg-cream/[0.06] p-5">
-              <span className="text-[0.85em] text-cream-muted">Валовый оборот</span>
-              <p className="mt-1.5 font-display text-[1.7em] font-semibold leading-none">
-                {rub(report.gross)} ₽
-              </p>
-            </div>
-            <div className="rounded-2xl bg-cream/[0.06] p-5">
-              <span className="text-[0.85em] text-cream-muted">Удержано сервисом</span>
-              <p className="mt-1.5 font-display text-[1.7em] font-semibold leading-none text-[#ff6b6b]">
-                {rub(report.withheld)} ₽
-              </p>
-            </div>
-            <div className="rounded-2xl bg-brand p-5 text-foreground">
-              <span className="text-[0.85em] text-foreground/70">К перечислению</span>
-              <p className="mt-1.5 font-display text-[1.7em] font-semibold leading-none">
-                {rub(report.net)} ₽
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-4 rounded-2xl bg-cream/[0.06] p-6">
-            <div className="flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <span className="text-[0.85em] text-cream-muted">
-                  Фактическая нагрузка на оборот
-                </span>
-                <p className="mt-1 font-display text-[2.6em] font-semibold leading-none text-brand">
-                  {report.realRate.toFixed(1)}%
-                </p>
-              </div>
-              {report.declaredRate != null && (
-                <div className="text-right">
-                  <span className="text-[0.85em] text-cream-muted">
-                    Ставка по договору
-                  </span>
-                  <p className="mt-1 font-display text-[1.6em] font-semibold leading-none text-cream-muted">
-                    {report.declaredRate.toFixed(1)}%
-                  </p>
-                </div>
-              )}
-            </div>
-            {overpay != null && overpay > 0.5 && (
-              <p className="mt-4 text-[0.92em] leading-snug">
-                Фактически сервис удерживает на{" "}
-                <span className="text-brand">{overpay.toFixed(1)} процентных пункта</span>{" "}
-                больше ставки из договора. Разницу формируют маркетинговые услуги,
-                абонентская плата и удержания по оферте: юридически это отдельные
-                услуги, но для вашей выручки разницы нет. В деньгах —{" "}
-                {rub(report.gross * (overpay / 100))} ₽ за период.
-              </p>
-            )}
-          </div>
-
-          <h3 className="mt-9 font-display text-[1.3em] font-semibold tracking-[-0.02em]">
-            куда ушли деньги
-          </h3>
-          <div className="mt-4 space-y-2.5">
-            {report.buckets.map((b) => {
-              const isOpen = open === b.key;
-              const share = report.gross > 0 ? (Math.abs(b.sum) / report.gross) * 100 : 0;
-              return (
-                <div
-                  key={b.key}
-                  className={`rounded-2xl p-4 transition-colors ${
-                    b.suspicious ? "bg-[#C7161B]/12" : "bg-cream/[0.06]"
-                  }`}
-                >
-                  <button
-                    type="button"
-                    onClick={() => setOpen(isOpen ? null : b.key)}
-                    aria-expanded={isOpen}
-                    className="flex w-full items-start justify-between gap-4 text-left"
-                  >
-                    <span className="min-w-0">
-                      <span className="flex items-center gap-2 font-medium">
-                        {b.suspicious && (
-                          <Icon name="TriangleAlert" size={15} className="shrink-0 text-[#ff6b6b]" />
-                        )}
-                        {b.label}
-                      </span>
-                      <span className="mt-0.5 block text-[0.82em] text-cream-muted">
-                        {b.count > 1 ? `${b.count} операций · ` : ""}
-                        {share.toFixed(1)}% от оборота
-                      </span>
-                    </span>
-                    <span className="flex shrink-0 items-center gap-2">
-                      <span
-                        className={`font-display text-[1.15em] font-semibold ${
-                          b.sum < 0 ? "text-[#ff6b6b]" : "text-brand"
-                        }`}
-                      >
-                        {rub(b.sum)} ₽
-                      </span>
-                      <Icon
-                        name="ChevronDown"
-                        size={16}
-                        className={`text-cream-muted transition-transform ${isOpen ? "rotate-180" : ""}`}
-                      />
-                    </span>
-                  </button>
-                  <Bar value={b.sum} total={totalAbs} accent={!!b.suspicious} />
-                  {isOpen && (
-                    <p className="mt-3.5 border-t border-cream/12 pt-3.5 text-[0.9em] leading-snug text-cream-muted">
-                      {b.hint}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          <div
-            className={`mt-9 rounded-2xl p-6 ${
-              report.reconciled === true
-                ? "bg-brand/15"
-                : report.reconciled === false
-                  ? "bg-[#C7161B]/15"
-                  : "bg-cream/[0.06]"
-            }`}
-          >
-            <h3 className="flex items-center gap-2.5 font-display text-[1.2em] font-semibold">
-              <Icon
-                name={
-                  report.reconciled === true
-                    ? "CircleCheck"
-                    : report.reconciled === false
-                      ? "CircleAlert"
-                      : "Info"
-                }
-                size={20}
-                className={
-                  report.reconciled === true
-                    ? "text-brand"
-                    : report.reconciled === false
-                      ? "text-[#ff6b6b]"
-                      : "text-cream-muted"
-                }
-              />
-              {report.reconciled === true
-                ? "Расчёты сходятся"
-                : report.reconciled === false
-                  ? "Выявлено расхождение"
-                  : "Сверка не выполнялась"}
-            </h3>
-            <p className="mt-3 text-[0.95em] leading-snug text-cream-muted">
-              {report.reconcileNote}
-            </p>
-            {report.payments.length > 0 && (
-              <div className="mt-5 space-y-1.5 border-t border-cream/12 pt-4">
-                {report.payments.map((p) => (
-                  <div
-                    key={p.label}
-                    className="flex items-baseline justify-between gap-4 text-[0.88em]"
-                  >
-                    <span className="min-w-0 truncate text-cream-muted">{p.label}</span>
-                    <span className="shrink-0 font-medium">{rub(p.sum)} ₽</span>
-                  </div>
-                ))}
-                <div className="flex items-baseline justify-between gap-4 border-t border-cream/12 pt-2.5 text-[0.95em] font-semibold">
-                  <span>Итого перечислено</span>
-                  <span className="text-brand">{rub(report.paymentsTotal)} ₽</span>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {report.extra.length > 0 && (
-            <div className="mt-4 grid gap-3 md:grid-cols-2">
-              {report.extra.map((e) => (
-                <div key={e.label} className="rounded-2xl bg-cream/[0.06] p-4">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span className="text-[0.88em] text-cream-muted">{e.label}</span>
-                    <span className="font-display text-[1.1em] font-semibold">
-                      {e.value}
-                    </span>
-                  </div>
-                  {e.hint && (
-                    <p className="mt-2 text-[0.82em] leading-snug text-cream-muted">
-                      {e.hint}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {(suspicious.length > 0 || report.warnings.length > 0) && (
-            <div className="mt-9 rounded-2xl border border-[#C7161B]/40 p-6">
-              <h3 className="flex items-center gap-2.5 font-display text-[1.2em] font-semibold">
-                <Icon name="Search" size={20} className="text-[#ff6b6b]" />
-                что стоит уточнить
-              </h3>
-              <ul className="mt-4 space-y-3">
-                {suspicious.map((b) => (
-                  <li key={b.key} className="flex gap-2.5 text-[0.92em] leading-snug">
-                    <Icon name="Dot" size={18} className="mt-0.5 shrink-0 text-[#ff6b6b]" />
-                    <span>
-                      <span className="font-medium">
-                        {b.label} — {rub(b.sum)} ₽
-                        {b.count > 1 ? ` (${b.count} шт)` : ""}.
-                      </span>{" "}
-                      <span className="text-cream-muted">{b.hint}</span>
-                    </span>
-                  </li>
-                ))}
-                {report.warnings.map((w) => (
-                  <li key={w} className="flex gap-2.5 text-[0.92em] leading-snug">
-                    <Icon name="Dot" size={18} className="mt-0.5 shrink-0 text-[#ff6b6b]" />
-                    <span className="text-cream-muted">{w}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <p className="mt-6 flex items-start gap-2.5 text-[0.85em] leading-snug text-cream-muted">
-            <Icon name="ShieldCheck" size={16} className="mt-0.5 shrink-0 text-brand" />
-            Файл обработан локально в браузере: он не передавался на сервер и не сохранялся.
-          </p>
+          <ReportBreakdown
+            report={report}
+            open={open}
+            setOpen={setOpen}
+            suspicious={suspicious}
+            totalAbs={totalAbs}
+            overpay={overpay}
+          />
         </div>
       )}
     </div>
