@@ -27,7 +27,7 @@ const TermsStrip = ({
             to="/slovar"
             className="inline-flex items-center gap-1.5 text-[0.9em] text-brand hover:underline"
           >
-            весь словарь
+            весь глоссарий
             <Icon name="ArrowRight" size={15} />
           </Link>
         </div>
@@ -36,7 +36,7 @@ const TermsStrip = ({
           {terms.map((t) => (
             <Link
               key={t.slug}
-              to={`/slovar#${t.slug}`}
+              to={`/slovar/${t.slug}`}
               className="group rounded-2xl bg-cream/[0.06] p-4 transition-colors hover:bg-cream/[0.1]"
             >
               <span className="flex items-center justify-between gap-3">

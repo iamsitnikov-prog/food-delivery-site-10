@@ -9,9 +9,10 @@ import LetterNav from "@/components/glossary/LetterNav";
 import TermCard from "@/components/glossary/TermCard";
 import useSeo from "@/hooks/use-seo";
 import {
+  CYRILLIC_LETTERS,
   GLOSSARY,
   GLOSSARY_GROUPS,
-  GLOSSARY_LETTERS,
+  LATIN_LETTERS,
   getRelated,
   type GlossaryGroup,
 } from "@/data/glossary";
@@ -25,7 +26,7 @@ const GlossaryPage = () => {
   const [letter, setLetter] = useState<string | null>(null);
 
   useSeo({
-    title: "Словарь терминов доставки и агрегаторов | agregatory.pro",
+    title: "Глоссарий доставки: термины агрегаторов простыми словами | agregatory.pro",
     description: `ДРР, ROMI, GMV, юнит-экономика, фудкост, SLA — ${GLOSSARY.length} термин доставки простым языком с формулами, примерами и навигацией по буквам.`,
     path: pathname,
     jsonLd: [
@@ -34,20 +35,25 @@ const GlossaryPage = () => {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Главная", item: `${SITE}/` },
-          { "@type": "ListItem", position: 2, name: "Словарь", item: `${SITE}/slovar` },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Глоссарий доставки",
+            item: `${SITE}/slovar`,
+          },
         ],
       },
       {
         "@context": "https://schema.org",
         "@type": "DefinedTermSet",
-        name: "Словарь терминов доставки и агрегаторов",
+        name: "Глоссарий доставки",
         description:
           "Термины, которые используют рестораны при работе с сервисами доставки: маркетинг и воронка, юнит-экономика, финансы, операционка и свой канал.",
         inLanguage: "ru-RU",
         url: `${SITE}/slovar`,
         hasDefinedTerm: GLOSSARY.map((t) => ({
           "@type": "DefinedTerm",
-          "@id": `${SITE}/slovar#${t.slug}`,
+          "@id": `${SITE}/slovar/${t.slug}`,
           name: t.term,
           description: t.short,
           inDefinedTermSet: `${SITE}/slovar`,
@@ -120,10 +126,10 @@ const GlossaryPage = () => {
               главная
             </Link>
             <Icon name="ChevronRight" size={14} />
-            <span className="text-foreground">словарь</span>
+            <span className="text-foreground">глоссарий</span>
           </nav>
           <h1 className="max-w-[17ch] font-display text-[38px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
-            Словарь терминов доставки
+            Глоссарий доставки
           </h1>
           <p className="mt-6 max-w-[660px] text-[1.08em] leading-snug text-muted-foreground">
             {GLOSSARY.length} понятий из кабинета сервиса, отчётов и разговоров с менеджерами —
@@ -150,7 +156,8 @@ const GlossaryPage = () => {
           </label>
 
           <LetterNav
-            letters={GLOSSARY_LETTERS}
+            cyrillic={CYRILLIC_LETTERS}
+            latin={LATIN_LETTERS}
             active={letter}
             counts={counts}
             onPick={setLetter}

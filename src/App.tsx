@@ -26,6 +26,7 @@ const Checklists = lazy(() => import("./pages/Checklists"));
 const ChecklistPage = lazy(() => import("./pages/ChecklistPage"));
 const Read = lazy(() => import("./pages/Read"));
 const Glossary = lazy(() => import("./pages/Glossary"));
+const GlossaryTerm = lazy(() => import("./pages/GlossaryTerm"));
 const NotFound = lazy(() => import("./pages/PageNotFound"));
 
 const queryClient = new QueryClient();
@@ -61,6 +62,7 @@ const App = () => {
           <Route path="/chek-listy/:slug" element={<ChecklistPage />} />
           <Route path="/pochitat" element={<Read />} />
           <Route path="/slovar" element={<Glossary />} />
+          <Route path="/slovar/:slug" element={<GlossaryTerm />} />
           <Route path="/sravnenie-agregatorov" element={<PlayersCompare />} />
           <Route path="/razbor-otchetov" element={<ReportsDecoder />} />
           <Route

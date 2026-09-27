@@ -9,7 +9,7 @@ export const USEFUL_LINKS = [
   { href: "/razbor-otchetov", label: "разбор отчётов", icon: "FileSearch" },
   { href: "/chek-listy", label: "чек-листы", icon: "ListChecks" },
   { href: "/testy", label: "тесты", icon: "CircleHelp" },
-  { href: "/slovar", label: "словарь", icon: "BookA" },
+  { href: "/slovar", label: "глоссарий", icon: "BookA" },
   { href: "/pochitat", label: "почитать", icon: "BookOpen" },
 ];
 

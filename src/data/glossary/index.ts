@@ -16,12 +16,9 @@ const ALL: GlossaryEntry[] = [
   ...OWN_CHANNEL_TERMS,
 ];
 
-const LATIN = "A-Z";
+const firstLetter = (s: string) => s.trim().replace(/^[«"']/, "")[0].toUpperCase();
 
-const firstLetter = (s: string) => {
-  const ch = s.trim().replace(/^[«"']/, "")[0].toUpperCase();
-  return /[А-ЯЁ]/.test(ch) ? ch : LATIN;
-};
+export const isLatinLetter = (l: string) => /^[A-Z]$/.test(l);
 
 export const GLOSSARY: GlossaryTerm[] = ALL.map((t) => ({
   ...t,
@@ -30,11 +27,18 @@ export const GLOSSARY: GlossaryTerm[] = ALL.map((t) => ({
 
 export const getTerm = (slug: string) => GLOSSARY.find((t) => t.slug === slug);
 
-export const GLOSSARY_LETTERS = Array.from(new Set(GLOSSARY.map((t) => t.letter))).sort((a, b) => {
-  if (a === LATIN) return 1;
-  if (b === LATIN) return -1;
-  return a.localeCompare(b, "ru");
-});
+/** Кириллица идёт первой, латиница — отдельной группой следом. */
+export const GLOSSARY_LETTERS = Array.from(new Set(GLOSSARY.map((t) => t.letter))).sort(
+  (a, b) => {
+    const la = isLatinLetter(a);
+    const lb = isLatinLetter(b);
+    if (la !== lb) return la ? 1 : -1;
+    return a.localeCompare(b, la ? "en" : "ru");
+  },
+);
+
+export const CYRILLIC_LETTERS = GLOSSARY_LETTERS.filter((l) => !isLatinLetter(l));
+export const LATIN_LETTERS = GLOSSARY_LETTERS.filter((l) => isLatinLetter(l));
 
 export const countByLetter = (letter: string) =>
   GLOSSARY.filter((t) => t.letter === letter).length;
@@ -43,3 +47,7 @@ export const getRelated = (term: GlossaryTerm) =>
   (term.see ?? [])
     .map((slug) => GLOSSARY.find((t) => t.slug === slug))
     .filter((t): t is GlossaryTerm => Boolean(t));
+
+/** Термины той же темы — для блока «рядом по теме» на странице термина. */
+export const getSameGroup = (term: GlossaryTerm, limit = 6) =>
+  GLOSSARY.filter((t) => t.group === term.group && t.slug !== term.slug).slice(0, limit);

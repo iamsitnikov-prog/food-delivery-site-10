@@ -17,7 +17,9 @@ const TermCard = ({
   >
     <div className="flex items-start justify-between gap-4">
       <h2 className="font-display text-[1.45em] font-semibold leading-tight tracking-[-0.02em] text-cream">
-        {term.term}
+        <Link to={`/slovar/${term.slug}`} className="transition-colors hover:text-brand">
+          {term.term}
+        </Link>
       </h2>
       <span className="shrink-0 rounded-lg bg-cream/10 px-2.5 py-1 text-[0.72em] text-cream-muted">
         {term.group}
@@ -60,6 +62,16 @@ const TermCard = ({
         </div>
       </div>
     )}
+
+    <div className="mt-5">
+      <Link
+        to={`/slovar/${term.slug}`}
+        className="inline-flex items-center gap-2 text-[0.9em] font-medium text-brand hover:underline"
+      >
+        подробнее о термине
+        <Icon name="ArrowRight" size={15} />
+      </Link>
+    </div>
 
     {term.links && term.links.length > 0 && (
       <div className="mt-4 flex flex-wrap gap-2">

@@ -121,7 +121,7 @@ export const CITY_RESOURCES: ResourceLink[] = [
   CALC("rentabelnost-zakaza", "Рентабельность заказа", "Посчитайте экономику на своих цифрах"),
   {
     to: "/slovar",
-    label: "Словарь терминов",
+    label: "Глоссарий доставки",
     note: "41 понятие доставки простым языком",
     icon: "BookA",
   },

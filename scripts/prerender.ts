@@ -125,7 +125,7 @@ ${blocksToText(p.blocks)}
 ${faqToText(p.faq)}
 <h2>Пишем о доставке каждый день</h2>
 ${READ_CHANNELS.map((c) => `<p><a href="${c.href}" rel="noopener">${esc(clean(c.label))}</a> — ${esc(clean(c.short))}</p>`).join("")}
-<p><a href="${SITE}/blog">Все статьи блога</a> · <a href="${SITE}/slovar">Словарь терминов доставки</a> · <a href="${SITE}/sravnenie-agregatorov">Сравнение агрегаторов</a> · <a href="${SITE}/kalkulyatory">Калькуляторы</a></p></article>`,
+<p><a href="${SITE}/blog">Все статьи блога</a> · <a href="${SITE}/slovar">Глоссарий доставки</a> · <a href="${SITE}/sravnenie-agregatorov">Сравнение агрегаторов</a> · <a href="${SITE}/kalkulyatory">Калькуляторы</a></p></article>`,
   });
 }
 
@@ -354,7 +354,7 @@ pages.push({
 <p>Удержания по пункту 14.7 оферты — это компенсация гостю за отсутствующую позицию или недовложение за счёт партнёра. Основание можно запросить через поддержку: если вина партнёра не подтверждается, удержание снимают, и в следующем отчёте появляется строка возврата.</p>
 <h2>Почему фактическая нагрузка выше ставки в договоре</h2>
 <p>Вознаграждение за услуги — только одна из строк удержаний. Рядом идут маркетинговые услуги, абонентская плата за тариф, буст, CPA-маркетинг, компенсации гостям и удержания по офертам. Это отдельные услуги по разным основаниям, и большинство из них партнёр подключает добровольно. Но с точки зрения расчётного счёта разницы нет: все они уменьшают поступления, поэтому итоговую нагрузку полезно знать.</p>
-<p><a href="/kalkulyatory/rentabelnost-zakaza">Калькулятор рентабельности</a> · <a href="/sravnenie-agregatorov">Сравнение игроков</a> · <a href="/slovar">Словарь терминов</a></p>
+<p><a href="/kalkulyatory/rentabelnost-zakaza">Калькулятор рентабельности</a> · <a href="/sravnenie-agregatorov">Сравнение игроков</a> · <a href="/slovar">Глоссарий доставки</a></p>
 <p>Телефон: +7 931 002-82-22</p>`,
 });
 
@@ -364,7 +364,7 @@ pages.push({
     {
       "@context": "https://schema.org",
       "@type": "DefinedTermSet",
-      name: "Словарь терминов доставки и агрегаторов",
+      name: "Глоссарий доставки",
       inLanguage: "ru-RU",
       url: `${SITE}/slovar`,
       hasDefinedTerm: GLOSSARY.map((g) => ({
@@ -385,14 +385,14 @@ pages.push({
       })),
     },
   ],
-  title: "Словарь терминов доставки и агрегаторов | agregatory.pro",
+  title: "Глоссарий доставки: термины агрегаторов простыми словами | agregatory.pro",
   description: `ДРР, ROMI, GMV, юнит-экономика, фудкост, SLA — ${GLOSSARY.length} термин доставки простым языком с формулами, примерами и навигацией по буквам.`,
-  body: `<h1>Словарь терминов доставки</h1>
+  body: `<h1>Глоссарий доставки</h1>
 <p>${GLOSSARY.length} понятий из кабинета сервиса, отчётов и разговоров с менеджерами — простым языком, с формулами, примерами и связями между терминами. Термины сгруппированы по темам: маркетинг и воронка, юнит-экономика, финансы и отчётность, операционка, свой канал и CRM.</p>
 <p>Навигация по буквам: ${GLOSSARY_LETTERS.map((l) => `<a href="/slovar#letter-${encodeURIComponent(l)}">${esc(l)}</a>`).join(" · ")}</p>
 ${GLOSSARY.map(
     (t) =>
-      `<h2>${esc(clean(t.term))}</h2><p>${esc(clean(t.short))}</p><p>${esc(clean(t.full))}</p>${
+      `<h2><a href="/slovar/${t.slug}">${esc(clean(t.term))}</a></h2><p>${esc(clean(t.short))}</p><p>${esc(clean(t.full))}</p>${
         t.formula ? `<p>Формула: ${esc(clean(t.formula))}</p>` : ""
       }${t.example ? `<p>Пример. ${esc(clean(t.example))}</p>` : ""}${
         t.see && t.see.length
@@ -413,6 +413,118 @@ ${GLOSSARY.map(
 <p><a href="/kalkulyatory">Калькуляторы</a> · <a href="/sravnenie-agregatorov">Сравнение агрегаторов</a> · <a href="/blog">Блог</a></p>
 <p>Телефон: +7 931 002-82-22</p>`,
 });
+
+for (const term of GLOSSARY) {
+  const related = (term.see ?? [])
+    .map((s) => GLOSSARY.find((g) => g.slug === s))
+    .filter((g): g is (typeof GLOSSARY)[number] => Boolean(g));
+  const sameGroup = GLOSSARY.filter(
+    (g) => g.group === term.group && g.slug !== term.slug,
+  ).slice(0, 6);
+
+  pages.push({
+    route: `/slovar/${term.slug}`,
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Главная", item: `${SITE}/` },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Глоссарий доставки",
+            item: `${SITE}/slovar`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: clean(term.term),
+            item: `${SITE}/slovar/${term.slug}`,
+          },
+        ],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "DefinedTerm",
+        "@id": `${SITE}/slovar/${term.slug}`,
+        name: clean(term.term),
+        description: clean(term.short),
+        inDefinedTermSet: {
+          "@type": "DefinedTermSet",
+          name: "Глоссарий доставки",
+          url: `${SITE}/slovar`,
+        },
+        inLanguage: "ru-RU",
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [
+          {
+            "@type": "Question",
+            name: `Что такое ${clean(term.term)}?`,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: `${clean(term.short)} ${clean(term.full)}`,
+            },
+          },
+          ...(term.formula
+            ? [
+                {
+                  "@type": "Question",
+                  name: `Как считать ${clean(term.term)}?`,
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: `${clean(term.formula)}${
+                      term.example ? `. Пример: ${clean(term.example)}` : ""
+                    }`,
+                  },
+                },
+              ]
+            : []),
+        ],
+      },
+    ],
+    title: `${clean(term.term)} — что это такое простыми словами | agregatory.pro`,
+    description: `${clean(term.term)}: ${clean(term.short)}${
+      term.formula ? ` Формула: ${clean(term.formula)}.` : ""
+    } Объясняем простым языком с примером расчёта для ресторанов на доставке.`,
+    body: `<h1>${esc(clean(term.term))}</h1>
+<p>${esc(clean(term.short))}</p>
+<h2>Что это значит</h2>
+<p>${esc(clean(term.full))}</p>${
+      term.formula
+        ? `\n<h2>Как считать</h2>\n<p>${esc(clean(term.formula))}</p>`
+        : ""
+    }${term.example ? `\n<h2>Пример</h2>\n<p>${esc(clean(term.example))}</p>` : ""}${
+      term.links && term.links.length
+        ? `\n<h2>Применить на практике</h2>\n<p>${term.links
+            .map((l) => `<a href="${l.to}">${esc(clean(l.label))}</a>`)
+            .join(" · ")}</p>`
+        : ""
+    }${
+      related.length
+        ? `\n<h2>Связанные термины</h2>\n<ul>${related
+            .map(
+              (r) =>
+                `<li><a href="/slovar/${r.slug}">${esc(clean(r.term))}</a> — ${esc(
+                  clean(r.short),
+                )}</li>`,
+            )
+            .join("")}</ul>`
+        : ""
+    }${
+      sameGroup.length
+        ? `\n<p>Рядом по теме «${esc(clean(term.group))}»: ${sameGroup
+            .map((g) => `<a href="/slovar/${g.slug}">${esc(clean(g.term))}</a>`)
+            .join(" · ")}</p>`
+        : ""
+    }
+<p><a href="/slovar">Весь глоссарий доставки</a> · <a href="/kalkulyatory">Калькуляторы</a> · <a href="/razbor-otchetov">Разбор отчётов</a></p>
+<p>Телефон: +7 931 002-82-22</p>`,
+  });
+}
 
 pages.push({
   route: "/kalkulyatory/konstruktory-dostavki",
@@ -645,7 +757,7 @@ const crumbs = (route: string, title: string) => {
     "chek-listy": "Чек-листы",
     testy: "Тесты",
     pochitat: "Почитать",
-    slovar: "Словарь",
+    slovar: "Глоссарий",
     "sravnenie-agregatorov": "Сравнение агрегаторов",
     partnery: "Партнёры",
   };
