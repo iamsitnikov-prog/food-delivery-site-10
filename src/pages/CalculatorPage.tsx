@@ -9,6 +9,8 @@ import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
+import TermsStrip from "@/components/glossary/TermsStrip";
+import { termsForRoute } from "@/lib/term-matcher";
 import Contacts from "@/components/landing/Contacts";
 import Calculator from "@/components/calc/Calculator";
 import CompareCalc from "@/components/calc/CompareCalc";
@@ -22,6 +24,12 @@ const CalculatorPage = () => {
   const { slug } = useParams();
   const { pathname } = useLocation();
   const page = getCalcPage(slug || "");
+  const termSlugs = page
+    ? termsForRoute(
+        `/kalkulyatory/${page.slug}`,
+        `${page.h1} ${page.lead} ${page.intro.join(" ")} ${page.faq.map((f) => f.q + " " + f.a).join(" ")}`,
+      )
+    : [];
 
   useSeo({
     title: page?.title || "",
@@ -147,6 +155,8 @@ const CalculatorPage = () => {
           ))}
         </div>
       </section>
+
+      <TermsStrip slugs={termSlugs} />
 
       <CrossLinks
         items={["reports", "audit", "calc"]}

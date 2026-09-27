@@ -11,7 +11,7 @@ import { READ_CHANNELS } from "../src/data/channels";
 import { QUIZZES } from "../src/data/quizzes";
 import { getCityCase, CITY_CASES } from "../src/data/city-cases";
 import { getChecklistPage } from "../src/data/checklists";
-import { GLOSSARY } from "../src/data/glossary";
+import { GLOSSARY, GLOSSARY_LETTERS } from "../src/data/glossary";
 import { getServiceResources } from "../src/data/service-resources";
 import { AGGREGATORS, SCENARIOS, CONCLUSIONS } from "../src/data/comparison";
 
@@ -386,15 +386,23 @@ pages.push({
     },
   ],
   title: "Словарь терминов доставки и агрегаторов | agregatory.pro",
-  description:
-    "ДРР, ROMI, медианное место, фудкост, индекс качества — термины доставки простым языком с формулами и примерами расчёта.",
+  description: `ДРР, ROMI, GMV, юнит-экономика, фудкост, SLA — ${GLOSSARY.length} термин доставки простым языком с формулами, примерами и навигацией по буквам.`,
   body: `<h1>Словарь терминов доставки</h1>
-<p>Понятия, которые встречаются в кабинете агрегатора и в разговорах с менеджерами — простым языком, с формулами и примерами.</p>
+<p>${GLOSSARY.length} понятий из кабинета сервиса, отчётов и разговоров с менеджерами — простым языком, с формулами, примерами и связями между терминами. Термины сгруппированы по темам: маркетинг и воронка, юнит-экономика, финансы и отчётность, операционка, свой канал и CRM.</p>
+<p>Навигация по буквам: ${GLOSSARY_LETTERS.map((l) => `<a href="/slovar#letter-${encodeURIComponent(l)}">${esc(l)}</a>`).join(" · ")}</p>
 ${GLOSSARY.map(
     (t) =>
       `<h2>${esc(clean(t.term))}</h2><p>${esc(clean(t.short))}</p><p>${esc(clean(t.full))}</p>${
         t.formula ? `<p>Формула: ${esc(clean(t.formula))}</p>` : ""
       }${t.example ? `<p>Пример. ${esc(clean(t.example))}</p>` : ""}${
+        t.see && t.see.length
+          ? `<p>Смотрите также: ${t.see
+              .map((s) => GLOSSARY.find((g) => g.slug === s))
+              .filter(Boolean)
+              .map((g) => `<a href="/slovar#${g!.slug}">${esc(clean(g!.term))}</a>`)
+              .join(" · ")}</p>`
+          : ""
+      }${
         t.links && t.links.length
           ? `<p>${t.links
               .map((l) => `<a href="${l.to}">${esc(clean(l.label))}</a>`)

@@ -10,6 +10,7 @@ import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
+import TermsStrip from "@/components/glossary/TermsStrip";
 import Contacts from "@/components/landing/Contacts";
 import ReportUploader from "@/components/reports/ReportUploader";
 import ReportAnatomy from "@/components/reports/ReportAnatomy";
@@ -294,6 +295,8 @@ const ReportsDecoder = () => {
           ))}
         </Accordion>
       </section>
+
+      <TermsStrip slugs={["otchet-agenta", "uderzhaniya", "vyruchka-k-vyplate", "komissiya", "pretenziya", "gmv"]} />
 
       <CrossLinks
         items={["audit", "calc", "compare"]}

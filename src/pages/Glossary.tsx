@@ -1,12 +1,20 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
+import LetterNav from "@/components/glossary/LetterNav";
+import TermCard from "@/components/glossary/TermCard";
 import useSeo from "@/hooks/use-seo";
-import { GLOSSARY, GLOSSARY_GROUPS, type GlossaryGroup } from "@/data/glossary";
+import {
+  GLOSSARY,
+  GLOSSARY_GROUPS,
+  GLOSSARY_LETTERS,
+  getRelated,
+  type GlossaryGroup,
+} from "@/data/glossary";
 
 const SITE = "https://agregatory.pro";
 
@@ -14,11 +22,11 @@ const GlossaryPage = () => {
   const { pathname } = useLocation();
   const [query, setQuery] = useState("");
   const [group, setGroup] = useState<GlossaryGroup | "все">("все");
+  const [letter, setLetter] = useState<string | null>(null);
 
   useSeo({
     title: "Словарь терминов доставки и агрегаторов | agregatory.pro",
-    description:
-      "ДРР, ROMI, медианное место, фудкост, индекс качества — 41 термин доставки простым языком с формулами и примерами расчёта.",
+    description: `ДРР, ROMI, GMV, юнит-экономика, фудкост, SLA — ${GLOSSARY.length} термин доставки простым языком с формулами, примерами и навигацией по буквам.`,
     path: pathname,
     jsonLd: [
       {
@@ -34,7 +42,7 @@ const GlossaryPage = () => {
         "@type": "DefinedTermSet",
         name: "Словарь терминов доставки и агрегаторов",
         description:
-          "Термины, которые используют рестораны при работе с агрегаторами доставки: метрики, реклама, операционка, документы.",
+          "Термины, которые используют рестораны при работе с сервисами доставки: маркетинг и воронка, юнит-экономика, финансы, операционка и свой канал.",
         inLanguage: "ru-RU",
         url: `${SITE}/slovar`,
         hasDefinedTerm: GLOSSARY.map((t) => ({
@@ -57,15 +65,47 @@ const GlossaryPage = () => {
     ],
   });
 
+  const counts = useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const t of GLOSSARY) map[t.letter] = (map[t.letter] ?? 0) + 1;
+    return map;
+  }, []);
+
   const list = useMemo(() => {
     const q = query.trim().toLowerCase();
     return GLOSSARY.filter((t) => {
       const okGroup = group === "все" || t.group === group;
+      const okLetter = !letter || t.letter === letter;
       const okQuery =
-        !q || t.term.toLowerCase().includes(q) || t.short.toLowerCase().includes(q);
-      return okGroup && okQuery;
+        !q ||
+        t.term.toLowerCase().includes(q) ||
+        t.short.toLowerCase().includes(q) ||
+        t.full.toLowerCase().includes(q);
+      return okGroup && okLetter && okQuery;
     });
-  }, [query, group]);
+  }, [query, group, letter]);
+
+  const pickTerm = useCallback((slug: string) => {
+    setQuery("");
+    setGroup("все");
+    setLetter(null);
+    window.setTimeout(() => {
+      const el = document.getElementById(slug);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        el.classList.add("ring-2", "ring-brand");
+        window.setTimeout(() => el.classList.remove("ring-2", "ring-brand"), 1600);
+      }
+    }, 60);
+  }, []);
+
+  const reset = () => {
+    setQuery("");
+    setGroup("все");
+    setLetter(null);
+  };
+
+  const filtered = query.trim() !== "" || group !== "все" || letter !== null;
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
@@ -85,9 +125,9 @@ const GlossaryPage = () => {
           <h1 className="max-w-[17ch] font-display text-[38px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
             Словарь терминов доставки
           </h1>
-          <p className="mt-6 max-w-[640px] text-[1.08em] leading-snug text-muted-foreground">
-            {GLOSSARY.length} понятий, которые встречаются в кабинете агрегатора и в разговорах с
-            менеджерами — объясняем простым языком, с формулами и примерами.
+          <p className="mt-6 max-w-[660px] text-[1.08em] leading-snug text-muted-foreground">
+            {GLOSSARY.length} понятий из кабинета сервиса, отчётов и разговоров с менеджерами —
+            простым языком, с формулами, примерами и связями между терминами.
           </p>
         </section>
       </div>
@@ -109,6 +149,13 @@ const GlossaryPage = () => {
             />
           </label>
 
+          <LetterNav
+            letters={GLOSSARY_LETTERS}
+            active={letter}
+            counts={counts}
+            onPick={setLetter}
+          />
+
           <div className="flex flex-wrap gap-2">
             {(["все", ...GLOSSARY_GROUPS] as const).map((g) => (
               <button
@@ -125,62 +172,43 @@ const GlossaryPage = () => {
               </button>
             ))}
           </div>
+
+          <p className="flex flex-wrap items-center gap-3 text-[0.88em] text-muted-foreground">
+            <span>
+              Показано {list.length} из {GLOSSARY.length}
+            </span>
+            {filtered && (
+              <button
+                type="button"
+                onClick={reset}
+                className="inline-flex items-center gap-1.5 text-foreground underline hover:no-underline"
+              >
+                <Icon name="X" size={14} />
+                сбросить фильтры
+              </button>
+            )}
+          </p>
         </div>
       </section>
 
       <section className="px-5 pb-16 md:px-14 md:pb-24">
         {list.length === 0 ? (
           <p className="rounded-[24px] bg-surface p-8 text-cream-muted">
-            Ничего не нашлось. Попробуйте другое слово или сбросьте фильтр.
+            Ничего не нашлось. Попробуйте другое слово или{" "}
+            <button type="button" onClick={reset} className="text-brand underline hover:no-underline">
+              сбросьте фильтры
+            </button>
+            .
           </p>
         ) : (
           <div className="grid gap-4 md:grid-cols-2">
             {list.map((t) => (
-              <article
+              <TermCard
                 key={t.slug}
-                id={t.slug}
-                className="scroll-mt-24 rounded-[28px] bg-surface p-7 text-cream md:p-8"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <h2 className="font-display text-[1.45em] font-semibold leading-tight tracking-[-0.02em] text-cream">
-                    {t.term}
-                  </h2>
-                  <span className="shrink-0 rounded-lg bg-cream/10 px-2.5 py-1 text-[0.72em] text-cream-muted">
-                    {t.group}
-                  </span>
-                </div>
-
-                <p className="mt-3 text-[1em] leading-snug text-brand">{t.short}</p>
-                <p className="mt-3 leading-relaxed text-cream-muted">{t.full}</p>
-
-                {t.formula && (
-                  <p className="mt-4 rounded-2xl border border-cream/15 bg-cream/[0.04] px-4 py-3 font-mono text-[0.88em] leading-snug text-cream">
-                    {t.formula}
-                  </p>
-                )}
-
-                {t.example && (
-                  <p className="mt-3 text-[0.9em] leading-snug text-cream-muted">
-                    <span className="text-cream">Пример. </span>
-                    {t.example}
-                  </p>
-                )}
-
-                {t.links && t.links.length > 0 && (
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {t.links.map((l) => (
-                      <Link
-                        key={l.to}
-                        to={l.to}
-                        className="inline-flex items-center gap-1.5 rounded-xl border border-cream/25 px-3.5 py-2 text-[0.85em] text-cream transition-colors hover:border-brand hover:text-brand"
-                      >
-                        {l.label}
-                        <Icon name="ArrowUpRight" size={14} />
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </article>
+                term={t}
+                related={getRelated(t)}
+                onPickTerm={pickTerm}
+              />
             ))}
           </div>
         )}

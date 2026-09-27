@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
+import TermsStrip from "@/components/glossary/TermsStrip";
 import Contacts from "@/components/landing/Contacts";
 import Calculator from "@/components/calc/Calculator";
 import useSeo from "@/hooks/use-seo";
@@ -106,6 +107,8 @@ const CalculatorsPage = () => {
           ))}
         </div>
       </section>
+
+      <TermsStrip slugs={["yunit-ekonomika", "marzha-zakaza", "drr", "fudkost", "tochka-bezubytochnosti", "porog-nds"]} />
 
       <CrossLinks
         items={["reports", "compare", "audit"]}

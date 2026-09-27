@@ -5,6 +5,8 @@ import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
+import TermsStrip from "@/components/glossary/TermsStrip";
+import { termsForRoute } from "@/lib/term-matcher";
 import Contacts from "@/components/landing/Contacts";
 import PostBody from "@/components/blog/PostBody";
 import PostAuthor from "@/components/blog/PostAuthor";
@@ -20,6 +22,12 @@ const BlogPost = () => {
   const { slug } = useParams();
   const { pathname } = useLocation();
   const post = findPost(slug);
+  const termSlugs = post
+    ? termsForRoute(
+        `/blog/${post.slug}`,
+        `${post.title} ${post.lead} ${post.description} ${JSON.stringify(post.blocks)} ${post.faq.map((f) => f.q + " " + f.a).join(" ")}`,
+      )
+    : [];
 
   const jsonLd = useMemo(() => {
     if (!post) return [];
@@ -243,6 +251,8 @@ const BlogPost = () => {
           ))}
         </div>
       </section>
+
+      <TermsStrip slugs={termSlugs} />
 
       <CrossLinks
         items={["reports", "calc", "audit"]}

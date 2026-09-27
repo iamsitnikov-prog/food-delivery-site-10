@@ -10,6 +10,7 @@ import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
+import TermsStrip from "@/components/glossary/TermsStrip";
 import Contacts from "@/components/landing/Contacts";
 import AggregatorsBlock from "@/components/comparison/AggregatorsBlock";
 import BuildersBlock from "@/components/comparison/BuildersBlock";
@@ -169,6 +170,8 @@ const PlayersCompare = () => {
           ))}
         </Accordion>
       </section>
+
+      <TermsStrip slugs={["komissiya", "dostavka-platformy", "marketpleys", "kanal-prodazh", "marzha-zakaza", "samovyvoz"]} />
 
       <CrossLinks
         items={["reports", "calc", "audit"]}
