@@ -188,10 +188,10 @@ const PlayersCompare = () => {
               <Icon name="ArrowRight" size={18} />
             </Link>
             <Link
-              to="/kalkulyatory/rentabelnost-zakaza"
+              to="/razbor-otchetov"
               className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-5 py-3.5 text-cream transition-colors hover:border-cream/60"
             >
-              рентабельность заказа
+              разобрать свой отчёт
             </Link>
           </div>
         </div>

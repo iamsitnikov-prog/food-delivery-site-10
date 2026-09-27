@@ -21,6 +21,7 @@ const Calculators = lazy(() => import("./pages/Calculators"));
 const CalcPreview = lazy(() => import("./pages/CalcPreview"));
 const CalculatorPage = lazy(() => import("./pages/CalculatorPage"));
 const PlayersCompare = lazy(() => import("./pages/PlayersCompare"));
+const ReportsDecoder = lazy(() => import("./pages/ReportsDecoder"));
 const Checklists = lazy(() => import("./pages/Checklists"));
 const ChecklistPage = lazy(() => import("./pages/ChecklistPage"));
 const Read = lazy(() => import("./pages/Read"));
@@ -61,6 +62,7 @@ const App = () => {
           <Route path="/pochitat" element={<Read />} />
           <Route path="/slovar" element={<Glossary />} />
           <Route path="/sravnenie-agregatorov" element={<PlayersCompare />} />
+          <Route path="/razbor-otchetov" element={<ReportsDecoder />} />
           <Route
             path="/kalkulyatory/konstruktory-dostavki"
             element={<Navigate to="/sravnenie-agregatorov" replace />}
