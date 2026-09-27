@@ -7,6 +7,7 @@ import Extra from "@/components/landing/Extra";
 import FreeAudit from "@/components/landing/FreeAudit";
 import QuizTeaser from "@/components/landing/QuizTeaser";
 import CalcTeaser from "@/components/landing/CalcTeaser";
+import ReportsTeaser from "@/components/landing/ReportsTeaser";
 import Guarantees from "@/components/landing/Guarantees";
 import AfterLaunch from "@/components/landing/AfterLaunch";
 import StickyCta from "@/components/landing/StickyCta";
@@ -32,6 +33,7 @@ const Index = () => {
       <Team />
       <Reviews />
       <QuizTeaser />
+      <ReportsTeaser />
       <CalcTeaser />
       <ChecklistTeaser />
       <Faq />

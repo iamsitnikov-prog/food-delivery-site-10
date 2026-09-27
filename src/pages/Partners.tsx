@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
+import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
 import { PARTNERS } from "@/data/partners";
@@ -144,6 +145,12 @@ const PartnersPage = () => {
           </a>
         </div>
       </section>
+
+      <CrossLinks
+        items={["audit", "reports", "calc"]}
+        title="ещё"
+        subtitle="полезное"
+      />
 
       <LeadForm />
       <Contacts />

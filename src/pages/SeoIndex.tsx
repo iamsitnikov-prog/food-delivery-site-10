@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 import { CASE_SLUGS } from "@/data/case-slugs";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
+import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import RussiaMap from "@/components/landing/RussiaMap";
 import useSeo from "@/hooks/use-seo";
@@ -132,6 +133,12 @@ const SeoIndex = ({ kind }: Props) => {
           </div>
         )}
       </section>
+
+      <CrossLinks
+        items={["audit", "reports", "calc"]}
+        title="ещё"
+        subtitle="полезное"
+      />
 
       <LeadForm />
       <Contacts />

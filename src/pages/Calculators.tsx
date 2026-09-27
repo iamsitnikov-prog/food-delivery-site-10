@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
+import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import Calculator from "@/components/calc/Calculator";
 import useSeo from "@/hooks/use-seo";
@@ -106,27 +107,11 @@ const CalculatorsPage = () => {
         </div>
       </section>
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
-        <Link
-          to="/razbor-otchetov"
-          className="group block rounded-[32px] bg-surface p-7 text-cream transition-transform hover:-translate-y-1 md:p-12"
-        >
-          <Icon name="FileSearch" size={30} className="text-brand" />
-          <h2 className="mt-5 max-w-[20ch] font-display text-[26px] font-semibold leading-[1.05] tracking-[-0.02em] md:text-[36px]">
-            Разберите свой отчёт агрегатора
-          </h2>
-          <p className="mt-4 max-w-[600px] leading-relaxed text-cream-muted">
-            Калькуляторы считают по вашим предположениям, а отчёт показывает
-            факт. Загрузите файл из кабинета площадки — увидите реальный процент
-            удержаний, куда ушли деньги и что можно оспорить. Файл остаётся в
-            вашем браузере.
-          </p>
-          <span className="mt-6 inline-flex items-center gap-2 font-medium text-brand">
-            открыть разбор отчётов
-            <Icon name="ArrowRight" size={18} />
-          </span>
-        </Link>
-      </section>
+      <CrossLinks
+        items={["reports", "compare", "audit"]}
+        title="ещё"
+        subtitle="полезное"
+      />
 
       <LeadForm />
       <Contacts />

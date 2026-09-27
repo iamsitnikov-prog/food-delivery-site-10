@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
+import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
 import { GLOSSARY, GLOSSARY_GROUPS, type GlossaryGroup } from "@/data/glossary";
@@ -184,6 +185,12 @@ const GlossaryPage = () => {
           </div>
         )}
       </section>
+
+      <CrossLinks
+        items={["reports", "calc", "audit"]}
+        title="применить"
+        subtitle="на практике"
+      />
 
       <LeadForm />
       <Contacts />

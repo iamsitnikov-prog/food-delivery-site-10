@@ -4,6 +4,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
+import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import ChannelsBlock from "@/components/shared/ChannelsBlock";
 import CityCaseBlock from "@/components/seo/CityCaseBlock";
@@ -206,6 +207,12 @@ const SeoLanding = () => {
       <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">
         <ChannelsBlock source={`seo:${page.slug}`} />
       </section>
+
+      <CrossLinks
+        items={["reports", "calc", "audit"]}
+        title="ещё"
+        subtitle="полезное"
+      />
 
       <LeadForm />
       <Contacts />

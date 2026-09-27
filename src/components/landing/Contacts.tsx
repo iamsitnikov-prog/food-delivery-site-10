@@ -28,12 +28,21 @@ const Contacts = () => {
           <p className="mt-6 max-w-[380px] text-cream-muted">
             Увеличьте свою выручку уже&nbsp;в&nbsp;первую неделю — просто оставьте заявку. Работаем с&nbsp;ресторанами по&nbsp;всей России.
           </p>
-          <a
-            href={to("#lead")}
-            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-brand px-7 py-4 font-medium text-foreground transition-transform hover:-translate-y-0.5"
-          >
-            начать сотрудничать <Icon name="ArrowRight" size={18} />
-          </a>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href={to("#lead")}
+              className="inline-flex items-center gap-2 rounded-xl bg-brand px-7 py-4 font-medium text-foreground transition-transform hover:-translate-y-0.5"
+            >
+              начать сотрудничать <Icon name="ArrowRight" size={18} />
+            </a>
+            <Link
+              to="/razbor-otchetov"
+              className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-7 py-4 font-medium transition-colors hover:border-cream/60"
+            >
+              <Icon name="FileSearch" size={18} />
+              разобрать отчёт
+            </Link>
+          </div>
           <p className="mt-6 max-w-[380px] text-[0.86em] text-cream-muted">
             Владеете сетью? Для&nbsp;вас индивидуальные условия.
           </p>

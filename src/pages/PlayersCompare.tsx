@@ -9,6 +9,7 @@ import {
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
+import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import AggregatorsBlock from "@/components/comparison/AggregatorsBlock";
 import BuildersBlock from "@/components/comparison/BuildersBlock";
@@ -169,33 +170,11 @@ const PlayersCompare = () => {
         </Accordion>
       </section>
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
-        <div className="rounded-[32px] bg-surface p-7 text-cream md:p-12">
-          <h2 className="max-w-[16ch] font-display text-[26px] font-semibold leading-[1.05] tracking-[-0.02em] md:text-[36px]">
-            Посчитайте экономику своей доставки целиком
-          </h2>
-          <p className="mt-4 max-w-[560px] leading-relaxed text-cream-muted">
-            Сравнение показывает разницу между каналами. Чтобы увидеть полную
-            картину с себестоимостью, зарплатами и налогами, используйте
-            калькуляторы.
-          </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link
-              to="/kalkulyatory"
-              className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3.5 font-medium text-foreground transition-transform hover:-translate-y-0.5"
-            >
-              открыть калькуляторы
-              <Icon name="ArrowRight" size={18} />
-            </Link>
-            <Link
-              to="/razbor-otchetov"
-              className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-5 py-3.5 text-cream transition-colors hover:border-cream/60"
-            >
-              разобрать свой отчёт
-            </Link>
-          </div>
-        </div>
-      </section>
+      <CrossLinks
+        items={["reports", "calc", "audit"]}
+        title="ещё"
+        subtitle="полезное"
+      />
 
       <LeadForm />
       <Contacts />

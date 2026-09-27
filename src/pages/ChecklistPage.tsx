@@ -8,6 +8,7 @@ import {
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
+import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import ChecklistBoard from "@/components/checklist/ChecklistBoard";
 import ChecklistCases from "@/components/checklist/ChecklistCases";
@@ -172,6 +173,12 @@ const ChecklistDetailPage = () => {
           </div>
         </section>
       )}
+
+      <CrossLinks
+        items={["audit", "reports", "checklists"]}
+        title="ещё"
+        subtitle="полезное"
+      />
 
       <LeadForm />
       <Contacts />

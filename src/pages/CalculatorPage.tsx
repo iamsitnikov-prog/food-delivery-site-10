@@ -8,6 +8,7 @@ import {
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
+import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import Calculator from "@/components/calc/Calculator";
 import CompareCalc from "@/components/calc/CompareCalc";
@@ -146,6 +147,12 @@ const CalculatorPage = () => {
           ))}
         </div>
       </section>
+
+      <CrossLinks
+        items={["reports", "audit", "calc"]}
+        title="ещё"
+        subtitle="полезное"
+      />
 
       <LeadForm />
       <Contacts />
