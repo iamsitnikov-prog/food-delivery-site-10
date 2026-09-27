@@ -6,6 +6,7 @@ import {
   formatRub as rub,
   type ParsedReport,
 } from "@/lib/report-parser";
+import { DEMO_REPORT } from "@/lib/demo-report";
 
 const readPdfText = async (file: File) => {
   const pdfjs = await import("pdfjs-dist");
@@ -54,13 +55,26 @@ const ReportUploader = () => {
   const [open, setOpen] = useState<string | null>(null);
   const [shareOpen, setShareOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isDemo, setIsDemo] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
+
+  const showDemo = () => {
+    setError("");
+    setIsDemo(true);
+    setShareOpen(false);
+    setReport(DEMO_REPORT);
+    setTimeout(
+      () => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      80,
+    );
+  };
 
   const handleFile = useCallback(async (file: File) => {
     setBusy(true);
     setError("");
     setReport(null);
+    setIsDemo(false);
     setFileName(file.name);
     try {
       const isPdf =
@@ -94,6 +108,8 @@ const ReportUploader = () => {
     setReport(null);
     setError("");
     setFileName("");
+    setIsDemo(false);
+    setShareOpen(false);
     if (inputRef.current) inputRef.current.value = "";
   };
 
@@ -121,11 +137,12 @@ const ReportUploader = () => {
     }
     if (suspicious.length) {
       l.push("");
-      l.push("Стоит проверить:");
+      l.push("Стоит уточнить:");
       for (const b of suspicious.slice(0, 3))
         l.push(`• ${b.label}: ${rub(b.sum)} ₽`);
     }
     l.push("");
+    if (isDemo) l.push("Это демонстрационный пример, не реальный отчёт.");
     l.push("Разобрать свой отчёт: https://agregatory.pro/razbor-otchetov");
     return l.join("\n");
   };
@@ -263,7 +280,24 @@ const ReportUploader = () => {
             />
           </div>
 
-          <p className="mt-5 flex items-start gap-2.5 rounded-2xl bg-cream/[0.06] p-4 text-[0.88em] leading-snug text-cream-muted">
+          <div className="mt-5 flex flex-wrap items-center gap-3 rounded-2xl bg-cream/[0.06] p-4">
+            <span className="text-[0.9em] leading-snug text-cream-muted">
+              Нет файла под рукой?
+            </span>
+            <button
+              type="button"
+              onClick={showDemo}
+              className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.9em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
+            >
+              <Icon name="Eye" size={16} />
+              посмотреть на примере
+            </button>
+            <span className="text-[0.82em] leading-snug text-cream-muted">
+              Откроем разбор на обезличенных данных
+            </span>
+          </div>
+
+          <p className="mt-4 flex items-start gap-2.5 rounded-2xl bg-cream/[0.06] p-4 text-[0.88em] leading-snug text-cream-muted">
             <Icon name="ShieldCheck" size={18} className="mt-0.5 shrink-0 text-brand" />
             <span>
               <span className="text-cream">Файл никуда не отправляется.</span> Весь
@@ -293,6 +327,37 @@ const ReportUploader = () => {
 
       {report && (
         <div ref={resultRef}>
+          {isDemo && (
+            <div className="mb-6 flex flex-wrap items-center gap-3 rounded-2xl border border-brand/40 bg-brand/10 p-4">
+              <span className="inline-flex items-center gap-2 rounded-lg bg-brand px-3 py-1.5 text-[0.75em] font-bold uppercase tracking-wide text-foreground">
+                <Icon name="Eye" size={13} />
+                пример
+              </span>
+              <span className="min-w-0 flex-1 text-[0.9em] leading-snug text-cream-muted">
+                Так выглядит разбор. Цифры взяты из реального отчёта за неделю,
+                название и реквизиты убраны.
+              </span>
+              <button
+                type="button"
+                onClick={() => inputRef.current?.click()}
+                className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.88em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
+              >
+                <Icon name="FileUp" size={15} />
+                загрузить свой отчёт
+              </button>
+              <input
+                ref={inputRef}
+                type="file"
+                accept=".xlsx,.xls,.pdf"
+                className="hidden"
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) handleFile(f);
+                }}
+              />
+            </div>
+          )}
+
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <span className="inline-flex items-center gap-2 rounded-lg bg-brand px-3 py-1.5 text-[0.78em] font-bold uppercase tracking-wide text-foreground">
@@ -617,7 +682,7 @@ const ReportUploader = () => {
             <div className="mt-9 rounded-2xl border border-[#C7161B]/40 p-6">
               <h3 className="flex items-center gap-2.5 font-display text-[1.2em] font-semibold">
                 <Icon name="Search" size={20} className="text-[#ff6b6b]" />
-                что требует проверки
+                что стоит уточнить
               </h3>
               <ul className="mt-4 space-y-3">
                 {suspicious.map((b) => (
