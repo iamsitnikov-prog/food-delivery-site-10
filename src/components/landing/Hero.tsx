@@ -1,6 +1,6 @@
 import Header from "./Header";
 
-export const ROBOT = "/robot.webp";
+export const ROBOT = "/robot.webp?v=2";
 
 const STEPS = [
   { n: "шаг 1", t: "регистрация", d: "анкета, акцепт оферты, личный кабинет и его настройка" },
@@ -25,13 +25,13 @@ const Hero = () => {
         <img
           src={ROBOT}
           // Робот — главный элемент первого экрана (LCP). На телефоне он
-          // показывается в 300 px, поэтому отдаём версию 600 px (18 КБ)
-          // вместо исходных 1100 px (42 КБ).
-          srcSet="/robot-600.webp 600w, /robot-900.webp 900w, /robot.webp 1100w"
+          // показывается в 300 px, поэтому отдаём версию 600 px (31 КБ)
+          // вместо полной 620 px (33 КБ).
+          srcSet="/robot-600.webp?v=2 600w, /robot.webp?v=2 620w"
           sizes="(max-width: 640px) 300px, (max-width: 768px) 460px, 620px"
           alt="Жёлтый робот-курьер agregatory.pro"
-          width={1100}
-          height={1052}
+          width={620}
+          height={592}
           {...{ fetchpriority: "high" }}
           decoding="async"
           className="pointer-events-none absolute -right-20 bottom-[-14px] top-auto z-0 w-[300px] animate-float object-contain object-bottom mask-fade-left sm:w-[460px] md:-right-10 md:h-[620px] md:w-[620px]"

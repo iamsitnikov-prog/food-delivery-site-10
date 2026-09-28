@@ -111,8 +111,8 @@ const Results = () => {
   return (
     <section id="results" ref={ref} className="relative mt-5 scroll-mt-4 overflow-hidden rounded-[40px] bg-surface px-5 py-20 text-cream md:mx-3 md:mt-7 md:px-14 md:py-28">
       <img
-        src="/robot-flip-500.webp"
-        srcSet="/robot-flip-500.webp 500w, /robot-flip.webp 800w"
+        src="/robot-flip-500.webp?v=2"
+        srcSet="/robot-flip-500.webp?v=2 500w, /robot-flip.webp?v=2 800w"
         sizes="(max-width: 768px) 320px, 800px"
         alt=""
         aria-hidden

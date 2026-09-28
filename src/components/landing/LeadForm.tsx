@@ -123,11 +123,11 @@ const LeadForm = () => {
             ))}
           </ul>
           <img
-            src="/robot-600.webp"
+            src="/robot-600.webp?v=2"
             alt=""
             aria-hidden
-            width={1100}
-            height={1052}
+            width={600}
+            height={574}
             loading="lazy"
             decoding="async"
             className="pointer-events-none mt-6 hidden w-[360px] animate-float lg:block"
