@@ -2,6 +2,37 @@ import {defineConfig} from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import {componentTagger} from "pp-tagger";
+import {spawnSync} from "node:child_process";
+import fs from "node:fs";
+
+// Пререндер статических страниц после сборки.
+// Выполняется внутри Vite (closeBundle), поэтому не зависит от того,
+// какую именно npm-команду запускает платформа деплоя.
+// Сбой пререндера не должен ронять билд: без него сайт остаётся рабочим SPA.
+const prerenderPlugin = {
+    name: 'prerender-static-pages',
+    apply: 'build' as const,
+    closeBundle() {
+        const outDir = path.resolve(__dirname, 'dist');
+        if (!fs.existsSync(outDir)) {
+            console.warn('[prerender] dist не найден — пропускаю.');
+            return;
+        }
+        const tsxCli = path.resolve(__dirname, 'node_modules/tsx/dist/cli.mjs');
+        if (!fs.existsSync(tsxCli)) {
+            console.warn('[prerender] tsx не установлен — пропускаю, сайт соберётся как SPA.');
+            return;
+        }
+        const res = spawnSync(process.execPath, [tsxCli, 'scripts/prerender.ts'], {
+            stdio: 'inherit',
+            cwd: __dirname,
+            env: {...process.env, PRERENDER_OUT_DIR: outDir},
+        });
+        if (res.status !== 0) {
+            console.warn('[prerender] Не отработал — сайт выложится как SPA.');
+        }
+    },
+};
 
 // DDoS Guard требует двусторонний app-level keepalive чаще 30s.
 // Сервер: text-frame {type:'ping'} каждые 5-9s (рандом — чтобы DDoS Guard
@@ -27,6 +58,7 @@ export default defineConfig(({mode}) => ({
     plugins: [
         react(),
         hmrKeepalive,
+        prerenderPlugin,
         mode === 'development' &&
         componentTagger(),
     ].filter(Boolean),

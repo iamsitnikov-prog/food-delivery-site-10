@@ -24,8 +24,13 @@ const SITE = "https://agregatory.pro";
 // поэтому запись в public не попадала в сборку и сайт получал старые страницы.
 // Если dist ещё нет (ручной запуск), падаем обратно на public.
 const ROOT = path.resolve(process.cwd());
-const DIST = path.join(ROOT, "dist");
-const OUT = fs.existsSync(DIST) ? DIST : path.join(ROOT, "public");
+// Каталог вывода передаёт вызывающая сторона (плагин Vite знает реальный outDir).
+// При ручном запуске берём dist, а если его нет — public.
+const OUT =
+  process.env.PRERENDER_OUT_DIR ||
+  (fs.existsSync(path.join(ROOT, "dist"))
+    ? path.join(ROOT, "dist")
+    : path.join(ROOT, "public"));
 
 const esc = (s: string) =>
   s
@@ -975,7 +980,9 @@ ${sitemapRoutes
 </urlset>
 `;
 fs.writeFileSync(path.join(OUT, "sitemap.xml"), sitemap, "utf-8");
-fs.writeFileSync(path.join("public", "sitemap.xml"), sitemap, "utf-8");
+if (fs.existsSync(path.join(ROOT, "public"))) {
+  fs.writeFileSync(path.join(ROOT, "public", "sitemap.xml"), sitemap, "utf-8");
+}
 console.log(`Sitemap: ${sitemapRoutes.length} страниц`);
 
 let count = 0;
