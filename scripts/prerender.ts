@@ -24,13 +24,18 @@ const SITE = "https://agregatory.pro";
 // поэтому запись в public не попадала в сборку и сайт получал старые страницы.
 // Если dist ещё нет (ручной запуск), падаем обратно на public.
 const ROOT = path.resolve(process.cwd());
-// Каталог вывода передаёт вызывающая сторона (плагин Vite знает реальный outDir).
-// При ручном запуске берём dist, а если его нет — public.
-const OUT =
-  process.env.PRERENDER_OUT_DIR ||
-  (fs.existsSync(path.join(ROOT, "dist"))
-    ? path.join(ROOT, "dist")
-    : path.join(ROOT, "public"));
+
+// Пишем в public, а не в dist.
+//
+// Почему: платформа деплоя собирает проект у себя, и хуки Vite там не всегда
+// доходят до записи файлов. А вот содержимое public попадает в сборку всегда —
+// это проверено: sitemap.xml из public доезжал до боевого сайта.
+// Поэтому готовые страницы коммитятся в репозиторий вместе с кодом и
+// гарантированно оказываются на сервере, независимо от того, как именно
+// платформа запускает сборку.
+//
+// Vite копирует public в dist на старте сборки, так что локально всё сходится.
+const OUT = process.env.PRERENDER_OUT_DIR || path.join(ROOT, "public");
 
 const esc = (s: string) =>
   s
@@ -980,9 +985,6 @@ ${sitemapRoutes
 </urlset>
 `;
 fs.writeFileSync(path.join(OUT, "sitemap.xml"), sitemap, "utf-8");
-if (fs.existsSync(path.join(ROOT, "public"))) {
-  fs.writeFileSync(path.join(ROOT, "public", "sitemap.xml"), sitemap, "utf-8");
-}
 console.log(`Sitemap: ${sitemapRoutes.length} страниц`);
 
 let count = 0;
