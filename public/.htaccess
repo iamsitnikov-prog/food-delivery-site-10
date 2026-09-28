@@ -1,0 +1,17 @@
+# Apache: отдаём готовые страницы пререндера, а не SPA-заглушку.
+Options -MultiViews
+ErrorDocument 404 /404.html
+
+RewriteEngine On
+
+# Существующие файлы и каталоги — напрямую
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# {путь}/index.html из пререндера
+RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+RewriteRule ^(.*?)/?$ /$1/index.html [L]
+
+# Ничего не нашли — 404, а не главная
+RewriteRule ^ - [R=404,L]
