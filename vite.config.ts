@@ -6,30 +6,60 @@ import {spawnSync} from "node:child_process";
 import fs from "node:fs";
 
 // Пререндер статических страниц после сборки.
-// Выполняется внутри Vite (closeBundle), поэтому не зависит от того,
-// какую именно npm-команду запускает платформа деплоя.
-// Сбой пререндера не должен ронять билд: без него сайт остаётся рабочим SPA.
+// Работает внутри Vite (closeBundle), поэтому не зависит от того, какую
+// npm-команду запускает платформа деплоя.
+//
+// TypeScript-скрипт компилируем через esbuild — он входит в зависимости Vite
+// и потому есть на сборочном сервере всегда (в отличие от tsx, который лежал
+// в devDependencies и на деплое не устанавливался).
+//
+// Сбой пререндера не роняет билд: без него сайт остаётся рабочим SPA.
 const prerenderPlugin = {
     name: 'prerender-static-pages',
     apply: 'build' as const,
-    closeBundle() {
+    async closeBundle() {
         const outDir = path.resolve(__dirname, 'dist');
         if (!fs.existsSync(outDir)) {
             console.warn('[prerender] dist не найден — пропускаю.');
             return;
         }
-        const tsxCli = path.resolve(__dirname, 'node_modules/tsx/dist/cli.mjs');
-        if (!fs.existsSync(tsxCli)) {
-            console.warn('[prerender] tsx не установлен — пропускаю, сайт соберётся как SPA.');
+
+        const entry = path.resolve(__dirname, 'scripts/prerender.ts');
+        if (!fs.existsSync(entry)) {
+            console.warn('[prerender] scripts/prerender.ts не найден — пропускаю.');
             return;
         }
-        const res = spawnSync(process.execPath, [tsxCli, 'scripts/prerender.ts'], {
-            stdio: 'inherit',
-            cwd: __dirname,
-            env: {...process.env, PRERENDER_OUT_DIR: outDir},
-        });
-        if (res.status !== 0) {
-            console.warn('[prerender] Не отработал — сайт выложится как SPA.');
+
+        const tmp = path.resolve(__dirname, 'node_modules/.prerender-build.mjs');
+
+        try {
+            const esbuild = await import('esbuild');
+            await esbuild.build({
+                entryPoints: [entry],
+                bundle: true,
+                platform: 'node',
+                target: 'node18',
+                format: 'esm',
+                outfile: tmp,
+                packages: 'external',
+                logLevel: 'silent',
+                alias: {'@': path.resolve(__dirname, 'src')},
+            });
+
+            const res = spawnSync(process.execPath, [tmp], {
+                stdio: 'inherit',
+                cwd: __dirname,
+                env: {...process.env, PRERENDER_OUT_DIR: outDir},
+            });
+
+            if (res.status !== 0) {
+                console.warn('[prerender] Скрипт завершился с ошибкой — сайт выложится как SPA.');
+            }
+        } catch (e) {
+            console.warn('[prerender] Не удалось выполнить:', (e as Error).message);
+            console.warn('[prerender] Сайт выложится как SPA, без готового HTML для поисковиков.');
+        } finally {
+            if (fs.existsSync(tmp)) fs.rmSync(tmp, {force: true});
         }
     },
 };
