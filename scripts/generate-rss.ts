@@ -112,7 +112,7 @@ const buildFeed = (posts: any[]): string => {
     <language>ru</language>
     <lastBuildDate>${rfc822(latest)}</lastBuildDate>
     <image>
-      <url>${SITE}/og-preview.jpg</url>
+      <url>${SITE}/og-preview.jpg?v=3</url>
       <title>${esc(FEED_TITLE)}</title>
       <link>${SITE}/blog</link>
     </image>

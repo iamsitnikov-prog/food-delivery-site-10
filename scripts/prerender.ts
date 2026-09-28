@@ -772,7 +772,7 @@ ${PARTNERS.map(
 });
 
 
-const OG = `${SITE}/og-preview.jpg`;
+const OG = `${SITE}/og-preview.jpg?v=3`;
 
 const ORG = {
   "@context": "https://schema.org",

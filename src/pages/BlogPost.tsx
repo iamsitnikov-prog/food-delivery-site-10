@@ -50,7 +50,7 @@ const BlogPost = () => {
         publisher: {
           "@type": "Organization",
           name: "agregatory.pro",
-          logo: { "@type": "ImageObject", url: "https://agregatory.pro/og-preview.jpg" },
+          logo: { "@type": "ImageObject", url: "https://agregatory.pro/og-preview.jpg?v=3" },
         },
         mainEntityOfPage: url,
       },

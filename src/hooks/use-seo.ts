@@ -38,7 +38,7 @@ type Options = {
   skipCanonical?: boolean;
 };
 
-const DEFAULT_OG = `${SITE}/og-preview.jpg?v=2`;
+const DEFAULT_OG = `${SITE}/og-preview.jpg?v=3`;
 
 const useSeo = ({
   title,
