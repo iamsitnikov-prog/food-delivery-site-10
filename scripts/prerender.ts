@@ -841,6 +841,7 @@ const render = (p: Page) => {
 <meta name="description" content="${esc(p.description)}"/>
 <meta name="author" content="agregatory.pro"/>
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+<meta name="google-site-verification" content="6qSlSsAxE47iQkzbcwZK3msN0JIrBGB_DI4po2djsfI"/>
 <meta name="yandex" content="index, follow"/>
 <link rel="canonical" href="${canonical}"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
