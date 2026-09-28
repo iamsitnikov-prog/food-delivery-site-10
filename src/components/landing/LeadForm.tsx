@@ -240,17 +240,29 @@ const LeadForm = () => {
                 onChange={(e) => setComment(e.target.value)}
               />
 
-              <label className="flex cursor-pointer items-start gap-3 text-[0.86em] leading-snug">
+              {/* htmlFor + id обязательны: галочка shadcn — это кнопка, и без
+                  явной связи нажатие по тексту её не переключало. Плюс -my-1.5
+                  py-1.5 расширяет область нажатия до удобной на телефоне. */}
+              <label
+                htmlFor="lead-agree"
+                className="-my-1.5 flex cursor-pointer select-none items-start gap-3 py-1.5 text-[0.86em] leading-snug"
+              >
                 <Checkbox
+                  id="lead-agree"
                   aria-label="Согласие на обработку персональных данных"
                   checked={agree}
                   onCheckedChange={(v) => setAgree(v === true)}
-                  className="mt-0.5 border-cream/40 data-[state=checked]:border-brand data-[state=checked]:bg-brand data-[state=checked]:text-foreground"
+                  className="mt-0.5 size-5 shrink-0 border-cream/40 data-[state=checked]:border-brand data-[state=checked]:bg-brand data-[state=checked]:text-foreground"
                 />
                 <span>
                   Согласен на обработку персональных данных и&nbsp;с&nbsp;
-                  <Link to="/privacy" target="_blank"
-                  rel="noopener noreferrer" className="text-brand underline underline-offset-2">
+                  <Link
+                    to="/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                    className="text-brand underline underline-offset-2"
+                  >
                     политикой конфиденциальности
                   </Link>
                 </span>

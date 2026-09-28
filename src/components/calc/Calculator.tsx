@@ -3,6 +3,7 @@ import Icon from "@/components/ui/icon";
 import CalcPrint from "./CalcPrint";
 import CalcForm from "./CalcForm";
 import CalcOutput from "./CalcOutput";
+import CalcStickyBar from "./CalcStickyBar";
 import {
   calculate,
   DEFAULTS,
@@ -148,8 +149,12 @@ const Calculator = ({ mode = "all", hideCta = false }: { mode?: CalcMode; hideCt
           </div>
         </div>
 
-        <CalcOutput input={input} r={r} show={show} />
+        <div id="calc-results" className="scroll-mt-24">
+          <CalcOutput input={input} r={r} show={show} />
+        </div>
       </div>
+
+      <CalcStickyBar r={r} mode={mode} />
 
       {!hideCta && (
       <div className="mt-8 rounded-[24px] bg-brand p-6 text-foreground md:p-8">

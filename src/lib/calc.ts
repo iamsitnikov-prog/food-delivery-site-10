@@ -141,9 +141,20 @@ export const AD_BASES: { value: AdBase; label: string; hint: string }[] = [
 
 export type SubscriptionPlan = "none" | "standard" | "business";
 
-export const SUBSCRIPTION_RATE = 1.64;
-export const BUSINESS_BASE_FEE = 1333;
-export const BUSINESS_EXTRA_FEE = 583;
+// Подписка стоит 1,64% от суммы заказов ПЛЮС НДС: площадка выставляет
+// его сверху как за обычную услугу. В расчёт закладываем сумму с НДС,
+// иначе расходы занижаются примерно на 3 000 руб. в месяц при выручке 900 000.
+export const SUBSCRIPTION_RATE_NET = 1.64;
+export const SUBSCRIPTION_VAT_RATE = 22;
+export const SUBSCRIPTION_RATE =
+  Math.round(SUBSCRIPTION_RATE_NET * (1 + SUBSCRIPTION_VAT_RATE / 100) * 10000) / 10000;
+// Фиксированная часть тарифа «Бизнес» — тоже плюс НДС.
+const withVat = (net: number) =>
+  Math.round(net * (1 + SUBSCRIPTION_VAT_RATE / 100));
+export const BUSINESS_BASE_FEE_NET = 1333;
+export const BUSINESS_EXTRA_FEE_NET = 583;
+export const BUSINESS_BASE_FEE = withVat(BUSINESS_BASE_FEE_NET);
+export const BUSINESS_EXTRA_FEE = withVat(BUSINESS_EXTRA_FEE_NET);
 export const BUSINESS_BASE_COUNT = 3;
 
 export const SUBSCRIPTION_PLANS: {
@@ -155,12 +166,12 @@ export const SUBSCRIPTION_PLANS: {
   {
     value: "standard",
     label: "Стандарт",
-    hint: "1,64% + НДС от месячной суммы заказов. Ежедневные выплаты, программа лояльности, ответы на отзывы, аналитика конкурентов, отчёты в мессенджере.",
+    hint: "1,64% + НДС от месячной суммы заказов — в расчёте 2,0% с НДС. Ежедневные выплаты, программа лояльности, ответы на отзывы, аналитика конкурентов, отчёты в мессенджере.",
   },
   {
     value: "business",
     label: "Бизнес",
-    hint: "1,64% + НДС от суммы заказов плюс фиксированная часть: 1 333 ₽ в месяц за первые три ресторана и 583 ₽ за каждый следующий. Добавляется личный менеджер.",
+    hint: "1,64% + НДС от суммы заказов (в расчёте 2,0%) плюс фиксированная часть: 1 333 ₽ + НДС за первые три ресторана и 583 ₽ + НДС за каждый следующий. Добавляется личный менеджер.",
   },
 ];
 
@@ -300,6 +311,9 @@ export type ChannelResult = {
   payoutPerMonth: number;
   profitPerMonth: number;
   adSpendPerMonth: number;
+  adRevenuePerMonth: number;
+  adProfitPerMonth: number;
+  adCostPerMonth: number;
   drr: number;
   drrLimit: number;
   romi: number;
@@ -404,6 +418,9 @@ const EMPTY_CHANNEL: ChannelResult = {
   payoutPerMonth: 0,
   profitPerMonth: 0,
   adSpendPerMonth: 0,
+  adRevenuePerMonth: 0,
+  adProfitPerMonth: 0,
+  adCostPerMonth: 0,
   drr: 0,
   drrLimit: 0,
   romi: 0,
@@ -500,7 +517,19 @@ const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
   const payoutPerMonth = payoutPerOrder * ordersPerMonth;
   const profitPerMonth = profitPerOrder * ordersPerMonth;
   const adSpendPerMonth = (adRub + marketingRub + promoRub) * ordersPerMonth;
-  const drr = income > 0 ? ((adRub + marketingRub + promoRub) / income) * 100 : 0;
+
+  // ДРР и ROMI считаем по экономике РЕКЛАМНОГО заказа, а не «в среднем по всем».
+  //
+  // Тонкость: adRub — это ставка, размазанная по всем заказам канала
+  // (ставка x доля рекламных заказов). На самом рекламном заказе списывается
+  // полная ставка. Поэтому для рекламных показателей берём её целиком.
+  const adFullRub = amount(p.adShare, p.adUnit);
+  const adSpendPerAdOrder = adFullRub + marketingRub + promoRub;
+
+  const adOrdersPerMonth = ordersPerMonth * adReachFactor;
+  const adRevenuePerMonth = income * adOrdersPerMonth;
+  const adCostPerMonth = adSpendPerAdOrder * adOrdersPerMonth;
+  const drr = income > 0 ? (adSpendPerAdOrder / income) * 100 : 0;
 
   const marginBeforeAds =
     income -
@@ -515,8 +544,18 @@ const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
     suppliesRub -
     writeOffRub;
   const drrLimit = income > 0 ? (marginBeforeAds / income) * 100 : 0;
-  const adPerOrder = adRub + marketingRub + promoRub;
-  const romi = adPerOrder > 0 ? (profitPerOrder / adPerOrder) * 100 : 0;
+  // ROMI: прибыль рекламного заказа делим на расходы на рекламу в нём.
+  //
+  // Раньше в числителе стояла прибыль ВСЕХ заказов, включая те, что пришли бы
+  // и без рекламы, — из-за этого при доле рекламы 25% показатель раздувался
+  // до 580%: чем меньше рекламы, тем «выгоднее» она выглядела.
+  //
+  // profitPerOrder посчитана со средней (размазанной) ставкой, поэтому
+  // возвращаем её обратно и вычитаем полную — получаем прибыль именно
+  // рекламного заказа. При неизменной ставке ROMI больше не зависит от доли.
+  const profitPerAdOrder = profitPerOrder + adRub - adFullRub;
+  const adProfitPerMonth = profitPerAdOrder * adOrdersPerMonth;
+  const romi = adCostPerMonth > 0 ? (adProfitPerMonth / adCostPerMonth) * 100 : 0;
 
   return {
     enabled: true,
@@ -548,6 +587,9 @@ const computeChannel = (p: ChannelParams, shared: CalcInput): ChannelResult => {
     payoutPerMonth,
     profitPerMonth,
     adSpendPerMonth,
+    adRevenuePerMonth,
+    adProfitPerMonth,
+    adCostPerMonth,
     drr,
     drrLimit,
     romi,
@@ -614,7 +656,11 @@ export const calculate = (input: CalcInput): CalcResult => {
   const ordersPerMonth = ordersPerDay * days;
   const revenuePerMonth = agg.revenuePerMonth + self.revenuePerMonth;
   const revenuePerDay = revenuePerMonth / days;
-  const revenuePerYear = revenuePerDay * 365;
+  // Год = 12 месячных выручек, а не 365 дней.
+  // Месяц считается по календарным дням выбранного периода, поэтому умножение
+  // дневной выручки на 365 давало расхождение: 10,95 млн против 10,8 млн
+  // (12 x 900 000). Рядом на странице обе цифры выглядели как ошибка.
+  const revenuePerYear = revenuePerMonth * 12;
   const payoutPerMonth = agg.payoutPerMonth + self.payoutPerMonth;
   const grossProfitPerMonth = agg.profitPerMonth + self.profitPerMonth;
 
@@ -626,10 +672,16 @@ export const calculate = (input: CalcInput): CalcResult => {
   const withheldPercent = revenuePerMonth > 0 ? 100 - payoutPercent : 0;
 
   const adSpendPerMonth = agg.adSpendPerMonth + self.adSpendPerMonth;
-  const drr = revenuePerMonth > 0 ? (adSpendPerMonth / revenuePerMonth) * 100 : 0;
+
+  // Сводный ДРР и ROMI — тоже от рекламной выручки и прибыли рекламных
+  // заказов (см. computeChannel). Складываем базы по каналам, а не берём
+  // всю выручку и всю прибыль.
+  const adRevenuePerMonth = agg.adRevenuePerMonth + self.adRevenuePerMonth;
+  const adProfitPerMonth = agg.adProfitPerMonth + self.adProfitPerMonth;
+  const adCostPerMonth = agg.adCostPerMonth + self.adCostPerMonth;
+  const drr = adRevenuePerMonth > 0 ? (adCostPerMonth / adRevenuePerMonth) * 100 : 0;
   const drrVerdict: CalcResult["drrVerdict"] = drr <= 12 ? "good" : drr <= 15 ? "ok" : "bad";
-  const romi =
-    adSpendPerMonth > 0 ? (grossProfitPerMonth / adSpendPerMonth) * 100 : 0;
+  const romi = adCostPerMonth > 0 ? (adProfitPerMonth / adCostPerMonth) * 100 : 0;
   const drrLimit =
     revenuePerMonth > 0
       ? (agg.drrLimit * agg.revenuePerMonth + self.drrLimit * self.revenuePerMonth) /

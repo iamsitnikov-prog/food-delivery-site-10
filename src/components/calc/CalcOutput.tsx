@@ -13,10 +13,22 @@ const CalcOutput = ({ input, r, show }: Props) => {
   const aggOn = input.aggEnabled;
   const selfOn = input.selfEnabled;
 
-  const drrColor =
-    r.drrVerdict === "good" ? "text-brand" : r.drrVerdict === "ok" ? "text-cream" : "text-red-400";
-  const drrText =
-    r.drrVerdict === "good"
+  // Без заказов или без расходов на рекламу вердикт «реклама окупается» вводит
+  // в заблуждение: окупаться нечему. Показываем нейтральную подсказку.
+  const hasAdData = r.adSpendPerMonth > 0 && r.ordersPerDay > 0;
+
+  const drrColor = !hasAdData
+    ? "text-cream-muted"
+    : r.drrVerdict === "good"
+      ? "text-brand"
+      : r.drrVerdict === "ok"
+        ? "text-cream"
+        : "text-red-400";
+  const drrText = !hasAdData
+    ? r.ordersPerDay > 0
+      ? "Расходы на рекламу не заданы"
+      : "Укажите количество заказов"
+    : r.drrVerdict === "good"
       ? "В норме — реклама окупается"
       : r.drrVerdict === "ok"
         ? "На границе — стоит следить"
@@ -63,7 +75,7 @@ const CalcOutput = ({ input, r, show }: Props) => {
         <Card title="ДРР · доля рекламных расходов" icon="Percent">
           <div className="flex flex-wrap items-end gap-3">
             <span className={`font-display text-[2.6em] font-semibold leading-none ${drrColor}`}>
-              {percent(r.drr)}
+              {hasAdData ? percent(r.drr) : "—"}
             </span>
             <span className={`pb-1 text-[0.9em] leading-snug ${drrColor}`}>{drrText}</span>
           </div>
@@ -80,7 +92,10 @@ const CalcOutput = ({ input, r, show }: Props) => {
               muted
             />
             <Row label="Выручка · revenue" value={`${money(r.revenuePerMonth)} ₽`} muted />
-            <Row label="ROMI · возврат на маркетинг" value={percent(r.romi, 0)} />
+            <Row
+              label="ROMI · возврат на маркетинг"
+              value={r.adSpendPerMonth > 0 ? percent(r.romi, 0) : "—"}
+            />
             <Row label="Предельный ДРР при вашей марже" value={percent(r.drrLimit)} />
           </div>
           <p className="mt-3 text-[0.86em] leading-snug text-cream-muted">

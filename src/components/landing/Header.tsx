@@ -140,8 +140,27 @@ const Header = () => {
             <SheetTitle className="font-display text-2xl font-semibold">
               agregatory<span className="font-normal text-muted-foreground">.pro</span>
             </SheetTitle>
-            <nav className="mt-10 flex flex-col gap-1">
-              <p className="pb-2 text-[0.85em] font-medium uppercase tracking-wide text-muted-foreground">
+            {/* Заявка и услуги — сразу под заголовком: это цель страницы.
+                Раньше они были на 8-м и 15-м месте, после блока «полезное». */}
+            <a
+              href={to("#lead")}
+              onClick={() => setOpen(false)}
+              className="mt-8 inline-flex w-full items-center justify-center rounded-xl bg-primary px-6 py-4 font-medium text-primary-foreground"
+            >
+              оставить заявку
+            </a>
+            <nav className="mt-6 flex flex-col gap-1">
+              {MOBILE_NAV.map((n) => (
+                <a
+                  key={n.href}
+                  href={to(n.href)}
+                  onClick={() => setOpen(false)}
+                  className="border-b border-border py-4 font-display text-2xl font-semibold tracking-tight"
+                >
+                  {n.label}
+                </a>
+              ))}
+              <p className="pb-2 pt-6 text-[0.85em] font-medium uppercase tracking-wide text-muted-foreground">
                 полезное
               </p>
               {USEFUL_LINKS.map((l) => (
@@ -155,25 +174,8 @@ const Header = () => {
                   {l.label}
                 </a>
               ))}
-              {MOBILE_NAV.map((n) => (
-                <a
-                  key={n.href}
-                  href={to(n.href)}
-                  onClick={() => setOpen(false)}
-                  className="border-b border-border py-4 font-display text-2xl font-semibold tracking-tight"
-                >
-                  {n.label}
-                </a>
-              ))}
             </nav>
-            <a
-              href={to("#lead")}
-              onClick={() => setOpen(false)}
-              className="mt-8 inline-flex w-full items-center justify-center rounded-xl bg-primary px-6 py-4 font-medium text-primary-foreground"
-            >
-              оставить заявку
-            </a>
-            <div className="mt-4 flex gap-2">
+            <div className="mt-8 flex gap-2">
               {MESSENGERS.map((m) => (
                 <a
                   key={m.label}

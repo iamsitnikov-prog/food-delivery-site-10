@@ -55,8 +55,20 @@ const CalcField = ({
           max={unit === "percent" ? 100 : max}
           step={step}
           onChange={(e) => {
-            const v = e.target.value === "" ? 0 : Number(e.target.value);
-            onChange(Number.isFinite(v) ? v : 0);
+            const raw = e.target.value === "" ? 0 : Number(e.target.value);
+            if (!Number.isFinite(raw)) {
+              onChange(min);
+              return;
+            }
+            // Раньше отрицательное число оставалось в поле, а в расчёте молча
+            // превращалось в ноль — человек видел минус и неверный результат.
+            // Приводим значение к допустимым границам сразу при вводе.
+            const upper = unit === "percent" ? 100 : max;
+            const bounded = Math.min(
+              upper ?? Number.POSITIVE_INFINITY,
+              Math.max(min, raw),
+            );
+            onChange(bounded);
           }}
           className={`h-13 w-full rounded-xl border border-cream/20 bg-cream/[0.06] py-3.5 pl-4 text-[1.05em] font-medium text-cream outline-none transition-colors focus:border-brand [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none ${
             hasUnits ? "pr-[92px]" : "pr-12"
