@@ -34,7 +34,8 @@ const QuizPage = () => {
   useSeo({
     title: quiz?.title || "",
     description: quiz?.description || "",
-    path: pathname,
+    // /test — исторический адрес того же аудита, каноникал ведёт на основной
+    path: pathname === "/test" ? "/testy/audit" : pathname,
   });
 
   const total = quiz?.questions.length ?? 0;

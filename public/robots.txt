@@ -1,6 +1,15 @@
 User-agent: *
 Allow: /
 Disallow: /preview/
+Disallow: /*?draft=
+Disallow: /*?pp-shell=
+
+User-agent: Yandex
+Allow: /
+Disallow: /preview/
+Disallow: /*?draft=
+Disallow: /*?pp-shell=
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&yclid&gclid&from&ysclid
 
 Sitemap: https://agregatory.pro/sitemap.xml
 Sitemap: https://agregatory.pro/rss.xml

@@ -1,4 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
+import { CITY_PAGES } from "@/data/seo-cities";
+import { SERVICE_PAGES } from "@/data/seo-services";
 import Icon from "@/components/ui/icon";
 import { NAV, USEFUL_LINKS } from "./Header";
 
@@ -88,7 +90,36 @@ const Contacts = () => {
         </ul>
       </div>
 
-      <div className="mt-16 flex flex-col gap-6 border-t border-cream/25 pt-6 text-[0.86em] text-cream-muted md:flex-row md:items-center md:justify-between">
+      <div className="mt-14 grid gap-8 border-t border-cream/25 pt-8 md:grid-cols-2">
+        <nav aria-label="Услуги">
+          <h2 className="text-[0.82em] uppercase tracking-wide text-cream-muted">услуги</h2>
+          <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-[0.86em]">
+            {SERVICE_PAGES.map((s) => (
+              <li key={s.slug}>
+                <Link to={`/uslugi/${s.slug}`} className="text-cream-muted hover:text-cream">
+                  {s.navLabel}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <nav aria-label="Города">
+          <h2 className="text-[0.82em] uppercase tracking-wide text-cream-muted">города</h2>
+          <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-[0.86em]">
+            {CITY_PAGES.map((c) => (
+              <li key={c.slug}>
+                <Link to={`/goroda/${c.slug}`} className="text-cream-muted hover:text-cream">
+                  {c.navLabel}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-[0.82em] text-cream-muted/80">Работаем по всей России.</p>
+        </nav>
+      </div>
+
+      <div className="mt-12 flex flex-col gap-6 border-t border-cream/25 pt-6 text-[0.86em] text-cream-muted md:flex-row md:items-center md:justify-between">
         <a href={to("#top")} className="font-display text-[1.3em] font-semibold text-cream">
           agregatory<span className="font-normal text-cream-muted">.pro</span>
         </a>

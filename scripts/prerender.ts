@@ -33,6 +33,8 @@ const clean = (s: string) => s.replace(/\u00a0/g, " ").trim();
 
 type Page = {
   route: string;
+  /** Если страница — дубль, каноникал ведёт сюда. */
+  canonical?: string;
   title: string;
   description: string;
   body: string;
@@ -220,6 +222,7 @@ pages.push({
 
 pages.push({
   route: "/test",
+  canonical: "/testy/audit",
   title: "Тест: проверьте свой проект на агрегаторе | agregatory.pro",
   description:
     "20 вопросов о работе ресторана на агрегаторах: рейтинг, ДРР, экономика, контент и отчётность. В конце — оценка проекта.",
@@ -792,6 +795,7 @@ const crumbs = (route: string, title: string) => {
 
 const render = (p: Page) => {
   const url = `${SITE}${p.route}`;
+  const canonical = p.canonical ? `${SITE}${p.canonical}` : url;
   const ld: unknown[] = [];
   if (p.route === "/") ld.push(ORG);
   else {
@@ -823,7 +827,7 @@ const render = (p: Page) => {
 <meta name="author" content="agregatory.pro"/>
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
 <meta name="yandex" content="index, follow"/>
-<link rel="canonical" href="${url}"/>
+<link rel="canonical" href="${canonical}"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <link rel="alternate" type="application/rss+xml" title="Блог agregatory.pro" href="${SITE}/rss.xml"/>
 <meta property="og:type" content="${p.route.startsWith("/blog/") ? "article" : "website"}"/>
@@ -879,6 +883,35 @@ ${p.body}
 `;
 };
 
+// 404: отдельный файл для хостинга. Каноникал не ставим, страницу закрываем от индексации.
+const notFoundHtml = render({
+  route: "/404",
+  title: "Страница не найдена — agregatory.pro",
+  description:
+    "Такой страницы нет. Посмотрите услуги, блог, калькуляторы и чек-листы для работы ресторана с агрегаторами доставки.",
+  body: `<h1>Страница не найдена</h1>
+<p>Возможно, адрес набран с ошибкой или материал переехал. Вот основные разделы сайта:</p>
+<ul>
+<li><a href="/uslugi">Услуги</a> — подключение, настройка и продвижение на агрегаторах</li>
+<li><a href="/goroda">Города</a> — работаем по всей России</li>
+<li><a href="/blog">Блог</a> — разборы правил сервисов и практика доставки</li>
+<li><a href="/kalkulyatory">Калькуляторы</a> — рентабельность, ДРР, НДС и модель доставки</li>
+<li><a href="/razbor-otchetov">Разбор отчётов</a> — фактическая нагрузка на оборот</li>
+<li><a href="/slovar">Глоссарий доставки</a> — ${GLOSSARY.length} терминов простым языком</li>
+<li><a href="/chek-listy">Чек-листы</a> · <a href="/testy">Тесты</a> · <a href="/sravnenie-agregatorov">Сравнение агрегаторов</a></li>
+</ul>
+<p>Телефон: +7 931 002-82-22</p>`,
+})
+  .replace(/<link rel="canonical"[^>]*>\n?/, "")
+  .replace(
+    '<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>',
+    '<meta name="robots" content="noindex, follow"/>',
+  )
+  .replace('<meta name="yandex" content="index, follow"/>', '<meta name="yandex" content="noindex"/>');
+
+fs.writeFileSync(path.join(OUT, "404.html"), notFoundHtml, "utf-8");
+console.log("404.html создан");
+
 const PRIORITY: Record<string, number> = {
   "/": 1.0,
   "/uslugi": 0.9,
@@ -906,8 +939,20 @@ const priorityOf = (route: string) => {
 const freqOf = (route: string) =>
   route === "/" || route === "/blog" ? "weekly" : "monthly";
 
+const BUILD_DATE = new Date().toISOString().slice(0, 10);
+
+const POST_DATES = new Map(
+  ALL_POSTS.map((p) => [`/blog/${p.slug}`, (p.date || BUILD_DATE).slice(0, 10)]),
+);
+
+const lastmodOf = (route: string) => POST_DATES.get(route) || BUILD_DATE;
+
 const sitemapRoutes = Array.from(
-  new Set(["/", ...pages.map((p) => p.route), "/privacy"]),
+  new Set([
+    "/",
+    ...pages.filter((p) => !p.canonical).map((p) => p.route),
+    "/privacy",
+  ]),
 ).sort();
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -916,6 +961,7 @@ ${sitemapRoutes
   .map(
     (r) => `  <url>
     <loc>${SITE}${r === "/" ? "/" : r}</loc>
+    <lastmod>${lastmodOf(r)}</lastmod>
     <changefreq>${freqOf(r)}</changefreq>
     <priority>${priorityOf(r).toFixed(1)}</priority>
   </url>`,

@@ -33,13 +33,19 @@ const SECTIONS = [
     to: "/slovar",
     icon: "BookA",
     label: "глоссарий доставки",
-    note: "41 понятие доставки простым языком",
+    note: "146 понятий доставки простым языком",
   },
   {
     to: "/sravnenie-agregatorov",
     icon: "GitCompare",
     label: "сравнение агрегаторов",
     note: "Яндекс, Купер и Чиббис: комиссии и условия",
+  },
+  {
+    to: "/razbor-otchetov",
+    icon: "FileSearch",
+    label: "разбор отчётов",
+    note: "Загрузите отчёт — покажем фактическую нагрузку на оборот",
   },
 ];
 
@@ -51,6 +57,8 @@ const PageNotFound = () => {
     description:
       "Такой страницы нет. Посмотрите услуги, блог, калькуляторы и чек-листы для работы ресторана с агрегаторами доставки.",
     path: pathname,
+    noindex: true,
+    skipCanonical: true,
   });
 
   return (

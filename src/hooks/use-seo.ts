@@ -34,6 +34,8 @@ type Options = {
   ogType?: "website" | "article";
   publishedTime?: string;
   noindex?: boolean;
+  /** Для 404: не ставить canonical на несуществующий адрес. */
+  skipCanonical?: boolean;
 };
 
 const DEFAULT_OG = `${SITE}/og-preview.jpg?v=2`;
@@ -47,6 +49,7 @@ const useSeo = ({
   ogType = "website",
   publishedTime,
   noindex,
+  skipCanonical,
 }: Options) => {
   useEffect(() => {
     const prevTitle = document.title;
@@ -68,7 +71,7 @@ const useSeo = ({
     setMeta('meta[name="robots"]', "content", noindex ? "noindex, follow" : "index, follow");
     if (publishedTime)
       setMeta('meta[property="article:published_time"]', "content", publishedTime);
-    setLink("canonical", url);
+    if (!skipCanonical) setLink("canonical", url);
 
     const nodes: HTMLScriptElement[] = [];
     (jsonLd || []).forEach((data) => {
@@ -98,7 +101,17 @@ const useSeo = ({
         ?.remove();
       setLink("canonical", prevUrl);
     };
-  }, [title, description, path, jsonLd, ogImage, ogType, publishedTime, noindex]);
+  }, [
+    title,
+    description,
+    path,
+    jsonLd,
+    ogImage,
+    ogType,
+    publishedTime,
+    noindex,
+    skipCanonical,
+  ]);
 };
 
 export default useSeo;
