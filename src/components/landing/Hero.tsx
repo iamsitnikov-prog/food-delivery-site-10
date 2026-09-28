@@ -24,6 +24,11 @@ const Hero = () => {
       <section className="relative min-h-0 overflow-hidden">
         <img
           src={ROBOT}
+          // Робот — главный элемент первого экрана (LCP). На телефоне он
+          // показывается в 300 px, поэтому отдаём версию 600 px (18 КБ)
+          // вместо исходных 1100 px (42 КБ).
+          srcSet="/robot-600.webp 600w, /robot-900.webp 900w, /robot.webp 1100w"
+          sizes="(max-width: 640px) 300px, (max-width: 768px) 460px, 620px"
           alt="Жёлтый робот-курьер agregatory.pro"
           width={1100}
           height={1052}

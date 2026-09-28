@@ -99,6 +99,25 @@ export default defineConfig(({mode}) => ({
     },
     build: {
         target: ["es2019", "safari13", "chrome79", "firefox78", "edge79"],
+        // Отделяем редко используемое от того, что нужно на первом экране.
+        // Иначе React, интерфейсные компоненты и разбор отчётов едут одним
+        // файлом на 605 КБ, и текст ждёт загрузки всего сразу.
+        rollupOptions: {
+            output: {
+                manualChunks(id: string) {
+                    if (!id.includes("node_modules")) return;
+                    // xlsx, pdf и подобное нужны только на странице разбора
+                    // отчётов. Оставляем их отдельными файлами, которые
+                    // подгружаются по требованию, а не на первом экране.
+                    if (/xlsx|pdfjs|jspdf|html2canvas|papaparse/.test(id)) return;
+                    if (/[\\/]node_modules[\\/](react|react-dom|scheduler|react-router)/.test(id))
+                        return "react";
+                    if (id.includes("@radix-ui")) return "ui";
+                    if (id.includes("lucide-react")) return "icons";
+                    return "vendor";
+                },
+            },
+        },
     },
     esbuild: {
         target: "es2019",

@@ -1,0 +1,14 @@
+# Netlify / Cloudflare Pages.
+# Файлы с хешем в имени не меняются — кешируем на год.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+*.webp
+  Cache-Control: public, max-age=2592000
+
+# HTML всегда свежий, иначе правки не доедут до посетителей
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate

@@ -7,7 +7,6 @@ import Icon from "@/components/ui/icon";
 import { toast } from "@/hooks/use-toast";
 import useReveal from "@/hooks/use-reveal";
 import { reachGoal } from "@/lib/metrika";
-import { ROBOT } from "./Hero";
 
 const STATUSES = [
   "бесплатный анализ",
@@ -124,7 +123,7 @@ const LeadForm = () => {
             ))}
           </ul>
           <img
-            src={ROBOT}
+            src="/robot-600.webp"
             alt=""
             aria-hidden
             width={1100}
