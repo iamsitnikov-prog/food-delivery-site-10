@@ -64,7 +64,7 @@ const ReportUploader = () => {
         file.type === "application/pdf" || /\.pdf$/i.test(file.name);
       const parsed = isPdf
         ? parseFulfilment(await readPdfText(file))
-        : parseWorkbook(await file.arrayBuffer());
+        : await parseWorkbook(await file.arrayBuffer());
       setReport(parsed);
       setTimeout(
         () => resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),

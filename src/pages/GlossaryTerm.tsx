@@ -6,6 +6,7 @@ import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
 import { GLOSSARY, getRelated, getSameGroup, getTerm } from "@/data/glossary";
+import { termDescription, termTitle } from "@/lib/term-seo";
 
 const SITE = "https://agregatory.pro";
 
@@ -21,12 +22,8 @@ const GlossaryTermPage = () => {
   const next = index >= 0 && index < GLOSSARY.length - 1 ? GLOSSARY[index + 1] : null;
 
   useSeo({
-    title: term
-      ? `${term.term} — что это такое простыми словами | agregatory.pro`
-      : "Термин не найден | agregatory.pro",
-    description: term
-      ? `${term.term}: ${term.short}${term.formula ? ` Формула: ${term.formula}.` : ""} Объясняем простым языком с примером расчёта для ресторанов на доставке.`
-      : "Термин не найден в глоссарии доставки.",
+    title: term ? termTitle(term) : "Термин не найден | agregatory.pro",
+    description: term ? termDescription(term) : "Термин не найден в глоссарии доставки.",
     path: pathname,
     jsonLd: term
       ? [

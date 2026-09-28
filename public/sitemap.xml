@@ -6,94 +6,279 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/uslugi</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://agregatory.pro/blog</loc>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/uslugi/podklyuchenie-k-yandex-ede</loc>
+    <loc>https://agregatory.pro/blog/agentstvo-po-prodvizheniyu-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/aktsiya-sekret-set</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/akty-i-otchety-yandex-eda-13-dney</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/analitika-restorana-na-agregatore</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/buhgalteriya-restorana-na-agregatore</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/bystryy-start-4-shaga</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/chek-listy-dlya-kuhni-restorana</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/foto-blyud-dlya-agregatora</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-podnyat-reyting-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-popast-v-top-vydachi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-rabotat-s-otzyvami-v-dostavke</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-snizit-drr-na-agregatore</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-snizit-otmeny-zakazov</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-sostavit-menyu-dlya-dostavki</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-vernut-gostya-v-dostavke</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kak-yandex-eda-uderzhivaet-dengi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kakie-aktsii-zapuskat-na-agregatore</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/komissiya-i-vyplaty-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/kontrol-kachestva-zakazov</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/obedomaniya-yandex-eda</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/obuchenie-komandy-rabote-s-dostavkoy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/oferta-yandex-eda-razbor</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/oshibki-restoranov-na-agregatorah</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/otmeny-bez-ogranicheniya-dostupa</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/pervyy-mesyats-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/platformennaya-ekonomika-289-fz</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/pochemu-net-zakazov-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/prodvizhenie-dostavki-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/prodvizhenie-na-yandex-dostavke</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/prodvizhenie-restorana-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/raskrutka-restorana-v-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/rastorzhenie-dogovora-s-yandex-edoy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/razdely-lichnogo-kabineta-vendor</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/referalnaya-programma-yandex-eda</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/restoran-skryt-na-servise-chto-delat</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/samovyvoz-v-restorane</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/set-restoranov-na-agregatore</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/shtrafy-i-uderzhaniya-yandex-eda</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/shtrafy-po-oferte-kak-osporit</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/skolko-stoit-prodvizhenie-na-yandex-ede</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/stoit-li-restoranu-vyhodit-na-agregator</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/uslugi-po-prodvizheniyu-servisa-yandex-eda</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/vyplaty-i-planirovanie-finansov</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/yandex-dostavka-podklyuchenie-tarify</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/yandex-eda-prodvizhenie-restorana-s-nulya</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/zadaniya-i-nagrady-yandex-eda</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/blog/zony-dostavki-i-grafik-raboty</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/chek-listy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/uslugi/nastroyka-vendora</loc>
+    <loc>https://agregatory.pro/chek-listy/ekonomika-dostavki</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/uslugi/audit-kabineta</loc>
+    <loc>https://agregatory.pro/chek-listy/kachestvo-i-reyting</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/uslugi/obuchenie-personala</loc>
+    <loc>https://agregatory.pro/chek-listy/kontent-i-kartochka</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/uslugi/snizhenie-drr</loc>
+    <loc>https://agregatory.pro/chek-listy/proverka-kartochki</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/uslugi/povyshenie-reytinga</loc>
+    <loc>https://agregatory.pro/chek-listy/sezonnyy-pik</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/uslugi/sostavlenie-menyu</loc>
+    <loc>https://agregatory.pro/chek-listy/zapusk-na-agregatore</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/uslugi/moderatsiya-blyud</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/uslugi/fotokontent-dlya-menyu</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/uslugi/nastroyka-aktsiy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/uslugi/rabota-s-otmenami</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/uslugi/shtrafy-i-uderzhaniya</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/uslugi/analitika-i-otchetnost</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/uslugi/zony-i-grafik-dostavki</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/uslugi/podklyuchenie-samovyvoza</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/uslugi/zapusk-seti-restoranov</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/uslugi/konsultatsiya-restoratora</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://agregatory.pro/goroda</loc>
@@ -101,27 +286,12 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/goroda/moskva</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/goroda/sankt-peterburg</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/goroda/samara</loc>
+    <loc>https://agregatory.pro/goroda/chelyabinsk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://agregatory.pro/goroda/cherepovets</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/goroda/novosibirsk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -136,27 +306,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/goroda/nizhniy-novgorod</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://agregatory.pro/goroda/krasnodar</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/goroda/rostov-na-donu</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/goroda/chelyabinsk</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/goroda/ufa</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -166,12 +316,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/goroda/voronezh</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/goroda/surgut</loc>
+    <loc>https://agregatory.pro/goroda/moskva</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -181,12 +326,32 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://agregatory.pro/goroda/nizhniy-novgorod</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/novosibirsk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://agregatory.pro/goroda/perm</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/goroda/tyumen</loc>
+    <loc>https://agregatory.pro/goroda/rostov-na-donu</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/samara</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/goroda/sankt-peterburg</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -196,254 +361,24 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/blog</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/kak-podnyat-reyting-na-yandex-ede</loc>
+    <loc>https://agregatory.pro/goroda/surgut</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/blog/pochemu-net-zakazov-na-yandex-ede</loc>
+    <loc>https://agregatory.pro/goroda/tyumen</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/blog/skolko-stoit-prodvizhenie-na-yandex-ede</loc>
+    <loc>https://agregatory.pro/goroda/ufa</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/blog/kak-sostavit-menyu-dlya-dostavki</loc>
+    <loc>https://agregatory.pro/goroda/voronezh</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/foto-blyud-dlya-agregatora</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/kak-rabotat-s-otzyvami-v-dostavke</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/obuchenie-komandy-rabote-s-dostavkoy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/prodvizhenie-restorana-na-yandex-ede</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/agentstvo-po-prodvizheniyu-na-yandex-ede</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/raskrutka-restorana-v-yandex-ede</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/prodvizhenie-dostavki-na-yandex-ede</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/prodvizhenie-na-yandex-dostavke</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/uslugi-po-prodvizheniyu-servisa-yandex-eda</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/yandex-eda-prodvizhenie-restorana-s-nulya</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/kak-snizit-drr-na-agregatore</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/komissiya-i-vyplaty-na-yandex-ede</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/kak-snizit-otmeny-zakazov</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/zony-dostavki-i-grafik-raboty</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/analitika-restorana-na-agregatore</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/stoit-li-restoranu-vyhodit-na-agregator</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/pervyy-mesyats-na-yandex-ede</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/kak-vernut-gostya-v-dostavke</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/buhgalteriya-restorana-na-agregatore</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/kontrol-kachestva-zakazov</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/vyplaty-i-planirovanie-finansov</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/zadaniya-i-nagrady-yandex-eda</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/referalnaya-programma-yandex-eda</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/obedomaniya-yandex-eda</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/chek-listy-dlya-kuhni-restorana</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/aktsiya-sekret-set</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/kakie-aktsii-zapuskat-na-agregatore</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/kak-popast-v-top-vydachi</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/set-restoranov-na-agregatore</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/samovyvoz-v-restorane</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/oshibki-restoranov-na-agregatorah</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/shtrafy-i-uderzhaniya-yandex-eda</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/restoran-skryt-na-servise-chto-delat</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/platformennaya-ekonomika-289-fz</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/bystryy-start-4-shaga</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/razdely-lichnogo-kabineta-vendor</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/yandex-dostavka-podklyuchenie-tarify</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/partnery</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/privacy</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/oferta-yandex-eda-razbor</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/kak-yandex-eda-uderzhivaet-dengi</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/akty-i-otchety-yandex-eda-13-dney</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/shtrafy-po-oferte-kak-osporit</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/blog/rastorzhenie-dogovora-s-yandex-edoy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/test</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://agregatory.pro/kalkulyatory</loc>
@@ -451,12 +386,17 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/kalkulyatory/rentabelnost-zakaza</loc>
+    <loc>https://agregatory.pro/kalkulyatory/drr</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/kalkulyatory/drr</loc>
+    <loc>https://agregatory.pro/kalkulyatory/konstruktory-dostavki</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/kalkulyatory/model-dostavki</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -468,82 +408,27 @@
   <url>
     <loc>https://agregatory.pro/kalkulyatory/okupaemost</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/kalkulyatory/model-dostavki</loc>
+    <loc>https://agregatory.pro/kalkulyatory/rentabelnost-zakaza</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/chek-listy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/chek-listy/zapusk-na-agregatore</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/chek-listy/proverka-kartochki</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/chek-listy/sezonnyy-pik</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/chek-listy/kontent-i-kartochka</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/chek-listy/ekonomika-dostavki</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/chek-listy/kachestvo-i-reyting</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/pochitat</loc>
+    <loc>https://agregatory.pro/partnery</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/testy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/testy/audit</loc>
+    <loc>https://agregatory.pro/pochitat</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/testy/kabinet</loc>
+    <loc>https://agregatory.pro/privacy</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/testy/ekonomika</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/testy/kachestvo</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/testy/dokumenty</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://agregatory.pro/razbor-otchetov</loc>
@@ -551,14 +436,19 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/sravnenie-agregatorov</loc>
+    <loc>https://agregatory.pro/slovar</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar</loc>
+    <loc>https://agregatory.pro/slovar/ab-test</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/abc-analiz</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://agregatory.pro/slovar/agentskaya-shema</loc>
@@ -572,6 +462,11 @@
   </url>
   <url>
     <loc>https://agregatory.pro/slovar/akciya-za-schet-platformy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/arpu</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -596,52 +491,77 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/valovaya-marzha</loc>
+    <loc>https://agregatory.pro/slovar/cac</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/valovaya-pribyl</loc>
+    <loc>https://agregatory.pro/slovar/capex</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/veb-analitika</loc>
+    <loc>https://agregatory.pro/slovar/chastota-zakazov</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/eta</loc>
+    <loc>https://agregatory.pro/slovar/chasy-pik</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/vremya-prigotovleniya</loc>
+    <loc>https://agregatory.pro/slovar/chistaya-pribyl</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/vremya-prinyatiya</loc>
+    <loc>https://agregatory.pro/slovar/churn</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/vyruchka-k-vyplate</loc>
+    <loc>https://agregatory.pro/slovar/cpa</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/vyhod</loc>
+    <loc>https://agregatory.pro/slovar/cpc</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/geoservisy</loc>
+    <loc>https://agregatory.pro/slovar/cpm</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/gibridnaya-model</loc>
+    <loc>https://agregatory.pro/slovar/cpo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/cr-korzina-zakaz</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/cr-v-korzinu</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/crm</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/csi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/ctr</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -676,12 +596,47 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/zagruzka-kuhni</loc>
+    <loc>https://agregatory.pro/slovar/ebitda</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/zona-dostavki</loc>
+    <loc>https://agregatory.pro/slovar/ekvajring</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/eta</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/fot</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/fotokontent</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/fudkost</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/geoservisy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/gibridnaya-model</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/gmv</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -756,12 +711,12 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/konversiya-kartochki</loc>
+    <loc>https://agregatory.pro/slovar/kontekstnaya-reklama</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/kontekstnaya-reklama</loc>
+    <loc>https://agregatory.pro/slovar/konversiya-kartochki</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -776,12 +731,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://agregatory.pro/slovar/lifetime-value</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://agregatory.pro/slovar/logist</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/marzha-zakaza</loc>
+    <loc>https://agregatory.pro/slovar/ltv-cac</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/marketpleys</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -791,7 +756,7 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/marketpleys</loc>
+    <loc>https://agregatory.pro/slovar/marzha-zakaza</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -826,7 +791,22 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://agregatory.pro/slovar/nps</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://agregatory.pro/slovar/obedennyj-segment</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/oferta</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/ohvat</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -841,6 +821,11 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://agregatory.pro/slovar/opex</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://agregatory.pro/slovar/opisanie-blyuda</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -851,7 +836,7 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/otzyvy</loc>
+    <loc>https://agregatory.pro/slovar/otchet-agenta</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -861,17 +846,7 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/otchet-agenta</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/slovar/oferta</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/slovar/ohvat</loc>
+    <loc>https://agregatory.pro/slovar/otzyvy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -906,7 +881,7 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/povtornye-zakazy</loc>
+    <loc>https://agregatory.pro/slovar/pnl</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -927,6 +902,11 @@
   </url>
   <url>
     <loc>https://agregatory.pro/slovar/postoyannye-rashody</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/povtornye-zakazy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -976,6 +956,31 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://agregatory.pro/slovar/retention</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/rfm-segmentaciya</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/roas</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/roi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/romi</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://agregatory.pro/slovar/samovyvoz</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -986,17 +991,12 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/svoi-kurery</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/slovar/svoya-dostavka</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://agregatory.pro/slovar/sebestoimost</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/seo</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -1012,6 +1012,11 @@
   </url>
   <url>
     <loc>https://agregatory.pro/slovar/skvoznaya-konversiya</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/sla</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -1061,6 +1066,16 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://agregatory.pro/slovar/svoi-kurery</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/svoya-dostavka</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://agregatory.pro/slovar/tajnyj-gost</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -1096,37 +1111,47 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/fot</loc>
+    <loc>https://agregatory.pro/slovar/utm-metki</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/fotokontent</loc>
+    <loc>https://agregatory.pro/slovar/valovaya-marzha</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/fudkost</loc>
+    <loc>https://agregatory.pro/slovar/valovaya-pribyl</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/chastota-zakazov</loc>
+    <loc>https://agregatory.pro/slovar/veb-analitika</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/chasy-pik</loc>
+    <loc>https://agregatory.pro/slovar/vremya-prigotovleniya</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/chistaya-pribyl</loc>
+    <loc>https://agregatory.pro/slovar/vremya-prinyatiya</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/ekvajring</loc>
+    <loc>https://agregatory.pro/slovar/vyhod</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/vyruchka-k-vyplate</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/slovar/yoy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -1136,158 +1161,143 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/ab-test</loc>
+    <loc>https://agregatory.pro/slovar/zagruzka-kuhni</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/abc-analiz</loc>
+    <loc>https://agregatory.pro/slovar/zona-dostavki</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/arpu</loc>
+    <loc>https://agregatory.pro/sravnenie-agregatorov</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/test</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/cac</loc>
+    <loc>https://agregatory.pro/testy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://agregatory.pro/testy/audit</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/capex</loc>
+    <loc>https://agregatory.pro/testy/dokumenty</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/churn</loc>
+    <loc>https://agregatory.pro/testy/ekonomika</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/cpa</loc>
+    <loc>https://agregatory.pro/testy/kabinet</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/cpc</loc>
+    <loc>https://agregatory.pro/testy/kachestvo</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/cpm</loc>
+    <loc>https://agregatory.pro/uslugi</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/cpo</loc>
+    <loc>https://agregatory.pro/uslugi/analitika-i-otchetnost</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/cr-v-korzinu</loc>
+    <loc>https://agregatory.pro/uslugi/audit-kabineta</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/cr-korzina-zakaz</loc>
+    <loc>https://agregatory.pro/uslugi/fotokontent-dlya-menyu</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/crm</loc>
+    <loc>https://agregatory.pro/uslugi/konsultatsiya-restoratora</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/csi</loc>
+    <loc>https://agregatory.pro/uslugi/moderatsiya-blyud</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/ctr</loc>
+    <loc>https://agregatory.pro/uslugi/nastroyka-aktsiy</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/ebitda</loc>
+    <loc>https://agregatory.pro/uslugi/nastroyka-vendora</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/gmv</loc>
+    <loc>https://agregatory.pro/uslugi/obuchenie-personala</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/lifetime-value</loc>
+    <loc>https://agregatory.pro/uslugi/podklyuchenie-k-yandex-ede</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/ltv-cac</loc>
+    <loc>https://agregatory.pro/uslugi/podklyuchenie-samovyvoza</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/nps</loc>
+    <loc>https://agregatory.pro/uslugi/povyshenie-reytinga</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/opex</loc>
+    <loc>https://agregatory.pro/uslugi/rabota-s-otmenami</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/pnl</loc>
+    <loc>https://agregatory.pro/uslugi/shtrafy-i-uderzhaniya</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/retention</loc>
+    <loc>https://agregatory.pro/uslugi/snizhenie-drr</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/rfm-segmentaciya</loc>
+    <loc>https://agregatory.pro/uslugi/sostavlenie-menyu</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/roas</loc>
+    <loc>https://agregatory.pro/uslugi/zapusk-seti-restoranov</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://agregatory.pro/slovar/roi</loc>
+    <loc>https://agregatory.pro/uslugi/zony-i-grafik-dostavki</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/slovar/romi</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/slovar/seo</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/slovar/sla</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/slovar/utm-metki</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://agregatory.pro/slovar/yoy</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
 </urlset>

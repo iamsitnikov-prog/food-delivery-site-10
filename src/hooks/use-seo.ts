@@ -28,9 +28,26 @@ type Options = {
   description: string;
   path: string;
   jsonLd?: Record<string, unknown>[];
+  /** Абсолютный URL картинки для соцсетей. По умолчанию — общий превью сайта. */
+  ogImage?: string;
+  /** "article" для блога, иначе "website". */
+  ogType?: "website" | "article";
+  publishedTime?: string;
+  noindex?: boolean;
 };
 
-const useSeo = ({ title, description, path, jsonLd }: Options) => {
+const DEFAULT_OG = `${SITE}/og-preview.jpg?v=2`;
+
+const useSeo = ({
+  title,
+  description,
+  path,
+  jsonLd,
+  ogImage,
+  ogType = "website",
+  publishedTime,
+  noindex,
+}: Options) => {
   useEffect(() => {
     const prevTitle = document.title;
     const prevDesc =
@@ -43,6 +60,14 @@ const useSeo = ({ title, description, path, jsonLd }: Options) => {
     setMeta('meta[property="og:title"]', "content", title);
     setMeta('meta[property="og:description"]', "content", description);
     setMeta('meta[property="og:url"]', "content", url);
+    setMeta('meta[property="og:image"]', "content", ogImage || DEFAULT_OG);
+    setMeta('meta[property="og:type"]', "content", ogType);
+    setMeta('meta[name="twitter:title"]', "content", title);
+    setMeta('meta[name="twitter:description"]', "content", description);
+    setMeta('meta[name="twitter:image"]', "content", ogImage || DEFAULT_OG);
+    setMeta('meta[name="robots"]', "content", noindex ? "noindex, follow" : "index, follow");
+    if (publishedTime)
+      setMeta('meta[property="article:published_time"]', "content", publishedTime);
     setLink("canonical", url);
 
     const nodes: HTMLScriptElement[] = [];
@@ -62,9 +87,18 @@ const useSeo = ({ title, description, path, jsonLd }: Options) => {
       setMeta('meta[property="og:title"]', "content", prevTitle);
       setMeta('meta[property="og:description"]', "content", prevDesc);
       setMeta('meta[property="og:url"]', "content", prevUrl);
+      setMeta('meta[property="og:image"]', "content", DEFAULT_OG);
+      setMeta('meta[property="og:type"]', "content", "website");
+      setMeta('meta[name="twitter:title"]', "content", prevTitle);
+      setMeta('meta[name="twitter:description"]', "content", prevDesc);
+      setMeta('meta[name="twitter:image"]', "content", DEFAULT_OG);
+      setMeta('meta[name="robots"]', "content", "index, follow");
+      document.head
+        .querySelector('meta[property="article:published_time"]')
+        ?.remove();
       setLink("canonical", prevUrl);
     };
-  }, [title, description, path, jsonLd]);
+  }, [title, description, path, jsonLd, ogImage, ogType, publishedTime, noindex]);
 };
 
 export default useSeo;

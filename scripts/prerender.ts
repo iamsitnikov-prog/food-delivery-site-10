@@ -12,6 +12,7 @@ import { QUIZZES } from "../src/data/quizzes";
 import { getCityCase, CITY_CASES } from "../src/data/city-cases";
 import { getChecklistPage } from "../src/data/checklists";
 import { GLOSSARY, GLOSSARY_LETTERS } from "../src/data/glossary";
+import { termDescription, termTitle } from "../src/lib/term-seo";
 import { getServiceResources } from "../src/data/service-resources";
 import { AGGREGATORS, SCENARIOS, CONCLUSIONS } from "../src/data/comparison";
 
@@ -219,9 +220,9 @@ pages.push({
 
 pages.push({
   route: "/test",
-  title: "Тест: проверьте свой проект на агрегаторе за 3 минуты | agregatory.pro",
+  title: "Тест: проверьте свой проект на агрегаторе | agregatory.pro",
   description:
-    "20 вопросов о работе вашего ресторана на Яндекс Еде и Деливери: рейтинг, ДРР, экономика, контент, отзывы, настройки и отчётность. В конце — оценка проекта и рекомендации.",
+    "20 вопросов о работе ресторана на агрегаторах: рейтинг, ДРР, экономика, контент и отчётность. В конце — оценка проекта.",
   body: `<h1>Проверьте свой проект за 3 минуты</h1>
 <p>${QUIZ_QUESTIONS.length} вопросов о работе вашего заведения на агрегаторе: рейтинг, экономика, контент, настройки и команда. В конце — оценка проекта и точки роста, с которых стоит начать.</p>
 <h2>О чём спрашиваем</h2>
@@ -265,9 +266,9 @@ for (const q of QUIZZES) {
 
 pages.push({
   route: "/kalkulyatory",
-  title: "Калькуляторы и сравнения для ресторанов на доставке | agregatory.pro",
+  title: "Калькуляторы экономики доставки | agregatory.pro",
   description:
-    "Бесплатные калькуляторы доставки: рентабельность заказа, ДРР, порог по НДС, окупаемость канала. Плюс сравнения агрегаторов и конструкторов доставки на ваших цифрах.",
+    "Калькуляторы доставки: рентабельность заказа, ДРР, порог по НДС и окупаемость канала. Расчёт на ваших цифрах, бесплатно.",
   body: `<h1>Калькуляторы и сравнения для доставки</h1>
 <p>Введите свои цифры один раз — увидите рентабельность заказа, ДРР, окупаемость канала и порог по НДС. Здесь же сравнения агрегаторов и конструкторов доставки. Бесплатно, без регистрации.</p>
 <ul>${VISIBLE_CALC_PAGES.map(
@@ -333,9 +334,9 @@ pages.push({
     },
   ],
   title:
-    "Разбор отчётов агрегаторов: платёжные поручения и отчёт по заказам | agregatory.pro",
+    "Разбор отчётов агрегаторов доставки | agregatory.pro",
   description:
-    "Как читать отчёт о платёжных поручениях, отчёт об исполнении поручения и отчёт по заказам. Загрузите файл — покажем фактическую нагрузку на оборот. Файл не покидает браузер.",
+    "Как читать отчёты сервиса доставки. Загрузите файл — покажем фактическую нагрузку на оборот. Файл не покидает браузер.",
   body: `<h1>Разбор отчётов агрегаторов</h1>
 <p>Загрузите отчёт из личного кабинета сервиса — покажем фактическую нагрузку на оборот, состав удержаний и позиции, по которым стоит уточнить основание. Файл не уходит на сервер: весь разбор происходит в браузере на вашем устройстве. Мы не храним загруженные документы и не видим их содержимое. Если файла нет под рукой, на странице есть демонстрационный пример на обезличенных данных.</p>
 <h2>Отчёт по платёжным поручениям</h2>
@@ -384,8 +385,20 @@ pages.push({
         acceptedAnswer: { "@type": "Answer", text: clean(g.full) },
       })),
     },
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "Термины доставки",
+      numberOfItems: GLOSSARY.length,
+      itemListElement: GLOSSARY.map((g, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: clean(g.term),
+        url: `${SITE}/slovar/${g.slug}`,
+      })),
+    },
   ],
-  title: "Глоссарий доставки: термины агрегаторов простыми словами | agregatory.pro",
+  title: "Глоссарий доставки: 146 терминов простыми словами",
   description: `ДРР, ROMI, GMV, юнит-экономика, фудкост, SLA — ${GLOSSARY.length} термин доставки простым языком с формулами, примерами и навигацией по буквам.`,
   body: `<h1>Глоссарий доставки</h1>
 <p>${GLOSSARY.length} понятий из кабинета сервиса, отчётов и разговоров с менеджерами — простым языком, с формулами, примерами и связями между терминами. Термины сгруппированы по темам: маркетинг и воронка, юнит-экономика, финансы и отчётность, операционка, свой канал и CRM.</p>
@@ -486,10 +499,12 @@ for (const term of GLOSSARY) {
         ],
       },
     ],
-    title: `${clean(term.term)} — что это такое простыми словами | agregatory.pro`,
-    description: `${clean(term.term)}: ${clean(term.short)}${
-      term.formula ? ` Формула: ${clean(term.formula)}.` : ""
-    } Объясняем простым языком с примером расчёта для ресторанов на доставке.`,
+    title: termTitle({ term: clean(term.term) }),
+    description: termDescription({
+      term: clean(term.term),
+      short: clean(term.short),
+      formula: term.formula ? clean(term.formula) : undefined,
+    }),
     body: `<h1>${esc(clean(term.term))}</h1>
 <p>${esc(clean(term.short))}</p>
 <h2>Что это значит</h2>
@@ -530,7 +545,7 @@ pages.push({
   route: "/kalkulyatory/konstruktory-dostavki",
   title: "Сравнение конструкторов доставки для ресторана | agregatory.pro",
   description:
-    "Sellkit, STARTER, Смартомато и ФудПикассо: стоимость, возможности и окупаемость. Калькулятор покажет, сколько вы сэкономите на комиссии со своим приложением и сайтом заказа.",
+    "Sellkit, STARTER, Смартомато и ФудПикассо: стоимость, возможности и окупаемость. Сколько сэкономите со своим приложением.",
   body: `<h1>Сравнение конструкторов доставки</h1>
 <p>Sellkit, STARTER, Смартомато и ФудПикассо делают вам свой сайт заказа и приложение. Посчитайте, сколько вы сэкономите на комиссии и с какого объёма это окупается.</p>
 <p>Собственный канал заказов решает одну задачу — перестать платить процент с гостей, которые и так знают ваше заведение. Агрегатор берёт комиссию с каждого заказа независимо от того, нашёл он вам этого клиента или тот пришёл сам. Конструктор меняет модель: вы платите фиксированную сумму, и она не растёт вместе с оборотом.</p>
@@ -570,7 +585,7 @@ pages.push({
       })),
     },
   ],
-  title: "Яндекс Еда, Купер или Чиббис: что выгоднее ресторану | agregatory.pro",
+  title: "Яндекс Еда, Купер или Чиббис: что выгоднее | agregatory.pro",
   description:
     "Сравнение агрегаторов доставки для ресторанов: комиссии, география, курьеры, сроки подключения. Разбор по сценариям и выводы, какой сервис выбрать.",
   body: `<h1>Яндекс Еда, Купер или Чиббис: что выгоднее ресторану</h1>
@@ -779,7 +794,20 @@ const render = (p: Page) => {
   const url = `${SITE}${p.route}`;
   const ld: unknown[] = [];
   if (p.route === "/") ld.push(ORG);
-  else ld.push(crumbs(p.route, p.title.split("|")[0].split("—")[0].trim()));
+  else {
+    ld.push(crumbs(p.route, p.title.split("|")[0].split("—")[0].trim()));
+    ld.push({
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": `${url}#webpage`,
+      url,
+      name: clean(p.title),
+      description: clean(p.description),
+      inLanguage: "ru-RU",
+      isPartOf: { "@type": "WebSite", name: "agregatory.pro", url: `${SITE}/` },
+      publisher: { "@type": "Organization", name: "agregatory.pro", url: `${SITE}/` },
+    });
+  }
   if (p.jsonLd?.length) ld.push(...p.jsonLd);
   const ldTags = ld
     .map((x) => `<script type="application/ld+json">${JSON.stringify(x)}</script>`)
@@ -793,6 +821,8 @@ const render = (p: Page) => {
 <title>${esc(p.title)}</title>
 <meta name="description" content="${esc(p.description)}"/>
 <meta name="author" content="agregatory.pro"/>
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+<meta name="yandex" content="index, follow"/>
 <link rel="canonical" href="${url}"/>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
 <link rel="alternate" type="application/rss+xml" title="Блог agregatory.pro" href="${SITE}/rss.xml"/>
@@ -848,6 +878,54 @@ ${p.body}
 </html>
 `;
 };
+
+const PRIORITY: Record<string, number> = {
+  "/": 1.0,
+  "/uslugi": 0.9,
+  "/goroda": 0.9,
+  "/blog": 0.9,
+  "/kalkulyatory": 0.9,
+  "/slovar": 0.9,
+  "/sravnenie-agregatorov": 0.9,
+  "/razbor-otchetov": 0.9,
+  "/chek-listy": 0.8,
+  "/testy": 0.8,
+  "/pochitat": 0.8,
+  "/partnery": 0.7,
+};
+
+const priorityOf = (route: string) => {
+  if (PRIORITY[route]) return PRIORITY[route];
+  if (route.startsWith("/slovar/")) return 0.6;
+  if (route.startsWith("/blog/")) return 0.7;
+  if (route.startsWith("/kalkulyatory/")) return 0.8;
+  if (route.startsWith("/uslugi/") || route.startsWith("/goroda/")) return 0.8;
+  return 0.6;
+};
+
+const freqOf = (route: string) =>
+  route === "/" || route === "/blog" ? "weekly" : "monthly";
+
+const sitemapRoutes = Array.from(
+  new Set(["/", ...pages.map((p) => p.route), "/privacy"]),
+).sort();
+
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapRoutes
+  .map(
+    (r) => `  <url>
+    <loc>${SITE}${r === "/" ? "/" : r}</loc>
+    <changefreq>${freqOf(r)}</changefreq>
+    <priority>${priorityOf(r).toFixed(1)}</priority>
+  </url>`,
+  )
+  .join("\n")}
+</urlset>
+`;
+fs.writeFileSync(path.join(OUT, "sitemap.xml"), sitemap, "utf-8");
+fs.writeFileSync(path.join("public", "sitemap.xml"), sitemap, "utf-8");
+console.log(`Sitemap: ${sitemapRoutes.length} страниц`);
 
 let count = 0;
 for (const p of pages) {

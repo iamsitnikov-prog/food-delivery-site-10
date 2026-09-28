@@ -75,7 +75,14 @@ const BlogPost = () => {
     ];
   }, [post, pathname]);
 
-  useSeo({ title: post?.title || "", description: post?.description || "", path: pathname, jsonLd });
+  useSeo({
+    title: post?.title || "",
+    description: post?.description || "",
+    path: pathname,
+    jsonLd,
+    ogType: "article",
+    publishedTime: post?.date,
+  });
 
   if (!post) return <PageNotFound />;
 

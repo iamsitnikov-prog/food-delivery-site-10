@@ -1,4 +1,4 @@
-import * as XLSX from "xlsx";
+import type * as XLSXType from "xlsx";
 
 export type ReportKind = "payments" | "orders" | "transcript" | "fulfilment";
 
@@ -436,7 +436,10 @@ const parseOrders = (grid: Grid): ParsedReport => {
   });
 };
 
-const parseTranscript = (wb: XLSX.WorkBook): ParsedReport => {
+const parseTranscript = (
+  wb: XLSXType.WorkBook,
+  XLSX: typeof XLSXType,
+): ParsedReport => {
   const main = wb.Sheets[wb.SheetNames[0]];
   const grid = XLSX.utils.sheet_to_json<unknown[]>(main, { header: 1, raw: true, defval: null });
   const meta = metaFrom(grid);
@@ -737,7 +740,7 @@ export const parseFulfilment = (text: string): ParsedReport => {
   });
 };
 
-const detectKind = (wb: XLSX.WorkBook, grid: Grid): ReportKind => {
+const detectKind = (wb: XLSXType.WorkBook, grid: Grid): ReportKind => {
   const head = grid
     .slice(0, 6)
     .flat()
@@ -757,7 +760,8 @@ const detectKind = (wb: XLSX.WorkBook, grid: Grid): ReportKind => {
   return "orders";
 };
 
-export const parseWorkbook = (data: ArrayBuffer): ParsedReport => {
+export const parseWorkbook = async (data: ArrayBuffer): Promise<ParsedReport> => {
+  const XLSX = await import("xlsx");
   const wb = XLSX.read(data, { type: "array", cellDates: true });
   if (!wb.SheetNames.length) throw new Error("В файле нет листов");
   const first = wb.Sheets[wb.SheetNames[0]];
@@ -767,7 +771,7 @@ export const parseWorkbook = (data: ArrayBuffer): ParsedReport => {
     defval: null,
   });
   const kind = detectKind(wb, grid);
-  if (kind === "transcript") return parseTranscript(wb);
+  if (kind === "transcript") return parseTranscript(wb, XLSX);
   if (kind === "payments") return parsePayments(grid);
   return parseOrders(grid);
 };

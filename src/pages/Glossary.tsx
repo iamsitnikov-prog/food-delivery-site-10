@@ -6,6 +6,7 @@ import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import LetterNav from "@/components/glossary/LetterNav";
+import TermSearch from "@/components/glossary/TermSearch";
 import TermCard from "@/components/glossary/TermCard";
 import useSeo from "@/hooks/use-seo";
 import {
@@ -26,7 +27,7 @@ const GlossaryPage = () => {
   const [letter, setLetter] = useState<string | null>(null);
 
   useSeo({
-    title: "Глоссарий доставки: термины агрегаторов простыми словами | agregatory.pro",
+    title: "Глоссарий доставки: 146 терминов простыми словами",
     description: `ДРР, ROMI, GMV, юнит-экономика, фудкост, SLA — ${GLOSSARY.length} термин доставки простым языком с формулами, примерами и навигацией по буквам.`,
     path: pathname,
     jsonLd: [
@@ -66,6 +67,18 @@ const GlossaryPage = () => {
           "@type": "Question",
           name: `Что такое ${t.term}?`,
           acceptedAnswer: { "@type": "Answer", text: t.full },
+        })),
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Термины доставки",
+        numberOfItems: GLOSSARY.length,
+        itemListElement: GLOSSARY.map((t, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: t.term,
+          url: `${SITE}/slovar/${t.slug}`,
         })),
       },
     ],
@@ -140,20 +153,7 @@ const GlossaryPage = () => {
 
       <section className="px-5 pb-8 md:px-14">
         <div className="flex flex-col gap-4">
-          <label className="relative block max-w-[420px]">
-            <Icon
-              name="Search"
-              size={18}
-              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
-            />
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Найти термин"
-              className="w-full rounded-xl border border-foreground/15 bg-background py-3.5 pl-11 pr-4 text-[0.97em] outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground/40"
-            />
-          </label>
+          <TermSearch value={query} onChange={setQuery} />
 
           <LetterNav
             cyrillic={CYRILLIC_LETTERS}
