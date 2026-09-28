@@ -80,6 +80,10 @@ export const MONTHS = [
 export const daysInMonth = (month: number, year: number) =>
   new Date(year, month + 1, 0).getDate();
 
+// Дней в году: 365, а в високосном 366.
+export const daysInYear = (year: number) =>
+  (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 366 : 365;
+
 export const COMMISSION_SERVICE = 35;
 export const COMMISSION_OWN = 20;
 export const YANDEX_DELIVERY_FEE = 2;
@@ -656,11 +660,16 @@ export const calculate = (input: CalcInput): CalcResult => {
   const ordersPerMonth = ordersPerDay * days;
   const revenuePerMonth = agg.revenuePerMonth + self.revenuePerMonth;
   const revenuePerDay = revenuePerMonth / days;
-  // Год = 12 месячных выручек, а не 365 дней.
-  // Месяц считается по календарным дням выбранного периода, поэтому умножение
-  // дневной выручки на 365 давало расхождение: 10,95 млн против 10,8 млн
-  // (12 x 900 000). Рядом на странице обе цифры выглядели как ошибка.
-  const revenuePerYear = revenuePerMonth * 12;
+  // Год считаем от дневной выручки по реальному числу дней: 365, в високосном 366.
+  //
+  // Умножать месяц на 12 нельзя: месяц берётся по календарным дням выбранного
+  // периода, и для сентября (30 дней) такой год дал бы 360 дней — почти неделя
+  // выручки пропала бы. Для порога НДС это занижение, а порог считается по
+  // фактическому доходу за календарный год.
+  //
+  // Расхождение с «месяц x 12» — не ошибка, а разная длина месяцев.
+  // В интерфейсе это поясняется подписью под суммой за год.
+  const revenuePerYear = revenuePerDay * daysInYear(input.periodYear);
   const payoutPerMonth = agg.payoutPerMonth + self.payoutPerMonth;
   const grossProfitPerMonth = agg.profitPerMonth + self.profitPerMonth;
 
@@ -680,13 +689,32 @@ export const calculate = (input: CalcInput): CalcResult => {
   const adProfitPerMonth = agg.adProfitPerMonth + self.adProfitPerMonth;
   const adCostPerMonth = agg.adCostPerMonth + self.adCostPerMonth;
   const drr = adRevenuePerMonth > 0 ? (adCostPerMonth / adRevenuePerMonth) * 100 : 0;
-  const drrVerdict: CalcResult["drrVerdict"] = drr <= 12 ? "good" : drr <= 15 ? "ok" : "bad";
+
   const romi = adCostPerMonth > 0 ? (adProfitPerMonth / adCostPerMonth) * 100 : 0;
   const drrLimit =
     revenuePerMonth > 0
       ? (agg.drrLimit * agg.revenuePerMonth + self.drrLimit * self.revenuePerMonth) /
         revenuePerMonth
       : 0;
+
+  // Вердикт по ДРР привязан к ВАШЕЙ марже, а не к универсальным 12/15%.
+  //
+  // Предельный ДРР (drrLimit) — доля рекламы, при которой заказ выходит в ноль.
+  // Запас до него и определяет оценку:
+  //   до половины предела  — есть двойной запас, устойчиво;
+  //   до 3/4 предела       — работает, но запас невелик;
+  //   выше 3/4             — реклама съедает почти всю маржу.
+  //
+  // Так калькулятор не советует «до 12%» ресторану с фудкостом 40%, у которого
+  // предел 15%: там 12% — это уже почти работа в ноль.
+  const drrVerdict: CalcResult["drrVerdict"] =
+    drrLimit <= 0
+      ? "bad"
+      : drr <= drrLimit * 0.5
+        ? "good"
+        : drr <= drrLimit * 0.75
+          ? "ok"
+          : "bad";
 
   const on = input.staffEnabled;
   const managersCost = on ? clamp(input.managerCount) * clamp(input.managerSalary) : 0;

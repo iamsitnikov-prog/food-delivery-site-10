@@ -182,7 +182,7 @@ const CalcForm = ({
                     value={input.restaurantCount}
                     onChange={set("restaurantCount")}
                     step={1}
-                    hint="Фиксированная часть тарифа «Бизнес»: 1 333 ₽ в месяц за первые три ресторана и 583 ₽ за каждый следующий."
+                    hint="Фиксированная часть тарифа «Бизнес» — стоимость личного менеджера: 1 333 ₽ + НДС в месяц за первые три ресторана и 583 ₽ + НДС за каждый следующий. В расчёте — 1 626 ₽ и 711 ₽ с НДС."
                   />
                   <div className="flex flex-col justify-center rounded-2xl bg-cream/5 px-4 py-3">
                     <span className="text-[0.82em] text-cream-muted">фиксированная часть</span>
@@ -234,7 +234,7 @@ const CalcForm = ({
                     step={0.01}
                     unit={input.subscriptionUnit}
                     onUnitChange={setUnit("subscriptionUnit")}
-                    hint="Процент от суммы заказов. По текущим условиям — 1,64% плюс НДС. Указан отдельной строкой «Услуги подписки» в актах."
+                    hint="Процент от суммы заказов. По текущим условиям — 1,64% + НДС, в расчёте 2,0% с НДС. Указан отдельной строкой «Услуги подписки» в актах."
                   />
                 )}
                 <CalcField

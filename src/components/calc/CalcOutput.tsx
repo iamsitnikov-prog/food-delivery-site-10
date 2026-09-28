@@ -1,6 +1,6 @@
 import Icon from "@/components/ui/icon";
 import { Row, Card, ChannelBlock } from "./CalcParts";
-import { money, percent, type CalcInput, type CalcResult } from "@/lib/calc";
+import { daysInYear, money, percent, type CalcInput, type CalcResult } from "@/lib/calc";
 import type { CalcMode } from "./Calculator";
 
 type Props = {
@@ -99,8 +99,8 @@ const CalcOutput = ({ input, r, show }: Props) => {
             <Row label="Предельный ДРР при вашей марже" value={percent(r.drrLimit)} />
           </div>
           <p className="mt-3 text-[0.86em] leading-snug text-cream-muted">
-            Выше предельного значения продвижение работает в убыток. Ориентир для устойчивой работы
-            — до 12%.
+            Выше предельного значения продвижение работает в убыток. Универсальной нормы нет:
+            оценка выше считается от вашего предела — запас больше половины считаем устойчивым.
           </p>
         </Card>
       )}
@@ -194,6 +194,10 @@ const CalcOutput = ({ input, r, show }: Props) => {
             value={`${money(r.revenuePerYear)} ₽`}
             muted
           />
+          <p className="-mt-1 mb-2 text-[0.78em] leading-snug text-cream-muted">
+            Год считается от дневной выручки за {daysInYear(input.periodYear)} дн. Умножение месяца
+            на 12 даёт другую сумму: в месяцах разное число дней.
+          </p>
           <Row label="Ваша ставка НДС" value={r.vat.label} accent />
           {r.vat.rate > 0 && (
             <>
