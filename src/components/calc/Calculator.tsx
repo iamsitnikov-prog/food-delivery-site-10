@@ -19,7 +19,9 @@ import {
 } from "@/lib/calc";
 import { reachGoal } from "@/lib/metrika";
 
-export type CalcMode = "all" | "profit" | "drr" | "vat" | "breakeven" | "compare";
+import type { CalcMode } from "@/data/calculators";
+
+export type { CalcMode };
 
 const Calculator = ({ mode = "all", hideCta = false }: { mode?: CalcMode; hideCta?: boolean }) => {
   const [input, setInput] = useState<CalcInput>(DEFAULTS);

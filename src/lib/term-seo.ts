@@ -1,11 +1,9 @@
-import type { GlossaryTerm } from "@/data/glossary";
-
 const BRAND = " | agregatory.pro";
 const MAX_TITLE = 65;
 const MAX_DESC = 158;
 
 /** Заголовок подстраивается под длину термина, чтобы уложиться в выдачу. */
-export const termTitle = (term: Pick<GlossaryTerm, "term">) => {
+export const termTitle = (term: { term: string }) => {
   const name = term.term;
   const full = `${name} — что это такое простыми словами${BRAND}`;
   if (full.length <= MAX_TITLE) return full;
@@ -27,9 +25,11 @@ const cut = (s: string, limit: number) => {
   return `${slice.slice(0, stop > limit * 0.6 ? stop : slice.length).replace(/[.,;:\s]+$/, "")}…`;
 };
 
-export const termDescription = (
-  term: Pick<GlossaryTerm, "term" | "short" | "formula">,
-) => {
+export const termDescription = (term: {
+  term: string;
+  short: string;
+  formula?: string;
+}) => {
   const base = `${term.term}: ${term.short}`;
   const withFormula = term.formula ? `${base} Формула: ${term.formula}.` : base;
   if (withFormula.length <= MAX_DESC) {

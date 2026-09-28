@@ -1,4 +1,4 @@
-import type { CalcMode } from "@/components/calc/Calculator";
+export type CalcMode = "all" | "profit" | "drr" | "vat" | "breakeven" | "compare";
 
 export type CalcPage = {
   slug: string;
