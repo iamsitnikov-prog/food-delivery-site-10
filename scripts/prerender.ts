@@ -20,7 +20,12 @@ const todayISO = () => new Date().toISOString().slice(0, 10);
 const BLOG_POSTS = ALL_POSTS.filter((p) => !p.date || p.date <= todayISO());
 
 const SITE = "https://agregatory.pro";
-const OUT = path.resolve(process.cwd(), "public");
+// Пишем в dist: Vite копирует public в dist ДО запуска пререндера,
+// поэтому запись в public не попадала в сборку и сайт получал старые страницы.
+// Если dist ещё нет (ручной запуск), падаем обратно на public.
+const ROOT = path.resolve(process.cwd());
+const DIST = path.join(ROOT, "dist");
+const OUT = fs.existsSync(DIST) ? DIST : path.join(ROOT, "public");
 
 const esc = (s: string) =>
   s
