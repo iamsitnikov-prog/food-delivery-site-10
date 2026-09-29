@@ -75,6 +75,7 @@ const ChecklistDownload = ({ page }: { page: ChecklistPage }) => {
           status: "скачал чек-лист",
           channel: "Telegram",
           comment: `Чек-лист: ${page.navLabel} (/chek-listy/${page.slug})`,
+          page: window.location.href,
         }),
       });
       if (!res.ok) throw new Error("failed");

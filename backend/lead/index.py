@@ -1,3 +1,4 @@
+import html
 import http.client
 import json
 import os
@@ -44,7 +45,7 @@ def send_email(subject, text, budget=2.0):
         return False
 
 
-def save_lead(name, phone, place, status, channel, comment, sent):
+def save_lead(name, phone, place, status, channel, comment, sent, page=''):
     dsn = os.environ.get('DATABASE_URL')
     if not dsn:
         return None
@@ -59,8 +60,8 @@ def save_lead(name, phone, place, status, channel, comment, sent):
             def esc(v):
                 return "'" + str(v).replace("'", "''") + "'" if v else 'NULL'
             cur.execute(
-                f"INSERT INTO {schema}.leads (name, phone, place, status, channel, comment, sent_to_telegram) "
-                f"VALUES ({esc(name)}, {esc(phone)}, {esc(place)}, {esc(status)}, {esc(channel)}, {esc(comment)}, {'TRUE' if sent else 'FALSE'}) "
+                f"INSERT INTO {schema}.leads (name, phone, place, status, channel, comment, sent_to_telegram, page) "
+                f"VALUES ({esc(name)}, {esc(phone)}, {esc(place)}, {esc(status)}, {esc(channel)}, {esc(comment)}, {'TRUE' if sent else 'FALSE'}, {esc(page)}) "
                 f"RETURNING id"
             )
             lead_id = cur.fetchone()[0]
@@ -206,6 +207,7 @@ def handler(event, context):
     status = str(body.get('status', '')).strip()
     channel = str(body.get('channel', '')).strip()
     comment = str(body.get('comment', '')).strip()
+    page = str(body.get('page', '')).strip()[:300]
 
     if not name or not phone:
         return {
@@ -215,25 +217,31 @@ def handler(event, context):
             'body': json.dumps({'error': 'name and phone are required'}),
         }
 
+    # Сообщение уходит с parse_mode=HTML — экранируем, чтобы < и & в тексте
+    # не ломали отправку.
+    esc = lambda v: html.escape(v, quote=False)
+
     lines = [
         '<b>Новая заявка с сайта</b>',
         '',
-        f'<b>Имя:</b> {name}',
-        f'<b>Телефон:</b> {phone}',
+        f'<b>Имя:</b> {esc(name)}',
+        f'<b>Телефон:</b> {esc(phone)}',
     ]
     if place:
-        lines.append(f'<b>Заведение:</b> {place}')
+        lines.append(f'<b>Заведение:</b> {esc(place)}')
     if status:
-        lines.append(f'<b>Услуга:</b> {status}')
+        lines.append(f'<b>Услуга:</b> {esc(status)}')
     if channel:
-        lines.append(f'<b>Связь:</b> {channel}')
+        lines.append(f'<b>Связь:</b> {esc(channel)}')
     if comment:
-        lines.append(f'<b>Комментарий:</b> {comment}')
+        lines.append(f'<b>Комментарий:</b> {esc(comment)}')
+    if page.startswith('http'):
+        lines.append(f'<b>Страница:</b> {esc(page)}')
 
     started = time.monotonic()
     total_budget = 4.2
 
-    lead_id = save_lead(name, phone, place, status, channel, comment, False)
+    lead_id = save_lead(name, phone, place, status, channel, comment, False, page)
     plain = '\n'.join(l.replace('<b>', '').replace('</b>', '') for l in lines)
 
     left = total_budget - (time.monotonic() - started)

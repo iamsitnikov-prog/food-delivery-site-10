@@ -1,0 +1,1 @@
+ALTER TABLE t_p13384267_food_delivery_site_1.leads ADD COLUMN IF NOT EXISTS page text;

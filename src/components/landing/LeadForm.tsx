@@ -69,7 +69,15 @@ const LeadForm = () => {
       const res = await fetch(LEAD_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, phone, place, status, channel, comment }),
+        body: JSON.stringify({
+          name,
+          phone,
+          place,
+          status,
+          channel,
+          comment,
+          page: window.location.href,
+        }),
       });
       if (!res.ok) throw new Error("failed");
       setSent(true);
