@@ -200,7 +200,7 @@ const GlossaryPage = () => {
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
         {list.length === 0 ? (
-          <p className="rounded-[24px] bg-surface p-8 text-cream-muted">
+          <p className="rounded-[24px] bg-surface p-6 md:p-8 text-cream-muted">
             Ничего не нашлось. Попробуйте другое слово или{" "}
             <button type="button" onClick={reset} className="text-brand underline hover:no-underline">
               сбросьте фильтры

@@ -70,7 +70,7 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
         return (
           <blockquote
             key={i}
-            className="mt-8 rounded-[24px] bg-surface p-7 font-display text-[1.15em] font-medium leading-snug text-cream md:text-[1.3em]"
+            className="mt-8 rounded-[24px] bg-surface p-5 md:p-7 font-display text-[1.15em] font-medium leading-snug text-cream md:text-[1.3em]"
           >
             {b.text}
           </blockquote>
@@ -78,7 +78,7 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
 
       if (b.type === "partner")
         return (
-          <aside key={i} className="mt-8 rounded-[24px] border border-primary/25 bg-pale p-7">
+          <aside key={i} className="mt-8 rounded-[24px] border border-primary/25 bg-pale p-5 md:p-7">
             <div className="flex flex-wrap items-center gap-2.5">
               <span className="rounded-lg bg-foreground px-3 py-1.5 text-[0.75em] font-medium uppercase tracking-wide text-brand">
                 новое

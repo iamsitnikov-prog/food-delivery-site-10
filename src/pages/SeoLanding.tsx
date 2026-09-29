@@ -134,7 +134,7 @@ const SeoLanding = () => {
             )}
           </div>
 
-          <aside className="h-fit rounded-[28px] border border-cream/20 p-7">
+          <aside className="h-fit rounded-[28px] border border-cream/20 p-5 md:p-7">
             <h2 className="font-display text-[1.35em] font-semibold text-brand">что входит</h2>
             <ul className="mt-5 space-y-3 text-[0.95em] leading-snug text-cream-muted">
               {page.bullets.map((b) => (
