@@ -7,6 +7,8 @@ import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
 import { GLOSSARY, getRelated, getSameGroup, getTerm } from "@/data/glossary";
 import { termDescription, termTitle } from "@/lib/term-seo";
+import { anchorId } from "@/lib/term-anchors";
+import TermAside from "@/components/glossary/TermAside";
 
 const SITE = "https://agregatory.pro";
 
@@ -136,11 +138,14 @@ const GlossaryTermPage = () => {
         </p>
       </section>
 
-      <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <div className="max-w-[900px] rounded-[32px] bg-surface p-7 text-cream md:p-10">
+      <section className="grid items-start gap-4 px-5 pb-11 md:px-14 md:pb-24 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-6">
+        <div className="rounded-[32px] bg-surface p-7 text-cream md:p-10">
           {/* Общая колонка: текст и врезки одной ширины, иначе правый край рвётся */}
           <div className="max-w-[760px]">
-            <h2 className="font-display text-[1.4em] font-semibold tracking-[-0.02em]">
+            <h2
+              id="chto-eto-znachit"
+              className="scroll-mt-6 font-display text-[1.4em] font-semibold tracking-[-0.02em]"
+            >
               что это значит
             </h2>
             <p className="mt-4 text-[1.05em] leading-relaxed text-cream-muted">
@@ -149,7 +154,7 @@ const GlossaryTermPage = () => {
 
             {term.formula && (
               <div className="mt-7">
-                <h3 className="text-[0.85em] uppercase tracking-wide text-cream-muted">
+                <h3 id="kak-schitat" className="scroll-mt-6 text-[0.85em] uppercase tracking-wide text-cream-muted">
                   как считать
                 </h3>
                 <p className="mt-2.5 rounded-2xl border border-cream/15 bg-cream/[0.05] px-5 py-4 font-mono text-[0.95em] leading-snug text-cream">
@@ -160,7 +165,7 @@ const GlossaryTermPage = () => {
 
             {term.example && (
               <div className="mt-6 rounded-2xl bg-brand/12 p-5">
-                <h3 className="flex items-center gap-2 text-[0.85em] uppercase tracking-wide text-brand">
+                <h3 id="primer" className="flex scroll-mt-6 items-center gap-2 text-[0.85em] uppercase tracking-wide text-brand">
                   <Icon name="Lightbulb" size={15} />
                   пример
                 </h3>
@@ -172,7 +177,7 @@ const GlossaryTermPage = () => {
 
             {term.mistake && (
               <div className="mt-6 rounded-2xl border border-cream/15 bg-cream/[0.04] p-5">
-                <h3 className="flex items-center gap-2 text-[0.85em] uppercase tracking-wide text-cream-muted">
+                <h3 id="tipichnaya-oshibka" className="flex scroll-mt-6 items-center gap-2 text-[0.85em] uppercase tracking-wide text-cream-muted">
                   <Icon name="TriangleAlert" size={15} />
                   типичная ошибка
                 </h3>
@@ -184,7 +189,10 @@ const GlossaryTermPage = () => {
 
             {term.sections?.map((s) => (
               <div key={s.title} className="mt-7 border-t border-cream/12 pt-6">
-                <h3 className="font-display text-[1.15em] font-semibold tracking-[-0.02em] text-cream">
+                <h3
+                  id={anchorId(s.title)}
+                  className="scroll-mt-6 font-display text-[1.15em] font-semibold tracking-[-0.02em] text-cream"
+                >
                   {s.title}
                 </h3>
                 <p className="mt-3 text-[1.02em] leading-relaxed text-cream-muted">
@@ -214,11 +222,16 @@ const GlossaryTermPage = () => {
             )}
           </div>
         </div>
+
+        <TermAside term={term} />
       </section>
 
       {term.faq && term.faq.length > 0 && (
         <section className="px-5 pb-11 md:px-14 md:pb-24">
-          <h2 className="font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]">
+          <h2
+            id="chastye-voprosy"
+            className="scroll-mt-6 font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]"
+          >
             частые
             <span className="pl-3 text-muted-foreground">вопросы</span>
           </h2>

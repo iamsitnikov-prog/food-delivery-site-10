@@ -12,6 +12,14 @@ import { QUIZZES } from "../src/data/quizzes";
 import { getCityCase, CITY_CASES } from "../src/data/city-cases";
 import { getChecklistPage } from "../src/data/checklists";
 import { GLOSSARY, GLOSSARY_LETTERS } from "../src/data/glossary";
+import { anchorId, buildToc } from "../src/lib/term-anchors";
+import { PEOPLE } from "../src/data/team";
+import {
+  getCta,
+  getExpertIndex,
+  getExpertNote,
+  getMiniCalc,
+} from "../src/data/term-sidebar";
 import { termDescription, termTitle } from "../src/lib/term-seo";
 import { getServiceResources } from "../src/data/service-resources";
 import { AGGREGATORS, SCENARIOS, CONCLUSIONS } from "../src/data/comparison";
@@ -453,6 +461,22 @@ for (const term of GLOSSARY) {
     (g) => g.group === term.group && g.slug !== term.slug,
   ).slice(0, 6);
 
+  // Правая колонка страницы термина — её содержимое должно быть в HTML,
+  // иначе поисковик не увидит ни оглавление, ни связанные термины.
+  const mini = getMiniCalc(term);
+  const cta = getCta(term);
+  const expert = PEOPLE[getExpertIndex(term)];
+  const note = getExpertNote(term);
+  const asideLinks = [
+    ...related,
+    ...GLOSSARY.filter(
+      (g) =>
+        g.group === term.group &&
+        g.slug !== term.slug &&
+        !related.some((r) => r.slug === g.slug),
+    ),
+  ].slice(0, 7);
+
   pages.push({
     route: `/slovar/${term.slug}`,
     jsonLd: [
@@ -530,14 +554,14 @@ for (const term of GLOSSARY) {
     }),
     body: `<h1>${esc(clean(term.term))}</h1>
 <p>${esc(clean(term.short))}</p>
-<h2>Что это значит</h2>
+<h2 id="chto-eto-znachit">Что это значит</h2>
 <p>${esc(clean(term.full))}</p>${
       term.formula
-        ? `\n<h2>Как считать</h2>\n<p>${esc(clean(term.formula))}</p>`
+        ? `\n<h2 id="kak-schitat">Как считать</h2>\n<p>${esc(clean(term.formula))}</p>`
         : ""
-    }${term.example ? `\n<h2>Пример</h2>\n<p>${esc(clean(term.example))}</p>` : ""}${
+    }${term.example ? `\n<h2 id="primer">Пример</h2>\n<p>${esc(clean(term.example))}</p>` : ""}${
       term.mistake
-        ? `\n<h2>Типичная ошибка</h2>\n<p>${esc(clean(term.mistake))}</p>`
+        ? `\n<h2 id="tipichnaya-oshibka">Типичная ошибка</h2>\n<p>${esc(clean(term.mistake))}</p>`
         : ""
     }${
       term.sections?.length
@@ -545,13 +569,13 @@ for (const term of GLOSSARY) {
           term.sections
             .map(
               (s) =>
-                `<h2>${esc(clean(s.title))}</h2>\n<p>${esc(clean(s.body))}</p>`,
+                `<h2 id="${anchorId(s.title)}">${esc(clean(s.title))}</h2>\n<p>${esc(clean(s.body))}</p>`,
             )
             .join("\n")
         : ""
     }${
       term.faq?.length
-        ? `\n<h2>Частые вопросы</h2>\n` +
+        ? `\n<h2 id="chastye-voprosy">Частые вопросы</h2>\n` +
           term.faq
             .map(
               (f) => `<h3>${esc(clean(f.q))}</h3>\n<p>${esc(clean(f.a))}</p>`,
@@ -582,7 +606,27 @@ for (const term of GLOSSARY) {
             .join(" · ")}</p>`
         : ""
     }
-<p><a href="/slovar">Весь глоссарий доставки</a> · <a href="/kalkulyatory">Калькуляторы</a> · <a href="/razbor-otchetov">Разбор отчётов</a></p>
+<h2>Содержание</h2>
+<ul>${buildToc(term)
+      .map((i) => `<li><a href="#${i.id}">${esc(clean(i.title))}</a></li>`)
+      .join("")}</ul>${
+      mini
+        ? `\n<h2>${esc(mini.title)}</h2>\n<p><a href="${mini.to}">${esc(mini.linkLabel)}</a></p>`
+        : ""
+    }
+<h2>${esc(clean(cta.title))}</h2>
+<p>${esc(clean(cta.text))} <a href="/#lead">Оставить заявку на бесплатный анализ</a>.</p>${
+      asideLinks.length
+        ? `\n<h2>Связанные термины</h2>\n<ul>${asideLinks
+            .map(
+              (r) => `<li><a href="/slovar/${r.slug}">${esc(clean(r.term))}</a></li>`,
+            )
+            .join("")}</ul>`
+        : ""
+    }
+<h2>Комментарий эксперта</h2>
+<p>${esc(clean(expert.name))}, ${esc(clean(expert.exp))}: «${esc(clean(note))}»</p>
+<p><a href="/slovar">Весь глоссарий доставки</a> · <a href="/kalkulyatory">Калькуляторы</a> · <a href="/chek-listy">Чек-листы</a> · <a href="/razbor-otchetov">Разбор отчётов</a></p>
 <p>Телефон: +7 931 002-82-22</p>`,
   });
 }
