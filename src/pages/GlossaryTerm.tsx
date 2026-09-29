@@ -5,9 +5,10 @@ import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
-import { GLOSSARY, getRelated, getSameGroup, getTerm } from "@/data/glossary";
+import { GLOSSARY, getTerm } from "@/data/glossary";
 import { termDescription, termTitle } from "@/lib/term-seo";
-import { anchorId } from "@/lib/term-anchors";
+import { richText } from "@/lib/rich-text";
+import TermSectionBlock from "@/components/glossary/TermSectionBlock";
 import TermAside from "@/components/glossary/TermAside";
 
 const SITE = "https://agregatory.pro";
@@ -17,8 +18,6 @@ const GlossaryTermPage = () => {
   const { slug } = useParams();
   const term = getTerm(slug || "");
 
-  const related = term ? getRelated(term) : [];
-  const sameGroup = term ? getSameGroup(term) : [];
   const index = term ? GLOSSARY.findIndex((t) => t.slug === term.slug) : -1;
   const prev = index > 0 ? GLOSSARY[index - 1] : null;
   const next =
@@ -27,7 +26,7 @@ const GlossaryTermPage = () => {
   useSeo({
     title: term ? termTitle(term) : "Термин не найден | agregatory.pro",
     description: term
-      ? termDescription(term)
+      ? termDescription({ ...term, hasExample: Boolean(term.example || term.formula) })
       : "Термин не найден в глоссарии доставки.",
     path: pathname,
     jsonLd: term
@@ -149,7 +148,7 @@ const GlossaryTermPage = () => {
               что это значит
             </h2>
             <p className="mt-4 text-[1.05em] leading-relaxed text-cream-muted">
-              {term.full}
+              {richText(term.full)}
             </p>
 
             {term.formula && (
@@ -182,23 +181,13 @@ const GlossaryTermPage = () => {
                   типичная ошибка
                 </h3>
                 <p className="mt-2 text-[1em] leading-snug text-cream">
-                  {term.mistake}
+                  {richText(term.mistake)}
                 </p>
               </div>
             )}
 
             {term.sections?.map((s) => (
-              <div key={s.title} className="mt-7 border-t border-cream/12 pt-6">
-                <h3
-                  id={anchorId(s.title)}
-                  className="scroll-mt-6 font-display text-[1.15em] font-semibold tracking-[-0.02em] text-cream"
-                >
-                  {s.title}
-                </h3>
-                <p className="mt-3 text-[1.02em] leading-relaxed text-cream-muted">
-                  {s.body}
-                </p>
-              </div>
+              <TermSectionBlock key={s.title} section={s} />
             ))}
 
             {term.links && term.links.length > 0 && (
@@ -248,58 +237,6 @@ const GlossaryTermPage = () => {
                   {f.a}
                 </p>
               </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {related.length > 0 && (
-        <section className="px-5 pb-11 md:px-14 md:pb-24">
-          <h2 className="font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]">
-            связанные
-            <span className="pl-3 text-muted-foreground">термины</span>
-          </h2>
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            {related.map((r) => (
-              <Link
-                key={r.slug}
-                to={`/slovar/${r.slug}`}
-                className="group rounded-[24px] bg-surface p-6 text-cream transition-transform hover:-translate-y-1"
-              >
-                <span className="flex items-start justify-between gap-3">
-                  <span className="font-display text-[1.2em] font-semibold leading-tight tracking-[-0.02em]">
-                    {r.term}
-                  </span>
-                  <Icon
-                    name="ArrowUpRight"
-                    size={17}
-                    className="shrink-0 text-cream-muted transition-colors group-hover:text-brand"
-                  />
-                </span>
-                <span className="mt-2.5 block leading-snug text-cream-muted">
-                  {r.short}
-                </span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {sameGroup.length > 0 && (
-        <section className="px-5 pb-11 md:px-14 md:pb-24">
-          <h2 className="font-display text-[1.3em] font-semibold tracking-[-0.02em]">
-            рядом по теме «{term.group}»
-          </h2>
-          <div className="mt-5 flex flex-wrap gap-2">
-            {sameGroup.map((g) => (
-              <Link
-                key={g.slug}
-                to={`/slovar/${g.slug}`}
-                title={g.short}
-                className="rounded-xl border border-foreground/15 px-4 py-2.5 text-[0.9em] text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground"
-              >
-                {g.term}
-              </Link>
             ))}
           </div>
         </section>

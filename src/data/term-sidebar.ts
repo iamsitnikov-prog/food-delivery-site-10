@@ -132,8 +132,19 @@ const BY_SLUG: Record<string, MiniCalcKind> = {
   vyruchka: "nds",
 };
 
+/** Запасной расчёт по адресу калькулятора — если термин не в списке. */
+const BY_CALC: Record<string, MiniCalcKind> = {
+  "/kalkulyatory/drr": "drr",
+  "/kalkulyatory/rentabelnost-zakaza": "marzha",
+  "/kalkulyatory/model-dostavki": "komissiya",
+  "/kalkulyatory/konstruktory-dostavki": "komissiya",
+  "/kalkulyatory/okupaemost": "okupaemost",
+  "/kalkulyatory/nds": "nds",
+};
+
 export const getMiniCalc = (term: GlossaryTerm): MiniCalcMeta | null => {
-  const kind = BY_SLUG[term.slug];
+  const kind =
+    BY_SLUG[term.slug] ?? (term.calculator ? BY_CALC[term.calculator] : undefined);
   return kind ? MINI[kind] : null;
 };
 

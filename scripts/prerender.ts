@@ -54,6 +54,17 @@ const esc = (s: string) =>
 
 const clean = (s: string) => s.replace(/\u00a0/g, " ").trim();
 
+/** Текст со ссылками [анкор](/адрес) — в экранированный HTML с <a href>. */
+const rich = (s: string) =>
+  esc(clean(s)).replace(
+    /\[([^\]]+)\]\((\/[^)\s]*)\)/g,
+    (_m, anchor: string, to: string) => `<a href="${to}">${anchor}</a>`,
+  );
+
+/** Та же разметка, но без ссылок — для description и микроразметки. */
+const flat = (s: string) =>
+  clean(s).replace(/\[([^\]]+)\]\((\/[^)\s]*)\)/g, "$1");
+
 type Page = {
   route: string;
   /** Если страница — дубль, каноникал ведёт сюда. */
@@ -454,28 +465,16 @@ ${GLOSSARY.map(
 });
 
 for (const term of GLOSSARY) {
-  const related = (term.see ?? [])
-    .map((s) => GLOSSARY.find((g) => g.slug === s))
-    .filter((g): g is (typeof GLOSSARY)[number] => Boolean(g));
-  const sameGroup = GLOSSARY.filter(
-    (g) => g.group === term.group && g.slug !== term.slug,
-  ).slice(0, 6);
-
   // Правая колонка страницы термина — её содержимое должно быть в HTML,
   // иначе поисковик не увидит ни оглавление, ни связанные термины.
-  const mini = getMiniCalc(term);
+  const mini = term.calculator ? getMiniCalc(term) : null;
   const cta = getCta(term);
-  const expert = PEOPLE[getExpertIndex(term)];
-  const note = getExpertNote(term);
-  const asideLinks = [
-    ...related,
-    ...GLOSSARY.filter(
-      (g) =>
-        g.group === term.group &&
-        g.slug !== term.slug &&
-        !related.some((r) => r.slug === g.slug),
-    ),
-  ].slice(0, 7);
+  const expert = term.expert;
+  const person = expert ? PEOPLE.find((x) => x.name === expert.name) : undefined;
+  // Связанные термины заданы в данных, порядок утверждён.
+  const asideLinks = (term.related ?? [])
+    .map((href) => GLOSSARY.find((g) => `/slovar/${g.slug}` === href))
+    .filter((g): g is (typeof GLOSSARY)[number] => Boolean(g));
 
   pages.push({
     route: `/slovar/${term.slug}`,
@@ -504,7 +503,7 @@ for (const term of GLOSSARY) {
         "@type": "DefinedTerm",
         "@id": `${SITE}/slovar/${term.slug}`,
         name: clean(term.term),
-        description: clean(term.short),
+        description: flat(term.short),
         inDefinedTermSet: {
           "@type": "DefinedTermSet",
           name: "Глоссарий доставки",
@@ -521,7 +520,7 @@ for (const term of GLOSSARY) {
             name: `Что такое ${clean(term.term)}?`,
             acceptedAnswer: {
               "@type": "Answer",
-              text: `${clean(term.short)} ${clean(term.full)}`,
+              text: `${flat(term.short)} ${flat(term.full)}`,
             },
           },
           ...(term.formula
@@ -531,8 +530,8 @@ for (const term of GLOSSARY) {
                   name: `Как считать ${clean(term.term)}?`,
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: `${clean(term.formula)}${
-                      term.example ? `. Пример: ${clean(term.example)}` : ""
+                    text: `${flat(term.formula)}${
+                      term.example ? `. Пример: ${flat(term.example)}` : ""
                     }`,
                   },
                 },
@@ -540,8 +539,8 @@ for (const term of GLOSSARY) {
             : []),
           ...(term.faq ?? []).map((f) => ({
             "@type": "Question",
-            name: clean(f.q),
-            acceptedAnswer: { "@type": "Answer", text: clean(f.a) },
+            name: flat(f.q),
+            acceptedAnswer: { "@type": "Answer", text: flat(f.a) },
           })),
         ],
       },
@@ -549,28 +548,52 @@ for (const term of GLOSSARY) {
     title: termTitle({ term: clean(term.term) }),
     description: termDescription({
       term: clean(term.term),
-      short: clean(term.short),
-      formula: term.formula ? clean(term.formula) : undefined,
+      short: flat(term.short),
+      formula: term.formula ? flat(term.formula) : undefined,
+      hasExample: Boolean(term.example || term.formula),
     }),
     body: `<h1>${esc(clean(term.term))}</h1>
 <p>${esc(clean(term.short))}</p>
 <h2 id="chto-eto-znachit">Что это значит</h2>
-<p>${esc(clean(term.full))}</p>${
+<p>${rich(term.full)}</p>${
       term.formula
         ? `\n<h2 id="kak-schitat">Как считать</h2>\n<p>${esc(clean(term.formula))}</p>`
         : ""
     }${term.example ? `\n<h2 id="primer">Пример</h2>\n<p>${esc(clean(term.example))}</p>` : ""}${
       term.mistake
-        ? `\n<h2 id="tipichnaya-oshibka">Типичная ошибка</h2>\n<p>${esc(clean(term.mistake))}</p>`
+        ? `\n<h2 id="tipichnaya-oshibka">Типичная ошибка</h2>\n<p>${rich(term.mistake)}</p>`
         : ""
     }${
       term.sections?.length
         ? "\n" +
           term.sections
-            .map(
-              (s) =>
-                `<h2 id="${anchorId(s.title)}">${esc(clean(s.title))}</h2>\n<p>${esc(clean(s.body))}</p>`,
-            )
+            .map((s) => {
+              const paras = s.paragraphs ?? (s.body ? [s.body] : []);
+              const table = s.table?.length
+                ? `\n<table><thead><tr>${s.table[0]
+                    .map((h) => `<th>${esc(clean(h))}</th>`)
+                    .join("")}</tr></thead><tbody>${s.table
+                    .slice(1)
+                    .map(
+                      (row) =>
+                        `<tr>${row.map((c) => `<td>${rich(c)}</td>`).join("")}</tr>`,
+                    )
+                    .join("")}</tbody></table>`
+                : "";
+              const list = s.list?.length
+                ? `\n<ul>${s.list.map((li) => `<li>${rich(li)}</li>`).join("")}</ul>`
+                : "";
+              const after = (s.after ?? [])
+                .map((x) => `\n<p>${rich(x)}</p>`)
+                .join("");
+              return (
+                `<h2 id="${anchorId(s.title)}">${esc(clean(s.title))}</h2>` +
+                paras.map((x) => `\n<p>${rich(x)}</p>`).join("") +
+                table +
+                list +
+                after
+              );
+            })
             .join("\n")
         : ""
     }${
@@ -578,7 +601,7 @@ for (const term of GLOSSARY) {
         ? `\n<h2 id="chastye-voprosy">Частые вопросы</h2>\n` +
           term.faq
             .map(
-              (f) => `<h3>${esc(clean(f.q))}</h3>\n<p>${esc(clean(f.a))}</p>`,
+              (f) => `<h3>${esc(flat(f.q))}</h3>\n<p>${rich(f.a)}</p>`,
             )
             .join("\n")
         : ""
@@ -588,34 +611,19 @@ for (const term of GLOSSARY) {
             .map((l) => `<a href="${l.to}">${esc(clean(l.label))}</a>`)
             .join(" · ")}</p>`
         : ""
-    }${
-      related.length
-        ? `\n<h2>Связанные термины</h2>\n<ul>${related
-            .map(
-              (r) =>
-                `<li><a href="/slovar/${r.slug}">${esc(clean(r.term))}</a> — ${esc(
-                  clean(r.short),
-                )}</li>`,
-            )
-            .join("")}</ul>`
-        : ""
-    }${
-      sameGroup.length
-        ? `\n<p>Рядом по теме «${esc(clean(term.group))}»: ${sameGroup
-            .map((g) => `<a href="/slovar/${g.slug}">${esc(clean(g.term))}</a>`)
-            .join(" · ")}</p>`
-        : ""
     }
 <h2>Содержание</h2>
 <ul>${buildToc(term)
       .map((i) => `<li><a href="#${i.id}">${esc(clean(i.title))}</a></li>`)
       .join("")}</ul>${
       mini
-        ? `\n<h2>${esc(mini.title)}</h2>\n<p><a href="${mini.to}">${esc(mini.linkLabel)}</a></p>`
+        ? `\n<h2>${esc(mini.title)}</h2>\n<p><a href="${term.calculator}">${esc(mini.linkLabel)}</a></p>`
         : ""
     }
 <h2>${esc(clean(cta.title))}</h2>
-<p>${esc(clean(cta.text))} <a href="/#lead">Оставить заявку на бесплатный анализ</a>.</p>${
+<p>${esc(clean(cta.text))} <a href="/#lead">Оставить заявку на бесплатный анализ</a>.${
+      term.service ? ` <a href="${term.service}">Подробнее об услуге</a>.` : ""
+    }</p>${
       asideLinks.length
         ? `\n<h2>Связанные термины</h2>\n<ul>${asideLinks
             .map(
@@ -624,8 +632,13 @@ for (const term of GLOSSARY) {
             .join("")}</ul>`
         : ""
     }
-<h2>Комментарий эксперта</h2>
-<p>${esc(clean(expert.name))}, ${esc(clean(expert.exp))}: «${esc(clean(note))}»</p>
+${
+      expert
+        ? `\n<h2>Комментарий эксперта</h2>\n<p>${esc(clean(expert.name))}${
+            person ? `, ${esc(clean(person.exp))}` : ""
+          }: «${esc(clean(expert.text))}»</p>`
+        : ""
+    }
 <p><a href="/slovar">Весь глоссарий доставки</a> · <a href="/kalkulyatory">Калькуляторы</a> · <a href="/chek-listy">Чек-листы</a> · <a href="/razbor-otchetov">Разбор отчётов</a></p>
 <p>Телефон: +7 931 002-82-22</p>`,
   });

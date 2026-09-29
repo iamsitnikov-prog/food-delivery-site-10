@@ -3,29 +3,33 @@ import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import MiniCalc from "./MiniCalc";
 import type { GlossaryTerm } from "@/data/glossary";
-import { getRelated, getSameGroup } from "@/data/glossary";
+import { getTerm } from "@/data/glossary";
 import { PEOPLE } from "@/data/team";
 import { buildToc } from "@/lib/term-anchors";
 import { useActiveAnchor } from "@/hooks/use-active-anchor";
-import { getCta, getExpertIndex, getExpertNote, getMiniCalc } from "@/data/term-sidebar";
+import { getCta, getMiniCalc } from "@/data/term-sidebar";
 
 /** Правая колонка страницы термина: оглавление, расчёт, заявка, соседние термины. */
 const TermAside = ({ term }: { term: GlossaryTerm }) => {
   const toc = buildToc(term);
-  const mini = getMiniCalc(term);
+  // Адрес калькулятора задан в данных термина и важнее подбора по теме.
+  const base = term.calculator ? getMiniCalc(term) : null;
+  const mini =
+    base && term.calculator ? { ...base, to: term.calculator } : base;
   const cta = getCta(term);
-  const expert = PEOPLE[getExpertIndex(term)];
-  const note = getExpertNote(term);
+  // Комментарий свой у каждого термина; подпись со стажем берём из команды.
+  const expert = term.expert;
+  const person = expert
+    ? PEOPLE.find((p) => p.name === expert.name)
+    : undefined;
 
   const ids = useMemo(() => toc.map((i) => i.id), [toc]);
   const active = useActiveAnchor(ids);
 
-  // 5–7 ссылок: сначала прямые связи, добиваем соседями по теме.
-  const direct = getRelated(term);
-  const nearby = getSameGroup(term, 12).filter(
-    (g) => !direct.some((d) => d.slug === g.slug),
-  );
-  const links = [...direct, ...nearby].slice(0, 7);
+  // Связанные термины заданы в данных — порядок утверждён и не меняется.
+  const links = (term.related ?? [])
+    .map((href) => getTerm(href.replace("/slovar/", "")))
+    .filter((t): t is GlossaryTerm => Boolean(t));
 
   return (
     <aside className="mt-8 space-y-4 lg:sticky lg:top-6 lg:mt-0 lg:self-start">
@@ -64,7 +68,26 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
         </nav>
       )}
 
-      {mini && <MiniCalc meta={mini} />}
+      {mini ? (
+        <MiniCalc meta={mini} />
+      ) : (
+        term.calculator && (
+          <Link
+            to={term.calculator}
+            className="flex items-center justify-between gap-3 rounded-[24px] bg-cream p-6 text-foreground transition-transform hover:-translate-y-0.5"
+          >
+            <span>
+              <span className="block font-display text-[1.1em] font-semibold tracking-[-0.02em]">
+                проверить себя
+              </span>
+              <span className="mt-1 block text-[0.88em] leading-snug text-foreground/60">
+                короткий тест по теме
+              </span>
+            </span>
+            <Icon name="ArrowRight" size={18} className="shrink-0" />
+          </Link>
+        )
+      )}
 
       <div className="rounded-[24px] bg-surface p-6 text-cream">
         <h2 className="font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em]">
@@ -80,6 +103,15 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
         <p className="mt-2.5 text-center text-[0.8em] text-cream-muted">
           разбор занимает 20 минут, без обязательств
         </p>
+        {term.service && (
+          <Link
+            to={term.service}
+            className="mt-3.5 flex items-center justify-center gap-1.5 text-[0.88em] font-medium text-brand transition-opacity hover:opacity-80"
+          >
+            подробнее об услуге
+            <Icon name="ArrowRight" size={15} />
+          </Link>
+        )}
       </div>
 
       {links.length > 0 && (
@@ -112,26 +144,34 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
         </nav>
       )}
 
-      <div className="rounded-[24px] bg-cream p-6 text-foreground">
-        <div className="flex items-center gap-3">
-          <img
-            src={expert.photo}
-            alt={expert.name}
-            width={44}
-            height={44}
-            loading="lazy"
-            decoding="async"
-            className="h-11 w-11 shrink-0 rounded-full object-cover"
-          />
-          <div className="min-w-0">
-            <p className="font-medium leading-tight">{expert.name}</p>
-            <p className="mt-0.5 text-[0.82em] leading-snug text-foreground/55">
-              {expert.exp}
-            </p>
+      {expert && (
+        <div className="rounded-[24px] bg-cream p-6 text-foreground">
+          <div className="flex items-center gap-3">
+            {person && (
+              <img
+                src={person.photo}
+                alt={expert.name}
+                width={44}
+                height={44}
+                loading="lazy"
+                decoding="async"
+                className="h-11 w-11 shrink-0 rounded-full object-cover"
+              />
+            )}
+            <div className="min-w-0">
+              <p className="font-medium leading-tight">{expert.name}</p>
+              {person && (
+                <p className="mt-0.5 text-[0.82em] leading-snug text-foreground/55">
+                  {person.exp}
+                </p>
+              )}
+            </div>
           </div>
+          <p className="mt-3.5 text-[0.92em] leading-relaxed text-foreground/75">
+            «{expert.text}»
+          </p>
         </div>
-        <p className="mt-3.5 text-[0.92em] leading-relaxed text-foreground/75">«{note}»</p>
-      </div>
+      )}
 
       <div className="rounded-[24px] bg-cream p-6 text-foreground">
         <h2 className="text-[0.78em] font-medium uppercase tracking-wide text-foreground/50">

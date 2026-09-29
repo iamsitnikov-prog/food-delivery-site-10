@@ -29,12 +29,23 @@ export const termDescription = (term: {
   term: string;
   short: string;
   formula?: string;
+  /** Есть ли на странице разбор с цифрами: блок «Пример» или формула. */
+  hasExample?: boolean;
 }) => {
   const base = `${term.term}: ${term.short}`;
   const withFormula = term.formula ? `${base} Формула: ${term.formula}.` : base;
   if (withFormula.length <= MAX_DESC) {
-    const tail = " Простым языком, с примером расчёта.";
-    return withFormula.length + tail.length <= MAX_DESC ? withFormula + tail : withFormula;
+    // Про пример расчёта пишем только там, где он действительно есть,
+    // иначе описание обещает больше, чем на странице.
+    const tail = term.hasExample
+      ? " Простым языком, с примером расчёта."
+      : " Простым языком: типичные ошибки и ответы на частые вопросы.";
+    if (withFormula.length + tail.length <= MAX_DESC) return withFormula + tail;
+
+    const shortTail = term.hasExample ? " С примером расчёта." : " Простым языком.";
+    return withFormula.length + shortTail.length <= MAX_DESC
+      ? withFormula + shortTail
+      : withFormula;
   }
   return cut(withFormula, MAX_DESC);
 };

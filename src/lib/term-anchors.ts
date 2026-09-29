@@ -33,7 +33,7 @@ export const buildToc = (term: GlossaryTerm): TocItem[] => {
   if (term.mistake) items.push({ id: "tipichnaya-oshibka", title: "типичная ошибка", level: 3 });
 
   for (const s of term.sections ?? []) {
-    items.push({ id: anchorId(s.title), title: s.title, level: 3 });
+    items.push({ id: anchorId(s.title), title: s.title, level: s.level2 ? 2 : 3 });
   }
 
   if (term.faq?.length) items.push({ id: "chastye-voprosy", title: "частые вопросы", level: 2 });

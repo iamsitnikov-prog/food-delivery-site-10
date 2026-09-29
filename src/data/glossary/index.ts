@@ -7,7 +7,7 @@ import type { GlossaryEntry, GlossaryTerm } from "./types";
 import { BLOG_POSTS } from "../blog-posts";
 
 export { GLOSSARY_GROUPS } from "./types";
-export type { GlossaryTerm, GlossaryGroup, GlossaryEntry } from "./types";
+export type { GlossaryTerm, GlossaryGroup, GlossaryEntry, TermSection } from "./types";
 
 const ALL: GlossaryEntry[] = [
   ...BASE_TERMS,
