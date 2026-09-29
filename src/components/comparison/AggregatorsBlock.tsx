@@ -106,7 +106,7 @@ const AggregatorsBlock = () => {
       <section className="px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           сильные и слабые
-          <span className="pl-3 text-muted-foreground">стороны</span>
+          <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">стороны</span>
         </h2>
         <div className="mt-8 grid gap-3 md:gap-4 lg:grid-cols-3">
           {AGGREGATORS.map((a) => (
@@ -150,7 +150,7 @@ const AggregatorsBlock = () => {
       <section className="px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           разборы
-          <span className="pl-3 text-muted-foreground">типичных ситуаций</span>
+          <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">типичных ситуаций</span>
         </h2>
         <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2">
           {SCENARIOS.map((s) => (

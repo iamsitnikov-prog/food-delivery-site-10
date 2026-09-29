@@ -86,7 +86,7 @@ const CrossLinks = ({
     <section className="px-5 pb-11 md:px-14 md:pb-24">
       <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
         {title}
-        {subtitle && <span className="pl-3 text-muted-foreground">{subtitle}</span>}
+        {subtitle && <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">{subtitle}</span>}
       </h2>
       <div
         className={`mt-8 grid gap-4 ${cards.length > 2 ? "md:grid-cols-2 lg:grid-cols-3" : "md:grid-cols-2"}`}

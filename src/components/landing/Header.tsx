@@ -138,13 +138,13 @@ const Header = () => {
           </SheetTrigger>
           <SheetContent
             side="right"
-            className="flex w-[88vw] max-w-[380px] flex-col gap-0 overflow-y-auto border-l border-border bg-background px-5 pb-5 pt-5"
+            className="flex w-[88vw] max-w-[380px] flex-col gap-0 overflow-y-auto border-l border-border bg-background px-5 pb-5 pt-5 max-[360px]:px-4 max-[360px]:pb-3 max-[360px]:pt-4"
           >
             <SheetTitle className="font-display text-lg font-semibold">
               agregatory<span className="font-normal text-muted-foreground">.pro</span>
             </SheetTitle>
             {/* Полезное — первым блоком, плиткой в две колонки, чтобы всё меню помещалось на один экран */}
-            <p className="pb-2 pt-4 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+            <p className="pb-2 pt-4 text-[11px] font-medium uppercase tracking-wide text-muted-foreground max-[360px]:pb-1.5 max-[360px]:pt-3">
               полезное
             </p>
             <div className="grid grid-cols-2 gap-1.5">
@@ -153,14 +153,14 @@ const Header = () => {
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="flex min-h-[40px] items-center gap-2 rounded-xl bg-foreground/[.06] px-2.5 py-2 text-[13px] font-medium leading-tight last:odd:col-span-2"
+                  className="flex min-h-[40px] items-center gap-2 rounded-xl bg-foreground/[.06] px-2.5 py-2 text-[13px] font-medium leading-tight last:odd:col-span-2 max-[360px]:min-h-[36px] max-[360px]:px-2 max-[360px]:py-1.5"
                 >
                   <Icon name={l.icon} size={16} className="shrink-0" />
                   {l.label}
                 </a>
               ))}
             </div>
-            <p className="pb-2 pt-4 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+            <p className="pb-2 pt-4 text-[11px] font-medium uppercase tracking-wide text-muted-foreground max-[360px]:pb-1.5 max-[360px]:pt-3">
               разделы
             </p>
             <nav className="grid grid-cols-2 gap-1.5">
@@ -169,17 +169,17 @@ const Header = () => {
                   key={n.href}
                   href={to(n.href)}
                   onClick={() => setOpen(false)}
-                  className="flex min-h-[40px] items-center justify-center rounded-xl border border-foreground/15 px-2.5 py-2 text-center font-display text-[14px] font-semibold leading-tight tracking-tight last:odd:col-span-2"
+                  className="flex min-h-[40px] items-center justify-center rounded-xl border border-foreground/15 px-2.5 py-2 text-center font-display text-[14px] font-semibold leading-tight tracking-tight last:odd:col-span-2 max-[360px]:min-h-[36px] max-[360px]:py-1.5"
                 >
                   {n.label}
                 </a>
               ))}
             </nav>
-            <div className="pt-3">
+            <div className="pt-3 max-[360px]:pt-2">
               <a
                 href={to("#lead")}
                 onClick={() => setOpen(false)}
-                className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground"
+                className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground max-[360px]:py-2.5"
               >
                 оставить заявку
               </a>
@@ -191,7 +191,7 @@ const Header = () => {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={m.label}
-                    className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-xl border border-primary/30 text-[13px] font-medium"
+                    className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-xl border border-primary/30 text-[13px] font-medium max-[360px]:h-9 max-[360px]:gap-1 max-[360px]:text-[12px]"
                   >
                     <Icon name={m.icon} size={16} />
                     {m.label}

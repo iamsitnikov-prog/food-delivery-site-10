@@ -161,7 +161,7 @@ const SeoLanding = () => {
       <section className="px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[52px]">
           вопросы
-          <span className="pl-3 text-muted-foreground">и ответы</span>
+          <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">и ответы</span>
         </h2>
         <Accordion type="single" collapsible defaultValue="q-0" className="mt-8 max-w-[840px] border-t border-primary/25">
           {page.faq.map((f, i) => (

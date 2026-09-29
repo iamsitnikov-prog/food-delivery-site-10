@@ -216,7 +216,7 @@ const ReportsDecoder = () => {
       <section className="px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           зачем
-          <span className="pl-3 text-muted-foreground">это проверять</span>
+          <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">это проверять</span>
         </h2>
         <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2">
           {REASONS.map((r) => (
@@ -275,7 +275,7 @@ const ReportsDecoder = () => {
       <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           частые
-          <span className="pl-3 text-muted-foreground">вопросы</span>
+          <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">вопросы</span>
         </h2>
         <Accordion
           type="single"

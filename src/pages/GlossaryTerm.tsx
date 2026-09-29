@@ -222,7 +222,7 @@ const GlossaryTermPage = () => {
             className="scroll-mt-6 font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]"
           >
             частые
-            <span className="pl-3 text-muted-foreground">вопросы</span>
+            <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">вопросы</span>
           </h2>
           <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2">
             {term.faq.map((f) => (

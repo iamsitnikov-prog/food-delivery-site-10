@@ -19,7 +19,7 @@ const ChecklistCases = ({ slug }: { slug: string }) => {
     <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
       <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
         это работает
-        <span className="pl-3 text-muted-foreground">на практике</span>
+        <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">на практике</span>
       </h2>
       <p className="mt-4 max-w-[620px] leading-relaxed text-muted-foreground">
         Заведения, которые прошли по этим пунктам вместе с нами. Цифры — из их отчётов за период

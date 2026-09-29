@@ -71,7 +71,7 @@ const CalcPreview = () => {
           <section className="px-5 pb-11 md:px-14 md:pb-24">
             <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
               отдельные
-              <span className="pl-3 text-muted-foreground">калькуляторы</span>
+              <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">калькуляторы</span>
             </h2>
             <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2">
               {VISIBLE_CALC_PAGES.map((p) => (
