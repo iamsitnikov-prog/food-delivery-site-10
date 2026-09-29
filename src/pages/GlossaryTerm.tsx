@@ -19,11 +19,14 @@ const GlossaryTermPage = () => {
   const sameGroup = term ? getSameGroup(term) : [];
   const index = term ? GLOSSARY.findIndex((t) => t.slug === term.slug) : -1;
   const prev = index > 0 ? GLOSSARY[index - 1] : null;
-  const next = index >= 0 && index < GLOSSARY.length - 1 ? GLOSSARY[index + 1] : null;
+  const next =
+    index >= 0 && index < GLOSSARY.length - 1 ? GLOSSARY[index + 1] : null;
 
   useSeo({
     title: term ? termTitle(term) : "Термин не найден | agregatory.pro",
-    description: term ? termDescription(term) : "Термин не найден в глоссарии доставки.",
+    description: term
+      ? termDescription(term)
+      : "Термин не найден в глоссарии доставки.",
     path: pathname,
     jsonLd: term
       ? [
@@ -31,7 +34,12 @@ const GlossaryTermPage = () => {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Главная", item: `${SITE}/` },
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "Главная",
+                item: `${SITE}/`,
+              },
               {
                 "@type": "ListItem",
                 position: 2,
@@ -66,7 +74,10 @@ const GlossaryTermPage = () => {
               {
                 "@type": "Question",
                 name: `Что такое ${term.term}?`,
-                acceptedAnswer: { "@type": "Answer", text: `${term.short} ${term.full}` },
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: `${term.short} ${term.full}`,
+                },
               },
               ...(term.formula
                 ? [
@@ -126,75 +137,82 @@ const GlossaryTermPage = () => {
       </section>
 
       <section className="px-5 pb-16 md:px-14 md:pb-24">
-        <div className="rounded-[32px] bg-surface p-7 text-cream md:p-10">
-          <h2 className="font-display text-[1.4em] font-semibold tracking-[-0.02em]">
-            что это значит
-          </h2>
-          <p className="mt-4 max-w-[760px] text-[1.05em] leading-relaxed text-cream-muted">
-            {term.full}
-          </p>
+        <div className="max-w-[900px] rounded-[32px] bg-surface p-7 text-cream md:p-10">
+          {/* Общая колонка: текст и врезки одной ширины, иначе правый край рвётся */}
+          <div className="max-w-[760px]">
+            <h2 className="font-display text-[1.4em] font-semibold tracking-[-0.02em]">
+              что это значит
+            </h2>
+            <p className="mt-4 text-[1.05em] leading-relaxed text-cream-muted">
+              {term.full}
+            </p>
 
-          {term.formula && (
-            <div className="mt-7">
-              <h3 className="text-[0.85em] uppercase tracking-wide text-cream-muted">
-                как считать
-              </h3>
-              <p className="mt-2.5 rounded-2xl border border-cream/15 bg-cream/[0.05] px-5 py-4 font-mono text-[0.95em] leading-snug text-cream">
-                {term.formula}
-              </p>
-            </div>
-          )}
-
-          {term.example && (
-            <div className="mt-6 rounded-2xl bg-brand/12 p-5">
-              <h3 className="flex items-center gap-2 text-[0.85em] uppercase tracking-wide text-brand">
-                <Icon name="Lightbulb" size={15} />
-                пример
-              </h3>
-              <p className="mt-2 text-[1em] leading-snug text-cream">{term.example}</p>
-            </div>
-          )}
-
-          {term.mistake && (
-            <div className="mt-6 rounded-2xl border border-cream/15 bg-cream/[0.04] p-5">
-              <h3 className="flex items-center gap-2 text-[0.85em] uppercase tracking-wide text-cream-muted">
-                <Icon name="TriangleAlert" size={15} />
-                типичная ошибка
-              </h3>
-              <p className="mt-2 text-[1em] leading-snug text-cream">{term.mistake}</p>
-            </div>
-          )}
-
-          {term.sections?.map((s) => (
-            <div key={s.title} className="mt-7 border-t border-cream/12 pt-6">
-              <h3 className="font-display text-[1.15em] font-semibold tracking-[-0.02em] text-cream">
-                {s.title}
-              </h3>
-              <p className="mt-3 max-w-[760px] text-[1.02em] leading-relaxed text-cream-muted">
-                {s.body}
-              </p>
-            </div>
-          ))}
-
-          {term.links && term.links.length > 0 && (
-            <div className="mt-7 border-t border-cream/12 pt-6">
-              <h3 className="text-[0.85em] uppercase tracking-wide text-cream-muted">
-                применить на практике
-              </h3>
-              <div className="mt-3 flex flex-wrap gap-2.5">
-                {term.links.map((l) => (
-                  <Link
-                    key={l.to}
-                    to={l.to}
-                    className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.9em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
-                  >
-                    {l.label}
-                    <Icon name="ArrowRight" size={15} />
-                  </Link>
-                ))}
+            {term.formula && (
+              <div className="mt-7">
+                <h3 className="text-[0.85em] uppercase tracking-wide text-cream-muted">
+                  как считать
+                </h3>
+                <p className="mt-2.5 rounded-2xl border border-cream/15 bg-cream/[0.05] px-5 py-4 font-mono text-[0.95em] leading-snug text-cream">
+                  {term.formula}
+                </p>
               </div>
-            </div>
-          )}
+            )}
+
+            {term.example && (
+              <div className="mt-6 rounded-2xl bg-brand/12 p-5">
+                <h3 className="flex items-center gap-2 text-[0.85em] uppercase tracking-wide text-brand">
+                  <Icon name="Lightbulb" size={15} />
+                  пример
+                </h3>
+                <p className="mt-2 text-[1em] leading-snug text-cream">
+                  {term.example}
+                </p>
+              </div>
+            )}
+
+            {term.mistake && (
+              <div className="mt-6 rounded-2xl border border-cream/15 bg-cream/[0.04] p-5">
+                <h3 className="flex items-center gap-2 text-[0.85em] uppercase tracking-wide text-cream-muted">
+                  <Icon name="TriangleAlert" size={15} />
+                  типичная ошибка
+                </h3>
+                <p className="mt-2 text-[1em] leading-snug text-cream">
+                  {term.mistake}
+                </p>
+              </div>
+            )}
+
+            {term.sections?.map((s) => (
+              <div key={s.title} className="mt-7 border-t border-cream/12 pt-6">
+                <h3 className="font-display text-[1.15em] font-semibold tracking-[-0.02em] text-cream">
+                  {s.title}
+                </h3>
+                <p className="mt-3 text-[1.02em] leading-relaxed text-cream-muted">
+                  {s.body}
+                </p>
+              </div>
+            ))}
+
+            {term.links && term.links.length > 0 && (
+              <div className="mt-7 border-t border-cream/12 pt-6">
+                <h3 className="text-[0.85em] uppercase tracking-wide text-cream-muted">
+                  применить на практике
+                </h3>
+                <div className="mt-3 flex flex-wrap gap-2.5">
+                  {term.links.map((l) => (
+                    <Link
+                      key={l.to}
+                      to={l.to}
+                      className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.9em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
+                    >
+                      {l.label}
+                      <Icon name="ArrowRight" size={15} />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
@@ -206,11 +224,16 @@ const GlossaryTermPage = () => {
           </h2>
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             {term.faq.map((f) => (
-              <div key={f.q} className="rounded-[24px] border border-foreground/12 p-6">
+              <div
+                key={f.q}
+                className="rounded-[24px] border border-foreground/12 p-6"
+              >
                 <h3 className="font-display text-[1.1em] font-semibold leading-tight tracking-[-0.02em]">
                   {f.q}
                 </h3>
-                <p className="mt-2.5 leading-snug text-muted-foreground">{f.a}</p>
+                <p className="mt-2.5 leading-snug text-muted-foreground">
+                  {f.a}
+                </p>
               </div>
             ))}
           </div>
@@ -240,7 +263,9 @@ const GlossaryTermPage = () => {
                     className="shrink-0 text-cream-muted transition-colors group-hover:text-brand"
                   />
                 </span>
-                <span className="mt-2.5 block leading-snug text-cream-muted">{r.short}</span>
+                <span className="mt-2.5 block leading-snug text-cream-muted">
+                  {r.short}
+                </span>
               </Link>
             ))}
           </div>
@@ -303,7 +328,11 @@ const GlossaryTermPage = () => {
         </div>
       </section>
 
-      <CrossLinks items={["audit", "reports", "calc"]} title="ещё" subtitle="полезное" />
+      <CrossLinks
+        items={["audit", "reports", "calc"]}
+        title="ещё"
+        subtitle="полезное"
+      />
 
       <LeadForm />
       <Contacts />
