@@ -74,7 +74,7 @@ const Extra = () => {
               }`}
             >
               <span
-                className={`inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-[0.82em] font-semibold ${
+                className={`inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-[max(12px,0.82em)] font-semibold ${
                   light ? "bg-foreground text-brand" : "bg-brand text-foreground"
                 }`}
               >
@@ -122,7 +122,7 @@ const Extra = () => {
       <article className="reveal mt-4 overflow-hidden rounded-[28px] bg-surface p-4 text-cream md:p-10">
         <div className="grid gap-6 md:gap-10 lg:grid-cols-[1fr_1.15fr]">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[0.82em] font-semibold text-foreground">
+            <span className="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[max(12px,0.82em)] font-semibold text-foreground">
               <Icon name="GraduationCap" size={16} />
               обучение команды
             </span>
@@ -167,7 +167,7 @@ const Extra = () => {
                   </span>
                   <span>
                     <b className="block text-[1.08em] font-medium leading-tight">{p.t}</b>
-                    <span className="mt-1 block text-[0.9em] leading-snug text-cream-muted">{p.d}</span>
+                    <span className="mt-1 block text-[max(12px,0.9em)] leading-snug text-cream-muted">{p.d}</span>
                   </span>
                 </li>
               ))}

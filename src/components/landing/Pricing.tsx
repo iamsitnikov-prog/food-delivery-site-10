@@ -1,43 +1,7 @@
+import { HOME_PLANS as PLANS } from "@/data/home";
 import Icon from "@/components/ui/icon";
 import useReveal from "@/hooks/use-reveal";
 
-const PLANS = [
-  {
-    name: "для действующих",
-    tag: "уже на сервисе",
-    price: "от 25 000 ₽",
-    period: "в месяц*",
-    text: "Для тех партнёров, которые уже работают на сервисе и им требуется помощь",
-    items: [
-      "Аудит проекта",
-      "Настройка акций и продвижение",
-      "Обучение персонала",
-      "Консультации",
-      "Контроль рейтинга и качества",
-      "Поддержка в рабочих чатах 24/7",
-    ],
-    accent: false,
-  },
-  {
-    name: "для новичков",
-    tag: "запуск с нуля",
-    price: "от 35 000 ₽",
-    period: "в месяц*",
-    text: "Для тех, кто только хочет запустить доставку на агрегаторах. Полное введение в работу и поддержка на всех этапах",
-    items: [
-      "Регистрация на сервисе",
-      "Создание и настройка ЛК",
-      "Обучение персонала",
-      "Заполнение контента",
-      "Настройка акций и продвижения",
-      "Запуск",
-      "Контроль рейтинга и качества",
-      "Консультации",
-      "Поддержка в рабочих чатах 24/7",
-    ],
-    accent: true,
-  },
-];
 
 const Pricing = () => {
   const ref = useReveal<HTMLElement>();
@@ -64,7 +28,7 @@ const Pricing = () => {
             }`}
           >
             <span
-              className={`inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-[0.82em] font-semibold ${
+              className={`inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-[max(12px,0.82em)] font-semibold ${
                 p.accent ? "bg-foreground text-brand" : "bg-brand text-foreground"
               }`}
             >
@@ -79,7 +43,7 @@ const Pricing = () => {
               <span className="font-display text-[2.2em] font-semibold leading-none tracking-[-0.03em] md:text-[2.8em]">
                 {p.price}
               </span>
-              <span className={`text-[0.9em] ${p.accent ? "text-foreground/70" : "text-cream-muted"}`}>
+              <span className={`text-[max(12px,0.9em)] ${p.accent ? "text-foreground/70" : "text-cream-muted"}`}>
                 {p.period}
               </span>
             </div>
@@ -116,7 +80,7 @@ const Pricing = () => {
         ))}
       </div>
 
-      <p className="reveal mt-6 text-[0.82em] text-muted-foreground">
+      <p className="reveal mt-6 text-[max(12px,0.82em)] text-muted-foreground">
         * Точная стоимость зависит от количества точек и объёма работ. Владеете сетью — для вас индивидуальные условия.
       </p>
     </section>

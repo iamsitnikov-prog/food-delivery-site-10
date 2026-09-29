@@ -56,11 +56,11 @@ const ChannelsBlock = ({
                   <Icon name={c.icon} size={15} className="shrink-0 text-brand" />
                   <span className="font-display text-[1.05em] font-semibold">{c.label}</span>
                 </span>
-                <span className="mt-0.5 block text-[0.8em] text-cream-muted">{c.handle}</span>
+                <span className="mt-0.5 block text-[max(12px,0.8em)] text-cream-muted">{c.handle}</span>
               </span>
             </div>
-            <span className="mt-3 text-[0.9em] leading-snug text-cream-muted">{c.short}</span>
-            <span className="mt-4 inline-flex items-center gap-1.5 text-[0.88em] font-medium text-brand">
+            <span className="mt-3 text-[max(12px,0.9em)] leading-snug text-cream-muted">{c.short}</span>
+            <span className="mt-4 inline-flex items-center gap-1.5 text-[max(12px,0.88em)] font-medium text-brand">
               открыть
               <Icon name="ArrowUpRight" size={15} />
             </span>

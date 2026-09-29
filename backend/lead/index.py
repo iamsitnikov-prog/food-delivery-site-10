@@ -45,7 +45,7 @@ def send_email(subject, text, budget=2.0):
         return False
 
 
-def save_lead(name, phone, place, status, channel, comment, sent, page=''):
+def save_lead(name, phone, place, status, channel, comment, sent, page='', ip=''):
     dsn = os.environ.get('DATABASE_URL')
     if not dsn:
         return None
@@ -57,12 +57,21 @@ def save_lead(name, phone, place, status, channel, comment, sent, page=''):
         return None
     try:
         with conn.cursor() as cur:
-            def esc(v):
-                return "'" + str(v).replace("'", "''") + "'" if v else 'NULL'
             cur.execute(
-                f"INSERT INTO {schema}.leads (name, phone, place, status, channel, comment, sent_to_telegram, page) "
-                f"VALUES ({esc(name)}, {esc(phone)}, {esc(place)}, {esc(status)}, {esc(channel)}, {esc(comment)}, {'TRUE' if sent else 'FALSE'}, {esc(page)}) "
-                f"RETURNING id"
+                f'INSERT INTO {schema}.leads '
+                '(name, phone, place, status, channel, comment, sent_to_telegram, page, ip) '
+                'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING id',
+                (
+                    name or None,
+                    phone or None,
+                    place or None,
+                    status or None,
+                    channel or None,
+                    comment or None,
+                    bool(sent),
+                    page or None,
+                    ip or None,
+                ),
             )
             lead_id = cur.fetchone()[0]
         conn.commit()
@@ -70,6 +79,33 @@ def save_lead(name, phone, place, status, channel, comment, sent, page=''):
     except Exception as exc:
         print(f'db insert error: {exc}')
         return None
+    finally:
+        conn.close()
+
+
+def too_many_from_ip(ip, limit=3, minutes=10):
+    """Больше limit заявок с одного адреса за minutes минут — это уже не человек."""
+    dsn = os.environ.get('DATABASE_URL')
+    if not dsn or not ip:
+        return False
+    schema = os.environ.get('MAIN_DB_SCHEMA', 'public')
+    try:
+        conn = psycopg2.connect(dsn, connect_timeout=2)
+    except Exception as exc:
+        print(f'db connect error: {exc}')
+        return False
+    try:
+        with conn.cursor() as cur:
+            cur.execute(
+                f'SELECT count(*) FROM {schema}.leads '
+                'WHERE ip = %s AND created_at > now() - make_interval(mins => %s)',
+                (ip, minutes),
+            )
+            recent = cur.fetchone()[0]
+        return recent >= limit
+    except Exception as exc:
+        print(f'db rate check error: {exc}')
+        return False
     finally:
         conn.close()
 
@@ -82,7 +118,10 @@ def mark_sent(lead_id):
     try:
         conn = psycopg2.connect(dsn, connect_timeout=2)
         with conn.cursor() as cur:
-            cur.execute(f"UPDATE {schema}.leads SET sent_to_telegram = TRUE WHERE id = {int(lead_id)}")
+            cur.execute(
+                f'UPDATE {schema}.leads SET sent_to_telegram = TRUE WHERE id = %s',
+                (int(lead_id),),
+            )
         conn.commit()
         conn.close()
     except Exception as exc:
@@ -166,6 +205,30 @@ def send_telegram(lines, budget=2.2):
     return bool(delivered)
 
 
+ALLOWED_ORIGINS = (
+    'https://agregatory.pro',
+    'https://www.agregatory.pro',
+)
+
+# Предпросмотр внутри редактора платформы — поддомены poehali.dev.
+PREVIEW_SUFFIXES = ('.poehali.dev',)
+
+
+def pick_origin(headers):
+    """Отдаём разрешение только своему домену и предпросмотру платформы."""
+    origin = ''
+    for k, v in (headers or {}).items():
+        if k.lower() == 'origin':
+            origin = (v or '').strip()
+            break
+    if origin in ALLOWED_ORIGINS:
+        return origin
+    host = origin.split('//')[-1].split('/')[0].split(':')[0]
+    if origin.startswith('https://') and host.endswith(PREVIEW_SUFFIXES):
+        return origin
+    return ALLOWED_ORIGINS[0]
+
+
 def handler(event, context):
     '''
     Принимает заявку с сайта, сохраняет её в базу данных и отправляет в Telegram.
@@ -173,9 +236,11 @@ def handler(event, context):
     Returns: HTTP ответ со статусом отправки
     '''
     method = event.get('httpMethod', 'GET')
+    allow_origin = pick_origin(event.get('headers'))
 
     cors = {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': allow_origin,
+        'Vary': 'Origin',
         'Content-Type': 'application/json',
     }
 
@@ -183,7 +248,8 @@ def handler(event, context):
         return {
             'statusCode': 200,
             'headers': {
-                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Origin': allow_origin,
+                'Vary': 'Origin',
                 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
                 'Access-Control-Allow-Headers': 'Content-Type',
                 'Access-Control-Max-Age': '86400',
@@ -208,6 +274,31 @@ def handler(event, context):
     channel = str(body.get('channel', '')).strip()
     comment = str(body.get('comment', '')).strip()
     page = str(body.get('page', '')).strip()[:300]
+    trap = str(body.get('website', '')).strip()
+
+    # Скрытое поле-ловушка: человек его не видит и не заполняет, робот заполняет.
+    # Отвечаем как при успехе, чтобы бот не искал обход, но ничего не отправляем.
+    if trap:
+        print('lead rejected: honeypot filled')
+        return {
+            'statusCode': 200,
+            'headers': cors,
+            'isBase64Encoded': False,
+            'body': json.dumps({'ok': True}),
+        }
+
+    ip = str(
+        (event.get('requestContext') or {}).get('identity', {}).get('sourceIp') or ''
+    ).strip()[:64]
+
+    if too_many_from_ip(ip):
+        print(f'lead rejected: rate limit for {ip}')
+        return {
+            'statusCode': 429,
+            'headers': cors,
+            'isBase64Encoded': False,
+            'body': json.dumps({'error': 'too many requests'}),
+        }
 
     if not name or not phone:
         return {
@@ -241,7 +332,7 @@ def handler(event, context):
     started = time.monotonic()
     total_budget = 4.2
 
-    lead_id = save_lead(name, phone, place, status, channel, comment, False, page)
+    lead_id = save_lead(name, phone, place, status, channel, comment, False, page, ip)
     plain = '\n'.join(l.replace('<b>', '').replace('</b>', '') for l in lines)
 
     left = total_budget - (time.monotonic() - started)

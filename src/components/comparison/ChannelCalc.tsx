@@ -61,7 +61,7 @@ const Field = ({
 }) => (
   <div>
     <div className="flex items-baseline justify-between gap-3">
-      <span className="text-[0.9em] font-medium text-cream">{label}</span>
+      <span className="text-[max(12px,0.9em)] font-medium text-cream">{label}</span>
       <span className="font-display text-[1.05em] font-semibold text-brand">
         {rub(value)} {suffix}
       </span>
@@ -77,7 +77,7 @@ const Field = ({
       className="mt-3 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-cream/20 accent-brand"
     />
     {note && (
-      <p className="mt-1.5 text-[0.8em] leading-snug text-cream-muted">{note}</p>
+      <p className="mt-1.5 text-[max(12px,0.8em)] leading-snug text-cream-muted">{note}</p>
     )}
   </div>
 );
@@ -171,7 +171,7 @@ const ChannelCalc = () => {
             />
 
             <div>
-              <span className="text-[0.9em] font-medium text-cream">
+              <span className="text-[max(12px,0.9em)] font-medium text-cream">
                 Размер города
               </span>
               <div className="mt-3 flex flex-wrap gap-2">
@@ -181,7 +181,7 @@ const ChannelCalc = () => {
                     type="button"
                     aria-pressed={city === c.key}
                     onClick={() => setCity(c.key)}
-                    className={`rounded-xl px-3.5 py-2.5 text-[0.85em] font-medium transition-colors ${
+                    className={`rounded-xl px-3.5 py-2.5 text-[max(12px,0.85em)] font-medium transition-colors ${
                       city === c.key
                         ? "bg-brand text-foreground"
                         : "bg-cream/[0.06] text-cream-muted hover:text-cream"
@@ -202,7 +202,7 @@ const ChannelCalc = () => {
             />
 
             <div>
-              <span className="text-[0.9em] font-medium text-cream">
+              <span className="text-[max(12px,0.9em)] font-medium text-cream">
                 Кто везёт заказ
               </span>
               <div className="mt-3 grid grid-cols-2 gap-2">
@@ -217,7 +217,7 @@ const ChannelCalc = () => {
                     type="button"
                     aria-pressed={model === m}
                     onClick={() => setModel(m)}
-                    className={`rounded-xl px-3 py-3 text-[0.88em] font-medium transition-colors ${
+                    className={`rounded-xl px-3 py-3 text-[max(12px,0.88em)] font-medium transition-colors ${
                       model === m
                         ? "bg-brand text-foreground"
                         : "bg-cream/[0.06] text-cream-muted hover:text-cream"
@@ -277,7 +277,7 @@ const ChannelCalc = () => {
                       >
                         {r.name}
                         <span
-                          className={`pl-2.5 text-[0.72em] font-normal ${
+                          className={`pl-2.5 text-[max(12px,0.72em)] font-normal ${
                             isBest ? "text-foreground/60" : "text-cream-muted"
                           }`}
                         >
@@ -293,14 +293,14 @@ const ChannelCalc = () => {
                           {rub(r.profit)} ₽
                         </span>
                       ) : (
-                        <span className="text-[0.85em] text-cream-muted">
+                        <span className="text-[max(12px,0.85em)] text-cream-muted">
                           нужны свои курьеры
                         </span>
                       )}
                     </div>
                     {r.available && (
                       <p
-                        className={`mt-1.5 text-[0.82em] leading-snug ${
+                        className={`mt-1.5 text-[max(12px,0.82em)] leading-snug ${
                           isBest ? "text-foreground/70" : "text-cream-muted"
                         }`}
                       >
@@ -345,7 +345,7 @@ const ChannelCalc = () => {
               <Icon name="ArrowRight" size={18} />
             </Link>
           </div>
-          <p className="mt-4 text-[0.78em] leading-snug text-cream-muted">
+          <p className="mt-4 text-[max(12px,0.78em)] leading-snug text-cream-muted">
             Расчёт приблизительный: без налогов, упаковки и бюджета на
             продвижение. Ставки взяты усреднённые, ваши условия могут отличаться.
           </p>

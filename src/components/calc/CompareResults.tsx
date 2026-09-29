@@ -16,7 +16,7 @@ const CompareResults = ({ r }: { r: CompareResult }) => {
         }`}
       >
         <p
-          className={`text-[0.85em] font-medium uppercase tracking-wide ${
+          className={`text-[max(12px,0.85em)] font-medium uppercase tracking-wide ${
             r.winner === "equal" ? "text-cream-muted" : "text-foreground/70"
           }`}
         >
@@ -37,7 +37,7 @@ const CompareResults = ({ r }: { r: CompareResult }) => {
         )}
         {r.breakEvenOrders !== null && r.breakEvenOrders > 0 && (
           <p
-            className={`mt-3 flex gap-2 rounded-xl p-3 text-[0.88em] leading-snug ${
+            className={`mt-3 flex gap-2 rounded-xl p-3 text-[max(12px,0.88em)] leading-snug ${
               r.winner === "equal" ? "bg-brand/15 text-cream" : "bg-foreground/10 text-foreground"
             }`}
           >

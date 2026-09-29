@@ -64,14 +64,14 @@ const Reviews = () => {
             <div className="mt-6 flex flex-wrap items-end justify-between gap-3 md:gap-4 border-t border-cream/20 pt-5">
               <div>
                 <div className="font-display text-[1.15em] font-semibold">{r.author}</div>
-                <div className="text-[0.88em] text-cream-muted">{r.place}</div>
+                <div className="text-[max(12px,0.88em)] text-cream-muted">{r.place}</div>
               </div>
               {r.link && r.link !== "#" && (
                 <a
                   href={r.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.88em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[max(12px,0.88em)] font-medium text-foreground transition-transform hover:-translate-y-0.5"
                 >
                   открыть оригинал
                   <Icon name="ArrowUpRight" size={16} />

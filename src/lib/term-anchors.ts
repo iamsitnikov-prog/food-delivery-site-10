@@ -1,4 +1,4 @@
-import type { GlossaryTerm } from "@/data/glossary";
+import type { GlossaryTerm } from "@/data/term-index";
 
 const MAP: Record<string, string> = {
   а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ё: "e", ж: "zh",

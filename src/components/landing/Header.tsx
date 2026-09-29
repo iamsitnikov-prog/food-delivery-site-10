@@ -2,28 +2,9 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import Icon from "@/components/ui/icon";
+import { NAV, USEFUL_LINKS } from "./nav-links";
 
-export const USEFUL_LINKS = [
-  { href: "/kalkulyatory", label: "калькуляторы", icon: "Calculator" },
-  { href: "/sravnenie-agregatorov", label: "сравнение игроков", icon: "GitCompare" },
-  { href: "/razbor-otchetov", label: "разбор отчётов", icon: "FileSearch" },
-  { href: "/chek-listy", label: "чек-листы", icon: "ListChecks" },
-  { href: "/testy", label: "тесты", icon: "CircleHelp" },
-  { href: "/slovar", label: "глоссарий", icon: "BookA" },
-  { href: "/pochitat", label: "почитать", icon: "BookOpen" },
-];
-
-export const NAV = [
-  { href: "/uslugi", label: "услуги" },
-  { href: "/goroda", label: "города" },
-  { href: "/blog", label: "блог" },
-  { href: "/partnery", label: "партнёры" },
-  { href: "#results", label: "кейсы" },
-  { href: "#pricing", label: "стоимость" },
-  { href: "#free-audit", label: "бесплатный анализ" },
-  { href: "#team", label: "кто мы" },
-  { href: "#contacts", label: "контакты" },
-];
+export { NAV, USEFUL_LINKS } from "./nav-links";
 
 const MOBILE_NAV = [
   { href: "/uslugi", label: "услуги" },
@@ -59,7 +40,7 @@ const Header = () => {
 
       <nav
         aria-label="Разделы"
-        className="hidden items-center gap-3 md:gap-4 whitespace-nowrap text-[0.88em] xl:flex 2xl:gap-5 2xl:text-[0.9em]"
+        className="hidden items-center gap-3 md:gap-4 whitespace-nowrap text-[max(12px,0.88em)] xl:flex 2xl:gap-5 2xl:text-[max(12px,0.9em)]"
       >
         <div className="group relative">
           <button
@@ -144,7 +125,7 @@ const Header = () => {
               agregatory<span className="font-normal text-muted-foreground">.pro</span>
             </SheetTitle>
             {/* Полезное — первым блоком, плиткой в две колонки, чтобы всё меню помещалось на один экран */}
-            <p className="pb-2 pt-4 text-[11px] font-medium uppercase tracking-wide text-muted-foreground max-[360px]:pb-1.5 max-[360px]:pt-3">
+            <p className="pb-2 pt-4 text-[12px] font-medium uppercase tracking-wide text-muted-foreground max-[360px]:pb-1.5 max-[360px]:pt-3">
               полезное
             </p>
             <div className="grid grid-cols-2 gap-1.5">
@@ -160,7 +141,7 @@ const Header = () => {
                 </a>
               ))}
             </div>
-            <p className="pb-2 pt-4 text-[11px] font-medium uppercase tracking-wide text-muted-foreground max-[360px]:pb-1.5 max-[360px]:pt-3">
+            <p className="pb-2 pt-4 text-[12px] font-medium uppercase tracking-wide text-muted-foreground max-[360px]:pb-1.5 max-[360px]:pt-3">
               разделы
             </p>
             <nav className="grid grid-cols-2 gap-1.5">

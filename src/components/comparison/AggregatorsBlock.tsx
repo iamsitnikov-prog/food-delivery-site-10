@@ -48,7 +48,7 @@ const AggregatorsBlock = () => {
               type="button"
               aria-pressed={filter === f.key}
               onClick={() => setFilter(f.key)}
-              className={`rounded-xl px-4 py-2.5 text-[0.9em] font-medium transition-colors ${
+              className={`rounded-xl px-4 py-2.5 text-[max(12px,0.9em)] font-medium transition-colors ${
                 filter === f.key
                   ? "bg-foreground text-background"
                   : "border border-foreground/15 text-muted-foreground hover:border-foreground/40"
@@ -57,7 +57,7 @@ const AggregatorsBlock = () => {
               {f.label}
             </button>
           ))}
-          <span className="w-full text-[0.85em] leading-snug text-muted-foreground md:w-auto md:pl-2">
+          <span className="w-full text-[max(12px,0.85em)] leading-snug text-muted-foreground md:w-auto md:pl-2">
             {FILTERS.find((f) => f.key === filter)?.note}
           </span>
         </div>
@@ -65,7 +65,7 @@ const AggregatorsBlock = () => {
           <table className="w-full min-w-[720px] border-collapse text-cream">
             <thead>
               <tr>
-                <th className="w-[210px] p-4 text-left align-bottom text-[0.85em] font-normal text-cream-muted">
+                <th className="w-[210px] p-4 text-left align-bottom text-[max(12px,0.85em)] font-normal text-cream-muted">
                   Параметр
                 </th>
                 {shown.map((a) => (
@@ -73,7 +73,7 @@ const AggregatorsBlock = () => {
                     <span className="block font-display text-[1.2em] font-semibold leading-tight">
                       {a.name}
                     </span>
-                    <span className="mt-1.5 block text-[0.8em] font-normal leading-snug text-brand">
+                    <span className="mt-1.5 block text-[max(12px,0.8em)] font-normal leading-snug text-brand">
                       {a.tagline}
                     </span>
                   </th>
@@ -83,7 +83,7 @@ const AggregatorsBlock = () => {
             <tbody>
               {COMPARISON_ROWS.map((row) => (
                 <tr key={row.key} className="border-t border-cream/12">
-                  <th className="p-4 text-left align-top text-[0.9em] font-medium text-cream-muted">
+                  <th className="p-4 text-left align-top text-[max(12px,0.9em)] font-medium text-cream-muted">
                     {row.label}
                   </th>
                   {shown.map((a) => (
@@ -136,7 +136,7 @@ const AggregatorsBlock = () => {
                 ))}
               </ul>
 
-              <p className="mt-5 rounded-2xl bg-cream/[0.06] p-4 text-[0.9em] leading-snug">
+              <p className="mt-5 rounded-2xl bg-cream/[0.06] p-4 text-[max(12px,0.9em)] leading-snug">
                 <span className="text-brand">Кому подходит. </span>
                 {a.bestFor}
               </p>
@@ -163,7 +163,7 @@ const AggregatorsBlock = () => {
               </h3>
               <p className="mt-3 leading-relaxed text-muted-foreground">{s.situation}</p>
               <p className="mt-4 leading-relaxed">{s.verdict}</p>
-              <p className="mt-5 inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.9em] font-medium text-foreground">
+              <p className="mt-5 inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[max(12px,0.9em)] font-medium text-foreground">
                 <Icon name="Trophy" size={16} />
                 {s.winner}
               </p>

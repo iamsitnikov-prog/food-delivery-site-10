@@ -23,6 +23,15 @@ import {
 import { termDescription, termTitle } from "../src/lib/term-seo";
 import { getServiceResources } from "../src/data/service-resources";
 import { AGGREGATORS, SCENARIOS, CONCLUSIONS } from "../src/data/comparison";
+import {
+  HOME_SERVICES,
+  HOME_PLANS,
+  HOME_STATS,
+  HOME_CASES,
+  HOME_FAQ,
+  HOME_ADVANTAGES,
+} from "../src/data/home";
+import { NAV, USEFUL_LINKS } from "../src/components/landing/nav-links";
 
 const todayISO = () => new Date().toISOString().slice(0, 10);
 const BLOG_POSTS = ALL_POSTS.filter((p) => !p.date || p.date <= todayISO());
@@ -117,6 +126,46 @@ const faqToText = (faq: { q: string; a: string }[] = []) =>
   faq.length
     ? `<h2>Частые вопросы</h2>${faq.map((f) => `<h3>${esc(clean(f.q))}</h3><p>${esc(clean(f.a))}</p>`).join("")}`
     : "";
+
+
+// --- Навигация в готовом HTML ------------------------------------------------
+// В #pp-static попадал только текст страницы, поэтому поисковик видел
+// 2-3 ссылки и не понимал структуру сайта. Добавляем во все страницы ссылки
+// шапки и подвала обычными <a href> — так связи между разделами видны сразу,
+// до загрузки скриптов.
+
+/** Ссылки шапки: разделы и «полезное». Якоря главной ведут на неё абсолютно. */
+const headerLinks = () => {
+  const items = [
+    ...NAV.map((n) => ({
+      href: n.href.startsWith("#") ? `/${n.href}` : n.href,
+      label: n.label,
+    })),
+    ...USEFUL_LINKS.map((l) => ({ href: l.href, label: l.label })),
+  ];
+  return `<nav aria-label="Основные разделы"><p><a href="/">главная</a> · ${items
+    .map((i) => `<a href="${i.href}">${esc(i.label)}</a>`)
+    .join(" · ")}</p></nav>`;
+};
+
+/** Ссылки подвала: услуги, города, разделы и политика. */
+const footerLinks = () => {
+  const services = SERVICE_PAGES.map(
+    (sp) => `<li><a href="/uslugi/${sp.slug}">${esc(clean(sp.navLabel))}</a></li>`,
+  ).join("");
+  const cities = CITY_PAGES.map(
+    (c) => `<li><a href="/goroda/${c.slug}">${esc(clean(c.navLabel))}</a></li>`,
+  ).join("");
+  const useful = USEFUL_LINKS.map(
+    (l) => `<li><a href="${l.href}">${esc(l.label)}</a></li>`,
+  ).join("");
+  return `<nav aria-label="Карта сайта">
+<h2>Услуги</h2><ul>${services}</ul>
+<h2>Города</h2><ul>${cities}</ul>
+<h2>Разделы сайта</h2><ul>${useful}<li><a href="/uslugi">все услуги</a></li><li><a href="/goroda">все города</a></li><li><a href="/blog">блог</a></li><li><a href="/partnery">партнёры</a></li><li><a href="/privacy">политика конфиденциальности</a></li></ul>
+<p>agregatory.pro · Телефон: <a href="tel:+79310028222">+7 931 002-82-22</a></p>
+</nav>`;
+};
 
 const pages: Page[] = [];
 
@@ -977,7 +1026,9 @@ ${ldTags}
 <div id="root"></div>
 
 <div id="pp-static">
+${headerLinks()}
 ${p.body}
+${footerLinks()}
 </div>
 
 <script>
@@ -1005,6 +1056,82 @@ ${p.body}
 </html>
 `;
 };
+
+
+// Главная. Раньше её в пререндере не было: dist/index.html оставался пустым
+// контейнером, и поисковик на самой важной странице не видел ни текста, ни ссылок.
+pages.push({
+  route: "/",
+  title:
+    "Продвижение ресторана в Яндекс Еде и Деливери — подключение, настройка, поддержка | agregatory.pro",
+  description:
+    "Подключаем и ведём рестораны на Яндекс Еде и Деливери: регистрация, настройка вендора, контент, акции и продвижение, работа с рейтингом, обучение персонала и поддержка 24/7. Первый заказ максимум через 7 дней.",
+  jsonLd: [
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: HOME_FAQ.map((f) => ({
+        "@type": "Question",
+        name: clean(f.q),
+        acceptedAnswer: { "@type": "Answer", text: clean(f.a) },
+      })),
+    },
+  ],
+  body: `<h1>Продвижение ресторана в Яндекс Еде</h1>
+<p>Заказы и выручка на Яндекс Еде уже с первой недели. Настраиваем вендор, акции, продвижение и лояльность, обучаем персонал. Первый заказ — максимум через 7 дней.</p>
+
+<h2 id="services">Наши услуги</h2>
+${HOME_SERVICES.map(
+    (sv) => `<h3>${esc(clean(sv.title))} — ${esc(clean(sv.short))}</h3>
+<p>${esc(clean(sv.text))}</p>
+<ul>${sv.points.map((pt) => `<li>${esc(clean(pt))}</li>`).join("")}</ul>`,
+  ).join("\n")}
+<p>Отдельные страницы услуг: ${SERVICE_PAGES.map(
+    (sp) => `<a href="/uslugi/${sp.slug}">${esc(clean(sp.navLabel))}</a>`,
+  ).join(" · ")}</p>
+
+<h2>Почему с нами выгодно</h2>
+<ul>${HOME_ADVANTAGES.map(
+    (a: any) =>
+      `<li>${esc(clean(a.title ?? a.t ?? ""))}${a.text || a.d ? ` — ${esc(clean(a.text ?? a.d))}` : ""}</li>`,
+  ).join("")}</ul>
+
+<h2 id="results">Результаты и кейсы</h2>
+<ul>${HOME_STATS.map((st) => `<li>${esc(clean(st.v))} — ${esc(clean(st.l))}</li>`).join("")}</ul>
+${HOME_CASES.map(
+    (c) => `<h3>${esc(clean(c.name))} — ${esc(clean(c.city))}</h3>
+<p>Было: ${esc(clean(c.before))}. Стало: ${esc(clean(c.after))}.</p>
+<p>${esc(clean(c.what))}</p>`,
+  ).join("\n")}
+<p>Кейсы по городам: ${CITY_PAGES.map(
+    (c) => `<a href="/goroda/${c.slug}">${esc(clean(c.navLabel))}</a>`,
+  ).join(" · ")}</p>
+
+<h2 id="pricing">Стоимость</h2>
+${HOME_PLANS.map(
+    (pl) => `<h3>Тариф «${esc(clean(pl.name))}» — ${esc(clean(pl.price))} ${esc(clean(pl.period))}</h3>
+<p>${esc(clean(pl.text))}</p>
+<ul>${pl.items.map((i) => `<li>${esc(clean(i))}</li>`).join("")}</ul>`,
+  ).join("\n")}
+<p>Владеете сетью — условия индивидуальные. Расчёт экономики: <a href="/kalkulyatory">калькуляторы</a>, проверка отчёта: <a href="/razbor-otchetov">разбор отчётов</a>.</p>
+
+<h2 id="team">Кто мы</h2>
+${PEOPLE.map(
+    (pe) => `<h3>${esc(clean(pe.name))} — ${esc(clean(pe.role))}</h3>
+<p>${esc(clean(pe.exp))}</p>
+<ul>${pe.facts.map((f) => `<li>${esc(clean(f))}</li>`).join("")}</ul>`,
+  ).join("\n")}
+
+<h2 id="free-audit">Бесплатный анализ проекта</h2>
+<p>Смотрим карточку глазами гостя, сравниваем с конкурентами в районе и показываем точки роста. Проверить себя самостоятельно: <a href="/testy/audit">тест на 20 вопросов</a>, <a href="/chek-listy">чек-листы</a>.</p>
+
+<h2>Частые вопросы</h2>
+${HOME_FAQ.map((f) => `<h3>${esc(clean(f.q))}</h3><p>${esc(clean(f.a))}</p>`).join("\n")}
+
+<h2 id="contacts">Контакты</h2>
+<p>Телефон: <a href="tel:+79310028222">+7 931 002-82-22</a> · Телеграм: <a href="https://t.me/sitnikovy1" rel="noopener">@sitnikovy1</a></p>
+<p>Работаем с ресторанами по всей России.</p>`,
+});
 
 // 404: отдельный файл для хостинга. Каноникал не ставим, страницу закрываем от индексации.
 const notFoundHtml = render({
@@ -1073,9 +1200,8 @@ const lastmodOf = (route: string) => POST_DATES.get(route) || BUILD_DATE;
 const sitemapRoutes = Array.from(
   new Set([
     "/",
-    // /test — короткий адрес того же теста, на него ведут ссылки и QR,
-    // поэтому он нужен в карте сайта, хотя каноникал у него на /testy/audit.
-    "/test",
+    // /test в карту сайта не попадает: это короткий адрес того же теста,
+    // на сервере он отдаёт 301 на /testy/audit.
     ...pages.filter((p) => !p.canonical).map((p) => p.route),
   ]),
 ).sort();

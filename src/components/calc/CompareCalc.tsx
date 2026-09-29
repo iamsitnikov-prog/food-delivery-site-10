@@ -55,7 +55,7 @@ const CompareCalc = ({ hideCta = false }: { hideCta?: boolean }) => {
           <button
             type="button"
             onClick={() => setInput(DEFAULT_COMPARE)}
-            className="mt-6 inline-flex items-center gap-2 text-[0.88em] text-cream-muted transition-colors hover:text-cream"
+            className="mt-6 inline-flex items-center gap-2 text-[max(12px,0.88em)] text-cream-muted transition-colors hover:text-cream"
           >
             <Icon name="RotateCcw" size={15} />
             сбросить значения

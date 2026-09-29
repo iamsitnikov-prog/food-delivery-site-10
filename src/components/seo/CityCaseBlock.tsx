@@ -23,10 +23,10 @@ const CityCaseBlock = ({
     }
   >
     <div className="flex flex-wrap items-center gap-2.5">
-      <span className="rounded-lg bg-brand px-3 py-1.5 text-[0.78em] font-bold uppercase tracking-wide text-foreground">
+      <span className="rounded-lg bg-brand px-3 py-1.5 text-[max(12px,0.78em)] font-bold uppercase tracking-wide text-foreground">
         кейс
       </span>
-      <span className="text-[0.85em] text-cream-muted">
+      <span className="text-[max(12px,0.85em)] text-cream-muted">
         {city} · {data.kind} · {data.period}
       </span>
     </div>
@@ -47,9 +47,9 @@ const CityCaseBlock = ({
           <div className="font-display text-[1.4em] font-semibold leading-none text-brand">
             {m.value}
           </div>
-          <div className="mt-2 text-[0.88em] leading-snug text-cream">{m.label}</div>
+          <div className="mt-2 text-[max(12px,0.88em)] leading-snug text-cream">{m.label}</div>
           {m.note && (
-            <div className="mt-1 text-[0.8em] leading-snug text-cream-muted">{m.note}</div>
+            <div className="mt-1 text-[max(12px,0.8em)] leading-snug text-cream-muted">{m.note}</div>
           )}
         </div>
       ))}
@@ -89,18 +89,18 @@ const CityCaseBlock = ({
         <span className="flex min-w-0 gap-3">
           <Icon name={checklist.icon} size={20} className="mt-0.5 shrink-0 text-brand" />
           <span className="min-w-0">
-            <span className="block text-[0.82em] uppercase tracking-wide text-cream-muted">
+            <span className="block text-[max(12px,0.82em)] uppercase tracking-wide text-cream-muted">
               сделайте то же самое у себя
             </span>
             <span className="mt-1 block font-display text-[1.05em] font-semibold text-cream">
               Чек-лист «{checklist.navLabel}»
             </span>
-            <span className="mt-1 block text-[0.88em] leading-snug text-cream-muted">
+            <span className="mt-1 block text-[max(12px,0.88em)] leading-snug text-cream-muted">
               {countItems(checklist)} пунктов · отметки сохраняются
             </span>
           </span>
         </span>
-        <span className="inline-flex shrink-0 items-center gap-2 text-[0.9em] font-medium text-brand">
+        <span className="inline-flex shrink-0 items-center gap-2 text-[max(12px,0.9em)] font-medium text-brand">
           открыть
           <Icon name="ArrowRight" size={16} className="transition-transform group-hover:translate-x-1" />
         </span>

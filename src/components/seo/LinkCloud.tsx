@@ -35,7 +35,7 @@ const LinkCloud = ({
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="mt-3 inline-flex items-center gap-1.5 text-[0.9em] font-medium text-foreground/70 transition-colors hover:text-foreground sm:hidden"
+          className="mt-3 inline-flex items-center gap-1.5 text-[max(12px,0.9em)] font-medium text-foreground/70 transition-colors hover:text-foreground sm:hidden"
         >
           показать ещё {hidden}
           <Icon name="ChevronDown" size={15} />

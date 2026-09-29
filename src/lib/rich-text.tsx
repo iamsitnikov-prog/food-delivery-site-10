@@ -19,7 +19,7 @@ export const richText = (text: string): ReactNode => {
       <Link
         key={`${m.index}-${m[2]}`}
         to={m[2]}
-        className="underline decoration-current/35 underline-offset-[3px] transition-colors hover:decoration-current"
+        className="break-words underline decoration-current/35 underline-offset-[3px] transition-colors hover:decoration-current"
       >
         {m[1]}
       </Link>,

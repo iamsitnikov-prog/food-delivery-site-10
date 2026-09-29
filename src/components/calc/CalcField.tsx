@@ -34,12 +34,12 @@ const CalcField = ({
 
   return (
     <div>
-      <label htmlFor={id} className="relative flex items-center gap-1.5 text-[0.9em] font-medium text-cream">
+      <label htmlFor={id} className="relative flex items-center gap-1.5 text-[max(12px,0.9em)] font-medium text-cream">
         {label}
         {hint && (
           <span className="group relative inline-flex max-sm:static">
             <Icon name="Info" size={14} className="text-cream-muted" />
-            <span className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 max-sm:left-0 max-sm:right-0 max-sm:w-auto max-sm:translate-x-0 w-[210px] -translate-x-1/2 rounded-xl bg-cream p-3 text-[0.82em] font-normal leading-snug text-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+            <span className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 max-sm:left-0 max-sm:right-0 max-sm:w-auto max-sm:translate-x-0 w-[210px] -translate-x-1/2 rounded-xl bg-cream p-3 text-[max(12px,0.82em)] font-normal leading-snug text-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
               {hint}
             </span>
           </span>
@@ -88,7 +88,7 @@ const CalcField = ({
                 aria-pressed={unit === u}
                 aria-label={u === "percent" ? "в процентах" : "в рублях"}
                 onClick={() => onUnitChange(u)}
-                className={`w-9 py-1.5 text-[0.9em] font-semibold transition-colors ${
+                className={`w-9 py-1.5 text-[max(12px,0.9em)] font-semibold transition-colors ${
                   unit === u
                     ? "bg-brand text-foreground"
                     : "bg-transparent text-cream-muted hover:text-cream"
@@ -100,7 +100,7 @@ const CalcField = ({
           </div>
         )}
       </div>
-      {note && <p className="mt-1.5 text-[0.82em] leading-snug text-cream-muted">{note}</p>}
+      {note && <p className="mt-1.5 text-[max(12px,0.82em)] leading-snug text-cream-muted">{note}</p>}
     </div>
   );
 };

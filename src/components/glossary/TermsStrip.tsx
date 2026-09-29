@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
-import { GLOSSARY } from "@/data/glossary";
+import { GLOSSARY } from "@/data/term-index";
 
 const TermsStrip = ({
   slugs,
@@ -25,7 +25,7 @@ const TermsStrip = ({
           </h2>
           <Link
             to="/slovar"
-            className="inline-flex items-center gap-1.5 text-[0.9em] text-brand hover:underline"
+            className="inline-flex items-center gap-1.5 text-[max(12px,0.9em)] text-brand hover:underline"
           >
             весь глоссарий
             <Icon name="ArrowRight" size={15} />
@@ -47,7 +47,7 @@ const TermsStrip = ({
                   className="shrink-0 text-cream-muted transition-colors group-hover:text-brand"
                 />
               </span>
-              <span className="mt-1.5 block text-[0.88em] leading-snug text-cream-muted">
+              <span className="mt-1.5 block text-[max(12px,0.88em)] leading-snug text-cream-muted">
                 {t.short}
               </span>
             </Link>

@@ -79,7 +79,7 @@ const CalcStickyBar = ({ r, mode }: Props) => {
       }`}
     >
       <div className="flex items-center justify-between gap-3 md:gap-4">
-        <span className="text-[0.82em] leading-tight text-cream-muted">{label}</span>
+        <span className="text-[max(12px,0.82em)] leading-tight text-cream-muted">{label}</span>
         <span
           className={`font-display text-[1.45em] font-semibold leading-none tabular-nums transition-colors ${tone} ${
             flash ? "opacity-60" : "opacity-100"
@@ -89,7 +89,7 @@ const CalcStickyBar = ({ r, mode }: Props) => {
         </span>
         <a
           href="#calc-results"
-          className="shrink-0 rounded-lg border border-cream/25 px-3 py-1.5 text-[0.8em] font-medium text-cream"
+          className="shrink-0 rounded-lg border border-cream/25 px-3 py-1.5 text-[max(12px,0.8em)] font-medium text-cream"
         >
           детали
         </a>

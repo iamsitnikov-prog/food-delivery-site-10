@@ -16,8 +16,8 @@ const Field = ({
   onChange: (v: string) => void;
 }) => (
   <div>
-    <label className="block text-[0.9em] font-medium text-cream">{label}</label>
-    <p className="mt-1 text-[0.8em] leading-snug text-cream-muted">{hint}</p>
+    <label className="block text-[max(12px,0.9em)] font-medium text-cream">{label}</label>
+    <p className="mt-1 text-[max(12px,0.8em)] leading-snug text-cream-muted">{hint}</p>
     <div className="mt-2 flex items-center gap-2 rounded-xl bg-cream/[0.08] px-4 py-3 focus-within:bg-cream/[0.12]">
       <input
         type="text"
@@ -25,7 +25,7 @@ const Field = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="0"
-        className="w-full bg-transparent font-display text-[1.1em] font-semibold text-cream outline-none placeholder:text-cream-muted/50"
+        className="w-full bg-transparent font-display text-[1.1em] font-semibold text-cream outline-none placeholder:text-cream-muted/80"
       />
       <span className="shrink-0 text-cream-muted">₽</span>
     </div>
@@ -87,7 +87,7 @@ const ReconcileCalc = () => {
         />
         {title}
       </h4>
-      <p className="mt-2.5 font-mono text-[0.85em] leading-relaxed text-cream-muted">
+      <p className="mt-2.5 font-mono text-[max(12px,0.85em)] leading-relaxed text-cream-muted">
         {formula}
       </p>
       <p className="mt-2.5 text-[0.92em] leading-snug">{note}</p>
@@ -203,7 +203,7 @@ const ReconcileCalc = () => {
             )}
 
             {filledSaldo && c > 0 && (
-              <p className="flex items-start gap-2.5 rounded-2xl bg-cream/[0.06] p-4 md:p-5 text-[0.9em] leading-snug text-cream-muted">
+              <p className="flex items-start gap-2.5 rounded-2xl bg-cream/[0.06] p-4 md:p-5 text-[max(12px,0.9em)] leading-snug text-cream-muted">
                 <Icon name="Clock" size={17} className="mt-0.5 shrink-0 text-brand" />
                 <span>
                   Задолженность сервиса на конец периода — {rub(c)} ₽.

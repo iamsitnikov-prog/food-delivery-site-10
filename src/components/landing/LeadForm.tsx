@@ -50,6 +50,7 @@ const LeadForm = () => {
   const [agree, setAgree] = useState(true);
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
+  const [trap, setTrap] = useState("");
   const [loading, setLoading] = useState(false);
 
   const validate = () => {
@@ -70,6 +71,7 @@ const LeadForm = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          website: trap,
           name,
           phone,
           place,
@@ -160,6 +162,17 @@ const LeadForm = () => {
             </div>
           ) : (
             <form onSubmit={onSubmit} noValidate className="space-y-4">
+              {/* Ловушка для роботов: человек это поле не видит. */}
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                value={trap}
+                onChange={(e) => setTrap(e.target.value)}
+                className="absolute left-[-9999px] h-0 w-0 opacity-0"
+              />
               <div>
                 <Input
                   className={`${field} ${errors.name ? "border-destructive" : ""}`}
@@ -168,7 +181,7 @@ const LeadForm = () => {
                   onChange={(e) => setName(e.target.value)}
                   aria-invalid={!!errors.name}
                 />
-                {errors.name && <p className="mt-1.5 text-[0.82em] text-destructive">{errors.name}</p>}
+                {errors.name && <p className="mt-1.5 text-[max(12px,0.82em)] text-destructive">{errors.name}</p>}
               </div>
               <div>
                 <Input
@@ -179,7 +192,7 @@ const LeadForm = () => {
                   onChange={(e) => setPhone(e.target.value ? formatPhone(e.target.value) : "")}
                   aria-invalid={!!errors.phone}
                 />
-                {errors.phone && <p className="mt-1.5 text-[0.82em] text-destructive">{errors.phone}</p>}
+                {errors.phone && <p className="mt-1.5 text-[max(12px,0.82em)] text-destructive">{errors.phone}</p>}
               </div>
               <Input
                 className={field}
@@ -189,7 +202,7 @@ const LeadForm = () => {
               />
 
               <div>
-                <p className="mb-2 text-[0.86em] text-cream-muted">Выберите услугу</p>
+                <p className="mb-2 text-[max(12px,0.86em)] text-cream-muted">Выберите услугу</p>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
@@ -208,7 +221,7 @@ const LeadForm = () => {
                       type="button"
                       key={s}
                       onClick={() => setStatus(s)}
-                      className={`rounded-full border px-4 py-2 text-[0.88em] transition-colors ${
+                      className={`rounded-full border px-4 py-2 text-[max(12px,0.88em)] transition-colors ${
                         status === s
                           ? "border-brand bg-brand text-foreground"
                           : "border-cream/20 text-cream-muted hover:border-brand hover:text-cream"
@@ -221,14 +234,14 @@ const LeadForm = () => {
               </div>
 
               <div>
-                <p className="mb-2 text-[0.86em] text-cream-muted">Как с вами связаться?</p>
+                <p className="mb-2 text-[max(12px,0.86em)] text-cream-muted">Как с вами связаться?</p>
                 <div className="flex flex-wrap gap-2">
                   {CHANNELS.map((c) => (
                     <button
                       type="button"
                       key={c}
                       onClick={() => setChannel(c)}
-                      className={`rounded-full border px-4 py-2 text-[0.88em] transition-colors ${
+                      className={`rounded-full border px-4 py-2 text-[max(12px,0.88em)] transition-colors ${
                         channel === c
                           ? "border-brand bg-brand text-foreground"
                           : "border-cream/20 text-cream-muted hover:border-brand hover:text-cream"
@@ -252,7 +265,7 @@ const LeadForm = () => {
                   py-1.5 расширяет область нажатия до удобной на телефоне. */}
               <label
                 htmlFor="lead-agree"
-                className="-my-1.5 flex cursor-pointer select-none items-start gap-3 py-1.5 text-[0.86em] leading-snug"
+                className="-my-1.5 flex cursor-pointer select-none items-start gap-3 py-1.5 text-[max(12px,0.86em)] leading-snug"
               >
                 <Checkbox
                   id="lead-agree"
@@ -274,7 +287,7 @@ const LeadForm = () => {
                   </Link>
                 </span>
               </label>
-              {errors.agree && <p className="text-[0.82em] text-destructive">{errors.agree}</p>}
+              {errors.agree && <p className="text-[max(12px,0.82em)] text-destructive">{errors.agree}</p>}
 
               <button
                 type="submit"

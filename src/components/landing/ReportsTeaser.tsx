@@ -33,7 +33,7 @@ const ReportsTeaser = () => {
       <div className="reveal rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-12">
         <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div className="min-w-0">
-            <span className="inline-flex items-center gap-2 rounded-lg bg-brand px-3 py-1.5 text-[0.75em] font-bold uppercase tracking-wide text-foreground">
+            <span className="inline-flex items-center gap-2 rounded-lg bg-brand px-3 py-1.5 text-[max(12px,0.75em)] font-bold uppercase tracking-wide text-foreground">
               <Icon name="Sparkles" size={13} />
               бесплатно и без регистрации
             </span>
@@ -62,7 +62,7 @@ const ReportsTeaser = () => {
               <h3 className="mt-3.5 font-display text-[1.08em] font-semibold leading-tight tracking-[-0.02em]">
                 {p.title}
               </h3>
-              <p className="mt-2 text-[0.88em] leading-snug text-cream-muted">
+              <p className="mt-2 text-[max(12px,0.88em)] leading-snug text-cream-muted">
                 {p.text}
               </p>
             </div>

@@ -15,7 +15,7 @@ const FreeAudit = () => {
       <div className="reveal overflow-hidden rounded-[28px] bg-surface p-4 text-cream md:p-12">
         <div className="grid items-center gap-6 md:gap-10 lg:grid-cols-[1fr_1.1fr]">
           <div>
-            <span className="inline-flex w-fit items-center gap-2 rounded-full bg-brand px-4 py-2 text-[0.82em] font-semibold text-foreground">
+            <span className="inline-flex w-fit items-center gap-2 rounded-full bg-brand px-4 py-2 text-[max(12px,0.82em)] font-semibold text-foreground">
               <Icon name="Gift" size={16} />
               бесплатно
             </span>
@@ -34,7 +34,7 @@ const FreeAudit = () => {
               получить бесплатный анализ
               <Icon name="ArrowRight" size={18} />
             </a>
-            <p className="mt-4 text-[0.86em] text-cream-muted">результат пришлём в течение 2 рабочих дней</p>
+            <p className="mt-4 text-[max(12px,0.86em)] text-cream-muted">результат пришлём в течение 2 рабочих дней</p>
           </div>
 
           <div>
@@ -47,7 +47,7 @@ const FreeAudit = () => {
                   </span>
                   <span>
                     <b className="block text-[1.05em] font-semibold leading-tight">{p.t}</b>
-                    <span className="mt-1.5 block text-[0.9em] leading-snug text-foreground/75">{p.d}</span>
+                    <span className="mt-1.5 block text-[max(12px,0.9em)] leading-snug text-foreground/75">{p.d}</span>
                   </span>
                 </div>
               ))}

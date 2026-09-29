@@ -61,7 +61,7 @@ const RussiaMap = () => {
               key={c.slug}
               to={`/goroda/${c.slug}`}
               style={{ left: `${p.x}%`, top: `${p.y}%` }}
-              className={`absolute hidden -translate-y-1/2 whitespace-nowrap text-[11px] leading-none text-cream-muted transition-colors hover:text-brand lg:block ${
+              className={`absolute hidden -translate-y-1/2 whitespace-nowrap text-[12px] leading-none text-cream-muted transition-colors hover:text-brand lg:block ${
                 p.align === "left" ? "-translate-x-full pr-3" : "pl-3"
               }`}
             >
@@ -72,11 +72,11 @@ const RussiaMap = () => {
       </div>
 
       <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-cream/20 pt-6">
-        <span className="flex items-center gap-2 text-[0.9em]">
+        <span className="flex items-center gap-2 text-[max(12px,0.9em)]">
           <span className="h-2 w-2 rounded-full bg-brand" />
           {CITY_PAGES.length} городов с отдельным разбором
         </span>
-        <span className="text-[0.9em] text-cream-muted">
+        <span className="text-[max(12px,0.9em)] text-cream-muted">
           и вся остальная Россия — работаем онлайн, от&nbsp;Калининграда до&nbsp;Дальнего Востока
         </span>
       </div>

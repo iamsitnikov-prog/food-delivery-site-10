@@ -90,7 +90,7 @@ const QuizPage = () => {
         <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
-            className="mb-6 md:mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground"
+            className="mb-6 md:mb-8 flex flex-wrap items-center gap-2 text-[max(12px,0.85em)] text-muted-foreground"
           >
             <Link to="/" className="hover:text-foreground">
               главная
@@ -108,7 +108,7 @@ const QuizPage = () => {
           <p className="mt-6 max-w-[620px] text-[1.08em] leading-snug text-muted-foreground">
             {quiz.intro}
           </p>
-          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-[0.9em] text-muted-foreground">
+          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-[max(12px,0.9em)] text-muted-foreground">
             <span className="inline-flex items-center gap-1.5">
               <Icon name="ListChecks" size={16} />
               {total} вопросов
@@ -125,7 +125,7 @@ const QuizPage = () => {
         <div className="mx-auto max-w-[840px] rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-11">
           {!done ? (
             <>
-              <div className="flex flex-wrap items-center justify-between gap-3 text-[0.85em] text-cream-muted">
+              <div className="flex flex-wrap items-center justify-between gap-3 text-[max(12px,0.85em)] text-cream-muted">
                 <span className="rounded-lg bg-cream/10 px-3 py-1.5 font-medium">
                   {current.block}
                 </span>
@@ -178,7 +178,7 @@ const QuizPage = () => {
                 <button
                   type="button"
                   onClick={back}
-                  className="mt-7 inline-flex items-center gap-2 text-[0.9em] text-cream-muted transition-colors hover:text-cream"
+                  className="mt-7 inline-flex items-center gap-2 text-[max(12px,0.9em)] text-cream-muted transition-colors hover:text-cream"
                 >
                   <Icon name="ArrowLeft" size={16} />
                   назад
@@ -187,7 +187,7 @@ const QuizPage = () => {
             </>
           ) : (
             <>
-              <div className="text-[0.85em] font-medium uppercase tracking-wide text-cream-muted">
+              <div className="text-[max(12px,0.85em)] font-medium uppercase tracking-wide text-cream-muted">
                 результат
               </div>
 
@@ -197,7 +197,7 @@ const QuizPage = () => {
                     {percent}
                     <span className="text-[0.45em]">%</span>
                   </div>
-                  <div className="mt-2 text-[0.88em] text-cream-muted">
+                  <div className="mt-2 text-[max(12px,0.88em)] text-cream-muted">
                     {score} из {max} баллов
                   </div>
                 </div>
@@ -206,7 +206,7 @@ const QuizPage = () => {
                   <h2 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.2em]">
                     {level?.title}
                   </h2>
-                  <span className="mt-3 inline-block rounded-lg bg-brand px-3 py-1.5 text-[0.8em] font-medium text-foreground">
+                  <span className="mt-3 inline-block rounded-lg bg-brand px-3 py-1.5 text-[max(12px,0.8em)] font-medium text-foreground">
                     {level?.label}
                   </span>
                 </div>
@@ -251,14 +251,14 @@ const QuizPage = () => {
                 <button
                   type="button"
                   onClick={restart}
-                  className="inline-flex items-center gap-2 text-[0.9em] text-cream-muted transition-colors hover:text-cream"
+                  className="inline-flex items-center gap-2 text-[max(12px,0.9em)] text-cream-muted transition-colors hover:text-cream"
                 >
                   <Icon name="RotateCcw" size={16} />
                   пройти заново
                 </button>
                 <Link
                   to="/testy"
-                  className="inline-flex items-center gap-2 text-[0.9em] text-cream-muted transition-colors hover:text-cream"
+                  className="inline-flex items-center gap-2 text-[max(12px,0.9em)] text-cream-muted transition-colors hover:text-cream"
                 >
                   <Icon name="ListChecks" size={16} />
                   другие тесты
@@ -280,14 +280,14 @@ const QuizPage = () => {
             >
               <div className="flex items-center justify-between gap-3">
                 <Icon name={o.icon} size={22} className="text-brand" />
-                <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[0.74em] font-medium text-cream-muted">
+                <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[max(12px,0.74em)] font-medium text-cream-muted">
                   {o.questions.length} вопр.
                 </span>
               </div>
               <h3 className="mt-3 font-display text-[1.12em] font-semibold leading-tight">
                 {o.navLabel}
               </h3>
-              <p className="mt-2 text-[0.9em] leading-snug text-cream-muted">{o.lead}</p>
+              <p className="mt-2 text-[max(12px,0.9em)] leading-snug text-cream-muted">{o.lead}</p>
             </Link>
           ))}
         </div>

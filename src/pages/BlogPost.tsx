@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Icon from "@/components/ui/icon";
@@ -15,13 +15,34 @@ import ChannelsBlock from "@/components/shared/ChannelsBlock";
 import useSeo from "@/hooks/use-seo";
 import PageNotFound from "@/pages/PageNotFound";
 import { isPreviewMode, isScheduled, visiblePosts, formatDate, exitPreview } from "@/lib/schedule";
-import { BLOG_POSTS, findPost } from "@/data/blog-posts";
+import {
+  POST_INDEX,
+  findPostBrief,
+  loadPost,
+  type BlogPost as FullPost,
+} from "@/data/post-index";
 import { PEOPLE } from "@/data/team";
 
 const BlogPost = () => {
   const { slug } = useParams();
   const { pathname } = useLocation();
-  const post = findPost(slug);
+  const brief = findPostBrief(slug);
+
+  // Текст статьи — отдельным файлом: страница больше не тянет за собой
+  // все 54 статьи блога.
+  const [post, setPost] = useState<FullPost | null>(null);
+  useEffect(() => {
+    let alive = true;
+    setPost(null);
+    if (slug) {
+      loadPost(slug).then((p) => {
+        if (alive) setPost(p);
+      });
+    }
+    return () => {
+      alive = false;
+    };
+  }, [slug]);
   const termSlugs = post
     ? termsForRoute(
         `/blog/${post.slug}`,
@@ -84,13 +105,31 @@ const BlogPost = () => {
     publishedTime: post?.date,
   });
 
-  if (!post) return <PageNotFound />;
+  if (!brief) return <PageNotFound />;
+
+  // Пока текст едет, показываем заголовок и вступление из списка —
+  // читатель сразу видит, что открыл нужную статью.
+  if (!post) {
+    return (
+      <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
+        <Header />
+        <section className="px-5 pb-16 pt-8 md:px-14 md:pt-16">
+          <h1 className="max-w-[24ch] font-display text-[26px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
+            {brief.h1}
+          </h1>
+          <p className="mt-5 max-w-[680px] text-[1.08em] leading-snug text-muted-foreground">
+            {brief.lead}
+          </p>
+        </section>
+      </main>
+    );
+  }
 
   const preview = isPreviewMode();
   const scheduled = isScheduled(post);
   if (scheduled && !preview) return <PageNotFound />;
 
-  const rest = visiblePosts(BLOG_POSTS).filter((p) => p.slug !== post.slug);
+  const rest = visiblePosts(POST_INDEX).filter((p) => p.slug !== post.slug);
   const sameTag = rest.filter((p) => p.tag === post.tag);
   const others = [...sameTag, ...rest.filter((p) => p.tag !== post.tag)].slice(0, 4);
 
@@ -107,7 +146,7 @@ const BlogPost = () => {
             <button
               type="button"
               onClick={exitPreview}
-              className="ml-auto text-[0.9em] text-brand underline underline-offset-4"
+              className="ml-auto text-[max(12px,0.9em)] text-brand underline underline-offset-4"
             >
               выйти из предпросмотра
             </button>
@@ -115,7 +154,7 @@ const BlogPost = () => {
         )}
 
         <article className="mx-auto max-w-[1240px] px-5 pb-16 pt-12 md:px-14 md:pb-24 md:pt-16">
-          <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
+          <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex items-center gap-2 text-[max(12px,0.85em)] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               главная
             </Link>
@@ -125,7 +164,7 @@ const BlogPost = () => {
             </Link>
           </nav>
 
-          <div className="flex flex-wrap items-center gap-3 md:gap-4 text-[0.85em] text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-3 md:gap-4 text-[max(12px,0.85em)] text-muted-foreground">
             <span className="rounded-lg bg-pale px-3 py-1.5 font-medium text-foreground">{post.tag}</span>
             <span className="flex items-center gap-1.5">
               <Icon name="Clock" size={15} /> {post.readTime}
@@ -152,7 +191,7 @@ const BlogPost = () => {
                 />
               ))}
             </div>
-            <span className="text-[0.9em] text-muted-foreground">
+            <span className="text-[max(12px,0.9em)] text-muted-foreground">
               {PEOPLE.map((p) => p.name).join(" и ")}
             </span>
           </div>
@@ -169,7 +208,7 @@ const BlogPost = () => {
 
             <aside className="order-first rounded-[28px] bg-pale p-4 md:p-6 lg:order-last lg:sticky lg:top-8">
               <h2 className="font-display text-[1.1em] font-semibold">содержание</h2>
-              <ol className="mt-4 space-y-2.5 text-[0.9em] leading-snug">
+              <ol className="mt-4 space-y-2.5 text-[max(12px,0.9em)] leading-snug">
                 {post.toc.map((t, i) => (
                   <li key={t.id} className="flex gap-2.5">
                     <span className="text-foreground/40">{i + 1}.</span>
@@ -250,7 +289,7 @@ const BlogPost = () => {
               <p className={`mt-3 flex-1 text-[0.93em] leading-relaxed ${i % 2 === 1 ? "text-foreground/75" : "text-cream-muted"}`}>
                 {o.lead}
               </p>
-              <span className={`mt-5 inline-flex items-center gap-2 text-[0.9em] font-medium ${i % 2 === 1 ? "text-foreground" : "text-brand"}`}>
+              <span className={`mt-5 inline-flex items-center gap-2 text-[max(12px,0.9em)] font-medium ${i % 2 === 1 ? "text-foreground" : "text-brand"}`}>
                 читать
                 <Icon name="ArrowRight" size={17} className="transition-transform group-hover:translate-x-1" />
               </span>

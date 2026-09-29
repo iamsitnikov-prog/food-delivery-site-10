@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
@@ -5,7 +6,12 @@ import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
-import { GLOSSARY, getTerm } from "@/data/glossary";
+import {
+  TERM_INDEX,
+  getBrief,
+  loadTerm,
+  type GlossaryTerm,
+} from "@/data/term-index";
 import { termDescription, termTitle } from "@/lib/term-seo";
 import { richText } from "@/lib/rich-text";
 import TermSectionBlock from "@/components/glossary/TermSectionBlock";
@@ -16,12 +22,28 @@ const SITE = "https://agregatory.pro";
 const GlossaryTermPage = () => {
   const { pathname } = useLocation();
   const { slug } = useParams();
-  const term = getTerm(slug || "");
+  const brief = getBrief(slug || "");
 
-  const index = term ? GLOSSARY.findIndex((t) => t.slug === term.slug) : -1;
-  const prev = index > 0 ? GLOSSARY[index - 1] : null;
+  // Полный текст термина — отдельным файлом: страница больше не тянет
+  // за собой все 146 терминов глоссария.
+  const [term, setTerm] = useState<GlossaryTerm | null>(null);
+  useEffect(() => {
+    let alive = true;
+    setTerm(null);
+    if (slug) {
+      loadTerm(slug).then((t) => {
+        if (alive) setTerm(t);
+      });
+    }
+    return () => {
+      alive = false;
+    };
+  }, [slug]);
+
+  const index = brief ? TERM_INDEX.findIndex((t) => t.slug === brief.slug) : -1;
+  const prev = index > 0 ? TERM_INDEX[index - 1] : null;
   const next =
-    index >= 0 && index < GLOSSARY.length - 1 ? GLOSSARY[index + 1] : null;
+    index >= 0 && index < TERM_INDEX.length - 1 ? TERM_INDEX[index + 1] : null;
 
   useSeo({
     title: term ? termTitle(term) : "Термин не найден | agregatory.pro",
@@ -103,7 +125,26 @@ const GlossaryTermPage = () => {
       : undefined,
   });
 
-  if (!term) return <Navigate to="/slovar" replace />;
+  if (!brief) return <Navigate to="/slovar" replace />;
+
+  // Пока текст термина едет, показываем то, что уже известно из справочника —
+  // заголовок и короткое определение. Пустого экрана читатель не видит.
+  if (!term) {
+    return (
+      <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
+        <Header />
+        <section className="px-5 pb-16 pt-8 md:px-14 md:pt-16">
+          <h1 className="max-w-[22ch] font-display text-[26px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
+            {brief.term}
+          </h1>
+          <p className="mt-5 max-w-[680px] text-[1.08em] leading-snug text-muted-foreground">
+            {brief.short}
+          </p>
+        </section>
+      </main>
+    );
+  }
+
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
@@ -112,7 +153,7 @@ const GlossaryTermPage = () => {
       <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
         <nav
           aria-label="Хлебные крошки"
-          className="mb-6 md:mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground"
+          className="mb-6 md:mb-8 flex flex-wrap items-center gap-2 text-[max(12px,0.85em)] text-muted-foreground"
         >
           <Link to="/" className="hover:text-foreground">
             главная
@@ -125,7 +166,7 @@ const GlossaryTermPage = () => {
           <span className="text-foreground">{term.term}</span>
         </nav>
 
-        <span className="inline-flex items-center gap-2 rounded-lg bg-foreground px-3 py-1.5 text-[0.78em] font-medium text-brand">
+        <span className="inline-flex items-center gap-2 rounded-lg bg-foreground px-3 py-1.5 text-[max(12px,0.78em)] font-medium text-brand">
           {term.group}
         </span>
 
@@ -153,7 +194,7 @@ const GlossaryTermPage = () => {
 
             {term.formula && (
               <div className="mt-7">
-                <h3 id="kak-schitat" className="scroll-mt-6 text-[0.85em] uppercase tracking-wide text-cream-muted">
+                <h3 id="kak-schitat" className="scroll-mt-6 text-[max(12px,0.85em)] uppercase tracking-wide text-cream-muted">
                   как считать
                 </h3>
                 <p className="mt-2.5 rounded-2xl border border-cream/15 bg-cream/[0.05] px-5 py-4 font-mono text-[0.95em] leading-snug text-cream">
@@ -164,7 +205,7 @@ const GlossaryTermPage = () => {
 
             {term.example && (
               <div className="mt-6 rounded-2xl bg-brand/12 p-4 md:p-5">
-                <h3 id="primer" className="flex scroll-mt-6 items-center gap-2 text-[0.85em] uppercase tracking-wide text-brand">
+                <h3 id="primer" className="flex scroll-mt-6 items-center gap-2 text-[max(12px,0.85em)] uppercase tracking-wide text-brand">
                   <Icon name="Lightbulb" size={15} />
                   пример
                 </h3>
@@ -176,7 +217,7 @@ const GlossaryTermPage = () => {
 
             {term.mistake && (
               <div className="mt-6 rounded-2xl border border-cream/15 bg-cream/[0.04] p-4 md:p-5">
-                <h3 id="tipichnaya-oshibka" className="flex scroll-mt-6 items-center gap-2 text-[0.85em] uppercase tracking-wide text-cream-muted">
+                <h3 id="tipichnaya-oshibka" className="flex scroll-mt-6 items-center gap-2 text-[max(12px,0.85em)] uppercase tracking-wide text-cream-muted">
                   <Icon name="TriangleAlert" size={15} />
                   типичная ошибка
                 </h3>
@@ -192,7 +233,7 @@ const GlossaryTermPage = () => {
 
             {term.links && term.links.length > 0 && (
               <div className="mt-7 border-t border-cream/12 pt-6">
-                <h3 className="text-[0.85em] uppercase tracking-wide text-cream-muted">
+                <h3 className="text-[max(12px,0.85em)] uppercase tracking-wide text-cream-muted">
                   применить на практике
                 </h3>
                 <div className="mt-3 flex flex-wrap gap-2.5">
@@ -200,7 +241,7 @@ const GlossaryTermPage = () => {
                     <Link
                       key={l.to}
                       to={l.to}
-                      className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.9em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
+                      className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[max(12px,0.9em)] font-medium text-foreground transition-transform hover:-translate-y-0.5"
                     >
                       {l.label}
                       <Icon name="ArrowRight" size={15} />

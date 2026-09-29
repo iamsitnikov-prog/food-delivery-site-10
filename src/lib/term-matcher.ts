@@ -1,13 +1,11 @@
-import { GLOSSARY } from "@/data/glossary";
+import { GLOSSARY } from "@/data/term-index";
+import BACKLINKS_JSON from "@/data/generated/term-backlinks.json";
 
-const BACKLINKS = new Map<string, string[]>();
-for (const t of GLOSSARY) {
-  for (const l of t.links ?? []) {
-    const cur = BACKLINKS.get(l.to) ?? [];
-    cur.push(t.slug);
-    BACKLINKS.set(l.to, cur);
-  }
-}
+// Готовая карта «какие термины ссылаются на этот адрес» — собирается при
+// сборке, поэтому браузеру не нужны полные данные всех терминов.
+const BACKLINKS = new Map<string, string[]>(
+  Object.entries(BACKLINKS_JSON as Record<string, string[]>),
+);
 
 const norm = (s: string) => s.toLowerCase().replace(/ё/g, "е");
 

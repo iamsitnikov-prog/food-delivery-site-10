@@ -40,7 +40,7 @@ const ReadPage = () => {
         <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
-            className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
+            className="mb-6 md:mb-8 flex items-center gap-2 text-[max(12px,0.85em)] text-muted-foreground"
           >
             <Link to="/" className="hover:text-foreground">
               главная
@@ -71,7 +71,7 @@ const ReadPage = () => {
             >
               <div className="flex items-center gap-2.5">
                 <Icon name={c.icon} size={24} className="text-brand" />
-                <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[0.78em] font-medium text-cream-muted">
+                <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[max(12px,0.78em)] font-medium text-cream-muted">
                   {c.handle}
                 </span>
               </div>
@@ -135,7 +135,7 @@ const ReadPage = () => {
                 <span className="mt-3 block font-display text-[1.05em] font-semibold">
                   {l.label}
                 </span>
-                <span className="mt-1.5 block text-[0.88em] leading-snug text-cream-muted">
+                <span className="mt-1.5 block text-[max(12px,0.88em)] leading-snug text-cream-muted">
                   {l.note}
                 </span>
               </Link>

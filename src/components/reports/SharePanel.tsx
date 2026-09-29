@@ -12,24 +12,24 @@ const SharePanel = ({
       <Icon name="Share2" size={17} className="text-brand" />
       отправить разбор
     </h3>
-    <p className="mt-2 text-[0.88em] leading-snug text-cream-muted">
+    <p className="mt-2 text-[max(12px,0.88em)] leading-snug text-cream-muted">
       Отправится текстовая сводка: оборот, фактическая нагрузка и позиции,
       требующие проверки. Сам файл отчёта не передаётся.
     </p>
 
     <div className="mt-4 grid gap-3 md:grid-cols-2">
       <div className="rounded-xl bg-cream/[0.06] p-4">
-        <span className="text-[0.85em] font-medium text-cream">
+        <span className="text-[max(12px,0.85em)] font-medium text-cream">
           С названием компании
         </span>
-        <p className="mt-1 text-[0.8em] leading-snug text-cream-muted">
+        <p className="mt-1 text-[max(12px,0.8em)] leading-snug text-cream-muted">
           Для бухгалтера или управляющего
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => onShare("tg", false)}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3 py-2 text-[0.85em] font-medium text-foreground"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3 py-2 text-[max(12px,0.85em)] font-medium text-foreground"
           >
             <Icon name="Send" size={14} />
             Telegram
@@ -37,7 +37,7 @@ const SharePanel = ({
           <button
             type="button"
             onClick={() => onShare("wa", false)}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-cream/25 px-3 py-2 text-[0.85em] transition-colors hover:border-cream/60"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-cream/25 px-3 py-2 text-[max(12px,0.85em)] transition-colors hover:border-cream/60"
           >
             <Icon name="MessageCircle" size={14} />
             WhatsApp
@@ -45,7 +45,7 @@ const SharePanel = ({
           <button
             type="button"
             onClick={() => onShare("copy", false)}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-cream/25 px-3 py-2 text-[0.85em] transition-colors hover:border-cream/60"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-cream/25 px-3 py-2 text-[max(12px,0.85em)] transition-colors hover:border-cream/60"
           >
             <Icon name={copied ? "Check" : "Copy"} size={14} />
             {copied ? "скопировано" : "копировать"}
@@ -54,17 +54,17 @@ const SharePanel = ({
       </div>
 
       <div className="rounded-xl bg-cream/[0.06] p-4">
-        <span className="text-[0.85em] font-medium text-cream">
+        <span className="text-[max(12px,0.85em)] font-medium text-cream">
           Без названия компании
         </span>
-        <p className="mt-1 text-[0.8em] leading-snug text-cream-muted">
+        <p className="mt-1 text-[max(12px,0.8em)] leading-snug text-cream-muted">
           Для чатов и коллег — только цифры
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => onShare("tg", true)}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3 py-2 text-[0.85em] font-medium text-foreground"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-brand px-3 py-2 text-[max(12px,0.85em)] font-medium text-foreground"
           >
             <Icon name="Send" size={14} />
             Telegram
@@ -72,7 +72,7 @@ const SharePanel = ({
           <button
             type="button"
             onClick={() => onShare("wa", true)}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-cream/25 px-3 py-2 text-[0.85em] transition-colors hover:border-cream/60"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-cream/25 px-3 py-2 text-[max(12px,0.85em)] transition-colors hover:border-cream/60"
           >
             <Icon name="MessageCircle" size={14} />
             WhatsApp
@@ -80,7 +80,7 @@ const SharePanel = ({
           <button
             type="button"
             onClick={() => onShare("copy", true)}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-cream/25 px-3 py-2 text-[0.85em] transition-colors hover:border-cream/60"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-cream/25 px-3 py-2 text-[max(12px,0.85em)] transition-colors hover:border-cream/60"
           >
             <Icon name={copied ? "Check" : "Copy"} size={14} />
             {copied ? "скопировано" : "копировать"}

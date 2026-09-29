@@ -41,11 +41,11 @@ const Partners = () => {
                   {p.name}
                 </span>
                 <div className="mt-2 flex flex-wrap items-center gap-2">
-                  <span className="rounded-lg bg-brand px-3 py-1.5 text-[0.78em] font-medium text-foreground">
+                  <span className="rounded-lg bg-brand px-3 py-1.5 text-[max(12px,0.78em)] font-medium text-foreground">
                     {p.category}
                   </span>
                   {p.isNew && (
-                    <span className="rounded-lg border border-brand px-3 py-1.5 text-[0.78em] font-medium uppercase tracking-wide text-brand">
+                    <span className="rounded-lg border border-brand px-3 py-1.5 text-[max(12px,0.78em)] font-medium uppercase tracking-wide text-brand">
                       новое
                     </span>
                   )}
@@ -58,7 +58,7 @@ const Partners = () => {
 
             {p.promo && (
               <div className="mt-6 inline-flex w-fit items-center gap-3 rounded-xl border border-brand/40 px-4 py-3">
-                <span className="text-[0.8em] uppercase tracking-wide text-cream-muted">промокод</span>
+                <span className="text-[max(12px,0.8em)] uppercase tracking-wide text-cream-muted">промокод</span>
                 <span className="font-display text-[1.15em] font-semibold tracking-[-0.01em] text-brand">
                   {p.promo.code}
                 </span>

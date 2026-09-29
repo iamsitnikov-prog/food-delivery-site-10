@@ -45,7 +45,7 @@ const Contacts = () => {
               разобрать отчёт
             </Link>
           </div>
-          <p className="mt-6 max-w-[380px] text-[0.86em] text-cream-muted">
+          <p className="mt-6 max-w-[380px] text-[max(12px,0.86em)] text-cream-muted">
             Владеете сетью? Для&nbsp;вас индивидуальные условия.
           </p>
         </div>
@@ -64,7 +64,7 @@ const Contacts = () => {
                     <Icon name={c.icon} size={20} />
                   </span>
                   <span>
-                    <span className="block text-[0.82em] text-cream-muted">{c.label}</span>
+                    <span className="block text-[max(12px,0.82em)] text-cream-muted">{c.label}</span>
                     <span className="font-display text-[1.25em] font-semibold tracking-[-0.01em] md:text-[1.45em]">{c.value}</span>
                   </span>
                 </span>
@@ -73,7 +73,7 @@ const Contacts = () => {
             </li>
           ))}
           <li className="flex flex-wrap items-center gap-3 border-b border-cream/25 py-6">
-            <span className="mr-auto text-[0.82em] text-cream-muted">мессенджеры</span>
+            <span className="mr-auto text-[max(12px,0.82em)] text-cream-muted">мессенджеры</span>
             {MESSENGERS.map((m) => (
               <a
                 key={m.label}
@@ -92,11 +92,14 @@ const Contacts = () => {
 
       <div className="mt-8 md:mt-14 grid gap-8 border-t border-cream/25 pt-8 md:grid-cols-2">
         <nav aria-label="Услуги">
-          <h2 className="text-[0.82em] uppercase tracking-wide text-cream-muted">услуги</h2>
-          <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-[0.86em]">
+          <h2 className="text-[max(12px,0.82em)] uppercase tracking-wide text-cream-muted">услуги</h2>
+          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[max(12px,0.86em)]">
             {SERVICE_PAGES.map((s) => (
               <li key={s.slug}>
-                <Link to={`/uslugi/${s.slug}`} className="text-cream-muted hover:text-cream">
+                <Link
+                  to={`/uslugi/${s.slug}`}
+                  className="inline-flex min-h-[24px] items-center py-0.5 text-cream-muted hover:text-cream"
+                >
                   {s.navLabel}
                 </Link>
               </li>
@@ -105,43 +108,57 @@ const Contacts = () => {
         </nav>
 
         <nav aria-label="Города">
-          <h2 className="text-[0.82em] uppercase tracking-wide text-cream-muted">города</h2>
-          <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-[0.86em]">
+          <h2 className="text-[max(12px,0.82em)] uppercase tracking-wide text-cream-muted">города</h2>
+          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[max(12px,0.86em)]">
             {CITY_PAGES.map((c) => (
               <li key={c.slug}>
-                <Link to={`/goroda/${c.slug}`} className="text-cream-muted hover:text-cream">
+                <Link
+                  to={`/goroda/${c.slug}`}
+                  className="inline-flex min-h-[24px] items-center py-0.5 text-cream-muted hover:text-cream"
+                >
                   {c.navLabel}
                 </Link>
               </li>
             ))}
           </ul>
-          <p className="mt-3 text-[0.82em] text-cream-muted/80">Работаем по всей России.</p>
+          <p className="mt-3 text-[max(12px,0.82em)] text-cream-muted/80">Работаем по всей России.</p>
         </nav>
       </div>
 
-      <div className="mt-12 flex flex-col gap-6 border-t border-cream/25 pt-6 text-[0.86em] text-cream-muted md:flex-row md:items-center md:justify-between">
+      <div className="mt-12 flex flex-col gap-6 border-t border-cream/25 pt-6 text-[max(12px,0.86em)] text-cream-muted md:flex-row md:items-center md:justify-between">
         <a href={to("#top")} className="font-display text-[1.3em] font-semibold text-cream">
           agregatory<span className="font-normal text-cream-muted">.pro</span>
         </a>
-        <nav className="flex flex-wrap gap-x-6 gap-y-2">
+        <nav className="flex flex-wrap gap-x-6 gap-y-2.5">
           {USEFUL_LINKS.map((l) => (
-            <a key={l.href} href={l.href} className="hover:text-cream">
+            <a
+              key={l.href}
+              href={l.href}
+              className="inline-flex min-h-[24px] items-center hover:text-cream"
+            >
               {l.label}
             </a>
           ))}
           {NAV.map((n) => (
-            <a key={n.href} href={to(n.href)} className="hover:text-cream">
+            <a
+              key={n.href}
+              href={to(n.href)}
+              className="inline-flex min-h-[24px] items-center hover:text-cream"
+            >
               {n.label}
             </a>
           ))}
-          <Link to="/privacy" className="hover:text-cream">
+          <Link
+            to="/privacy"
+            className="inline-flex min-h-[24px] items-center hover:text-cream"
+          >
             политика конфиденциальности
           </Link>
         </nav>
         <span>© {new Date().getFullYear()} agregatory.pro</span>
       </div>
 
-      <div className="mt-6 space-y-2 text-[0.78em] leading-relaxed text-cream-muted/80">
+      <div className="mt-6 space-y-2 text-[max(12px,0.78em)] leading-relaxed text-cream-muted/80">
         <p>ИП Ситников Юрий Сергеевич, ИНН 632509481120 · ИП Ковальчук Лилия Максимовна, ИНН 681601399981</p>
         <p>
           При создании сайта все партнёры дали согласие на размещение и публикацию персональных и коммерческих данных.

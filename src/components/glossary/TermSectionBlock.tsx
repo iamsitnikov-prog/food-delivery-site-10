@@ -1,4 +1,4 @@
-import type { TermSection } from "@/data/glossary";
+import type { TermSection } from "@/data/term-index";
 import { anchorId } from "@/lib/term-anchors";
 import { richText } from "@/lib/rich-text";
 

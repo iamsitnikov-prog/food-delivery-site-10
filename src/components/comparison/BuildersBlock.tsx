@@ -17,7 +17,7 @@ const BuildersBlock = () => (
         <table className="w-full min-w-[760px] border-collapse text-cream">
           <thead>
             <tr>
-              <th className="w-[210px] p-4 text-left align-bottom text-[0.85em] font-normal text-cream-muted">
+              <th className="w-[210px] p-4 text-left align-bottom text-[max(12px,0.85em)] font-normal text-cream-muted">
                 Возможность
               </th>
               {BUILDERS.map((b) => (
@@ -25,7 +25,7 @@ const BuildersBlock = () => (
                   <span className="block font-display text-[1.2em] font-semibold leading-tight">
                     {b.name}
                   </span>
-                  <span className="mt-1.5 block text-[0.8em] font-normal leading-snug text-brand">
+                  <span className="mt-1.5 block text-[max(12px,0.8em)] font-normal leading-snug text-brand">
                     {b.tagline}
                   </span>
                 </th>
@@ -34,20 +34,20 @@ const BuildersBlock = () => (
           </thead>
           <tbody>
             <tr className="border-t border-cream/12">
-              <th className="p-4 text-left align-top text-[0.9em] font-medium text-cream-muted">
+              <th className="p-4 text-left align-top text-[max(12px,0.9em)] font-medium text-cream-muted">
                 Ориентир по цене
               </th>
               {BUILDERS.map((b) => (
                 <td key={b.slug} className="p-4 align-top text-[0.92em] leading-snug">
                   от {rub(b.fee)} ₽ / мес
-                  <span className="mt-1 block text-[0.85em] text-cream-muted">
+                  <span className="mt-1 block text-[max(12px,0.85em)] text-cream-muted">
                     {b.feeNote}
                   </span>
                 </td>
               ))}
             </tr>
             <tr className="border-t border-cream/12">
-              <th className="p-4 text-left align-top text-[0.9em] font-medium text-cream-muted">
+              <th className="p-4 text-left align-top text-[max(12px,0.9em)] font-medium text-cream-muted">
                 Комиссия с заказа
               </th>
               {BUILDERS.map((b) => (
@@ -58,18 +58,18 @@ const BuildersBlock = () => (
             </tr>
             {FEATURES.map((f) => (
               <tr key={f.key} className="border-t border-cream/12">
-                <th className="p-4 text-left align-top text-[0.9em] font-medium text-cream-muted">
+                <th className="p-4 text-left align-top text-[max(12px,0.9em)] font-medium text-cream-muted">
                   {f.label}
                 </th>
                 {BUILDERS.map((b) => (
                   <td key={b.slug} className="p-4 align-top">
                     {b[f.key] ? (
-                      <span className="inline-flex items-center gap-1.5 text-[0.9em] text-brand">
+                      <span className="inline-flex items-center gap-1.5 text-[max(12px,0.9em)] text-brand">
                         <Icon name="Check" size={16} />
                         есть
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1.5 text-[0.9em] text-cream-muted">
+                      <span className="inline-flex items-center gap-1.5 text-[max(12px,0.9em)] text-cream-muted">
                         <Icon name="Minus" size={16} />
                         нет или ограничено
                       </span>
@@ -79,13 +79,13 @@ const BuildersBlock = () => (
               </tr>
             ))}
             <tr className="border-t border-cream/12">
-              <th className="p-4 text-left align-top text-[0.9em] font-medium text-cream-muted">
+              <th className="p-4 text-left align-top text-[max(12px,0.9em)] font-medium text-cream-muted">
                 Кому подходит
               </th>
               {BUILDERS.map((b) => (
                 <td
                   key={b.slug}
-                  className="p-4 align-top text-[0.9em] leading-snug text-cream-muted"
+                  className="p-4 align-top text-[max(12px,0.9em)] leading-snug text-cream-muted"
                 >
                   {b.bestFor}
                 </td>
@@ -121,8 +121,8 @@ const BuildersBlock = () => (
             <h3 className="font-display text-[1.4em] font-semibold leading-tight tracking-[-0.02em]">
               {b.name}
             </h3>
-            <p className="mt-1.5 text-[0.9em] leading-snug text-brand">{b.tagline}</p>
-            <p className="mt-4 text-[0.88em] leading-snug text-cream-muted">
+            <p className="mt-1.5 text-[max(12px,0.9em)] leading-snug text-brand">{b.tagline}</p>
+            <p className="mt-4 text-[max(12px,0.88em)] leading-snug text-cream-muted">
               Ориентир по цене: от {rub(b.fee)} ₽ в месяц. {b.feeNote}.
             </p>
 
@@ -147,7 +147,7 @@ const BuildersBlock = () => (
               ))}
             </ul>
 
-            <p className="mt-5 rounded-2xl bg-cream/[0.06] p-4 text-[0.9em] leading-snug">
+            <p className="mt-5 rounded-2xl bg-cream/[0.06] p-4 text-[max(12px,0.9em)] leading-snug">
               <span className="text-brand">Кому подходит. </span>
               {b.bestFor}
             </p>
@@ -157,7 +157,7 @@ const BuildersBlock = () => (
                 href={b.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-5 inline-flex items-center gap-2 text-[0.9em] font-medium text-brand hover:underline"
+                className="mt-5 inline-flex items-center gap-2 text-[max(12px,0.9em)] font-medium text-brand hover:underline"
               >
                 перейти на сайт
                 {b.promo && ` · промокод ${b.promo}`}

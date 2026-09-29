@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import MiniCalc from "./MiniCalc";
-import type { GlossaryTerm } from "@/data/glossary";
-import { getTerm } from "@/data/glossary";
+import type { GlossaryTerm } from "@/data/term-index";
+import { getBrief } from "@/data/term-index";
 import { PEOPLE } from "@/data/team";
 import { buildToc } from "@/lib/term-anchors";
 import { useActiveAnchor } from "@/hooks/use-active-anchor";
@@ -28,7 +28,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
 
   // Связанные термины заданы в данных — порядок утверждён и не меняется.
   const links = (term.related ?? [])
-    .map((href) => getTerm(href.replace("/slovar/", "")))
+    .map((href) => getBrief(href.replace("/slovar/", "")))
     .filter((t): t is GlossaryTerm => Boolean(t));
 
   return (
@@ -38,7 +38,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
           aria-label="Содержание статьи"
           className="rounded-[24px] bg-pale p-4 md:p-6 text-foreground"
         >
-          <h2 className="text-[0.78em] font-medium uppercase tracking-wide text-foreground/50">
+          <h2 className="text-[max(12px,0.78em)] font-medium uppercase tracking-wide text-foreground/50">
             содержание
           </h2>
           <ul className="mt-3.5 space-y-1">
@@ -82,7 +82,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
                   ? "Пройти тест по документам"
                   : "проверить себя"}
               </span>
-              <span className="mt-1 block text-[0.88em] leading-snug text-foreground/60">
+              <span className="mt-1 block text-[max(12px,0.88em)] leading-snug text-foreground/60">
                 короткий тест по теме
               </span>
             </span>
@@ -102,13 +102,13 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
         >
           получить бесплатный анализ
         </a>
-        <p className="mt-2.5 text-center text-[0.8em] text-cream-muted">
+        <p className="mt-2.5 text-center text-[max(12px,0.8em)] text-cream-muted">
           разбор занимает 20 минут, без обязательств
         </p>
         {term.service && (
           <Link
             to={term.service}
-            className="mt-3.5 flex items-center justify-center gap-1.5 text-[0.88em] font-medium text-brand transition-opacity hover:opacity-80"
+            className="mt-3.5 flex items-center justify-center gap-1.5 text-[max(12px,0.88em)] font-medium text-brand transition-opacity hover:opacity-80"
           >
             подробнее об услуге
             <Icon name="ArrowRight" size={15} />
@@ -121,7 +121,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
           aria-label="Связанные термины"
           className="rounded-[24px] bg-pale p-4 md:p-6 text-foreground"
         >
-          <h2 className="text-[0.78em] font-medium uppercase tracking-wide text-foreground/50">
+          <h2 className="text-[max(12px,0.78em)] font-medium uppercase tracking-wide text-foreground/50">
             связанные термины
           </h2>
           <div className="mt-3.5 flex flex-wrap gap-2">
@@ -130,7 +130,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
                 key={l.slug}
                 to={`/slovar/${l.slug}`}
                 title={l.short}
-                className="rounded-xl border border-foreground/15 bg-cream/70 px-3.5 py-2 text-[0.88em] leading-none transition-colors hover:border-foreground/40 hover:bg-cream"
+                className="rounded-xl border border-foreground/15 bg-cream/70 px-3.5 py-2 text-[max(12px,0.88em)] leading-none transition-colors hover:border-foreground/40 hover:bg-cream"
               >
                 {l.term}
               </Link>
@@ -138,7 +138,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
           </div>
           <Link
             to="/slovar"
-            className="mt-4 inline-flex items-center gap-1.5 text-[0.88em] font-medium transition-opacity hover:opacity-70"
+            className="mt-4 inline-flex items-center gap-1.5 text-[max(12px,0.88em)] font-medium transition-opacity hover:opacity-70"
           >
             весь глоссарий
             <Icon name="ArrowRight" size={15} />
@@ -163,7 +163,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
             <div className="min-w-0">
               <p className="font-medium leading-tight">{expert.name}</p>
               {person && (
-                <p className="mt-0.5 text-[0.82em] leading-snug text-foreground/55">
+                <p className="mt-0.5 text-[max(12px,0.82em)] leading-snug text-foreground/55">
                   {person.exp}
                 </p>
               )}
@@ -176,7 +176,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
       )}
 
       <div className="rounded-[24px] bg-cream p-4 md:p-6 text-foreground">
-        <h2 className="text-[0.78em] font-medium uppercase tracking-wide text-foreground/50">
+        <h2 className="text-[max(12px,0.78em)] font-medium uppercase tracking-wide text-foreground/50">
           что дальше
         </h2>
         <ul className="mt-3.5 space-y-2.5 text-[0.92em]">

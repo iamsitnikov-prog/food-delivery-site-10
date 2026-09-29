@@ -133,7 +133,7 @@ const Calculator = ({ mode = "all", hideCta = false }: { mode?: CalcMode; hideCt
             <button
               type="button"
               onClick={() => setInput(DEFAULTS)}
-              className="inline-flex items-center gap-2 text-[0.88em] text-cream-muted transition-colors hover:text-cream"
+              className="inline-flex items-center gap-2 text-[max(12px,0.88em)] text-cream-muted transition-colors hover:text-cream"
             >
               <Icon name="RotateCcw" size={15} />
               сбросить значения
@@ -141,7 +141,7 @@ const Calculator = ({ mode = "all", hideCta = false }: { mode?: CalcMode; hideCt
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-4 py-2.5 text-[0.88em] font-medium text-cream transition-colors hover:border-brand hover:bg-brand hover:text-foreground"
+              className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-4 py-2.5 text-[max(12px,0.88em)] font-medium text-cream transition-colors hover:border-brand hover:bg-brand hover:text-foreground"
             >
               <Icon name="Download" size={15} />
               сохранить расчёт в PDF

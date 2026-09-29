@@ -31,7 +31,7 @@ const CalcPreview = () => {
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <div className="border-b border-foreground/10 px-5 py-4 md:px-14">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <span className="inline-flex items-center gap-2 text-[0.85em] font-medium text-muted-foreground">
+          <span className="inline-flex items-center gap-2 text-[max(12px,0.85em)] font-medium text-muted-foreground">
             <Icon name="Eye" size={16} />
             предпросмотр · калькуляторы
           </span>
@@ -39,7 +39,7 @@ const CalcPreview = () => {
             <button
               type="button"
               onClick={() => setActive(null)}
-              className="inline-flex items-center gap-2 text-[0.88em] font-medium text-foreground hover:text-muted-foreground"
+              className="inline-flex items-center gap-2 text-[max(12px,0.88em)] font-medium text-foreground hover:text-muted-foreground"
             >
               <Icon name="ArrowLeft" size={15} />
               ко всем калькуляторам
@@ -84,7 +84,7 @@ const CalcPreview = () => {
                   }`}
                 >
                   {p.accent && (
-                    <span className="absolute right-6 top-6 rounded-lg bg-white/15 px-2.5 py-1 text-[0.72em] font-bold uppercase tracking-wide">
+                    <span className="absolute right-6 top-6 rounded-lg bg-white/15 px-2.5 py-1 text-[max(12px,0.72em)] font-bold uppercase tracking-wide">
                       новое
                     </span>
                   )}
@@ -148,7 +148,7 @@ const CalcPreview = () => {
       )}
 
       <div className="px-5 pb-14 md:px-14">
-        <p className="text-[0.85em] text-muted-foreground">
+        <p className="text-[max(12px,0.85em)] text-muted-foreground">
           Служебная страница для предпросмотра. Не индексируется поисковыми системами.
         </p>
       </div>

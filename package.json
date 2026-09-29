@@ -9,7 +9,8 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "prerender": "tsx scripts/prerender.ts"
+    "prerender": "tsx scripts/prerender.ts",
+    "split-data": "tsx scripts/split-data.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

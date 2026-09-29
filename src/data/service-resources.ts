@@ -1,7 +1,7 @@
 export type ResourceLink = { to: string; label: string; note: string; icon: string };
 
 const GLOSSARY = (anchor: string, label: string, note: string): ResourceLink => ({
-  to: `/slovar#${anchor}`,
+  to: `/slovar/${anchor}`,
   label,
   note,
   icon: "BookA",

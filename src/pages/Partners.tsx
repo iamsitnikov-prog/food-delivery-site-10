@@ -22,7 +22,7 @@ const PartnersPage = () => {
       <div id="top">
         <Header />
         <section className="px-5 pb-10 pt-8 md:px-14 md:pb-20 md:pt-16">
-          <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
+          <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex items-center gap-2 text-[max(12px,0.85em)] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               главная
             </Link>
@@ -60,11 +60,11 @@ const PartnersPage = () => {
                     {p.name}
                   </h2>
                   <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <span className="rounded-lg bg-brand px-2.5 py-1 text-[0.75em] font-medium text-foreground">
+                    <span className="rounded-lg bg-brand px-2.5 py-1 text-[max(12px,0.75em)] font-medium text-foreground">
                       {p.category}
                     </span>
                     {p.isNew && (
-                      <span className="rounded-lg border border-brand px-2.5 py-1 text-[0.75em] font-medium uppercase tracking-wide text-brand">
+                      <span className="rounded-lg border border-brand px-2.5 py-1 text-[max(12px,0.75em)] font-medium uppercase tracking-wide text-brand">
                         новое
                       </span>
                     )}
@@ -78,7 +78,7 @@ const PartnersPage = () => {
 
               {p.promo && (
                 <div className="mt-5 inline-flex w-fit max-w-full flex-wrap items-center gap-x-2.5 gap-y-1 rounded-xl border border-brand/40 px-3.5 py-2.5">
-                  <span className="text-[0.75em] uppercase tracking-wide text-cream-muted">промокод</span>
+                  <span className="text-[max(12px,0.75em)] uppercase tracking-wide text-cream-muted">промокод</span>
                   <span className="min-w-0 break-all font-display text-[1.05em] font-semibold tracking-[-0.01em] text-brand">
                     {p.promo.code}
                   </span>
@@ -86,7 +86,7 @@ const PartnersPage = () => {
               )}
 
               <details className="group mt-6 border-t border-cream/15 pt-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[0.9em] font-medium text-cream-muted transition-colors hover:text-cream [&::-webkit-details-marker]:hidden">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[max(12px,0.9em)] font-medium text-cream-muted transition-colors hover:text-cream [&::-webkit-details-marker]:hidden">
                   что входит
                   <Icon
                     name="ChevronDown"
@@ -97,7 +97,7 @@ const PartnersPage = () => {
 
                 <ul className="mt-5 space-y-2.5">
                   {p.points.map((point) => (
-                    <li key={point} className="flex gap-2.5 text-[0.9em] leading-snug text-cream-muted">
+                    <li key={point} className="flex gap-2.5 text-[max(12px,0.9em)] leading-snug text-cream-muted">
                       <Icon name="Check" size={16} className="mt-0.5 shrink-0 text-brand" />
                       {point}
                     </li>
@@ -105,12 +105,12 @@ const PartnersPage = () => {
                 </ul>
 
                 <div className="mt-5 rounded-[18px] bg-cream/[0.06] p-4">
-                  <div className="text-[0.78em] uppercase tracking-wide text-cream-muted">кому подойдёт</div>
-                  <p className="mt-2 text-[0.9em] leading-relaxed text-cream-muted">{p.forWhom}</p>
+                  <div className="text-[max(12px,0.78em)] uppercase tracking-wide text-cream-muted">кому подойдёт</div>
+                  <p className="mt-2 text-[max(12px,0.9em)] leading-relaxed text-cream-muted">{p.forWhom}</p>
                 </div>
 
                 {p.promo && (
-                  <p className="mt-4 text-[0.85em] leading-snug text-cream-muted">{p.promo.text}</p>
+                  <p className="mt-4 text-[max(12px,0.85em)] leading-snug text-cream-muted">{p.promo.text}</p>
                 )}
               </details>
 

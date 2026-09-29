@@ -105,7 +105,7 @@ const Privacy = () => {
           ))}
         </div>
 
-        <p className="mt-10 text-[0.86em] text-foreground/70">
+        <p className="mt-10 text-[max(12px,0.86em)] text-foreground/70">
           ИП Ситников Юрий Сергеевич, ИНН 632509481120 · ИП Ковальчук Лилия Максимовна, ИНН 681601399981
         </p>
       </div>

@@ -109,8 +109,8 @@ const PageNotFound = () => {
               <h3 className="mt-3 font-display text-[1.1em] font-semibold leading-tight">
                 {s.label}
               </h3>
-              <p className="mt-2 text-[0.9em] leading-snug text-muted-foreground">{s.note}</p>
-              <span className="mt-4 inline-flex items-center gap-1.5 text-[0.85em] text-foreground/70 transition-colors group-hover:text-foreground">
+              <p className="mt-2 text-[max(12px,0.9em)] leading-snug text-muted-foreground">{s.note}</p>
+              <span className="mt-4 inline-flex items-center gap-1.5 text-[max(12px,0.85em)] text-foreground/70 transition-colors group-hover:text-foreground">
                 открыть
                 <Icon name="ArrowUpRight" size={15} />
               </span>

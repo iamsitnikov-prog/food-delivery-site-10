@@ -67,7 +67,7 @@ const PostFeedback = ({ slug, title }: { slug: string; title: string }) => {
         </button>
 
         <div className="flex items-center gap-3">
-          <span className="text-[0.9em] text-muted-foreground">поделиться</span>
+          <span className="text-[max(12px,0.9em)] text-muted-foreground">поделиться</span>
           <button
             onClick={() => share("tg")}
             aria-label="Поделиться в Telegram"

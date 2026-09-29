@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import type { PostBlock } from "@/data/blog-posts";
+import type { PostBlock } from "@/data/post-index";
 import Icon from "@/components/ui/icon";
 import { INTERLINKS } from "@/data/interlinks";
 
@@ -27,7 +27,9 @@ const linkify = (text: string, currentSlug: string, used: Set<string>): Node[] =
     <Link
       key={best.slug}
       to={best.to}
-      className="underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary"
+      // break-words: длинный анкор в узкой колонке телефона переносится,
+      // а не уезжает за правый край страницы.
+      className="break-words underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary"
     >
       {text.slice(best.idx, end) + tail}
     </Link>,
@@ -80,15 +82,15 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
         return (
           <aside key={i} className="mt-8 rounded-[24px] border border-primary/25 bg-pale p-4 md:p-7">
             <div className="flex flex-wrap items-center gap-2.5">
-              <span className="rounded-lg bg-foreground px-3 py-1.5 text-[0.75em] font-medium uppercase tracking-wide text-brand">
+              <span className="rounded-lg bg-foreground px-3 py-1.5 text-[max(12px,0.75em)] font-medium uppercase tracking-wide text-brand">
                 новое
               </span>
-              <span className="text-[0.85em] text-foreground/60">инструмент, который мы советуем</span>
+              <span className="text-[max(12px,0.85em)] text-foreground/60">инструмент, который мы советуем</span>
             </div>
             <p className="mt-4 leading-relaxed text-foreground/85">{b.text}</p>
             {b.promo && (
               <div className="mt-4 mr-3 inline-flex items-center gap-3 rounded-xl bg-foreground px-4 py-3 align-middle">
-                <span className="text-[0.78em] uppercase tracking-wide text-brand/70">промокод</span>
+                <span className="text-[max(12px,0.78em)] uppercase tracking-wide text-brand/70">промокод</span>
                 <span className="font-display text-[1.1em] font-semibold text-brand">{b.promo}</span>
               </div>
             )}
@@ -121,7 +123,7 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
           <ol key={i} className="mt-6 space-y-4">
             {b.items.map((item, n) => (
               <li key={item} className="flex gap-3 md:gap-4 leading-relaxed text-foreground/85">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-surface text-[0.85em] font-semibold text-brand">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-surface text-[max(12px,0.85em)] font-semibold text-brand">
                   {n + 1}
                 </span>
                 <span className="pt-0.5">{linkify(item, slug, used)}</span>
@@ -156,7 +158,7 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
               </tbody>
             </table>
           </div>
-          <p className="mt-2.5 flex items-center gap-1.5 text-[0.82em] text-muted-foreground md:hidden">
+          <p className="mt-2.5 flex items-center gap-1.5 text-[max(12px,0.82em)] text-muted-foreground md:hidden">
             <Icon name="MoveHorizontal" size={14} />
             таблицу можно прокрутить вбок
           </p>

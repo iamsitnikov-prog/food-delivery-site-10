@@ -165,7 +165,7 @@ const ReportsDecoder = () => {
       <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
         <nav
           aria-label="Хлебные крошки"
-          className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
+          className="mb-6 md:mb-8 flex items-center gap-2 text-[max(12px,0.85em)] text-muted-foreground"
         >
           <Link to="/" className="hover:text-foreground">
             главная
@@ -202,7 +202,7 @@ const ReportsDecoder = () => {
             </button>
           ))}
         </div>
-        <p className="mt-4 max-w-[620px] text-[0.9em] leading-snug text-muted-foreground">
+        <p className="mt-4 max-w-[620px] text-[max(12px,0.9em)] leading-snug text-muted-foreground">
           {MODES.find((m) => m.key === mode)?.note}
         </p>
       </section>

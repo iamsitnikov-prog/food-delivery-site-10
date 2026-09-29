@@ -33,7 +33,7 @@ const ChecklistCases = ({ slug }: { slug: string }) => {
             to={`/goroda/${citySlug}#case`}
             className="group flex flex-col rounded-[24px] bg-surface p-4 md:p-6 text-cream transition-transform hover:-translate-y-1"
           >
-            <div className="flex flex-wrap items-center gap-2 text-[0.82em] text-cream-muted">
+            <div className="flex flex-wrap items-center gap-2 text-[max(12px,0.82em)] text-cream-muted">
               <Icon name="MapPin" size={15} className="text-brand" />
               {city} · {data.period}
             </div>
@@ -44,7 +44,7 @@ const ChecklistCases = ({ slug }: { slug: string }) => {
             <div className="mt-4 space-y-2">
               {data.metrics.slice(0, 2).map((m) => (
                 <div key={m.label} className="flex items-baseline justify-between gap-3">
-                  <span className="text-[0.86em] leading-snug text-cream-muted">{m.label}</span>
+                  <span className="text-[max(12px,0.86em)] leading-snug text-cream-muted">{m.label}</span>
                   <span className="shrink-0 font-display text-[1.05em] font-semibold tabular-nums text-brand">
                     {m.value}
                   </span>
@@ -52,7 +52,7 @@ const ChecklistCases = ({ slug }: { slug: string }) => {
               ))}
             </div>
 
-            <span className="mt-5 inline-flex items-center gap-2 text-[0.88em] font-medium text-brand">
+            <span className="mt-5 inline-flex items-center gap-2 text-[max(12px,0.88em)] font-medium text-brand">
               читать кейс
               <Icon
                 name="ArrowRight"

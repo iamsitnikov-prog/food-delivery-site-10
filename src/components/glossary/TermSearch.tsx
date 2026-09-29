@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
-import { GLOSSARY, type GlossaryTerm } from "@/data/glossary";
+import { GLOSSARY, type TermBrief } from "@/data/term-index";
 
 const norm = (s: string) => s.toLowerCase().replace(/ё/g, "е").trim();
 
@@ -19,7 +19,7 @@ const fromLayout = (s: string) =>
     })
     .join("");
 
-const score = (term: GlossaryTerm, q: string) => {
+const score = (term: TermBrief, q: string) => {
   const name = norm(term.term);
   if (name === q) return 0;
   if (name.startsWith(q)) return 1;
@@ -27,7 +27,6 @@ const score = (term: GlossaryTerm, q: string) => {
   if (words.some((w) => w.startsWith(q))) return 2;
   if (name.includes(q)) return 3;
   if (norm(term.short).includes(q)) return 4;
-  if (norm(term.full).includes(q)) return 5;
   return -1;
 };
 
@@ -36,7 +35,7 @@ export const suggest = (raw: string, limit = 8) => {
   if (q.length < 2) return [];
   const alt = norm(fromLayout(q));
 
-  const hits: { term: GlossaryTerm; rank: number }[] = [];
+  const hits: { term: TermBrief; rank: number }[] = [];
   for (const t of GLOSSARY) {
     let rank = score(t, q);
     if (rank < 0 && alt !== q) {
@@ -91,7 +90,7 @@ const TermSearch = ({
     return () => document.removeEventListener("mousedown", onDocClick);
   }, []);
 
-  const go = (term: GlossaryTerm) => {
+  const go = (term: TermBrief) => {
     setOpen(false);
     navigate(`/slovar/${term.slug}`);
   };
@@ -173,17 +172,17 @@ const TermSearch = ({
                   <span className="block font-medium text-cream">
                     <Highlight text={t.term} query={value} />
                   </span>
-                  <span className="mt-0.5 line-clamp-2 block text-[0.85em] leading-snug text-cream-muted">
+                  <span className="mt-0.5 line-clamp-2 block text-[max(12px,0.85em)] leading-snug text-cream-muted">
                     {t.short}
                   </span>
                 </span>
-                <span className="shrink-0 rounded-md bg-cream/10 px-2 py-1 text-[0.7em] text-cream-muted">
+                <span className="shrink-0 rounded-md bg-cream/10 px-2 py-1 text-[max(12px,0.7em)] text-cream-muted">
                   {t.group}
                 </span>
               </button>
             </li>
           ))}
-          <li className="border-t border-cream/10 px-3.5 py-2 text-[0.78em] text-cream-muted">
+          <li className="border-t border-cream/10 px-3.5 py-2 text-[max(12px,0.78em)] text-cream-muted">
             ↑↓ — выбрать, Enter — открыть термин
           </li>
         </ul>

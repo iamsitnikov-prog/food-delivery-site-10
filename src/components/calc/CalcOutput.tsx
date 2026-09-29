@@ -65,7 +65,7 @@ const CalcOutput = ({ input, r, show }: Props) => {
       )}
 
       {show("profit") && r.anyChannel && !r.isProfitable && (
-        <p className="flex gap-2 rounded-xl bg-red-500/15 p-4 text-[0.88em] leading-snug text-red-200">
+        <p className="flex gap-2 rounded-xl bg-red-500/15 p-4 text-[max(12px,0.88em)] leading-snug text-red-200">
           <Icon name="TriangleAlert" size={17} className="mt-0.5 shrink-0" />
           При таких условиях заказы не приносят прибыли — каждый новый заказ увеличивает убыток.
         </p>
@@ -77,7 +77,7 @@ const CalcOutput = ({ input, r, show }: Props) => {
             <span className={`font-display text-[2.6em] font-semibold leading-none ${drrColor}`}>
               {hasAdData ? percent(r.drr) : "—"}
             </span>
-            <span className={`pb-1 text-[0.9em] leading-snug ${drrColor}`}>{drrText}</span>
+            <span className={`pb-1 text-[max(12px,0.9em)] leading-snug ${drrColor}`}>{drrText}</span>
           </div>
           <div className="mt-4">
             {r.bothChannels && (
@@ -98,7 +98,7 @@ const CalcOutput = ({ input, r, show }: Props) => {
             />
             <Row label="Предельный ДРР при вашей марже" value={percent(r.drrLimit)} />
           </div>
-          <p className="mt-3 text-[0.86em] leading-snug text-cream-muted">
+          <p className="mt-3 text-[max(12px,0.86em)] leading-snug text-cream-muted">
             Выше предельного значения продвижение работает в убыток. Универсальной нормы нет:
             оценка выше считается от вашего предела — запас больше половины считаем устойчивым.
           </p>
@@ -177,9 +177,9 @@ const CalcOutput = ({ input, r, show }: Props) => {
               value={r.breakEvenOrders > 0 ? `${money(r.breakEvenOrders)} шт` : "не окупится"}
             />
           )}
-          <p className="mt-3 text-[0.86em] leading-snug text-cream-muted">{r.taxNote}</p>
+          <p className="mt-3 text-[max(12px,0.86em)] leading-snug text-cream-muted">{r.taxNote}</p>
           {r.netProfitPerMonth < 0 && (
-            <p className="mt-3 flex gap-2 rounded-xl bg-red-500/15 p-3 text-[0.88em] leading-snug text-red-200">
+            <p className="mt-3 flex gap-2 rounded-xl bg-red-500/15 p-3 text-[max(12px,0.88em)] leading-snug text-red-200">
               <Icon name="TriangleAlert" size={17} className="mt-0.5 shrink-0" />
               С учётом всех расходов и налогов канал работает в убыток.
             </p>
@@ -194,7 +194,7 @@ const CalcOutput = ({ input, r, show }: Props) => {
             value={`${money(r.revenuePerYear)} ₽`}
             muted
           />
-          <p className="-mt-1 mb-2 text-[0.78em] leading-snug text-cream-muted">
+          <p className="-mt-1 mb-2 text-[max(12px,0.78em)] leading-snug text-cream-muted">
             Год считается от дневной выручки за {daysInYear(input.periodYear)} дн. Умножение месяца
             на 12 даёт другую сумму: в месяцах разное число дней.
           </p>
@@ -211,8 +211,8 @@ const CalcOutput = ({ input, r, show }: Props) => {
           {r.ordersToVatLimit !== null && (
             <Row label="Запас до лимита" value={`${money(r.ordersToVatLimit)} заказов`} muted />
           )}
-          <p className="mt-3 text-[0.86em] leading-snug text-cream-muted">{r.vat.note}</p>
-          <p className="mt-2 flex gap-2 rounded-xl bg-brand/15 p-3 text-[0.86em] leading-snug text-cream">
+          <p className="mt-3 text-[max(12px,0.86em)] leading-snug text-cream-muted">{r.vat.note}</p>
+          <p className="mt-2 flex gap-2 rounded-xl bg-brand/15 p-3 text-[max(12px,0.86em)] leading-snug text-cream">
             <Icon name="Info" size={16} className="mt-0.5 shrink-0 text-brand" />
             Важно: в доход считается вся сумма заказа, а не то, что пришло после удержаний. При
             комиссии 35% на счёт поступает примерно половина оборота — а налог считается со всей

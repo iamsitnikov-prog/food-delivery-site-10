@@ -6,7 +6,7 @@ import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
-import { BLOG_POSTS } from "@/data/blog-posts";
+import { BLOG_POSTS } from "@/data/post-index";
 import { visiblePosts, isPreviewMode, isScheduled, formatDate, exitPreview } from "@/lib/schedule";
 import { BLOG_GROUPS } from "@/data/blog-groups";
 
@@ -74,14 +74,14 @@ const Blog = () => {
             <button
               type="button"
               onClick={exitPreview}
-              className="ml-auto text-[0.9em] text-brand underline underline-offset-4"
+              className="ml-auto text-[max(12px,0.9em)] text-brand underline underline-offset-4"
             >
               выйти
             </button>
           </div>
         )}
         <section className="px-5 pb-10 pt-8 md:px-14 md:pb-20 md:pt-16">
-          <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
+          <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex items-center gap-2 text-[max(12px,0.85em)] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               главная
             </Link>
@@ -97,14 +97,14 @@ const Blog = () => {
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link
               to="/test"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-[0.88em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-[max(12px,0.88em)] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
             >
               <Icon name="ClipboardCheck" size={16} />
               проверить свой проект за 3 минуты
             </Link>
             <Link
               to="/kalkulyatory"
-              className="inline-flex items-center gap-2 rounded-xl border border-foreground/20 px-4 py-2.5 text-[0.88em] font-medium transition-colors hover:bg-foreground hover:text-brand"
+              className="inline-flex items-center gap-2 rounded-xl border border-foreground/20 px-4 py-2.5 text-[max(12px,0.88em)] font-medium transition-colors hover:bg-foreground hover:text-brand"
             >
               <Icon name="Calculator" size={16} />
               калькуляторы
@@ -113,7 +113,7 @@ const Blog = () => {
               href="/rss.xml"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl border border-foreground/20 px-4 py-2.5 text-[0.88em] font-medium transition-colors hover:bg-foreground hover:text-brand"
+              className="inline-flex items-center gap-2 rounded-xl border border-foreground/20 px-4 py-2.5 text-[max(12px,0.88em)] font-medium transition-colors hover:bg-foreground hover:text-brand"
             >
               <Icon name="Rss" size={15} />
               RSS
@@ -143,7 +143,7 @@ const Blog = () => {
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-display text-[1.6em] font-semibold text-brand">{i + 1}</span>
-                    <span className="inline-flex items-center gap-1.5 text-[0.85em] text-cream-muted">
+                    <span className="inline-flex items-center gap-1.5 text-[max(12px,0.85em)] text-cream-muted">
                       <Icon name="Star" size={14} className="text-brand" />
                       {likes[p.slug]}
                     </span>
@@ -151,7 +151,7 @@ const Blog = () => {
                   <h3 className="mt-4 flex-1 font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em]">
                     {p.h1}
                   </h3>
-                  <span className="mt-5 inline-flex items-center gap-2 text-[0.88em] font-medium text-brand">
+                  <span className="mt-5 inline-flex items-center gap-2 text-[max(12px,0.88em)] font-medium text-brand">
                     читать
                     <Icon name="ArrowRight" size={15} className="transition-transform group-hover:translate-x-1" />
                   </span>
@@ -166,7 +166,7 @@ const Blog = () => {
         <div className="mb-10 -mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
           <button
             onClick={() => setGroup(null)}
-            className={`shrink-0 whitespace-nowrap rounded-xl px-4 py-2.5 text-[0.9em] transition-colors ${
+            className={`shrink-0 whitespace-nowrap rounded-xl px-4 py-2.5 text-[max(12px,0.9em)] transition-colors ${
               group === null ? "bg-primary text-primary-foreground" : "border border-primary/30 hover:bg-pale"
             }`}
           >
@@ -182,14 +182,14 @@ const Blog = () => {
               <button
                 key={g.id}
                 onClick={() => setGroup(g.id)}
-                className={`inline-flex shrink-0 items-center whitespace-nowrap rounded-xl px-4 py-2.5 text-[0.9em] transition-colors ${
+                className={`inline-flex shrink-0 items-center whitespace-nowrap rounded-xl px-4 py-2.5 text-[max(12px,0.9em)] transition-colors ${
                   active ? "bg-primary text-primary-foreground" : "border border-primary/30 hover:bg-pale"
                 }`}
               >
                 {g.label}
                 {g.isNew && (
                   <span
-                    className={`ml-2.5 rounded-md px-2 py-0.5 text-[0.75em] font-medium uppercase tracking-wide ${
+                    className={`ml-2.5 rounded-md px-2 py-0.5 text-[max(12px,0.75em)] font-medium uppercase tracking-wide ${
                       active ? "bg-brand text-foreground" : "bg-foreground text-brand"
                     }`}
                   >
@@ -213,7 +213,7 @@ const Blog = () => {
                 i % 2 === 1 ? "bg-pale text-foreground" : "bg-surface text-cream"
               }`}
             >
-              <div className="flex flex-wrap items-center gap-3 text-[0.82em]">
+              <div className="flex flex-wrap items-center gap-3 text-[max(12px,0.82em)]">
                 <span
                   className={`rounded-lg px-3 py-1.5 font-medium ${
                     i % 2 === 1 ? "bg-foreground text-brand" : "bg-brand text-foreground"

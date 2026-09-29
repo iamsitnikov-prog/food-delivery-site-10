@@ -42,7 +42,7 @@ const CalculatorsPage = () => {
         <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
-            className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
+            className="mb-6 md:mb-8 flex items-center gap-2 text-[max(12px,0.85em)] text-muted-foreground"
           >
             <Link to="/" className="hover:text-foreground">
               главная
@@ -82,7 +82,7 @@ const CalculatorsPage = () => {
               }`}
             >
               {p.accent && (
-                <span className="absolute right-6 top-6 rounded-lg bg-white/15 px-2.5 py-1 text-[0.72em] font-bold uppercase tracking-wide">
+                <span className="absolute right-6 top-6 rounded-lg bg-white/15 px-2.5 py-1 text-[max(12px,0.72em)] font-bold uppercase tracking-wide">
                   новое
                 </span>
               )}

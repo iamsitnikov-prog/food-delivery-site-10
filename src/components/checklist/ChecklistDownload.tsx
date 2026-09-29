@@ -43,6 +43,7 @@ const ChecklistDownload = ({ page }: { page: ChecklistPage }) => {
   const [phone, setPhone] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const [loading, setLoading] = useState(false);
+  const [trap, setTrap] = useState("");
 
   useEffect(() => {
     try {
@@ -69,6 +70,7 @@ const ChecklistDownload = ({ page }: { page: ChecklistPage }) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          website: trap,
           name,
           phone,
           place: "",
@@ -112,7 +114,7 @@ const ChecklistDownload = ({ page }: { page: ChecklistPage }) => {
           reachGoal("checklist_print", { slug: page.slug });
           printChecklist();
         }}
-        className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-4 py-2.5 text-[0.88em] font-medium text-cream transition-colors hover:border-brand hover:bg-brand hover:text-foreground"
+        className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-4 py-2.5 text-[max(12px,0.88em)] font-medium text-cream transition-colors hover:border-brand hover:bg-brand hover:text-foreground"
       >
         <Icon name="Download" size={15} />
         скачать чек-лист в PDF
@@ -128,7 +130,7 @@ const ChecklistDownload = ({ page }: { page: ChecklistPage }) => {
           setOpen(true);
           reachGoal("checklist_download_open", { slug: page.slug });
         }}
-        className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-4 py-2.5 text-[0.88em] font-medium text-cream transition-colors hover:border-brand hover:bg-brand hover:text-foreground"
+        className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-4 py-2.5 text-[max(12px,0.88em)] font-medium text-cream transition-colors hover:border-brand hover:bg-brand hover:text-foreground"
       >
         <Icon name="Download" size={15} />
         скачать чек-лист в PDF
@@ -141,12 +143,23 @@ const ChecklistDownload = ({ page }: { page: ChecklistPage }) => {
       onSubmit={onSubmit}
       className="w-full rounded-2xl border border-cream/20 bg-cream/[0.04] p-4 md:p-5"
     >
+      {/* Ловушка для роботов: человек это поле не видит. */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        value={trap}
+        onChange={(e) => setTrap(e.target.value)}
+        className="absolute left-[-9999px] h-0 w-0 opacity-0"
+      />
       <div className="flex items-start justify-between gap-3 md:gap-4">
         <div className="min-w-0">
           <p className="font-display text-[1.05em] font-semibold text-cream">
             Куда отправить ссылку на чек-лист
           </p>
-          <p className="mt-1 text-[0.86em] leading-snug text-cream-muted">
+          <p className="mt-1 text-[max(12px,0.86em)] leading-snug text-cream-muted">
             Оставьте контакт — откроем скачивание и пришлём разбор вашего заведения, если захотите.
           </p>
         </div>
@@ -169,7 +182,7 @@ const ChecklistDownload = ({ page }: { page: ChecklistPage }) => {
             aria-label="Ваше имя"
             className="h-12 border-cream/25 bg-transparent text-cream placeholder:text-cream-muted"
           />
-          {errors.name && <p className="mt-1 text-[0.8em] text-red-300">{errors.name}</p>}
+          {errors.name && <p className="mt-1 text-[max(12px,0.8em)] text-red-300">{errors.name}</p>}
         </div>
         <div>
           <Input
@@ -180,7 +193,7 @@ const ChecklistDownload = ({ page }: { page: ChecklistPage }) => {
             aria-label="Телефон"
             className="h-12 border-cream/25 bg-transparent text-cream placeholder:text-cream-muted"
           />
-          {errors.phone && <p className="mt-1 text-[0.8em] text-red-300">{errors.phone}</p>}
+          {errors.phone && <p className="mt-1 text-[max(12px,0.8em)] text-red-300">{errors.phone}</p>}
         </div>
       </div>
 
@@ -193,7 +206,7 @@ const ChecklistDownload = ({ page }: { page: ChecklistPage }) => {
         <Icon name="Download" size={17} />
       </button>
 
-      <p className="mt-3 text-[0.78em] leading-snug text-cream-muted">
+      <p className="mt-3 text-[max(12px,0.78em)] leading-snug text-cream-muted">
         Нажимая кнопку, вы соглашаетесь на обработку персональных данных. Мы не рассылаем спам.
       </p>
     </form>

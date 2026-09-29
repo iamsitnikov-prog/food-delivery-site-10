@@ -64,10 +64,10 @@ const CalcForm = ({
       {isFull && (
         <div className="rounded-2xl border border-cream/15 p-4 md:p-5">
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-            <span className="text-[0.9em] font-medium text-cream">
+            <span className="text-[max(12px,0.9em)] font-medium text-cream">
               Период расчёта
             </span>
-            <span className="text-[0.85em] text-cream-muted">
+            <span className="text-[max(12px,0.85em)] text-cream-muted">
               {daysInMonth(input.periodMonth, input.periodYear)} дней в месяце
             </span>
           </div>
@@ -97,7 +97,7 @@ const CalcForm = ({
               ))}
             </select>
           </div>
-          <p className="mt-2 text-[0.8em] leading-snug text-cream-muted">
+          <p className="mt-2 text-[max(12px,0.8em)] leading-snug text-cream-muted">
             Все месячные суммы считаются на это количество дней, а не на условные 30.
           </p>
         </div>
@@ -185,7 +185,7 @@ const CalcForm = ({
                     hint="Фиксированная часть тарифа «Бизнес» — стоимость личного менеджера: 1 333 ₽ + НДС в месяц за первые три ресторана и 583 ₽ + НДС за каждый следующий. В расчёте — 1 626 ₽ и 711 ₽ с НДС."
                   />
                   <div className="flex flex-col justify-center rounded-2xl bg-cream/5 px-4 py-3">
-                    <span className="text-[0.82em] text-cream-muted">фиксированная часть</span>
+                    <span className="text-[max(12px,0.82em)] text-cream-muted">фиксированная часть</span>
                     <span className="mt-0.5 font-display text-[1.25em] font-semibold text-brand">
                       {money(businessFixedFee(input.restaurantCount))} ₽/мес
                     </span>
@@ -393,7 +393,7 @@ const CalcForm = ({
       )}
 
       {!r.anyChannel && (
-        <p className="flex gap-2 rounded-xl bg-brand/15 p-4 text-[0.9em] leading-snug text-cream">
+        <p className="flex gap-2 rounded-xl bg-brand/15 p-4 text-[max(12px,0.9em)] leading-snug text-cream">
           <Icon name="Info" size={17} className="mt-0.5 shrink-0 text-brand" />
           Отметьте хотя бы один канал продаж, чтобы увидеть расчёт.
         </p>
@@ -443,7 +443,7 @@ const CalcForm = ({
 
       {isFull && r.anyChannel && (
         <Section title="Общие расходы на доставку" icon="Building2">
-          <p className="text-[0.86em] leading-snug text-cream-muted">
+          <p className="text-[max(12px,0.86em)] leading-snug text-cream-muted">
             Эти расходы не делятся по каналам — они вычитаются из общей валовой прибыли.
           </p>
 

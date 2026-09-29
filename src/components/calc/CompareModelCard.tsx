@@ -22,12 +22,12 @@ const CompareModelCard = ({
       <Icon name={icon} size={18} className="text-brand" />
       <h3 className="font-display text-[1.1em] font-semibold text-cream">{m.label}</h3>
       {isWinner && (
-        <span className="rounded-lg bg-brand px-2 py-0.5 text-[0.72em] font-bold uppercase tracking-wide text-foreground">
+        <span className="rounded-lg bg-brand px-2 py-0.5 text-[max(12px,0.72em)] font-bold uppercase tracking-wide text-foreground">
           выгоднее
         </span>
       )}
     </div>
-    {m.note && <p className="mt-1.5 text-[0.85em] leading-snug text-cream-muted">{m.note}</p>}
+    {m.note && <p className="mt-1.5 text-[max(12px,0.85em)] leading-snug text-cream-muted">{m.note}</p>}
     <div className="mt-3">
       <CompareRow label="Комиссия · commission" value={`−${money(m.commissionRub)} ₽`} muted />
       {m.deliveryFeeRub > 0 && (

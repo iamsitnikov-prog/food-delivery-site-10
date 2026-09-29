@@ -305,7 +305,7 @@ const ReportAnatomy = () => {
               setTab(d.key);
               setOpen(d.lines[0].label);
             }}
-            className={`rounded-xl px-4 py-2.5 text-[0.9em] font-medium transition-colors ${
+            className={`rounded-xl px-4 py-2.5 text-[max(12px,0.9em)] font-medium transition-colors ${
               tab === d.key
                 ? "bg-foreground text-background"
                 : "border border-foreground/15 text-muted-foreground hover:border-foreground/40"
@@ -321,14 +321,14 @@ const ReportAnatomy = () => {
           <h3 className="font-display text-[1.5em] font-semibold tracking-[-0.02em]">
             {doc.title}
           </h3>
-          <span className="rounded-lg bg-cream/[0.08] px-3 py-1.5 text-[0.8em] text-cream-muted">
+          <span className="rounded-lg bg-cream/[0.08] px-3 py-1.5 text-[max(12px,0.8em)] text-cream-muted">
             {doc.when}
           </span>
         </div>
-        <p className="mt-1.5 font-mono text-[0.8em] text-cream-muted">{doc.file}</p>
+        <p className="mt-1.5 font-mono text-[max(12px,0.8em)] text-cream-muted">{doc.file}</p>
         <p className="mt-4 max-w-[760px] leading-relaxed text-cream-muted">{doc.lead}</p>
 
-        <p className="mt-6 text-[0.85em] text-cream-muted">
+        <p className="mt-6 text-[max(12px,0.85em)] text-cream-muted">
           Нажмите на строку, чтобы понять, что она значит
         </p>
 
@@ -375,7 +375,7 @@ const ReportAnatomy = () => {
                       {l.why}
                     </p>
                     {l.action && (
-                      <p className="mt-3 flex items-start gap-2 rounded-xl bg-brand/15 p-3 text-[0.9em] leading-snug">
+                      <p className="mt-3 flex items-start gap-2 rounded-xl bg-brand/15 p-3 text-[max(12px,0.9em)] leading-snug">
                         <Icon name="ArrowRight" size={15} className="mt-0.5 shrink-0 text-brand" />
                         <span>{l.action}</span>
                       </p>

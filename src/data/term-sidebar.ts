@@ -1,4 +1,4 @@
-import type { GlossaryGroup, GlossaryTerm } from "@/data/glossary";
+import type { GlossaryGroup, GlossaryTerm } from "@/data/term-index";
 
 /** Какой мини-расчёт показать рядом с термином. */
 export type MiniCalcKind =

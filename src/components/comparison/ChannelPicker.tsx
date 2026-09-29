@@ -86,7 +86,7 @@ const Group = <T extends string>({
   onChange: (v: T) => void;
 }) => (
   <div>
-    <span className="text-[0.9em] font-medium text-muted-foreground">
+    <span className="text-[max(12px,0.9em)] font-medium text-muted-foreground">
       {title}
     </span>
     <div className="mt-3 flex flex-wrap gap-2">
@@ -96,7 +96,7 @@ const Group = <T extends string>({
           type="button"
           aria-pressed={value === o.key}
           onClick={() => onChange(o.key)}
-          className={`rounded-xl px-4 py-2.5 text-[0.88em] font-medium transition-colors ${
+          className={`rounded-xl px-4 py-2.5 text-[max(12px,0.88em)] font-medium transition-colors ${
             value === o.key
               ? "bg-foreground text-background"
               : "border border-foreground/15 text-foreground hover:border-foreground/40"
@@ -145,7 +145,7 @@ const ChannelPicker = () => {
         </div>
 
         <div className="rounded-[28px] bg-surface p-4 text-cream md:p-8">
-          <span className="text-[0.85em] text-cream-muted">Рекомендуем начать с</span>
+          <span className="text-[max(12px,0.85em)] text-cream-muted">Рекомендуем начать с</span>
           <p className="mt-2 flex items-center gap-2.5 font-display text-[1.8em] font-semibold leading-tight tracking-[-0.02em] text-brand md:text-[2.2em]">
             <Icon name="Trophy" size={26} className="shrink-0" />
             {v.main}

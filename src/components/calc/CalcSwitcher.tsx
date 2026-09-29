@@ -44,7 +44,7 @@ const CalcSwitcher = ({
     >
       {items.map((p) => {
         const isActive = (active || "") === p.slug;
-        const cls = `inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl border px-4 py-2.5 text-[0.88em] font-medium transition-colors ${
+        const cls = `inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-xl border px-4 py-2.5 text-[max(12px,0.88em)] font-medium transition-colors ${
           isActive
             ? "border-foreground bg-foreground text-brand"
             : p.accent

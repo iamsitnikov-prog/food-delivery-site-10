@@ -58,7 +58,7 @@ const ChecklistBoard = ({ page }: { page: ChecklistPage }) => {
             <div className="font-display text-[2em] font-semibold leading-none text-brand">
               {progress}%
             </div>
-            <div className="mt-1 text-[0.85em] text-cream-muted">
+            <div className="mt-1 text-[max(12px,0.85em)] text-cream-muted">
               {doneCount} из {total}
             </div>
           </div>
@@ -66,7 +66,7 @@ const ChecklistBoard = ({ page }: { page: ChecklistPage }) => {
             <button
               type="button"
               onClick={() => persist({})}
-              className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-3.5 py-2.5 text-[0.85em] text-cream-muted transition-colors hover:border-cream/50 hover:text-cream"
+              className="inline-flex items-center gap-2 rounded-xl border border-cream/25 px-3.5 py-2.5 text-[max(12px,0.85em)] text-cream-muted transition-colors hover:border-cream/50 hover:text-cream"
             >
               <Icon name="RotateCcw" size={14} />
               сбросить
@@ -91,7 +91,7 @@ const ChecklistBoard = ({ page }: { page: ChecklistPage }) => {
                 <h3 className="font-display text-[1.2em] font-semibold text-cream">
                   {group.title}
                 </h3>
-                <span className="text-[0.85em] tabular-nums text-cream-muted">
+                <span className="text-[max(12px,0.85em)] tabular-nums text-cream-muted">
                   {groupDone} / {group.items.length}
                 </span>
               </div>
@@ -129,7 +129,7 @@ const ChecklistBoard = ({ page }: { page: ChecklistPage }) => {
                             {item.text}
                           </span>
                           {item.hint && (
-                            <span className="mt-1 block text-[0.85em] leading-snug text-cream-muted">
+                            <span className="mt-1 block text-[max(12px,0.85em)] leading-snug text-cream-muted">
                               {item.hint}
                             </span>
                           )}

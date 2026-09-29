@@ -62,7 +62,7 @@ const UploadDropzone = ({
       <p className="mt-5 font-display text-[1.25em] font-semibold">
         {busy ? "читаю файл…" : "перетащите файл сюда"}
       </p>
-      <p className="mt-2 text-[0.9em] text-cream-muted">
+      <p className="mt-2 text-[max(12px,0.9em)] text-cream-muted">
         {busy ? fileName : "или нажмите, чтобы выбрать — xlsx, xls или pdf"}
       </p>
       <input
@@ -78,23 +78,23 @@ const UploadDropzone = ({
     </div>
 
     <div className="mt-5 flex flex-wrap items-center gap-3 rounded-2xl bg-cream/[0.06] p-4">
-      <span className="text-[0.9em] leading-snug text-cream-muted">
+      <span className="text-[max(12px,0.9em)] leading-snug text-cream-muted">
         Нет файла под рукой?
       </span>
       <button
         type="button"
         onClick={onShowDemo}
-        className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[0.9em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
+        className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[max(12px,0.9em)] font-medium text-foreground transition-transform hover:-translate-y-0.5"
       >
         <Icon name="Eye" size={16} />
         посмотреть на примере
       </button>
-      <span className="text-[0.82em] leading-snug text-cream-muted">
+      <span className="text-[max(12px,0.82em)] leading-snug text-cream-muted">
         Откроем разбор на обезличенных данных
       </span>
     </div>
 
-    <p className="mt-4 flex items-start gap-2.5 rounded-2xl bg-cream/[0.06] p-4 text-[0.88em] leading-snug text-cream-muted">
+    <p className="mt-4 flex items-start gap-2.5 rounded-2xl bg-cream/[0.06] p-4 text-[max(12px,0.88em)] leading-snug text-cream-muted">
       <Icon name="ShieldCheck" size={18} className="mt-0.5 shrink-0 text-brand" />
       <span>
         <span className="text-cream">Файл никуда не отправляется.</span> Весь
@@ -105,7 +105,7 @@ const UploadDropzone = ({
     </p>
 
     {error && (
-      <p className="mt-4 flex items-start gap-2.5 rounded-2xl bg-[#C7161B]/15 p-4 text-[0.9em] leading-snug">
+      <p className="mt-4 flex items-start gap-2.5 rounded-2xl bg-[#C7161B]/15 p-4 text-[max(12px,0.9em)] leading-snug">
         <Icon name="CircleAlert" size={18} className="mt-0.5 shrink-0 text-[#ff6b6b]" />
         <span>
           {error}

@@ -20,6 +20,15 @@
       "method": "GET",
       "path": "/",
       "expectedStatus": 405
+    },
+    {
+      "name": "Honeypot filled is silently accepted",
+      "method": "POST",
+      "path": "/",
+      "body": {"name": "Bot", "phone": "+7 900 000-00-00", "website": "http://spam.example"},
+      "expectedStatus": 200,
+      "expectedBody": {"ok": true},
+      "bodyMatcher": "partial"
     }
   ]
 }

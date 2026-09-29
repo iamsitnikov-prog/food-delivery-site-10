@@ -56,7 +56,7 @@ const Hero = () => {
               >
                 начать сотрудничать
               </a>
-              <span className="text-[0.82em] text-muted-foreground">первый заказ — максимум через 7 дней</span>
+              <span className="text-[max(12px,0.82em)] text-muted-foreground">первый заказ — максимум через 7 дней</span>
             </div>
           </div>
         </div>
@@ -65,7 +65,7 @@ const Hero = () => {
           className="relative z-10 mt-4 flex flex-wrap gap-1.5 px-5 pb-7 sm:mt-6 sm:gap-2 sm:pb-6 md:px-14 lg:absolute lg:bottom-[22px] lg:left-14 lg:mt-0 lg:px-0 lg:pb-0 lg:pr-5"
         >
           {TAGS.map((t) => (
-            <li key={t} className="rounded-full bg-pale px-3 py-[5px] text-[0.75em] md:px-3.5 md:py-[7px] md:text-[0.82em] text-foreground">
+            <li key={t} className="rounded-full bg-pale px-3 py-[5px] text-[max(12px,0.75em)] md:px-3.5 md:py-[7px] md:text-[max(12px,0.82em)] text-foreground">
               {t}
             </li>
           ))}
@@ -82,9 +82,9 @@ const Hero = () => {
         </h2>
         {STEPS.map((s) => (
           <div key={s.n} className="border-t border-cream/25 pt-3.5">
-            <b className="mb-2.5 block text-[0.82em] font-semibold text-brand">{s.n}</b>
+            <b className="mb-2.5 block text-[max(12px,0.82em)] font-semibold text-brand">{s.n}</b>
             <h3 className="mb-1.5 text-[1.12em] font-medium leading-[1.15]">{s.t}</h3>
-            <p className="text-[0.86em] leading-[1.3] text-cream-muted">{s.d}</p>
+            <p className="text-[max(12px,0.86em)] leading-[1.3] text-cream-muted">{s.d}</p>
           </div>
         ))}
       </section>

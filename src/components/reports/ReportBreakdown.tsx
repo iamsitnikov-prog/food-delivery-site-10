@@ -39,19 +39,19 @@ const ReportBreakdown = ({
   <>
     <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
       <div className="rounded-2xl bg-cream/[0.06] p-4 md:p-5">
-        <span className="text-[0.85em] text-cream-muted">Валовый оборот</span>
+        <span className="text-[max(12px,0.85em)] text-cream-muted">Валовый оборот</span>
         <p className="mt-1.5 font-display text-[1.7em] font-semibold leading-none">
           {rub(report.gross)} ₽
         </p>
       </div>
       <div className="rounded-2xl bg-cream/[0.06] p-4 md:p-5">
-        <span className="text-[0.85em] text-cream-muted">Удержано сервисом</span>
+        <span className="text-[max(12px,0.85em)] text-cream-muted">Удержано сервисом</span>
         <p className="mt-1.5 font-display text-[1.7em] font-semibold leading-none text-[#ff6b6b]">
           {rub(report.withheld)} ₽
         </p>
       </div>
       <div className="rounded-2xl bg-brand p-4 md:p-5 text-foreground">
-        <span className="text-[0.85em] text-foreground/70">К перечислению</span>
+        <span className="text-[max(12px,0.85em)] text-foreground/70">К перечислению</span>
         <p className="mt-1.5 font-display text-[1.7em] font-semibold leading-none">
           {rub(report.net)} ₽
         </p>
@@ -61,7 +61,7 @@ const ReportBreakdown = ({
     <div className="mt-4 rounded-2xl bg-cream/[0.06] p-4 md:p-6">
       <div className="flex flex-wrap items-end justify-between gap-3 md:gap-4">
         <div>
-          <span className="text-[0.85em] text-cream-muted">
+          <span className="text-[max(12px,0.85em)] text-cream-muted">
             Фактическая нагрузка на оборот
           </span>
           <p className="mt-1 font-display text-[2.6em] font-semibold leading-none text-brand">
@@ -70,7 +70,7 @@ const ReportBreakdown = ({
         </div>
         {report.declaredRate != null && (
           <div className="text-right">
-            <span className="text-[0.85em] text-cream-muted">Ставка по договору</span>
+            <span className="text-[max(12px,0.85em)] text-cream-muted">Ставка по договору</span>
             <p className="mt-1 font-display text-[1.6em] font-semibold leading-none text-cream-muted">
               {report.declaredRate.toFixed(1)}%
             </p>
@@ -120,7 +120,7 @@ const ReportBreakdown = ({
                   )}
                   {b.label}
                 </span>
-                <span className="mt-0.5 block text-[0.82em] text-cream-muted">
+                <span className="mt-0.5 block text-[max(12px,0.82em)] text-cream-muted">
                   {b.count > 1 ? `${b.count} операций · ` : ""}
                   {share.toFixed(1)}% от оборота
                 </span>
@@ -142,7 +142,7 @@ const ReportBreakdown = ({
             </button>
             <Bar value={b.sum} total={totalAbs} accent={!!b.suspicious} />
             {isOpen && (
-              <p className="mt-3.5 border-t border-cream/12 pt-3.5 text-[0.9em] leading-snug text-cream-muted">
+              <p className="mt-3.5 border-t border-cream/12 pt-3.5 text-[max(12px,0.9em)] leading-snug text-cream-muted">
                 {b.hint}
               </p>
             )}
@@ -192,7 +192,7 @@ const ReportBreakdown = ({
           {report.payments.map((p) => (
             <div
               key={p.label}
-              className="flex items-baseline justify-between gap-3 md:gap-4 text-[0.88em]"
+              className="flex items-baseline justify-between gap-3 md:gap-4 text-[max(12px,0.88em)]"
             >
               <span className="min-w-0 truncate text-cream-muted">{p.label}</span>
               <span className="shrink-0 font-medium">{rub(p.sum)} ₽</span>
@@ -211,11 +211,11 @@ const ReportBreakdown = ({
         {report.extra.map((e) => (
           <div key={e.label} className="rounded-2xl bg-cream/[0.06] p-4">
             <div className="flex items-baseline justify-between gap-3">
-              <span className="text-[0.88em] text-cream-muted">{e.label}</span>
+              <span className="text-[max(12px,0.88em)] text-cream-muted">{e.label}</span>
               <span className="font-display text-[1.1em] font-semibold">{e.value}</span>
             </div>
             {e.hint && (
-              <p className="mt-2 text-[0.82em] leading-snug text-cream-muted">{e.hint}</p>
+              <p className="mt-2 text-[max(12px,0.82em)] leading-snug text-cream-muted">{e.hint}</p>
             )}
           </div>
         ))}
@@ -250,7 +250,7 @@ const ReportBreakdown = ({
       </div>
     )}
 
-    <p className="mt-6 flex items-start gap-2.5 text-[0.85em] leading-snug text-cream-muted">
+    <p className="mt-6 flex items-start gap-2.5 text-[max(12px,0.85em)] leading-snug text-cream-muted">
       <Icon name="ShieldCheck" size={16} className="mt-0.5 shrink-0 text-brand" />
       Файл обработан локально в браузере: он не передавался на сервер и не
       сохранялся.

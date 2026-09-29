@@ -148,7 +148,7 @@ const MiniCalc = ({ meta }: { meta: MiniCalcMeta }) => {
         <h2 className="font-display text-[1.1em] font-semibold tracking-[-0.02em]">
           {meta.title}
         </h2>
-        <span className="text-[0.75em] uppercase tracking-wide text-foreground/40">
+        <span className="text-[max(12px,0.75em)] uppercase tracking-wide text-foreground/40">
           пример
         </span>
       </div>
@@ -158,7 +158,7 @@ const MiniCalc = ({ meta }: { meta: MiniCalcMeta }) => {
           <div key={f.key}>
             <label
               htmlFor={`mini-${f.key}`}
-              className="block text-[0.82em] leading-snug text-foreground/55"
+              className="block text-[max(12px,0.82em)] leading-snug text-foreground/55"
             >
               {f.label}
             </label>
@@ -177,7 +177,7 @@ const MiniCalc = ({ meta }: { meta: MiniCalcMeta }) => {
                 }}
                 className="h-11 w-full rounded-xl border border-foreground/15 bg-background/0 py-2 pl-3.5 pr-11 text-[0.98em] font-medium text-foreground outline-none transition-colors focus:border-foreground/50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               />
-              <span className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[0.85em] text-foreground/45">
+              <span className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[max(12px,0.85em)] text-foreground/45">
                 {f.suffix}
               </span>
             </div>
@@ -188,16 +188,16 @@ const MiniCalc = ({ meta }: { meta: MiniCalcMeta }) => {
       <div
         className={`mt-4 rounded-2xl p-4 ${res.warn ? "bg-brand/35" : "bg-pale"}`}
       >
-        <p className="text-[0.78em] uppercase tracking-wide text-foreground/50">{res.label}</p>
+        <p className="text-[max(12px,0.78em)] uppercase tracking-wide text-foreground/50">{res.label}</p>
         <p className="mt-1 font-display text-[1.6em] font-semibold leading-none">
           {res.value}
         </p>
-        <p className="mt-2 text-[0.85em] leading-snug text-foreground/65">{res.note}</p>
+        <p className="mt-2 text-[max(12px,0.85em)] leading-snug text-foreground/65">{res.note}</p>
       </div>
 
       <Link
         to={meta.to}
-        className="mt-3.5 inline-flex items-center gap-1.5 text-[0.88em] font-medium underline underline-offset-4 transition-opacity hover:opacity-70"
+        className="mt-3.5 inline-flex items-center gap-1.5 text-[max(12px,0.88em)] font-medium underline underline-offset-4 transition-opacity hover:opacity-70"
       >
         {meta.linkLabel}
         <Icon name="ArrowRight" size={15} />

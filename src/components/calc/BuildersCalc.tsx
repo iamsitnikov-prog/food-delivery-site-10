@@ -157,7 +157,7 @@ const Field = ({
 }) => (
   <div>
     <div className="flex items-baseline justify-between gap-3">
-      <span className="text-[0.9em] font-medium text-cream">{label}</span>
+      <span className="text-[max(12px,0.9em)] font-medium text-cream">{label}</span>
       <span className="font-display text-[1.05em] font-semibold text-brand">
         {rub(value)} {suffix}
       </span>
@@ -173,7 +173,7 @@ const Field = ({
       className="mt-3 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-cream/20 accent-brand"
     />
     {note && (
-      <p className="mt-1.5 text-[0.8em] leading-snug text-cream-muted">{note}</p>
+      <p className="mt-1.5 text-[max(12px,0.8em)] leading-snug text-cream-muted">{note}</p>
     )}
   </div>
 );
@@ -266,10 +266,10 @@ const BuildersCalc = () => {
           </div>
 
           <div className="mt-7 border-t border-cream/12 pt-6">
-            <span className="text-[0.9em] font-medium text-cream">
+            <span className="text-[max(12px,0.9em)] font-medium text-cream">
               Что вам нужно
             </span>
-            <p className="mt-1.5 text-[0.8em] leading-snug text-cream-muted">
+            <p className="mt-1.5 text-[max(12px,0.8em)] leading-snug text-cream-muted">
               Платформы без этих возможностей уйдут вниз списка.
             </p>
             <div className="mt-4 space-y-2">
@@ -293,9 +293,9 @@ const BuildersCalc = () => {
                       {on && <Icon name="Check" size={13} />}
                     </span>
                     <span>
-                      <span className="block text-[0.9em] font-medium">{n.label}</span>
+                      <span className="block text-[max(12px,0.9em)] font-medium">{n.label}</span>
                       <span
-                        className={`mt-0.5 block text-[0.78em] leading-snug ${
+                        className={`mt-0.5 block text-[max(12px,0.78em)] leading-snug ${
                           on ? "text-foreground/70" : "text-cream-muted"
                         }`}
                       >
@@ -309,10 +309,10 @@ const BuildersCalc = () => {
           </div>
 
           <div className="mt-7 border-t border-cream/12 pt-6">
-            <span className="text-[0.9em] font-medium text-cream">
+            <span className="text-[max(12px,0.9em)] font-medium text-cream">
               Стоимость платформ
             </span>
-            <p className="mt-1.5 text-[0.8em] leading-snug text-cream-muted">
+            <p className="mt-1.5 text-[max(12px,0.8em)] leading-snug text-cream-muted">
               Значения ориентировочные. Узнали свою цену — впишите её, расчёт
               обновится.
             </p>
@@ -321,7 +321,7 @@ const BuildersCalc = () => {
                 <div key={b.slug} className="flex items-center gap-3">
                   <label
                     htmlFor={`fee-${b.slug}`}
-                    className="flex-1 text-[0.88em] text-cream-muted"
+                    className="flex-1 text-[max(12px,0.88em)] text-cream-muted"
                   >
                     {b.name}
                   </label>
@@ -341,7 +341,7 @@ const BuildersCalc = () => {
                       }
                       className="h-11 w-full rounded-xl border border-cream/20 bg-cream/[0.06] py-2 pl-3 pr-8 text-[0.95em] font-medium text-cream outline-none transition-colors focus:border-brand [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                     />
-                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[0.9em] text-cream-muted">
+                    <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[max(12px,0.9em)] text-cream-muted">
                       ₽
                     </span>
                   </div>
@@ -390,14 +390,14 @@ const BuildersCalc = () => {
                     </span>
                   </div>
                   <p
-                    className={`mt-1 text-[0.82em] leading-snug ${
+                    className={`mt-1 text-[max(12px,0.82em)] leading-snug ${
                       isBest ? "text-foreground/60" : "text-cream-muted"
                     }`}
                   >
                     {b.tagline}
                   </p>
                   <p
-                    className={`mt-2.5 text-[0.82em] leading-snug ${
+                    className={`mt-2.5 text-[max(12px,0.82em)] leading-snug ${
                       isBest ? "text-foreground/70" : "text-cream-muted"
                     }`}
                   >
@@ -408,7 +408,7 @@ const BuildersCalc = () => {
                   </p>
 
                   {!b.fits && (
-                    <p className="mt-2.5 flex items-start gap-2 rounded-xl bg-cream/[0.06] p-3 text-[0.8em] leading-snug text-cream-muted">
+                    <p className="mt-2.5 flex items-start gap-2 rounded-xl bg-cream/[0.06] p-3 text-[max(12px,0.8em)] leading-snug text-cream-muted">
                       <Icon name="TriangleAlert" size={14} className="mt-0.5 shrink-0" />
                       <span>
                         Не закрывает:{" "}
@@ -420,7 +420,7 @@ const BuildersCalc = () => {
                   )}
 
                   {isBest && (
-                    <p className="mt-2.5 text-[0.82em] leading-snug text-foreground/70">
+                    <p className="mt-2.5 text-[max(12px,0.82em)] leading-snug text-foreground/70">
                       {b.bestFor}
                     </p>
                   )}
@@ -456,7 +456,7 @@ const BuildersCalc = () => {
             </p>
           )}
 
-          <p className="mt-4 text-[0.78em] leading-snug text-cream-muted">
+          <p className="mt-4 text-[max(12px,0.78em)] leading-snug text-cream-muted">
             Расчёт показывает экономию на комиссии, а не полную прибыль: в нём
             нет себестоимости блюд и расходов на доставку — они одинаковы для
             всех платформ. Тарифы ориентировочные, уточняйте у сервисов.

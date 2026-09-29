@@ -26,7 +26,7 @@ const CalcCheck = ({ label, hint, checked, onChange }: Props) => (
     </span>
     <span className="min-w-0">
       <span className="block text-[0.95em] font-medium text-cream">{label}</span>
-      {hint && <span className="mt-1 block text-[0.85em] leading-snug text-cream-muted">{hint}</span>}
+      {hint && <span className="mt-1 block text-[max(12px,0.85em)] leading-snug text-cream-muted">{hint}</span>}
     </span>
   </button>
 );

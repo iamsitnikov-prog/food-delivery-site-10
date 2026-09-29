@@ -71,11 +71,11 @@ export const Section = ({
 export const RevenueBadge = ({ value }: { value: number }) => (
   <div className="rounded-xl bg-brand/12 px-4 py-3">
     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-      <span className="relative flex items-center gap-1.5 text-[0.88em] text-cream-muted">
+      <span className="relative flex items-center gap-1.5 text-[max(12px,0.88em)] text-cream-muted">
         Выручка · revenue в месяц
         <span className="group relative inline-flex max-sm:static">
           <Icon name="Info" size={14} className="text-cream-muted" />
-          <span className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 max-sm:left-0 max-sm:right-0 max-sm:w-auto max-sm:translate-x-0 w-[260px] -translate-x-1/2 rounded-xl bg-cream p-3 text-[0.82em] font-normal leading-snug text-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
+          <span className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 max-sm:left-0 max-sm:right-0 max-sm:w-auto max-sm:translate-x-0 w-[260px] -translate-x-1/2 rounded-xl bg-cream p-3 text-[max(12px,0.82em)] font-normal leading-snug text-foreground opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
             Свою выручку смотрите в кабинете: Статистика → Сводка, период «Месяц». Для сверки с
             деньгами используйте раздел Финансы — там суммы по московскому времени, как в актах.
           </span>

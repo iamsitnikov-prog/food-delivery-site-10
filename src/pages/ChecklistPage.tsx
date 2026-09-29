@@ -92,7 +92,7 @@ const ChecklistDetailPage = () => {
         <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
-            className="mb-6 md:mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground"
+            className="mb-6 md:mb-8 flex flex-wrap items-center gap-2 text-[max(12px,0.85em)] text-muted-foreground"
           >
             <Link to="/" className="hover:text-foreground">
               главная

@@ -38,7 +38,7 @@ const ChecklistTeaser = () => {
             >
               <div className="flex items-center justify-between gap-3">
                 <Icon name={p.icon} size={24} className="text-brand" />
-                <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[0.74em] font-medium text-cream-muted">
+                <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[max(12px,0.74em)] font-medium text-cream-muted">
                   {p.count} пунктов
                 </span>
               </div>

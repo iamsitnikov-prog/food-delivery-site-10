@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
@@ -11,12 +11,13 @@ import TermCard from "@/components/glossary/TermCard";
 import useSeo from "@/hooks/use-seo";
 import {
   CYRILLIC_LETTERS,
-  GLOSSARY,
   GLOSSARY_GROUPS,
   LATIN_LETTERS,
-  getRelated,
+  TERM_INDEX,
+  loadTermCards,
   type GlossaryGroup,
-} from "@/data/glossary";
+  type TermCard as TermCardData,
+} from "@/data/term-index";
 
 const SITE = "https://agregatory.pro";
 
@@ -28,7 +29,7 @@ const GlossaryPage = () => {
 
   useSeo({
     title: "Глоссарий доставки: 146 терминов простыми словами",
-    description: `ДРР, ROMI, GMV, юнит-экономика, фудкост, SLA — ${GLOSSARY.length} термин доставки простым языком с формулами, примерами и навигацией по буквам.`,
+    description: `ДРР, ROMI, GMV, юнит-экономика, фудкост, SLA — ${TERM_INDEX.length} термин доставки простым языком с формулами, примерами и навигацией по буквам.`,
     path: pathname,
     jsonLd: [
       {
@@ -52,7 +53,7 @@ const GlossaryPage = () => {
           "Термины, которые используют рестораны при работе с сервисами доставки: маркетинг и воронка, юнит-экономика, финансы, операционка и свой канал.",
         inLanguage: "ru-RU",
         url: `${SITE}/slovar`,
-        hasDefinedTerm: GLOSSARY.map((t) => ({
+        hasDefinedTerm: TERM_INDEX.map((t) => ({
           "@type": "DefinedTerm",
           "@id": `${SITE}/slovar/${t.slug}`,
           name: t.term,
@@ -63,18 +64,18 @@ const GlossaryPage = () => {
       {
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        mainEntity: GLOSSARY.map((t) => ({
+        mainEntity: TERM_INDEX.map((t) => ({
           "@type": "Question",
           name: `Что такое ${t.term}?`,
-          acceptedAnswer: { "@type": "Answer", text: t.full },
+          acceptedAnswer: { "@type": "Answer", text: t.short },
         })),
       },
       {
         "@context": "https://schema.org",
         "@type": "ItemList",
         name: "Термины доставки",
-        numberOfItems: GLOSSARY.length,
-        itemListElement: GLOSSARY.map((t, i) => ({
+        numberOfItems: TERM_INDEX.length,
+        itemListElement: TERM_INDEX.map((t, i) => ({
           "@type": "ListItem",
           position: i + 1,
           name: t.term,
@@ -84,15 +85,28 @@ const GlossaryPage = () => {
     ],
   });
 
+  // Карточки с описанием и формулами — отдельным файлом: на других страницах
+  // этот вес не нужен, а здесь приезжает сразу после открытия.
+  const [cards, setCards] = useState<TermCardData[] | null>(null);
+  useEffect(() => {
+    let alive = true;
+    loadTermCards().then((c) => {
+      if (alive) setCards(c);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
   const counts = useMemo(() => {
     const map: Record<string, number> = {};
-    for (const t of GLOSSARY) map[t.letter] = (map[t.letter] ?? 0) + 1;
+    for (const t of TERM_INDEX) map[t.letter] = (map[t.letter] ?? 0) + 1;
     return map;
   }, []);
 
   const list = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return GLOSSARY.filter((t) => {
+    return (cards ?? []).filter((t) => {
       const okGroup = group === "все" || t.group === group;
       const okLetter = !letter || t.letter === letter;
       const okQuery =
@@ -102,21 +116,7 @@ const GlossaryPage = () => {
         t.full.toLowerCase().includes(q);
       return okGroup && okLetter && okQuery;
     });
-  }, [query, group, letter]);
-
-  const pickTerm = useCallback((slug: string) => {
-    setQuery("");
-    setGroup("все");
-    setLetter(null);
-    window.setTimeout(() => {
-      const el = document.getElementById(slug);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "center" });
-        el.classList.add("ring-2", "ring-brand");
-        window.setTimeout(() => el.classList.remove("ring-2", "ring-brand"), 1600);
-      }
-    }, 60);
-  }, []);
+  }, [cards, query, group, letter]);
 
   const reset = () => {
     setQuery("");
@@ -133,7 +133,7 @@ const GlossaryPage = () => {
         <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
-            className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
+            className="mb-6 md:mb-8 flex items-center gap-2 text-[max(12px,0.85em)] text-muted-foreground"
           >
             <Link to="/" className="hover:text-foreground">
               главная
@@ -145,7 +145,7 @@ const GlossaryPage = () => {
             Глоссарий доставки
           </h1>
           <p className="mt-6 max-w-[660px] text-[1.08em] leading-snug text-muted-foreground">
-            {GLOSSARY.length} понятий из кабинета сервиса, отчётов и разговоров с менеджерами —
+            {TERM_INDEX.length} понятий из кабинета сервиса, отчётов и разговоров с менеджерами —
             простым языком, с формулами, примерами и связями между терминами.
           </p>
         </section>
@@ -169,7 +169,7 @@ const GlossaryPage = () => {
                 key={g}
                 type="button"
                 onClick={() => setGroup(g as GlossaryGroup | "все")}
-                className={`rounded-xl border px-4 py-2.5 text-[0.88em] transition-colors ${
+                className={`rounded-xl border px-4 py-2.5 text-[max(12px,0.88em)] transition-colors ${
                   group === g
                     ? "border-foreground bg-foreground text-background"
                     : "border-foreground/15 text-muted-foreground hover:border-foreground/40 hover:text-foreground"
@@ -180,9 +180,9 @@ const GlossaryPage = () => {
             ))}
           </div>
 
-          <p className="flex flex-wrap items-center gap-3 text-[0.88em] text-muted-foreground">
+          <p className="flex flex-wrap items-center gap-3 text-[max(12px,0.88em)] text-muted-foreground">
             <span>
-              Показано {list.length} из {GLOSSARY.length}
+              Показано {list.length} из {TERM_INDEX.length}
             </span>
             {filtered && (
               <button
@@ -199,7 +199,11 @@ const GlossaryPage = () => {
       </section>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        {list.length === 0 ? (
+        {!cards ? (
+          <p className="rounded-[24px] bg-surface p-4 md:p-8 text-cream-muted">
+            Загружаем термины…
+          </p>
+        ) : list.length === 0 ? (
           <p className="rounded-[24px] bg-surface p-4 md:p-8 text-cream-muted">
             Ничего не нашлось. Попробуйте другое слово или{" "}
             <button type="button" onClick={reset} className="text-brand underline hover:no-underline">
@@ -213,8 +217,9 @@ const GlossaryPage = () => {
               <TermCard
                 key={t.slug}
                 term={t}
-                related={getRelated(t)}
-                onPickTerm={pickTerm}
+                related={(t.see ?? [])
+                  .map((sl) => (cards ?? []).find((c) => c.slug === sl))
+                  .filter((c): c is TermCardData => Boolean(c))}
               />
             ))}
           </div>

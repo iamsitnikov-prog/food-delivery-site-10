@@ -37,7 +37,7 @@ const CompareInputs = ({ input, r, set, flag, onOwnMode, onYandexKnowOrders }: P
       </div>
 
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 rounded-xl bg-brand/12 px-4 py-3">
-        <span className="text-[0.88em] text-cream-muted">Выручка · revenue в месяц</span>
+        <span className="text-[max(12px,0.88em)] text-cream-muted">Выручка · revenue в месяц</span>
         <span className="font-display text-[1.15em] font-semibold tabular-nums text-brand">
           {money(r.revenuePerMonth)} ₽
         </span>
@@ -258,14 +258,14 @@ const CompareInputs = ({ input, r, set, flag, onOwnMode, onYandexKnowOrders }: P
             </div>
           )}
           {input.hybridEnabled && input.ownMode === "yandex" && (
-            <p className="flex gap-2 rounded-xl bg-brand/15 p-3 text-[0.86em] leading-snug text-cream">
+            <p className="flex gap-2 rounded-xl bg-brand/15 p-3 text-[max(12px,0.86em)] leading-snug text-cream">
               <Icon name="Info" size={16} className="mt-0.5 shrink-0 text-brand" />
               Стоимость доставки для гибрида берётся из полей модели 2 —{" "}
               {money(r.yandexPerOrder)} ₽ за заказ.
             </p>
           )}
           {input.hybridEnabled && input.ownMode === "staff" && (
-            <p className="flex gap-2 rounded-xl bg-brand/15 p-3 text-[0.86em] leading-snug text-cream">
+            <p className="flex gap-2 rounded-xl bg-brand/15 p-3 text-[max(12px,0.86em)] leading-snug text-cream">
               <Icon name="Info" size={16} className="mt-0.5 shrink-0 text-brand" />
               Чтобы посчитать гибрид точно, переключите модель 2 на Яндекс Доставку и укажите её
               стоимость — она подставится сюда. Сейчас: {money(r.yandexPerOrder)} ₽ за заказ.

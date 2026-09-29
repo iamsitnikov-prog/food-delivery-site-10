@@ -42,7 +42,7 @@ const SeoIndex = ({ kind }: Props) => {
       <div id="top">
         <Header />
         <section className="px-5 pb-10 pt-8 md:px-14 md:pb-20 md:pt-16">
-          <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
+          <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex items-center gap-2 text-[max(12px,0.85em)] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               главная
             </Link>
@@ -100,7 +100,7 @@ const SeoIndex = ({ kind }: Props) => {
                   {cityCase && (
                     <Link
                       to={`${copy.base}/${item.slug}#case`}
-                      className={`inline-flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-[0.86em] font-medium transition-colors ${
+                      className={`inline-flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-[max(12px,0.86em)] font-medium transition-colors ${
                         light
                           ? "border-foreground/25 hover:bg-foreground hover:text-brand"
                           : "border-cream/25 hover:border-brand hover:bg-brand hover:text-foreground"

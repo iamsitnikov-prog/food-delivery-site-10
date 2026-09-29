@@ -17,7 +17,7 @@ const Letter = ({
     onClick={onPick}
     aria-current={active ? "true" : undefined}
     title={`${count} терминов на «${letter}»`}
-    className={`min-w-[38px] scroll-mt-24 rounded-lg px-2.5 py-2 text-[0.85em] font-medium transition-colors ${
+    className={`min-w-[38px] scroll-mt-24 rounded-lg px-2.5 py-2 text-[max(12px,0.85em)] font-medium transition-colors ${
       active
         ? "bg-foreground text-background"
         : "border border-foreground/15 text-muted-foreground hover:border-foreground/40 hover:text-foreground"
@@ -25,7 +25,7 @@ const Letter = ({
   >
     {letter}
     <span
-      className={`ml-1 text-[0.78em] ${active ? "text-background/60" : "text-muted-foreground/60"}`}
+      className={`ml-1 text-[max(12px,0.78em)] ${active ? "text-background/80" : "text-muted-foreground"}`}
     >
       {count}
     </span>
@@ -51,7 +51,7 @@ const LetterNav = ({
         type="button"
         onClick={() => onPick(null)}
         aria-current={active === null ? "true" : undefined}
-        className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[0.85em] font-medium transition-colors ${
+        className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-[max(12px,0.85em)] font-medium transition-colors ${
           active === null
             ? "bg-foreground text-background"
             : "border border-foreground/15 text-muted-foreground hover:border-foreground/40 hover:text-foreground"
@@ -74,7 +74,7 @@ const LetterNav = ({
 
     {latin.length > 0 && (
       <div className="flex flex-wrap items-center gap-1.5">
-        <span className="mr-1 text-[0.8em] uppercase tracking-wide text-muted-foreground">
+        <span className="mr-1 text-[max(12px,0.8em)] uppercase tracking-wide text-muted-foreground">
           латиница
         </span>
         {latin.map((l) => (

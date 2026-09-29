@@ -16,7 +16,7 @@ const CompareRow = ({
       strong ? "border-t-2 border-cream/25" : "border-t border-cream/10 first:border-t-0"
     }`}
   >
-    <span className={`text-[0.9em] leading-snug ${muted ? "text-cream-muted" : "text-cream"}`}>
+    <span className={`text-[max(12px,0.9em)] leading-snug ${muted ? "text-cream-muted" : "text-cream"}`}>
       {label}
     </span>
     <span
