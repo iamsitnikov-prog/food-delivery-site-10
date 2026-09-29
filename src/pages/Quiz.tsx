@@ -90,7 +90,7 @@ const QuizPage = () => {
         <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
-            className="mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground"
+            className="mb-6 md:mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground"
           >
             <Link to="/" className="hover:text-foreground">
               главная
@@ -122,7 +122,7 @@ const QuizPage = () => {
       </div>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <div className="mx-auto max-w-[840px] rounded-[32px] bg-surface p-7 text-cream md:p-11">
+        <div className="mx-auto max-w-[840px] rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-11">
           {!done ? (
             <>
               <div className="flex flex-wrap items-center justify-between gap-3 text-[0.85em] text-cream-muted">
@@ -162,7 +162,7 @@ const QuizPage = () => {
                     key={o.label}
                     type="button"
                     onClick={() => choose(o.score)}
-                    className="group flex w-full items-center justify-between gap-4 rounded-2xl border border-cream/15 bg-cream/[0.04] px-5 py-4 text-left text-[1.02em] leading-snug transition-colors hover:border-brand hover:bg-brand hover:text-foreground"
+                    className="group flex w-full items-center justify-between gap-3 md:gap-4 rounded-2xl border border-cream/15 bg-cream/[0.04] px-5 py-4 text-left text-[1.02em] leading-snug transition-colors hover:border-brand hover:bg-brand hover:text-foreground"
                   >
                     {o.label}
                     <Icon
@@ -214,7 +214,7 @@ const QuizPage = () => {
 
               <p className="mt-7 leading-relaxed text-cream-muted">{level?.summary}</p>
 
-              <div className="mt-8 rounded-[24px] bg-cream/[0.06] p-6 md:p-7">
+              <div className="mt-8 rounded-[24px] bg-cream/[0.06] p-4 md:p-7">
                 <h3 className="font-display text-[1.2em] font-semibold">
                   {isAudit ? "с чего начать" : "что подтянуть"}
                 </h3>
@@ -228,7 +228,7 @@ const QuizPage = () => {
                 </ul>
               </div>
 
-              <div className="mt-8 rounded-[24px] bg-brand p-6 text-foreground md:p-8">
+              <div className="mt-8 rounded-[24px] bg-brand p-4 text-foreground md:p-8">
                 <h3 className="font-display text-[1.4em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.8em]">
                   Разберём ваш проект бесплатно
                 </h3>
@@ -271,12 +271,12 @@ const QuizPage = () => {
 
       <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">другие тесты</h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid gap-3 md:gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {others.map((o) => (
             <Link
               key={o.slug}
               to={`/testy/${o.slug}`}
-              className="rounded-[24px] bg-surface p-6 text-cream transition-transform hover:-translate-y-1"
+              className="rounded-[24px] bg-surface p-4 md:p-6 text-cream transition-transform hover:-translate-y-1"
             >
               <div className="flex items-center justify-between gap-3">
                 <Icon name={o.icon} size={22} className="text-brand" />

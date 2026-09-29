@@ -36,7 +36,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
       {toc.length > 1 && (
         <nav
           aria-label="Содержание статьи"
-          className="rounded-[24px] bg-pale p-6 text-foreground"
+          className="rounded-[24px] bg-pale p-4 md:p-6 text-foreground"
         >
           <h2 className="text-[0.78em] font-medium uppercase tracking-wide text-foreground/50">
             содержание
@@ -74,7 +74,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
         term.calculator && (
           <Link
             to={term.calculator}
-            className="flex items-center justify-between gap-3 rounded-[24px] bg-cream p-6 text-foreground transition-transform hover:-translate-y-0.5"
+            className="flex items-center justify-between gap-3 rounded-[24px] bg-cream p-4 md:p-6 text-foreground transition-transform hover:-translate-y-0.5"
           >
             <span>
               <span className="block font-display text-[1.1em] font-semibold tracking-[-0.02em]">
@@ -91,7 +91,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
         )
       )}
 
-      <div className="rounded-[24px] bg-surface p-6 text-cream">
+      <div className="rounded-[24px] bg-surface p-4 md:p-6 text-cream">
         <h2 className="font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em]">
           {cta.title}
         </h2>
@@ -119,7 +119,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
       {links.length > 0 && (
         <nav
           aria-label="Связанные термины"
-          className="rounded-[24px] bg-pale p-6 text-foreground"
+          className="rounded-[24px] bg-pale p-4 md:p-6 text-foreground"
         >
           <h2 className="text-[0.78em] font-medium uppercase tracking-wide text-foreground/50">
             связанные термины
@@ -147,7 +147,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
       )}
 
       {expert && (
-        <div className="rounded-[24px] bg-cream p-6 text-foreground">
+        <div className="rounded-[24px] bg-cream p-4 md:p-6 text-foreground">
           <div className="flex items-center gap-3">
             {person && (
               <img
@@ -175,7 +175,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
         </div>
       )}
 
-      <div className="rounded-[24px] bg-cream p-6 text-foreground">
+      <div className="rounded-[24px] bg-cream p-4 md:p-6 text-foreground">
         <h2 className="text-[0.78em] font-medium uppercase tracking-wide text-foreground/50">
           что дальше
         </h2>

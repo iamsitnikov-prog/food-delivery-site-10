@@ -83,7 +83,7 @@ const SeoLanding = () => {
         <Header />
 
         <section className="px-5 pb-11 pt-8 md:px-14 md:pb-24 md:pt-16">
-          <nav aria-label="Хлебные крошки" className="mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground">
+          <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               главная
             </Link>
@@ -91,7 +91,7 @@ const SeoLanding = () => {
             <span className="text-foreground">{page.navLabel}</span>
           </nav>
 
-          <h1 className="max-w-[16ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
+          <h1 className="max-w-[16ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
             {page.h1}
           </h1>
           <p className="mt-6 max-w-[560px] text-[1.1em] leading-snug text-muted-foreground">{page.lead}</p>
@@ -110,8 +110,8 @@ const SeoLanding = () => {
         </section>
       </div>
 
-      <section className="rounded-[40px] bg-surface px-5 py-12 text-cream md:mx-3 md:px-14 md:py-24">
-        <div className="grid gap-10 lg:grid-cols-[1fr_340px]">
+      <section className="rounded-[28px] md:rounded-[40px] bg-surface px-5 py-10 text-cream md:mx-3 md:px-14 md:py-24">
+        <div className="grid gap-6 md:gap-10 lg:grid-cols-[1fr_340px]">
           <div className="space-y-12">
             {page.blocks.map((b) => (
               <article key={b.h}>
@@ -134,7 +134,7 @@ const SeoLanding = () => {
             )}
           </div>
 
-          <aside className="h-fit rounded-[28px] border border-cream/20 p-5 md:p-7">
+          <aside className="h-fit rounded-[28px] border border-cream/20 p-4 md:p-7">
             <h2 className="font-display text-[1.35em] font-semibold text-brand">что входит</h2>
             <ul className="mt-5 space-y-3 text-[0.95em] leading-snug text-cream-muted">
               {page.bullets.map((b) => (
@@ -154,7 +154,7 @@ const SeoLanding = () => {
         </div>
       </section>
 
-      <div className="pt-16 md:pt-24">
+      <div className="pt-10 md:pt-24">
         <ExpertiseStrip />
       </div>
 
@@ -178,7 +178,7 @@ const SeoLanding = () => {
       <ResourceLinks slug={page.slug} kind={page.kind} />
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <div className="grid gap-10 md:grid-cols-2">
+        <div className="grid gap-6 md:gap-10 md:grid-cols-2">
           <div>
             <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
               {page.kind === "service" ? "другие услуги" : "другие города"}

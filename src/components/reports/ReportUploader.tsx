@@ -208,7 +208,7 @@ const ReportUploader = () => {
       : null;
 
   return (
-    <div className="rounded-[32px] bg-surface p-6 text-cream md:p-10">
+    <div className="rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-10">
       {!report && (
         <UploadDropzone
           busy={busy}

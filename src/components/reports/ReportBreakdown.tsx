@@ -37,20 +37,20 @@ const ReportBreakdown = ({
   overpay: number | null;
 }) => (
   <>
-    <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <div className="rounded-2xl bg-cream/[0.06] p-5">
+    <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="rounded-2xl bg-cream/[0.06] p-4 md:p-5">
         <span className="text-[0.85em] text-cream-muted">Валовый оборот</span>
         <p className="mt-1.5 font-display text-[1.7em] font-semibold leading-none">
           {rub(report.gross)} ₽
         </p>
       </div>
-      <div className="rounded-2xl bg-cream/[0.06] p-5">
+      <div className="rounded-2xl bg-cream/[0.06] p-4 md:p-5">
         <span className="text-[0.85em] text-cream-muted">Удержано сервисом</span>
         <p className="mt-1.5 font-display text-[1.7em] font-semibold leading-none text-[#ff6b6b]">
           {rub(report.withheld)} ₽
         </p>
       </div>
-      <div className="rounded-2xl bg-brand p-5 text-foreground">
+      <div className="rounded-2xl bg-brand p-4 md:p-5 text-foreground">
         <span className="text-[0.85em] text-foreground/70">К перечислению</span>
         <p className="mt-1.5 font-display text-[1.7em] font-semibold leading-none">
           {rub(report.net)} ₽
@@ -58,8 +58,8 @@ const ReportBreakdown = ({
       </div>
     </div>
 
-    <div className="mt-4 rounded-2xl bg-cream/[0.06] p-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+    <div className="mt-4 rounded-2xl bg-cream/[0.06] p-4 md:p-6">
+      <div className="flex flex-wrap items-end justify-between gap-3 md:gap-4">
         <div>
           <span className="text-[0.85em] text-cream-muted">
             Фактическая нагрузка на оборот
@@ -107,7 +107,7 @@ const ReportBreakdown = ({
               type="button"
               onClick={() => setOpen(isOpen ? null : b.key)}
               aria-expanded={isOpen}
-              className="flex w-full items-start justify-between gap-4 text-left"
+              className="flex w-full items-start justify-between gap-3 md:gap-4 text-left"
             >
               <span className="min-w-0">
                 <span className="flex items-center gap-2 font-medium">
@@ -192,13 +192,13 @@ const ReportBreakdown = ({
           {report.payments.map((p) => (
             <div
               key={p.label}
-              className="flex items-baseline justify-between gap-4 text-[0.88em]"
+              className="flex items-baseline justify-between gap-3 md:gap-4 text-[0.88em]"
             >
               <span className="min-w-0 truncate text-cream-muted">{p.label}</span>
               <span className="shrink-0 font-medium">{rub(p.sum)} ₽</span>
             </div>
           ))}
-          <div className="flex items-baseline justify-between gap-4 border-t border-cream/12 pt-2.5 text-[0.95em] font-semibold">
+          <div className="flex items-baseline justify-between gap-3 md:gap-4 border-t border-cream/12 pt-2.5 text-[0.95em] font-semibold">
             <span>Итого перечислено</span>
             <span className="text-brand">{rub(report.paymentsTotal)} ₽</span>
           </div>
@@ -223,7 +223,7 @@ const ReportBreakdown = ({
     )}
 
     {(suspicious.length > 0 || report.warnings.length > 0) && (
-      <div className="mt-9 rounded-2xl border border-[#C7161B]/40 p-6">
+      <div className="mt-9 rounded-2xl border border-[#C7161B]/40 p-4 md:p-6">
         <h3 className="flex items-center gap-2.5 font-display text-[1.2em] font-semibold">
           <Icon name="Search" size={20} className="text-[#ff6b6b]" />
           что стоит уточнить

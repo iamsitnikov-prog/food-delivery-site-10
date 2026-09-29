@@ -42,7 +42,7 @@ const CalculatorsPage = () => {
         <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
-            className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
+            className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
           >
             <Link to="/" className="hover:text-foreground">
               главная
@@ -50,7 +50,7 @@ const CalculatorsPage = () => {
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">калькуляторы</span>
           </nav>
-          <h1 className="max-w-[17ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
+          <h1 className="max-w-[17ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
             Калькуляторы экономики доставки
           </h1>
           <p className="mt-6 max-w-[620px] text-[1.08em] leading-snug text-muted-foreground">
@@ -72,7 +72,7 @@ const CalculatorsPage = () => {
           отдельные
           <span className="pl-3 text-muted-foreground">калькуляторы</span>
         </h2>
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2">
           {VISIBLE_CALC_PAGES.map((p) => (
             <Link
               key={p.slug}

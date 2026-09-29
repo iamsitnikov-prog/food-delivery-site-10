@@ -48,8 +48,8 @@ const PostFeedback = ({ slug, title }: { slug: string; title: string }) => {
   };
 
   return (
-    <div className="mt-14 space-y-4">
-      <div className="flex flex-col gap-5 rounded-[28px] border-2 border-primary/25 p-6 md:flex-row md:items-center md:justify-between md:p-7">
+    <div className="mt-8 md:mt-14 space-y-4">
+      <div className="flex flex-col gap-5 rounded-[28px] border-2 border-primary/25 p-4 md:flex-row md:items-center md:justify-between md:p-7">
         <button
           onClick={like}
           disabled={voted}
@@ -85,7 +85,7 @@ const PostFeedback = ({ slug, title }: { slug: string; title: string }) => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-5 rounded-[28px] bg-surface p-7 text-cream md:flex-row md:items-center md:justify-between md:p-9">
+      <div className="flex flex-col gap-5 rounded-[28px] bg-surface p-4 text-cream md:flex-row md:items-center md:justify-between md:p-9">
         <div>
           <h2 className="font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.7em]">
             Остались вопросы по вашему заведению?

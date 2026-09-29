@@ -51,7 +51,7 @@ const CalcPreview = () => {
       {!page ? (
         <>
           <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
-            <h1 className="max-w-[17ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
+            <h1 className="max-w-[17ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
               Калькуляторы экономики доставки
             </h1>
             <p className="mt-6 max-w-[620px] text-[1.08em] leading-snug text-muted-foreground">
@@ -73,7 +73,7 @@ const CalcPreview = () => {
               отдельные
               <span className="pl-3 text-muted-foreground">калькуляторы</span>
             </h2>
-            <div className="mt-8 grid gap-4 md:grid-cols-2">
+            <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2">
               {VISIBLE_CALC_PAGES.map((p) => (
                 <button
                   key={p.slug}
@@ -134,7 +134,7 @@ const CalcPreview = () => {
           </section>
 
           {page.intro?.length > 0 && (
-            <section className="rounded-[40px] bg-surface px-5 py-12 text-cream md:mx-3 md:px-14 md:py-24">
+            <section className="rounded-[28px] md:rounded-[40px] bg-surface px-5 py-10 text-cream md:mx-3 md:px-14 md:py-24">
               <div className="max-w-[720px] space-y-5">
                 {page.intro.map((t) => (
                   <p key={t.slice(0, 40)} className="leading-relaxed text-cream-muted">

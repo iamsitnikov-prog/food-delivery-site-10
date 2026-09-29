@@ -51,9 +51,9 @@ const Services = () => {
   const ref = useReveal<HTMLElement>();
 
   return (
-    <section id="services" ref={ref} className="scroll-mt-4 px-5 py-14 md:px-14 md:py-28">
-      <div className="reveal mb-8 flex flex-col md:mb-12 justify-between gap-6 md:flex-row md:items-end">
-        <h2 className="font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
+    <section id="services" ref={ref} className="scroll-mt-4 px-5 py-10 md:px-14 md:py-28">
+      <div className="reveal mb-6 flex flex-col md:mb-12 justify-between gap-6 md:flex-row md:items-end">
+        <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
           наши
           <span className="block pl-[1.2em] text-muted-foreground">услуги</span>
         </h2>
@@ -62,7 +62,7 @@ const Services = () => {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
         {SERVICES.map((item, i) => {
           const light = i % 2 === 1;
           return (
@@ -73,7 +73,7 @@ const Services = () => {
                 light ? "bg-pale text-foreground" : "bg-surface text-cream"
               }`}
             >
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start justify-between gap-3 md:gap-4">
                 <span
                   className={`flex h-10 w-10 items-center justify-center rounded-xl md:h-12 md:w-12 transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110 ${
                     light ? "bg-foreground text-brand" : "bg-brand text-foreground"

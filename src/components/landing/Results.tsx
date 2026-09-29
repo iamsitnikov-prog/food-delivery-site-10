@@ -109,7 +109,7 @@ const Results = () => {
   const visible = showAll ? CASES : CASES.slice(0, 6);
 
   return (
-    <section id="results" ref={ref} className="relative mt-5 scroll-mt-4 overflow-hidden rounded-[40px] bg-surface px-5 py-20 text-cream md:mx-3 md:mt-7 md:px-14 md:py-28">
+    <section id="results" ref={ref} className="relative mt-5 scroll-mt-4 overflow-hidden rounded-[28px] md:rounded-[40px] bg-surface px-5 py-10 text-cream md:mx-3 md:mt-7 md:px-14 md:py-28">
       <img
         src="/robot-flip-500.webp?v=2"
         srcSet="/robot-flip-500.webp?v=2 500w, /robot-flip.webp?v=2 800w"
@@ -120,11 +120,11 @@ const Results = () => {
         height={765}
         loading="lazy"
         decoding="async"
-        className="pointer-events-none absolute -left-24 -top-10 w-[300px] animate-float opacity-90 md:-left-16 md:w-[420px]"
+        className="pointer-events-none absolute -right-10 -top-12 hidden w-[140px] animate-float opacity-90 sm:block md:right-auto md:-left-16 md:-top-10 md:w-[420px]"
       />
       <div className="relative">
-        <div className="reveal mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end md:pl-[34%]">
-          <h2 className="font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
+        <div className="reveal mb-6 md:mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end md:pl-[34%]">
+          <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
             результаты
             <span className="block pl-[1.2em] text-brand">в&nbsp;цифрах</span>
           </h2>
@@ -135,13 +135,13 @@ const Results = () => {
 
         <div className="reveal flex flex-col items-center gap-3 border-y border-cream/25 py-10 text-center md:py-14">
           <span className="flex items-baseline gap-3 font-display font-semibold leading-[.85] tracking-[-0.045em] text-brand">
-            <CountUp value={HERO_STAT.v} className="text-[40px] md:text-[130px]" />
-            <span className="text-[26px] md:text-[44px]">{HERO_STAT.unit}</span>
+            <CountUp value={HERO_STAT.v} className="text-[28px] md:text-[130px]" />
+            <span className="text-[23px] md:text-[44px]">{HERO_STAT.unit}</span>
           </span>
           <p className="max-w-[420px] text-[1em] leading-snug text-cream-muted md:text-[1.15em]">{HERO_STAT.l}</p>
         </div>
 
-        <div className="reveal mt-14 grid gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="reveal mt-8 md:mt-14 grid gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
           {STATS.map((s) => (
             <div
               key={s.l}
@@ -149,14 +149,14 @@ const Results = () => {
             >
               <CountUp
                 value={s.v}
-                className="block font-display text-[34px] font-semibold leading-none tracking-[-0.04em] text-brand transition-transform duration-500 group-hover:-translate-y-1 md:text-[64px]"
+                className="block font-display text-[24px] font-semibold leading-none tracking-[-0.04em] text-brand transition-transform duration-500 group-hover:-translate-y-1 md:text-[64px]"
               />
               <p className="mt-3 max-w-[260px] text-[0.92em] leading-snug text-cream-muted">{s.l}</p>
             </div>
           ))}
         </div>
 
-        <div className="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
           {visible.map((c, i) => {
             const light = i % 2 === 1;
             return (

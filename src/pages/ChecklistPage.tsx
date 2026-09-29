@@ -92,7 +92,7 @@ const ChecklistDetailPage = () => {
         <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
-            className="mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground"
+            className="mb-6 md:mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground"
           >
             <Link to="/" className="hover:text-foreground">
               главная
@@ -156,12 +156,12 @@ const ChecklistDetailPage = () => {
           <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
             другие чек-листы
           </h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <div className="mt-6 grid gap-3 md:gap-4 md:grid-cols-2">
             {others.map((o) => (
               <Link
                 key={o.slug}
                 to={`/chek-listy/${o.slug}`}
-                className="rounded-[24px] bg-surface p-6 text-cream transition-transform hover:-translate-y-1"
+                className="rounded-[24px] bg-surface p-4 md:p-6 text-cream transition-transform hover:-translate-y-1"
               >
                 <Icon name={o.icon} size={22} className="text-brand" />
                 <h3 className="mt-3 font-display text-[1.15em] font-semibold leading-tight">

@@ -102,10 +102,10 @@ const LeadForm = () => {
     "h-14 rounded-xl border-cream/20 bg-cream/5 px-4 text-[1em] text-cream placeholder:text-cream-muted/70 focus-visible:ring-1 focus-visible:ring-brand focus-visible:ring-offset-0";
 
   return (
-    <section id="lead" ref={ref} className="relative scroll-mt-4 overflow-hidden px-5 py-20 md:px-14 md:pb-0 md:pt-28">
+    <section id="lead" ref={ref} className="relative scroll-mt-4 overflow-hidden px-5 py-10 md:py-20 md:px-14 md:pb-0 md:pt-28">
       <div className="grid items-end gap-12 lg:grid-cols-[1fr_1.05fr]">
-        <div className="reveal relative pb-20 md:pb-0">
-          <h2 className="font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[80px]">
+        <div className="reveal relative pb-10 md:pb-0">
+          <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[80px]">
             оставьте
             <span className="block pl-[1.2em]">заявку</span>
           </h2>
@@ -134,7 +134,7 @@ const LeadForm = () => {
           />
         </div>
 
-        <div className="reveal rounded-[28px] bg-surface p-6 text-cream md:mb-16 md:p-10">
+        <div className="reveal rounded-[28px] bg-surface p-4 text-cream md:mb-16 md:p-10">
           {sent ? (
             <div className="flex min-h-[420px] animate-scale-in flex-col items-start justify-center">
               <span className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand text-foreground">

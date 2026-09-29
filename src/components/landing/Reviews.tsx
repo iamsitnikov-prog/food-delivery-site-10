@@ -39,10 +39,10 @@ const Reviews = () => {
     <section
       id="reviews"
       ref={ref}
-      className="scroll-mt-4 rounded-[40px] bg-surface px-5 py-20 text-cream md:mx-3 md:px-14 md:py-28"
+      className="scroll-mt-4 rounded-[28px] md:rounded-[40px] bg-surface px-5 py-10 text-cream md:mx-3 md:px-14 md:py-28"
     >
-      <div className="reveal mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-        <h2 className="font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
+      <div className="reveal mb-6 md:mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
           отзывы
           <span className="block pl-[1.2em] text-brand">говорят за&nbsp;нас</span>
         </h2>
@@ -51,17 +51,17 @@ const Reviews = () => {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 md:gap-4 md:grid-cols-2">
         {REVIEWS.map((r, i) => (
           <article
             key={r.author}
             style={{ transitionDelay: `${i * 110}ms` }}
-            className="reveal tilt group flex flex-col rounded-xl border border-cream/20 p-6 hover:border-brand hover:bg-brand/5 md:p-8"
+            className="reveal tilt group flex flex-col rounded-xl border border-cream/20 p-4 hover:border-brand hover:bg-brand/5 md:p-8"
           >
             <Icon name="Quote" size={28} className="mb-5 text-brand transition-transform duration-500 group-hover:scale-125" />
             <h3 className="font-display text-[1.35em] font-semibold tracking-[-0.02em] text-brand">{r.title}</h3>
             <p className="mt-4 flex-1 text-[0.95em] leading-relaxed text-cream-muted">{r.text}</p>
-            <div className="mt-6 flex flex-wrap items-end justify-between gap-4 border-t border-cream/20 pt-5">
+            <div className="mt-6 flex flex-wrap items-end justify-between gap-3 md:gap-4 border-t border-cream/20 pt-5">
               <div>
                 <div className="font-display text-[1.15em] font-semibold">{r.author}</div>
                 <div className="text-[0.88em] text-cream-muted">{r.place}</div>

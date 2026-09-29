@@ -51,9 +51,9 @@ const Extra = () => {
   const ref = useReveal<HTMLElement>();
 
   return (
-    <section id="extra" ref={ref} className="scroll-mt-4 px-5 pb-20 md:px-14 md:pb-28">
-      <div className="reveal mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-        <h2 className="font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
+    <section id="extra" ref={ref} className="scroll-mt-4 px-5 pb-10 md:px-14 md:pb-28">
+      <div className="reveal mb-6 md:mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
           дополнительно
           <span className="block pl-[1.2em] text-muted-foreground">консультации и&nbsp;обучение</span>
         </h2>
@@ -62,7 +62,7 @@ const Extra = () => {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 md:gap-4 md:grid-cols-2">
         {ITEMS.map((item, i) => {
           const light = i === 1;
           return (
@@ -119,8 +119,8 @@ const Extra = () => {
         })}
       </div>
 
-      <article className="reveal mt-4 overflow-hidden rounded-[28px] bg-surface p-6 text-cream md:p-10">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.15fr]">
+      <article className="reveal mt-4 overflow-hidden rounded-[28px] bg-surface p-4 text-cream md:p-10">
+        <div className="grid gap-6 md:gap-10 lg:grid-cols-[1fr_1.15fr]">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-brand px-4 py-2 text-[0.82em] font-semibold text-foreground">
               <Icon name="GraduationCap" size={16} />
@@ -155,13 +155,13 @@ const Extra = () => {
             </a>
           </div>
 
-          <div className="rounded-xl border border-cream/20 p-5 md:p-7">
+          <div className="rounded-xl border border-cream/20 p-4 md:p-7">
             <h4 className="font-display text-[1.3em] font-semibold tracking-[-0.02em] md:text-[1.6em]">
               программа курса
             </h4>
             <ol className="mt-6 space-y-5">
               {PROGRAM.map((p, i) => (
-                <li key={p.t} className="flex gap-4 border-t border-cream/20 pt-5">
+                <li key={p.t} className="flex gap-3 md:gap-4 border-t border-cream/20 pt-5">
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand font-display text-[0.95em] font-semibold text-foreground">
                     {i + 1}
                   </span>

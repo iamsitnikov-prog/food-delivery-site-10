@@ -138,9 +138,9 @@ const ChecklistDownload = ({ page }: { page: ChecklistPage }) => {
   return (
     <form
       onSubmit={onSubmit}
-      className="w-full rounded-2xl border border-cream/20 bg-cream/[0.04] p-5"
+      className="w-full rounded-2xl border border-cream/20 bg-cream/[0.04] p-4 md:p-5"
     >
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-start justify-between gap-3 md:gap-4">
         <div className="min-w-0">
           <p className="font-display text-[1.05em] font-semibold text-cream">
             Куда отправить ссылку на чек-лист

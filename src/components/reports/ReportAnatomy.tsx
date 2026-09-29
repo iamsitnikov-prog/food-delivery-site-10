@@ -316,7 +316,7 @@ const ReportAnatomy = () => {
         ))}
       </div>
 
-      <div className="mt-6 rounded-[32px] bg-surface p-6 text-cream md:p-10">
+      <div className="mt-6 rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-10">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <h3 className="font-display text-[1.5em] font-semibold tracking-[-0.02em]">
             {doc.title}
@@ -347,7 +347,7 @@ const ReportAnatomy = () => {
                   type="button"
                   onClick={() => setOpen(isOpen ? null : l.label)}
                   aria-expanded={isOpen}
-                  className="flex w-full items-center justify-between gap-4 p-4 text-left"
+                  className="flex w-full items-center justify-between gap-3 md:gap-4 p-4 text-left"
                 >
                   <span className="flex min-w-0 items-center gap-2.5">
                     <Icon name={tone.icon} size={16} className={`shrink-0 ${tone.cls}`} />
@@ -387,7 +387,7 @@ const ReportAnatomy = () => {
           })}
         </div>
 
-        <p className="mt-7 rounded-2xl bg-cream/[0.06] p-5 text-[0.95em] leading-snug">
+        <p className="mt-7 rounded-2xl bg-cream/[0.06] p-4 md:p-5 text-[0.95em] leading-snug">
           <span className="text-brand">Итог. </span>
           {doc.footer}
         </p>

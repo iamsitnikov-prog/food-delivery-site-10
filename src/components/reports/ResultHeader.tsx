@@ -53,7 +53,7 @@ const ResultHeader = ({
       </div>
     )}
 
-    <div className="flex flex-wrap items-start justify-between gap-4">
+    <div className="flex flex-wrap items-start justify-between gap-3 md:gap-4">
       <div>
         <span className="inline-flex items-center gap-2 rounded-lg bg-brand px-3 py-1.5 text-[0.78em] font-bold uppercase tracking-wide text-foreground">
           <Icon name="FileCheck" size={14} />

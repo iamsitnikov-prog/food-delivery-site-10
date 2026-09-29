@@ -148,8 +148,8 @@ const ChannelCalc = () => {
         каждом агрегаторе после комиссии, себестоимости и доставки.
       </p>
 
-      <div className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,380px)_1fr]">
-        <div className="rounded-[28px] bg-surface p-7 text-cream md:p-8">
+      <div className="mt-8 grid gap-3 md:gap-4 lg:grid-cols-[minmax(0,380px)_1fr]">
+        <div className="rounded-[28px] bg-surface p-4 text-cream md:p-8">
           <div className="space-y-7">
             <Field
               label="Средний чек"
@@ -244,7 +244,7 @@ const ChannelCalc = () => {
           </div>
         </div>
 
-        <div className="rounded-[28px] bg-surface p-7 text-cream md:p-8">
+        <div className="rounded-[28px] bg-surface p-4 text-cream md:p-8">
           <div className="space-y-3">
             {rows.map((r) => {
               const isBest = r.available && r.profit === best;
@@ -316,7 +316,7 @@ const ChannelCalc = () => {
             })}
           </div>
 
-          <p className="mt-6 rounded-2xl bg-cream/[0.06] p-5 text-[0.92em] leading-snug">
+          <p className="mt-6 rounded-2xl bg-cream/[0.06] p-4 md:p-5 text-[0.92em] leading-snug">
             {spread > 0 ? (
               <>
                 <span className="text-brand">

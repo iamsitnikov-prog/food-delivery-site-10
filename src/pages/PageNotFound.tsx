@@ -68,7 +68,7 @@ const PageNotFound = () => {
 
         <section className="px-5 pb-9 pt-8 md:px-14 md:pb-16 md:pt-16">
           <p className="font-display text-[1.1em] font-semibold text-muted-foreground">404</p>
-          <h1 className="mt-3 max-w-[18ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
+          <h1 className="mt-3 max-w-[18ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
             Такой страницы нет
           </h1>
           <p className="mt-6 max-w-[560px] text-[1.08em] leading-snug text-muted-foreground">
@@ -98,12 +98,12 @@ const PageNotFound = () => {
         <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
           разделы сайта
         </h2>
-        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
           {SECTIONS.map((s) => (
             <Link
               key={s.to}
               to={s.to}
-              className="group rounded-[24px] border border-foreground/12 p-6 transition-colors hover:border-foreground/40"
+              className="group rounded-[24px] border border-foreground/12 p-4 md:p-6 transition-colors hover:border-foreground/40"
             >
               <Icon name={s.icon} size={22} className="text-foreground/60" />
               <h3 className="mt-3 font-display text-[1.1em] font-semibold leading-tight">

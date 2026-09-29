@@ -73,7 +73,7 @@ const Privacy = () => {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <div className="px-5 py-12 md:px-14 md:py-16">
+      <div className="px-5 py-10 md:px-14 md:py-16">
         <Link
           to="/"
           className="inline-flex items-center gap-2 rounded-xl bg-surface px-5 py-3 font-medium text-cream transition-transform hover:-translate-y-0.5"
@@ -82,7 +82,7 @@ const Privacy = () => {
           на главную
         </Link>
 
-        <h1 className="mt-10 max-w-[900px] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[64px]">
+        <h1 className="mt-10 max-w-[900px] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[64px]">
           политика обработки
           <span className="block text-muted-foreground">персональных данных</span>
         </h1>

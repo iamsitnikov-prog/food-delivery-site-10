@@ -35,7 +35,7 @@ const CompareCalc = ({ hideCta = false }: { hideCta?: boolean }) => {
   };
 
   return (
-    <div className="rounded-[32px] bg-surface p-6 text-cream md:p-10">
+    <div className="rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-10">
       <div className="grid gap-8 lg:grid-cols-[1fr_1.05fr] lg:gap-11">
         <div>
           <h2 className="font-display text-[1.5em] font-semibold tracking-[-0.02em]">ваши данные</h2>
@@ -66,7 +66,7 @@ const CompareCalc = ({ hideCta = false }: { hideCta?: boolean }) => {
       </div>
 
       {!hideCta && (
-      <div className="mt-8 rounded-[24px] bg-cream/[0.06] p-6 md:p-8">
+      <div className="mt-8 rounded-[24px] bg-cream/[0.06] p-4 md:p-8">
         <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between md:gap-8">
           <div className="min-w-0">
             <h3 className="font-display text-[1.3em] font-semibold leading-tight tracking-[-0.02em] text-cream md:text-[1.55em]">

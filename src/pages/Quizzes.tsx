@@ -42,7 +42,7 @@ const QuizzesPage = () => {
         <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
-            className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
+            className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
           >
             <Link to="/" className="hover:text-foreground">
               главная
@@ -50,7 +50,7 @@ const QuizzesPage = () => {
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">тесты</span>
           </nav>
-          <h1 className="max-w-[16ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
+          <h1 className="max-w-[16ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
             Тесты о работе с агрегаторами
           </h1>
           <p className="mt-6 max-w-[640px] text-[1.08em] leading-snug text-muted-foreground">
@@ -67,14 +67,14 @@ const QuizzesPage = () => {
         <p className="mt-2 max-w-[560px] leading-snug text-muted-foreground">
           Отвечайте о том, как всё устроено у вас сейчас — получите оценку проекта.
         </p>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <div className="mt-6 grid gap-3 md:gap-4 md:grid-cols-2">
           {audit.map((q) => (
             <Link
               key={q.slug}
               to={`/testy/${q.slug}`}
-              className="group rounded-[28px] bg-foreground p-7 text-brand transition-transform hover:-translate-y-1 md:p-8"
+              className="group rounded-[28px] bg-foreground p-4 text-brand transition-transform hover:-translate-y-1 md:p-8"
             >
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center justify-between gap-3 md:gap-4">
                 <Icon name={q.icon} size={26} />
                 <span className="rounded-lg bg-brand/15 px-2.5 py-1 text-[0.78em] font-medium">
                   {q.minutes}
@@ -101,14 +101,14 @@ const QuizzesPage = () => {
           По 50 вопросов в каждом: правила сервиса, экономика, стандарты качества и требования
           закона. С пояснениями к ответам.
         </p>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <div className="mt-6 grid gap-3 md:gap-4 sm:grid-cols-2">
           {knowledge.map((q) => (
             <Link
               key={q.slug}
               to={`/testy/${q.slug}`}
-              className="group rounded-[28px] bg-surface p-7 text-cream transition-transform hover:-translate-y-1 md:p-8"
+              className="group rounded-[28px] bg-surface p-4 text-cream transition-transform hover:-translate-y-1 md:p-8"
             >
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center justify-between gap-3 md:gap-4">
                 <Icon name={q.icon} size={26} className="text-brand" />
                 <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[0.78em] font-medium text-cream-muted">
                   {q.count} вопросов

@@ -108,9 +108,9 @@ const AggregatorsBlock = () => {
           сильные и слабые
           <span className="pl-3 text-muted-foreground">стороны</span>
         </h2>
-        <div className="mt-8 grid gap-4 lg:grid-cols-3">
+        <div className="mt-8 grid gap-3 md:gap-4 lg:grid-cols-3">
           {AGGREGATORS.map((a) => (
-            <article key={a.slug} className="rounded-[28px] bg-surface p-7 text-cream md:p-8">
+            <article key={a.slug} className="rounded-[28px] bg-surface p-4 text-cream md:p-8">
               <h3 className="font-display text-[1.4em] font-semibold leading-tight tracking-[-0.02em]">
                 {a.name}
               </h3>
@@ -152,11 +152,11 @@ const AggregatorsBlock = () => {
           разборы
           <span className="pl-3 text-muted-foreground">типичных ситуаций</span>
         </h2>
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2">
           {SCENARIOS.map((s) => (
             <article
               key={s.title}
-              className="rounded-[28px] border border-foreground/12 p-7 md:p-8"
+              className="rounded-[28px] border border-foreground/12 p-4 md:p-8"
             >
               <h3 className="font-display text-[1.25em] font-semibold leading-tight tracking-[-0.02em]">
                 {s.title}
@@ -173,8 +173,8 @@ const AggregatorsBlock = () => {
       </section>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <div className="rounded-[32px] bg-surface p-7 text-cream md:p-12">
-          <h2 className="font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]">
+        <div className="rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-12">
+          <h2 className="font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]">
             выводы
           </h2>
           <div className="mt-8 grid gap-7 md:grid-cols-2">

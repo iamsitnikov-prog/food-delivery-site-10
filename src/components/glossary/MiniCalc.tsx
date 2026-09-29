@@ -143,7 +143,7 @@ const MiniCalc = ({ meta }: { meta: MiniCalcMeta }) => {
   const res = compute(meta.kind, values);
 
   return (
-    <div className="rounded-[24px] bg-cream p-6 text-foreground">
+    <div className="rounded-[24px] bg-cream p-4 md:p-6 text-foreground">
       <div className="flex items-baseline justify-between gap-3">
         <h2 className="font-display text-[1.1em] font-semibold tracking-[-0.02em]">
           {meta.title}

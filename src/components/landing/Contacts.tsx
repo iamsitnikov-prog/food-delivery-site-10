@@ -20,10 +20,10 @@ const Contacts = () => {
   const to = (href: string) => (href.startsWith("#") ? `${home}${href}` : href);
 
   return (
-    <footer id="contacts" className="scroll-mt-4 rounded-t-[40px] bg-surface px-5 pb-8 pt-16 text-cream md:px-14 md:pt-20">
+    <footer id="contacts" className="scroll-mt-4 rounded-t-[28px] md:rounded-t-[40px] bg-surface px-5 pb-8 pt-10 text-cream md:px-14 md:pt-20">
       <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr]">
         <div>
-          <h2 className="font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
+          <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
             на&nbsp;связи
             <span className="block pl-[1.2em] text-brand">каждый день</span>
           </h2>
@@ -57,9 +57,9 @@ const Contacts = () => {
                 href={c.href}
                 target={c.href.startsWith("http") ? "_blank" : undefined}
                 rel="noreferrer"
-                className="group flex items-center justify-between gap-4 border-b border-cream/25 py-6"
+                className="group flex items-center justify-between gap-3 md:gap-4 border-b border-cream/25 py-6"
               >
-                <span className="flex items-center gap-4">
+                <span className="flex items-center gap-3 md:gap-4">
                   <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-cream/25 text-brand transition-colors group-hover:bg-brand group-hover:text-foreground">
                     <Icon name={c.icon} size={20} />
                   </span>
@@ -90,7 +90,7 @@ const Contacts = () => {
         </ul>
       </div>
 
-      <div className="mt-14 grid gap-8 border-t border-cream/25 pt-8 md:grid-cols-2">
+      <div className="mt-8 md:mt-14 grid gap-8 border-t border-cream/25 pt-8 md:grid-cols-2">
         <nav aria-label="Услуги">
           <h2 className="text-[0.82em] uppercase tracking-wide text-cream-muted">услуги</h2>
           <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-[0.86em]">

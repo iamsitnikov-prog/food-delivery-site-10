@@ -95,7 +95,7 @@ const ReconcileCalc = () => {
   );
 
   return (
-    <div className="rounded-[32px] bg-surface p-6 text-cream md:p-10">
+    <div className="rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-10">
       <div className="grid gap-8 lg:grid-cols-[minmax(0,420px)_1fr] lg:gap-11">
         <div>
           <h3 className="font-display text-[1.5em] font-semibold tracking-[-0.02em]">
@@ -152,7 +152,7 @@ const ReconcileCalc = () => {
           </h3>
 
           {!filled && !filledSaldo && (
-            <p className="mt-5 rounded-2xl bg-cream/[0.06] p-6 leading-relaxed text-cream-muted">
+            <p className="mt-5 rounded-2xl bg-cream/[0.06] p-4 md:p-6 leading-relaxed text-cream-muted">
               Заполните поля слева — контроль выполнится автоматически. Расчёт
               производится в браузере, данные не передаются на сервер.
             </p>
@@ -186,7 +186,7 @@ const ReconcileCalc = () => {
             )}
 
             {filled && t > 0 && (
-              <div className="rounded-2xl bg-cream/[0.06] p-5">
+              <div className="rounded-2xl bg-cream/[0.06] p-4 md:p-5">
                 <h4 className="font-display text-[1.1em] font-semibold">
                   Фактическая нагрузка на оборот
                 </h4>
@@ -203,7 +203,7 @@ const ReconcileCalc = () => {
             )}
 
             {filledSaldo && c > 0 && (
-              <p className="flex items-start gap-2.5 rounded-2xl bg-cream/[0.06] p-5 text-[0.9em] leading-snug text-cream-muted">
+              <p className="flex items-start gap-2.5 rounded-2xl bg-cream/[0.06] p-4 md:p-5 text-[0.9em] leading-snug text-cream-muted">
                 <Icon name="Clock" size={17} className="mt-0.5 shrink-0 text-brand" />
                 <span>
                   Задолженность сервиса на конец периода — {rub(c)} ₽.

@@ -38,7 +38,7 @@ const ChannelsBlock = ({
             target="_blank"
             rel="noreferrer"
             onClick={() => reachGoal("channel_click", { channel: c.id, source })}
-            className="group flex flex-col rounded-2xl border border-cream/15 p-5 transition-colors hover:border-brand hover:bg-brand/10"
+            className="group flex flex-col rounded-2xl border border-cream/15 p-4 md:p-5 transition-colors hover:border-brand hover:bg-brand/10"
           >
             <div className="flex items-center gap-3">
               {c.photo && (

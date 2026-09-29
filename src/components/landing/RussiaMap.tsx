@@ -25,7 +25,7 @@ const POINTS: Record<string, { x: number; y: number; align?: "left" | "right" }>
 
 const RussiaMap = () => {
   return (
-    <div className="relative overflow-hidden rounded-[32px] bg-surface p-6 text-cream md:p-10">
+    <div className="relative overflow-hidden rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-10">
       <div className="relative mx-auto aspect-[16/9] w-full max-w-[1000px]">
         <svg viewBox="0 0 100 56" className="h-full w-full" role="img" aria-label="Карта России с городами присутствия">
           <defs>

@@ -41,7 +41,7 @@ export const Card = ({
   icon: string;
   children: React.ReactNode;
 }) => (
-  <div className="rounded-[24px] bg-cream/[0.06] p-6">
+  <div className="rounded-[24px] bg-cream/[0.06] p-4 md:p-6">
     <h3 className="flex items-center gap-2 font-display text-[1.15em] font-semibold text-cream">
       <Icon name={icon} size={18} className="text-brand" />
       {title}
@@ -59,7 +59,7 @@ export const Section = ({
   icon: string;
   children: React.ReactNode;
 }) => (
-  <div className="rounded-2xl border border-cream/15 p-5">
+  <div className="rounded-2xl border border-cream/15 p-4 md:p-5">
     <p className="flex items-center gap-2 text-[0.95em] font-semibold text-cream">
       <Icon name={icon} size={16} className="text-brand" />
       {title}

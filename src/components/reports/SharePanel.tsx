@@ -7,7 +7,7 @@ const SharePanel = ({
   copied: boolean;
   onShare: (where: "tg" | "wa" | "copy", anon: boolean) => void;
 }) => (
-  <div className="mt-6 rounded-2xl bg-cream/[0.08] p-5">
+  <div className="mt-6 rounded-2xl bg-cream/[0.08] p-4 md:p-5">
     <h3 className="flex items-center gap-2 font-display text-[1.1em] font-semibold">
       <Icon name="Share2" size={17} className="text-brand" />
       отправить разбор

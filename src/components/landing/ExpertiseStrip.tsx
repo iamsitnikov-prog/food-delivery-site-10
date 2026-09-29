@@ -4,7 +4,7 @@ import { PEOPLE, COURSE } from "@/data/team";
 
 const ExpertiseStrip = () => (
   <section className="px-5 pb-11 md:px-14 md:pb-24">
-    <div className="rounded-[32px] bg-pale p-7 md:p-11">
+    <div className="rounded-[24px] md:rounded-[32px] bg-pale p-4 md:p-11">
       <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <h2 className="font-display text-[1.7em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.3em]">
           кто ведёт ваш проект
@@ -14,10 +14,10 @@ const ExpertiseStrip = () => (
         </p>
       </div>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-2">
+      <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2">
         {PEOPLE.map((p) => (
-          <article key={p.name} className="rounded-[24px] bg-background p-6">
-            <div className="flex items-center gap-4">
+          <article key={p.name} className="rounded-[24px] bg-background p-4 md:p-6">
+            <div className="flex items-center gap-3 md:gap-4">
               <img
                 src={p.photo}
                 alt={`${p.name} — эксперт по продвижению ресторанов на Яндекс Еде`}
@@ -39,8 +39,8 @@ const ExpertiseStrip = () => (
         ))}
       </div>
 
-      <div className="mt-4 flex flex-col justify-between gap-5 rounded-[24px] border-2 border-primary/25 p-6 md:flex-row md:items-center">
-        <div className="flex items-start gap-4">
+      <div className="mt-4 flex flex-col justify-between gap-5 rounded-[24px] border-2 border-primary/25 p-4 md:p-6 md:flex-row md:items-center">
+        <div className="flex items-start gap-3 md:gap-4">
           <Icon name="GraduationCap" size={26} className="mt-0.5 shrink-0" />
           <div>
             <div className="text-[0.78em] font-medium uppercase tracking-wide text-foreground/60">

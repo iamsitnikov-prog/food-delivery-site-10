@@ -224,7 +224,7 @@ const BuildersCalc = () => {
     );
 
   return (
-    <div className="rounded-[32px] bg-surface p-6 text-cream md:p-10">
+    <div className="rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-10">
       <div className="grid gap-8 lg:grid-cols-[minmax(0,380px)_1fr] lg:gap-11">
         <div>
           <h2 className="font-display text-[1.5em] font-semibold tracking-[-0.02em]">
@@ -430,7 +430,7 @@ const BuildersCalc = () => {
           </div>
 
           {best && (
-            <p className="mt-6 rounded-2xl bg-cream/[0.06] p-5 text-[0.92em] leading-snug">
+            <p className="mt-6 rounded-2xl bg-cream/[0.06] p-4 md:p-5 text-[0.92em] leading-snug">
               {best.gain > 0 ? (
                 <>
                   <span className="text-brand">

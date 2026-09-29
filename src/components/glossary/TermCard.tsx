@@ -13,9 +13,9 @@ const TermCard = ({
 }) => (
   <article
     id={term.slug}
-    className="scroll-mt-24 rounded-[28px] bg-surface p-7 text-cream md:p-8"
+    className="scroll-mt-24 rounded-[28px] bg-surface p-4 text-cream md:p-8"
   >
-    <div className="flex items-start justify-between gap-4">
+    <div className="flex items-start justify-between gap-3 md:gap-4">
       <h2 className="font-display text-[1.45em] font-semibold leading-tight tracking-[-0.02em] text-cream">
         <Link to={`/slovar/${term.slug}`} className="transition-colors hover:text-brand">
           {term.term}

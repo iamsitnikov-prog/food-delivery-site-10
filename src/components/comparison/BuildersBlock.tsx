@@ -115,9 +115,9 @@ const BuildersBlock = () => (
         сильные и слабые
         <span className="pl-3 text-muted-foreground">стороны</span>
       </h2>
-      <div className="mt-8 grid gap-4 md:grid-cols-2">
+      <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2">
         {BUILDERS.map((b) => (
-          <article key={b.slug} className="rounded-[28px] bg-surface p-7 text-cream md:p-8">
+          <article key={b.slug} className="rounded-[28px] bg-surface p-4 text-cream md:p-8">
             <h3 className="font-display text-[1.4em] font-semibold leading-tight tracking-[-0.02em]">
               {b.name}
             </h3>
@@ -170,8 +170,8 @@ const BuildersBlock = () => (
     </section>
 
     <section className="px-5 pb-11 md:px-14 md:pb-24">
-      <div className="rounded-[32px] bg-surface p-7 text-cream md:p-12">
-        <h2 className="font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]">
+      <div className="rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-12">
+        <h2 className="font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]">
           выводы
         </h2>
         <div className="mt-8 grid gap-7 md:grid-cols-2">

@@ -78,7 +78,7 @@ const CalcStickyBar = ({ r, mode }: Props) => {
         hidden ? "translate-y-full" : "translate-y-0"
       }`}
     >
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-3 md:gap-4">
         <span className="text-[0.82em] leading-tight text-cream-muted">{label}</span>
         <span
           className={`font-display text-[1.45em] font-semibold leading-none tabular-nums transition-colors ${tone} ${

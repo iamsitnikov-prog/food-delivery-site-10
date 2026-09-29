@@ -6,9 +6,9 @@ const Team = () => {
   const ref = useReveal<HTMLElement>();
 
   return (
-    <section id="team" ref={ref} className="scroll-mt-4 px-5 pb-20 md:px-14 md:pb-28">
-      <div className="reveal mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-        <h2 className="font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
+    <section id="team" ref={ref} className="scroll-mt-4 px-5 pb-10 md:px-14 md:pb-28">
+      <div className="reveal mb-6 md:mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
           кто мы?
         </h2>
         <p className="max-w-[380px] text-[1.05em] leading-snug">
@@ -16,7 +16,7 @@ const Team = () => {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-3 md:gap-4 md:grid-cols-2">
         {PEOPLE.map((p, i) => (
           <article
             key={p.name}

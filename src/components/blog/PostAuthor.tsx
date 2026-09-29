@@ -3,14 +3,14 @@ import Icon from "@/components/ui/icon";
 import { PEOPLE, COURSE } from "@/data/team";
 
 const PostAuthor = () => (
-  <aside className="mt-14 rounded-[28px] bg-pale p-7 md:p-9">
+  <aside className="mt-8 md:mt-14 rounded-[28px] bg-pale p-4 md:p-9">
     <div className="text-[0.8em] font-medium uppercase tracking-wide text-foreground/55">
       материал подготовили
     </div>
 
     <div className="mt-6 grid gap-6 md:grid-cols-2">
       {PEOPLE.map((p) => (
-        <div key={p.name} className="flex items-start gap-4">
+        <div key={p.name} className="flex items-start gap-3 md:gap-4">
           <img
             src={p.photo}
             alt={`${p.name} — эксперт по продвижению ресторанов на Яндекс Еде`}
@@ -31,7 +31,7 @@ const PostAuthor = () => (
       ))}
     </div>
 
-    <div className="mt-7 flex flex-col gap-4 border-t border-foreground/15 pt-6 md:flex-row md:items-center md:justify-between">
+    <div className="mt-7 flex flex-col gap-3 md:gap-4 border-t border-foreground/15 pt-6 md:flex-row md:items-center md:justify-between">
       <div className="flex items-start gap-3">
         <Icon name="GraduationCap" size={22} className="mt-0.5 shrink-0 text-foreground/70" />
         <div className="text-[0.9em] leading-snug text-foreground/75">

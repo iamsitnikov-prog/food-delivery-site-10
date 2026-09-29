@@ -26,12 +26,12 @@ const ChecklistCases = ({ slug }: { slug: string }) => {
         работы.
       </p>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
         {cases.map(({ citySlug, data, city }) => (
           <Link
             key={citySlug}
             to={`/goroda/${citySlug}#case`}
-            className="group flex flex-col rounded-[24px] bg-surface p-6 text-cream transition-transform hover:-translate-y-1"
+            className="group flex flex-col rounded-[24px] bg-surface p-4 md:p-6 text-cream transition-transform hover:-translate-y-1"
           >
             <div className="flex flex-wrap items-center gap-2 text-[0.82em] text-cream-muted">
               <Icon name="MapPin" size={15} className="text-brand" />

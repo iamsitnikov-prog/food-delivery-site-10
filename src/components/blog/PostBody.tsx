@@ -46,7 +46,7 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
           <h2
             key={i}
             id={b.id}
-            className="mt-14 scroll-mt-8 font-display text-[1.8em] font-semibold leading-tight tracking-[-0.03em] md:text-[2.3em]"
+            className="mt-8 md:mt-14 scroll-mt-8 font-display text-[1.8em] font-semibold leading-tight tracking-[-0.03em] md:text-[2.3em]"
           >
             {b.text}
           </h2>
@@ -70,7 +70,7 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
         return (
           <blockquote
             key={i}
-            className="mt-8 rounded-[24px] bg-surface p-5 md:p-7 font-display text-[1.15em] font-medium leading-snug text-cream md:text-[1.3em]"
+            className="mt-8 rounded-[24px] bg-surface p-4 md:p-7 font-display text-[1.15em] font-medium leading-snug text-cream md:text-[1.3em]"
           >
             {b.text}
           </blockquote>
@@ -78,7 +78,7 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
 
       if (b.type === "partner")
         return (
-          <aside key={i} className="mt-8 rounded-[24px] border border-primary/25 bg-pale p-5 md:p-7">
+          <aside key={i} className="mt-8 rounded-[24px] border border-primary/25 bg-pale p-4 md:p-7">
             <div className="flex flex-wrap items-center gap-2.5">
               <span className="rounded-lg bg-foreground px-3 py-1.5 text-[0.75em] font-medium uppercase tracking-wide text-brand">
                 новое
@@ -120,7 +120,7 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
         return (
           <ol key={i} className="mt-6 space-y-4">
             {b.items.map((item, n) => (
-              <li key={item} className="flex gap-4 leading-relaxed text-foreground/85">
+              <li key={item} className="flex gap-3 md:gap-4 leading-relaxed text-foreground/85">
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-surface text-[0.85em] font-semibold text-brand">
                   {n + 1}
                 </span>

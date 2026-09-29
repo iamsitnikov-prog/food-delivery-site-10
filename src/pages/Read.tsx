@@ -40,7 +40,7 @@ const ReadPage = () => {
         <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
-            className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
+            className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
           >
             <Link to="/" className="hover:text-foreground">
               главная
@@ -48,7 +48,7 @@ const ReadPage = () => {
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">почитать</span>
           </nav>
-          <h1 className="max-w-[16ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
+          <h1 className="max-w-[16ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
             Почитать о доставке
           </h1>
           <p className="mt-6 max-w-[640px] text-[1.08em] leading-snug text-muted-foreground">
@@ -59,7 +59,7 @@ const ReadPage = () => {
       </div>
 
       <section className="px-5 pb-10 md:px-14 md:pb-20">
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid gap-3 md:gap-4 lg:grid-cols-3">
           {READ_CHANNELS.map((c) => (
             <a
               key={c.id}
@@ -67,7 +67,7 @@ const ReadPage = () => {
               target="_blank"
               rel="noreferrer"
               onClick={() => reachGoal("channel_click", { channel: c.id, source: "read-page" })}
-              className="group flex flex-col rounded-[28px] bg-surface p-7 text-cream transition-transform hover:-translate-y-1 md:p-8"
+              className="group flex flex-col rounded-[28px] bg-surface p-4 text-cream transition-transform hover:-translate-y-1 md:p-8"
             >
               <div className="flex items-center gap-2.5">
                 <Icon name={c.icon} size={24} className="text-brand" />
@@ -102,7 +102,7 @@ const ReadPage = () => {
       </section>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <div className="rounded-[28px] bg-surface p-7 text-cream md:p-10">
+        <div className="rounded-[28px] bg-surface p-4 text-cream md:p-10">
           <h2 className="font-display text-[1.5em] font-semibold tracking-[-0.02em] md:text-[1.9em]">
             Что ещё почитать на сайте
           </h2>
@@ -129,7 +129,7 @@ const ReadPage = () => {
               <Link
                 key={l.to}
                 to={l.to}
-                className="rounded-2xl border border-cream/15 p-5 transition-colors hover:border-brand hover:bg-brand/10"
+                className="rounded-2xl border border-cream/15 p-4 md:p-5 transition-colors hover:border-brand hover:bg-brand/10"
               >
                 <Icon name={l.icon} size={20} className="text-brand" />
                 <span className="mt-3 block font-display text-[1.05em] font-semibold">

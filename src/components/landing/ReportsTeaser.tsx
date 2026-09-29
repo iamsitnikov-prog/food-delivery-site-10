@@ -29,15 +29,15 @@ const ReportsTeaser = () => {
   const ref = useReveal<HTMLElement>();
 
   return (
-    <section ref={ref} className="px-5 pb-20 md:px-14 md:pb-28">
-      <div className="reveal rounded-[32px] bg-surface p-7 text-cream md:p-12">
+    <section ref={ref} className="px-5 pb-10 md:px-14 md:pb-28">
+      <div className="reveal rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-12">
         <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div className="min-w-0">
             <span className="inline-flex items-center gap-2 rounded-lg bg-brand px-3 py-1.5 text-[0.75em] font-bold uppercase tracking-wide text-foreground">
               <Icon name="Sparkles" size={13} />
               бесплатно и без регистрации
             </span>
-            <h2 className="mt-4 font-display text-[30px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
+            <h2 className="mt-4 font-display text-[23px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
               разбор отчётов
             </h2>
             <p className="mt-4 max-w-[560px] leading-snug text-cream-muted">
@@ -55,9 +55,9 @@ const ReportsTeaser = () => {
           </Link>
         </div>
 
-        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-9 grid gap-3 md:gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {POINTS.map((p) => (
-            <div key={p.title} className="rounded-[20px] bg-cream/[0.06] p-5">
+            <div key={p.title} className="rounded-[20px] bg-cream/[0.06] p-4 md:p-5">
               <Icon name={p.icon} size={22} className="text-brand" />
               <h3 className="mt-3.5 font-display text-[1.08em] font-semibold leading-tight tracking-[-0.02em]">
                 {p.title}

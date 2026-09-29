@@ -39,7 +39,7 @@ const ChecklistsPage = () => {
         <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
-            className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
+            className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
           >
             <Link to="/" className="hover:text-foreground">
               главная
@@ -47,7 +47,7 @@ const ChecklistsPage = () => {
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">чек-листы</span>
           </nav>
-          <h1 className="max-w-[17ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
+          <h1 className="max-w-[17ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
             Чек-листы для доставки
           </h1>
           <p className="mt-6 max-w-[620px] text-[1.08em] leading-snug text-muted-foreground">
@@ -58,14 +58,14 @@ const ChecklistsPage = () => {
       </div>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-3 md:gap-4 md:grid-cols-2">
           {CHECKLIST_META.map((p) => (
             <Link
               key={p.slug}
               to={`/chek-listy/${p.slug}`}
-              className="group rounded-[28px] bg-surface p-7 text-cream transition-transform hover:-translate-y-1 md:p-8"
+              className="group rounded-[28px] bg-surface p-4 text-cream transition-transform hover:-translate-y-1 md:p-8"
             >
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center justify-between gap-3 md:gap-4">
                 <Icon name={p.icon} size={26} className="text-brand" />
                 <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[0.78em] font-medium text-cream-muted">
                   {p.count} пунктов

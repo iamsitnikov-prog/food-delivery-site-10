@@ -17,12 +17,12 @@ const ResourceLinks = ({ slug, kind }: Props) => {
         Бесплатные материалы, которые помогут разобраться самостоятельно.
       </p>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-6 grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
         {items.map((r) => (
           <Link
             key={r.to}
             to={r.to}
-            className="group rounded-[24px] border border-foreground/12 p-6 transition-colors hover:border-foreground/40"
+            className="group rounded-[24px] border border-foreground/12 p-4 md:p-6 transition-colors hover:border-foreground/40"
           >
             <Icon name={r.icon} size={22} className="text-foreground/60" />
             <h3 className="mt-3 font-display text-[1.1em] font-semibold leading-tight">

@@ -81,14 +81,14 @@ const Blog = () => {
           </div>
         )}
         <section className="px-5 pb-10 pt-8 md:px-14 md:pb-20 md:pt-16">
-          <nav aria-label="Хлебные крошки" className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
+          <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               главная
             </Link>
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">блог</span>
           </nav>
-          <h1 className="max-w-[16ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
+          <h1 className="max-w-[16ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
             Разборы для рестораторов
           </h1>
           <p className="mt-6 max-w-[600px] text-[1.1em] leading-snug text-muted-foreground">
@@ -124,8 +124,8 @@ const Blog = () => {
 
       {top.length > 0 && (
         <section className="px-5 pb-10 md:px-14 md:pb-16">
-          <div className="rounded-[32px] bg-surface p-7 text-cream md:p-10">
-            <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <div className="rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-10">
+            <div className="flex flex-col justify-between gap-3 md:gap-4 md:flex-row md:items-end">
               <h2 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.1em]">
                 самое полезное
               </h2>
@@ -134,12 +134,12 @@ const Blog = () => {
               </p>
             </div>
 
-            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
               {top.map((p, i) => (
                 <Link
                   key={p.slug}
                   to={`/blog/${p.slug}`}
-                  className="group flex flex-col rounded-[22px] bg-cream/[0.06] p-6 transition-colors hover:bg-cream/10"
+                  className="group flex flex-col rounded-[22px] bg-cream/[0.06] p-4 md:p-6 transition-colors hover:bg-cream/10"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-display text-[1.6em] font-semibold text-brand">{i + 1}</span>
@@ -204,7 +204,7 @@ const Blog = () => {
           })}
         </div>
 
-        <div className="grid gap-4 lg:grid-cols-3">
+        <div className="grid gap-3 md:gap-4 lg:grid-cols-3">
           {posts.map((post, i) => (
             <Link
               key={post.slug}

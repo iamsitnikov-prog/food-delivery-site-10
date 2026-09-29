@@ -62,7 +62,7 @@ const CalcForm = ({
   return (
     <div className="mt-6 space-y-5">
       {isFull && (
-        <div className="rounded-2xl border border-cream/15 p-5">
+        <div className="rounded-2xl border border-cream/15 p-4 md:p-5">
           <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
             <span className="text-[0.9em] font-medium text-cream">
               Период расчёта
@@ -120,7 +120,7 @@ const CalcForm = ({
             hint={PLATFORMS.find((p) => p.value === input.platform)?.hint}
           />
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
             <CalcField
               label="Средний чек · average check"
               suffix="₽"
@@ -175,7 +175,7 @@ const CalcForm = ({
               />
 
               {input.subscriptionPlan === "business" && (
-                <div className="grid gap-4 sm:grid-cols-2">
+                <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
                   <CalcField
                     label="Ресторанов в Подписке"
                     suffix="шт"
@@ -214,7 +214,7 @@ const CalcForm = ({
                 />
               )}
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
                 <CalcField
                   label="Комиссия · commission"
                   suffix="%"
@@ -302,7 +302,7 @@ const CalcForm = ({
 
       {selfOn && (
         <Section title="Собственная доставка" icon="House">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
             <CalcField
               label="Средний чек · average check"
               suffix="₽"
@@ -355,7 +355,7 @@ const CalcForm = ({
                 />
               )}
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
                 <CalcField
                   label="Продвижение · ad spend"
                   suffix="%"
@@ -401,7 +401,7 @@ const CalcForm = ({
 
       {!isVat && r.anyChannel && (
         <Section title="Себестоимость заказа" icon="ChefHat">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
             <CalcField
               label="Фудкост · food cost"
               suffix="%"
@@ -455,7 +455,7 @@ const CalcForm = ({
           />
 
           {input.staffEnabled && (
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
               <CalcField
                 label="Менеджеров доставки"
                 suffix="чел"
@@ -529,7 +529,7 @@ const CalcForm = ({
           />
 
           {input.overheadEnabled && (
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
               <CalcField
                 label="Общие расходы · overhead"
                 suffix="₽/мес"
@@ -551,7 +551,7 @@ const CalcForm = ({
             </div>
           )}
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
             <CalcField
               label="Постоянные расходы · fixed costs"
               suffix="₽/мес"

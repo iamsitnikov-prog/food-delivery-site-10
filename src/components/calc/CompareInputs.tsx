@@ -18,7 +18,7 @@ const CompareInputs = ({ input, r, set, flag, onOwnMode, onYandexKnowOrders }: P
 
   return (
     <div className="mt-6 space-y-5">
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
         <CalcField
           label="Средний чек · average check"
           suffix="₽"
@@ -43,12 +43,12 @@ const CompareInputs = ({ input, r, set, flag, onOwnMode, onYandexKnowOrders }: P
         </span>
       </div>
 
-      <div className="rounded-2xl border border-cream/15 p-5">
+      <div className="rounded-2xl border border-cream/15 p-4 md:p-5">
         <p className="flex items-center gap-2 text-[0.95em] font-semibold text-cream">
           <Icon name="Truck" size={16} className="text-brand" />
           Модель 1 — курьеры сервиса
         </p>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <div className="mt-4 grid gap-3 md:gap-4 sm:grid-cols-2">
           <CalcField
             label="Комиссия · commission"
             suffix="%"
@@ -70,14 +70,14 @@ const CompareInputs = ({ input, r, set, flag, onOwnMode, onYandexKnowOrders }: P
         </div>
       </div>
 
-      <div className="rounded-2xl border border-cream/15 p-5">
+      <div className="rounded-2xl border border-cream/15 p-4 md:p-5">
         <p className="flex items-center gap-2 text-[0.95em] font-semibold text-cream">
           <Icon name="Bike" size={16} className="text-brand" />
           Модель 2 — своя доставка
         </p>
 
         <div className="mt-4 space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
             <CalcField
               label="Комиссия · commission"
               suffix="%"
@@ -111,7 +111,7 @@ const CompareInputs = ({ input, r, set, flag, onOwnMode, onYandexKnowOrders }: P
 
           {isStaff && (
             <>
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
                 <CalcField
                   label="Курьеров в штате"
                   suffix="чел"
@@ -187,7 +187,7 @@ const CompareInputs = ({ input, r, set, flag, onOwnMode, onYandexKnowOrders }: P
                 hint="Данные берутся из отчёта Яндекс Доставки за месяц."
               />
 
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
                 {input.yandexKnowOrders && (
                   <CalcField
                     label="Заказов через Доставку"
@@ -224,7 +224,7 @@ const CompareInputs = ({ input, r, set, flag, onOwnMode, onYandexKnowOrders }: P
         </div>
       </div>
 
-      <div className="rounded-2xl border border-cream/15 p-5">
+      <div className="rounded-2xl border border-cream/15 p-4 md:p-5">
         <p className="flex items-center gap-2 text-[0.95em] font-semibold text-cream">
           <Icon name="Shuffle" size={16} className="text-brand" />
           Модель 3 — гибрид
@@ -237,7 +237,7 @@ const CompareInputs = ({ input, r, set, flag, onOwnMode, onYandexKnowOrders }: P
             onChange={flag("hybridEnabled")}
           />
           {input.hybridEnabled && (
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
               <CalcField
                 label="Курьеров в штате"
                 suffix="чел"
@@ -274,12 +274,12 @@ const CompareInputs = ({ input, r, set, flag, onOwnMode, onYandexKnowOrders }: P
         </div>
       </div>
 
-      <div className="rounded-2xl border border-cream/15 p-5">
+      <div className="rounded-2xl border border-cream/15 p-4 md:p-5">
         <p className="flex items-center gap-2 text-[0.95em] font-semibold text-cream">
           <Icon name="ChefHat" size={16} className="text-brand" />
           Себестоимость заказа
         </p>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <div className="mt-4 grid gap-3 md:gap-4 sm:grid-cols-2">
           <CalcField
             label="Фудкост · food cost"
             suffix="%"

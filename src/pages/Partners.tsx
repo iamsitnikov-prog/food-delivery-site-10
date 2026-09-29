@@ -22,14 +22,14 @@ const PartnersPage = () => {
       <div id="top">
         <Header />
         <section className="px-5 pb-10 pt-8 md:px-14 md:pb-20 md:pt-16">
-          <nav aria-label="Хлебные крошки" className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
+          <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               главная
             </Link>
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">партнёры</span>
           </nav>
-          <h1 className="max-w-[17ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
+          <h1 className="max-w-[17ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
             Сервисы, которые мы рекомендуем
           </h1>
           <p className="mt-6 max-w-[620px] text-[1.1em] leading-snug text-muted-foreground">
@@ -39,13 +39,13 @@ const PartnersPage = () => {
       </div>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
           {PARTNERS.map((p) => (
             <article
               key={p.slug}
-              className="flex flex-col rounded-[28px] bg-surface p-7 text-cream md:p-8"
+              className="flex flex-col rounded-[28px] bg-surface p-4 text-cream md:p-8"
             >
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-3 md:gap-4">
                 <img
                   src={p.logo}
                   alt={`Логотип ${p.name}`}
@@ -127,7 +127,7 @@ const PartnersPage = () => {
           ))}
         </div>
 
-        <div className="mt-4 flex flex-col justify-between gap-6 rounded-[32px] bg-pale p-7 md:flex-row md:items-center md:p-11">
+        <div className="mt-4 flex flex-col justify-between gap-6 rounded-[24px] md:rounded-[32px] bg-pale p-4 md:flex-row md:items-center md:p-11">
           <div>
             <h2 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.1em]">
               Хотите стать партнёром?

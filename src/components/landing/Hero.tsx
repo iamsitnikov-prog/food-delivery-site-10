@@ -22,26 +22,30 @@ const Hero = () => {
       <Header />
 
       <section className="relative min-h-0 overflow-hidden">
-        <img
-          src={ROBOT}
-          // Робот — главный элемент первого экрана (LCP). На телефоне он
-          // показывается в 300 px, поэтому отдаём версию 600 px (31 КБ)
-          // вместо полной 620 px (33 КБ).
-          srcSet="/robot-600.webp?v=2 600w, /robot.webp?v=2 620w"
-          sizes="(max-width: 640px) 300px, (max-width: 768px) 460px, 620px"
-          alt="Жёлтый робот-курьер agregatory.pro"
-          width={620}
-          height={592}
-          {...{ fetchpriority: "high" }}
-          decoding="async"
-          className="pointer-events-none absolute -right-20 bottom-[-14px] top-auto z-0 w-[300px] animate-float object-contain object-bottom mask-fade-left sm:w-[400px] md:-right-16 md:w-[440px] lg:-right-10 lg:h-[620px] lg:w-[620px]"
-        />
-        <div className="relative z-10 px-5 pb-10 pt-9 md:px-14 md:pt-11 lg:h-full lg:pb-28">
-          <h1 className="max-w-[860px] animate-rise font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] sm:text-[64px] lg:text-[88px] text-left">
+        {/* На телефоне робота нет: пустой source не даёт браузеру скачивать картинку */}
+        <picture>
+          <source media="(max-width: 639px)" srcSet="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+          <img
+            src={ROBOT}
+            // Робот — главный элемент первого экрана (LCP). На телефоне он
+            // показывается в 300 px, поэтому отдаём версию 600 px (31 КБ)
+            // вместо полной 620 px (33 КБ).
+            srcSet="/robot-600.webp?v=2 600w, /robot.webp?v=2 620w"
+            sizes="(max-width: 640px) 300px, (max-width: 768px) 460px, 620px"
+            alt="Жёлтый робот-курьер agregatory.pro"
+            width={620}
+            height={592}
+            {...{ fetchpriority: "high" }}
+            decoding="async"
+            className="pointer-events-none absolute -right-20 bottom-[-14px] top-auto z-0 hidden w-[300px] animate-float sm:block object-contain object-bottom mask-fade-left sm:w-[400px] md:-right-16 md:w-[440px] lg:-right-10 lg:h-[620px] lg:w-[620px]"
+          />
+        </picture>
+        <div className="relative z-10 px-5 pb-6 pt-8 sm:pb-10 sm:pt-9 md:px-14 md:pt-11 lg:h-full lg:pb-28">
+          <h1 className="max-w-[860px] animate-rise font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] sm:text-[64px] lg:text-[88px] text-left">
             Продвижение ресторана{" "}
             <span className="block px-0">в Яндекс Еде</span>
           </h1>
-          <div className="mt-6 flex animate-rise-delay md:mt-[34px] flex-col items-start gap-6 lg:flex-row lg:items-end lg:gap-10">
+          <div className="mt-5 flex animate-rise-delay md:mt-[34px] flex-col items-start gap-5 sm:gap-6 lg:flex-row lg:items-end lg:gap-10">
             <p className="max-w-[430px] leading-[1.25] text-[1.02em] md:text-[1.3em] text-left">
               Заказы и&nbsp;выручка на&nbsp;Яндекс Еде уже&nbsp;с&nbsp;первой недели. Настраиваем вендор, акции, продвижение и&nbsp;лояльность, обучаем персонал.
             </p>
@@ -58,7 +62,7 @@ const Hero = () => {
         </div>
         <ul
           aria-label="Для кого"
-          className="relative z-10 mt-6 flex flex-wrap gap-2 px-5 pb-6 md:px-14 lg:absolute lg:bottom-[22px] lg:left-14 lg:mt-0 lg:px-0 lg:pb-0 lg:pr-5"
+          className="relative z-10 mt-4 flex flex-wrap gap-1.5 px-5 pb-7 sm:mt-6 sm:gap-2 sm:pb-6 md:px-14 lg:absolute lg:bottom-[22px] lg:left-14 lg:mt-0 lg:px-0 lg:pb-0 lg:pr-5"
         >
           {TAGS.map((t) => (
             <li key={t} className="rounded-full bg-pale px-3 py-[5px] text-[0.75em] md:px-3.5 md:py-[7px] md:text-[0.82em] text-foreground">
@@ -71,7 +75,7 @@ const Hero = () => {
       <section
         id="steps"
         aria-label="Этапы работы"
-        className="grid animate-up scroll-mt-4 grid-cols-1 gap-7 rounded-t-[40px] bg-surface px-5 pb-[34px] pt-[30px] text-cream sm:grid-cols-2 md:px-14 lg:grid-cols-[200px_repeat(5,1fr)]"
+        className="grid animate-up scroll-mt-4 grid-cols-1 gap-7 rounded-t-[28px] md:rounded-t-[40px] bg-surface px-5 pb-[34px] pt-[30px] text-cream sm:grid-cols-2 md:px-14 lg:grid-cols-[200px_repeat(5,1fr)]"
       >
         <h2 className="font-display text-[1.75em] font-semibold leading-none tracking-[-0.02em] sm:col-span-2 lg:col-span-1">
           как мы <em className="not-italic text-brand">работаем</em>

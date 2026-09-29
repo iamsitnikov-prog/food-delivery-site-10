@@ -52,10 +52,10 @@ const Faq = () => {
   const ref = useReveal<HTMLElement>();
 
   return (
-    <section id="faq" ref={ref} className="scroll-mt-4 px-5 py-20 md:px-14 md:py-28">
-      <div className="grid gap-10 lg:grid-cols-[380px_1fr]">
+    <section id="faq" ref={ref} className="scroll-mt-4 px-5 py-10 md:px-14 md:py-28">
+      <div className="grid gap-6 md:gap-10 lg:grid-cols-[380px_1fr]">
         <div className="reveal">
-          <h2 className="font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[64px]">
+          <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[64px]">
             вопросы
             <span className="block pl-[1.2em] text-muted-foreground">и&nbsp;ответы</span>
           </h2>

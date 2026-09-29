@@ -16,15 +16,15 @@ const QuizTeaser = () => {
   const ref = useReveal<HTMLElement>();
 
   return (
-    <section ref={ref} className="px-5 pb-20 pt-16 md:px-14 md:pb-28 md:pt-24">
-      <div className="reveal grid gap-8 rounded-[32px] bg-surface p-7 text-cream md:p-11 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-14">
+    <section ref={ref} className="px-5 pb-10 pt-10 md:px-14 md:pb-28 md:pt-24">
+      <div className="reveal grid gap-8 rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-11 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-14">
         <div className="min-w-0">
           <span className="inline-flex items-center gap-2 rounded-lg bg-brand px-3 py-1.5 text-[0.78em] font-medium text-foreground">
             <Icon name="ClipboardCheck" size={15} />
             бесплатно и без регистрации
           </span>
 
-          <h2 className="mt-5 font-display text-[30px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
+          <h2 className="mt-5 font-display text-[23px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
             проверьте свой проект
             <span className="block text-brand">за 3 минуты</span>
           </h2>
@@ -42,7 +42,7 @@ const QuizTeaser = () => {
           </Link>
         </div>
 
-        <div className="rounded-[24px] bg-cream/[0.06] p-6 md:p-7">
+        <div className="rounded-[24px] bg-cream/[0.06] p-4 md:p-7">
           <div className="text-[0.8em] font-medium uppercase tracking-wide text-cream-muted">
             о чём спросим
           </div>
@@ -85,7 +85,7 @@ const QuizTeaser = () => {
               <Link
                 key={q.slug}
                 to={`/testy/${q.slug}`}
-                className="rounded-2xl border border-cream/15 p-5 transition-colors hover:border-brand hover:bg-brand/10"
+                className="rounded-2xl border border-cream/15 p-4 md:p-5 transition-colors hover:border-brand hover:bg-brand/10"
               >
                 <div className="flex items-center justify-between gap-3">
                   <Icon name={q.icon} size={20} className="text-brand" />

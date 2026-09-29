@@ -79,12 +79,12 @@ const CityCaseBlock = ({
       </div>
     </div>
 
-    <p className="mt-7 rounded-2xl bg-brand/12 p-5 leading-relaxed text-cream">{data.result}</p>
+    <p className="mt-7 rounded-2xl bg-brand/12 p-4 md:p-5 leading-relaxed text-cream">{data.result}</p>
 
     {checklist && (
       <Link
         to={`/chek-listy/${checklist.slug}`}
-        className="group mt-4 flex flex-col gap-4 rounded-2xl border border-cream/20 p-5 transition-colors hover:border-brand hover:bg-brand/10 sm:flex-row sm:items-center sm:justify-between"
+        className="group mt-4 flex flex-col gap-3 md:gap-4 rounded-2xl border border-cream/20 p-4 md:p-5 transition-colors hover:border-brand hover:bg-brand/10 sm:flex-row sm:items-center sm:justify-between"
       >
         <span className="flex min-w-0 gap-3">
           <Icon name={checklist.icon} size={20} className="mt-0.5 shrink-0 text-brand" />

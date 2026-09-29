@@ -49,17 +49,17 @@ const Header = () => {
   const usefulActive = USEFUL_LINKS.some((l) => pathname.startsWith(l.href));
 
   return (
-    <header className="relative z-20 flex items-center justify-between gap-4 px-5 pt-[22px] md:px-14">
+    <header className="relative z-20 flex items-center justify-between gap-3 md:gap-4 px-5 pt-4 md:px-14 md:pt-[22px]">
       <a
         href={to("#top")}
-        className="flex items-baseline gap-[2px] font-display text-[1.3em] font-semibold tracking-[-0.02em]"
+        className="flex items-baseline gap-[2px] font-display text-[1.15em] font-semibold md:text-[1.3em] tracking-[-0.02em]"
       >
         agregatory<span className="font-normal text-muted-foreground">.pro</span>
       </a>
 
       <nav
         aria-label="Разделы"
-        className="hidden items-center gap-4 whitespace-nowrap text-[0.88em] xl:flex 2xl:gap-5 2xl:text-[0.9em]"
+        className="hidden items-center gap-3 md:gap-4 whitespace-nowrap text-[0.88em] xl:flex 2xl:gap-5 2xl:text-[0.9em]"
       >
         <div className="group relative">
           <button
@@ -131,63 +131,73 @@ const Header = () => {
           <SheetTrigger asChild>
             <button
               aria-label="Открыть меню"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-primary/30 xl:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-primary/30 xl:hidden"
             >
-              <Icon name="Menu" size={22} />
+              <Icon name="Menu" size={20} />
             </button>
           </SheetTrigger>
-          <SheetContent side="right" className="border-l border-border bg-background">
-            <SheetTitle className="font-display text-2xl font-semibold">
+          <SheetContent
+            side="right"
+            className="flex w-[88vw] max-w-[380px] flex-col gap-0 overflow-y-auto border-l border-border bg-background px-5 pb-5 pt-5"
+          >
+            <SheetTitle className="font-display text-lg font-semibold">
               agregatory<span className="font-normal text-muted-foreground">.pro</span>
             </SheetTitle>
-            {/* Заявка и услуги — сразу под заголовком: это цель страницы.
-                Раньше они были на 8-м и 15-м месте, после блока «полезное». */}
-            <a
-              href={to("#lead")}
-              onClick={() => setOpen(false)}
-              className="mt-8 inline-flex w-full items-center justify-center rounded-xl bg-primary px-6 py-4 font-medium text-primary-foreground"
-            >
-              оставить заявку
-            </a>
-            <nav className="mt-6 flex flex-col gap-1">
-              {MOBILE_NAV.map((n) => (
-                <a
-                  key={n.href}
-                  href={to(n.href)}
-                  onClick={() => setOpen(false)}
-                  className="border-b border-border py-4 font-display text-2xl font-semibold tracking-tight"
-                >
-                  {n.label}
-                </a>
-              ))}
-              <p className="pb-2 pt-6 text-[0.85em] font-medium uppercase tracking-wide text-muted-foreground">
-                полезное
-              </p>
+            {/* Полезное — первым блоком, плиткой в две колонки, чтобы всё меню помещалось на один экран */}
+            <p className="pb-2 pt-4 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+              полезное
+            </p>
+            <div className="grid grid-cols-2 gap-1.5">
               {USEFUL_LINKS.map((l) => (
                 <a
                   key={l.href}
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-2.5 border-b border-border py-4 font-display text-2xl font-semibold tracking-tight"
+                  className="flex min-h-[40px] items-center gap-2 rounded-xl bg-foreground/[.06] px-2.5 py-2 text-[13px] font-medium leading-tight last:odd:col-span-2"
                 >
-                  <Icon name={l.icon} size={20} className="text-primary" />
+                  <Icon name={l.icon} size={16} className="shrink-0" />
                   {l.label}
                 </a>
               ))}
-            </nav>
-            <div className="mt-8 flex gap-2">
-              {MESSENGERS.map((m) => (
+            </div>
+            <p className="pb-2 pt-4 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+              разделы
+            </p>
+            <nav className="grid grid-cols-2 gap-1.5">
+              {MOBILE_NAV.map((n) => (
                 <a
-                  key={m.label}
-                  href={m.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={m.label}
-                  className="inline-flex h-12 flex-1 items-center justify-center rounded-xl border border-primary/30"
+                  key={n.href}
+                  href={to(n.href)}
+                  onClick={() => setOpen(false)}
+                  className="flex min-h-[40px] items-center justify-center rounded-xl border border-foreground/15 px-2.5 py-2 text-center font-display text-[14px] font-semibold leading-tight tracking-tight last:odd:col-span-2"
                 >
-                  <Icon name={m.icon} size={20} />
+                  {n.label}
                 </a>
               ))}
+            </nav>
+            <div className="pt-3">
+              <a
+                href={to("#lead")}
+                onClick={() => setOpen(false)}
+                className="inline-flex w-full items-center justify-center rounded-xl bg-primary px-5 py-3 text-[15px] font-medium text-primary-foreground"
+              >
+                оставить заявку
+              </a>
+              <div className="mt-1.5 flex gap-1.5">
+                {MESSENGERS.map((m) => (
+                  <a
+                    key={m.label}
+                    href={m.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={m.label}
+                    className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-xl border border-primary/30 text-[13px] font-medium"
+                  >
+                    <Icon name={m.icon} size={16} />
+                    {m.label}
+                  </a>
+                ))}
+              </div>
             </div>
           </SheetContent>
         </Sheet>

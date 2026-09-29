@@ -115,7 +115,7 @@ const BlogPost = () => {
         )}
 
         <article className="mx-auto max-w-[1240px] px-5 pb-16 pt-12 md:px-14 md:pb-24 md:pt-16">
-          <nav aria-label="Хлебные крошки" className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
+          <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               главная
             </Link>
@@ -125,14 +125,14 @@ const BlogPost = () => {
             </Link>
           </nav>
 
-          <div className="flex flex-wrap items-center gap-4 text-[0.85em] text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-3 md:gap-4 text-[0.85em] text-muted-foreground">
             <span className="rounded-lg bg-pale px-3 py-1.5 font-medium text-foreground">{post.tag}</span>
             <span className="flex items-center gap-1.5">
               <Icon name="Clock" size={15} /> {post.readTime}
             </span>
           </div>
 
-          <h1 className="mt-6 max-w-[20ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[60px]">
+          <h1 className="mt-6 max-w-[20ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[60px]">
             {post.h1}
           </h1>
           <p className="mt-6 max-w-[760px] text-[1.15em] leading-snug text-muted-foreground">{post.lead}</p>
@@ -157,7 +157,7 @@ const BlogPost = () => {
             </span>
           </div>
 
-          <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-20 lg:items-start">
+          <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-20 lg:items-start">
             <div className="min-w-0">
               <PostBody blocks={post.blocks} slug={post.slug} />
               <div className="mt-12">
@@ -167,7 +167,7 @@ const BlogPost = () => {
               <PostAuthor />
             </div>
 
-            <aside className="order-first rounded-[28px] bg-pale p-6 lg:order-last lg:sticky lg:top-8">
+            <aside className="order-first rounded-[28px] bg-pale p-4 md:p-6 lg:order-last lg:sticky lg:top-8">
               <h2 className="font-display text-[1.1em] font-semibold">содержание</h2>
               <ol className="mt-4 space-y-2.5 text-[0.9em] leading-snug">
                 {post.toc.map((t, i) => (
@@ -237,7 +237,7 @@ const BlogPost = () => {
 
       <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">читайте также</h2>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
+        <div className="mt-6 grid gap-3 md:gap-4 md:grid-cols-2">
           {others.map((o, i) => (
             <Link
               key={o.slug}

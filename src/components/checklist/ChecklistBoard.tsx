@@ -41,7 +41,7 @@ const ChecklistBoard = ({ page }: { page: ChecklistPage }) => {
   const isComplete = doneCount >= total && total > 0;
 
   return (
-    <div className="rounded-[32px] bg-surface p-6 text-cream md:p-10">
+    <div className="rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-10">
       <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
         <div className="min-w-0">
           <h2 className="font-display text-[1.5em] font-semibold tracking-[-0.02em]">
@@ -53,7 +53,7 @@ const ChecklistBoard = ({ page }: { page: ChecklistPage }) => {
               : "Отмечайте выполненное — отметки сохранятся в браузере."}
           </p>
         </div>
-        <div className="flex shrink-0 items-center gap-4">
+        <div className="flex shrink-0 items-center gap-3 md:gap-4">
           <div className="text-right">
             <div className="font-display text-[2em] font-semibold leading-none text-brand">
               {progress}%
@@ -144,7 +144,7 @@ const ChecklistBoard = ({ page }: { page: ChecklistPage }) => {
         })}
       </div>
 
-      <div className="mt-8 flex flex-wrap items-start gap-4">
+      <div className="mt-8 flex flex-wrap items-start gap-3 md:gap-4">
         <ChecklistDownload page={page} />
       </div>
 
@@ -152,7 +152,7 @@ const ChecklistBoard = ({ page }: { page: ChecklistPage }) => {
         <ChannelsBlock source={`checklist:${page.slug}`} variant="light" />
       </div>
 
-      <div className="mt-4 rounded-[24px] bg-brand p-6 text-foreground md:p-8">
+      <div className="mt-4 rounded-[24px] bg-brand p-4 text-foreground md:p-8">
         <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between md:gap-8">
           <div className="min-w-0">
             <h3 className="font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.7em]">

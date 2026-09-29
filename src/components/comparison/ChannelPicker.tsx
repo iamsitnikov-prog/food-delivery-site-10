@@ -127,8 +127,8 @@ const ChannelPicker = () => {
         обратить внимание.
       </p>
 
-      <div className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,460px)_1fr]">
-        <div className="space-y-7 rounded-[28px] border border-foreground/12 p-7 md:p-8">
+      <div className="mt-8 grid gap-3 md:gap-4 lg:grid-cols-[minmax(0,460px)_1fr]">
+        <div className="space-y-7 rounded-[28px] border border-foreground/12 p-4 md:p-8">
           <Group title="Размер города" options={CITY} value={city} onChange={setCity} />
           <Group
             title="Свои курьеры"
@@ -144,7 +144,7 @@ const ChannelPicker = () => {
           />
         </div>
 
-        <div className="rounded-[28px] bg-surface p-7 text-cream md:p-8">
+        <div className="rounded-[28px] bg-surface p-4 text-cream md:p-8">
           <span className="text-[0.85em] text-cream-muted">Рекомендуем начать с</span>
           <p className="mt-2 flex items-center gap-2.5 font-display text-[1.8em] font-semibold leading-tight tracking-[-0.02em] text-brand md:text-[2.2em]">
             <Icon name="Trophy" size={26} className="shrink-0" />
@@ -163,7 +163,7 @@ const ChannelPicker = () => {
             {v.why}
           </p>
 
-          <p className="mt-5 rounded-2xl bg-cream/[0.06] p-5 text-[0.92em] leading-snug">
+          <p className="mt-5 rounded-2xl bg-cream/[0.06] p-4 md:p-5 text-[0.92em] leading-snug">
             <span className="text-brand">На что смотреть. </span>
             {v.watch}
           </p>

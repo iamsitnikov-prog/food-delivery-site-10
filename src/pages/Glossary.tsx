@@ -133,7 +133,7 @@ const GlossaryPage = () => {
         <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
-            className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
+            className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
           >
             <Link to="/" className="hover:text-foreground">
               главная
@@ -141,7 +141,7 @@ const GlossaryPage = () => {
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">глоссарий</span>
           </nav>
-          <h1 className="max-w-[17ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
+          <h1 className="max-w-[17ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
             Глоссарий доставки
           </h1>
           <p className="mt-6 max-w-[660px] text-[1.08em] leading-snug text-muted-foreground">
@@ -152,7 +152,7 @@ const GlossaryPage = () => {
       </div>
 
       <section className="px-5 pb-8 md:px-14">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3 md:gap-4">
           <TermSearch value={query} onChange={setQuery} />
 
           <LetterNav
@@ -200,7 +200,7 @@ const GlossaryPage = () => {
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
         {list.length === 0 ? (
-          <p className="rounded-[24px] bg-surface p-6 md:p-8 text-cream-muted">
+          <p className="rounded-[24px] bg-surface p-4 md:p-8 text-cream-muted">
             Ничего не нашлось. Попробуйте другое слово или{" "}
             <button type="button" onClick={reset} className="text-brand underline hover:no-underline">
               сбросьте фильтры
@@ -208,7 +208,7 @@ const GlossaryPage = () => {
             .
           </p>
         ) : (
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-3 md:gap-4 md:grid-cols-2">
             {list.map((t) => (
               <TermCard
                 key={t.slug}

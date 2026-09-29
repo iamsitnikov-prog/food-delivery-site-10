@@ -42,14 +42,14 @@ const SeoIndex = ({ kind }: Props) => {
       <div id="top">
         <Header />
         <section className="px-5 pb-10 pt-8 md:px-14 md:pb-20 md:pt-16">
-          <nav aria-label="Хлебные крошки" className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
+          <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               главная
             </Link>
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">{kind === "service" ? "услуги" : "города"}</span>
           </nav>
-          <h1 className="max-w-[18ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
+          <h1 className="max-w-[18ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
             {copy.h1}
           </h1>
           <p className="mt-6 max-w-[560px] text-[1.1em] leading-snug text-muted-foreground">{copy.lead}</p>
@@ -63,7 +63,7 @@ const SeoIndex = ({ kind }: Props) => {
       )}
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
           {items.map((item, i) => {
             const light = i % 2 === 1;
             const cityCase = kind === "city" && CASE_SLUGS.includes(item.slug);
@@ -117,7 +117,7 @@ const SeoIndex = ({ kind }: Props) => {
         </div>
 
         {kind === "city" && (
-          <div className="mt-6 flex flex-col items-start justify-between gap-6 rounded-[28px] border border-primary/30 p-7 md:flex-row md:items-center md:p-9">
+          <div className="mt-6 flex flex-col items-start justify-between gap-6 rounded-[28px] border border-primary/30 p-4 md:flex-row md:items-center md:p-9">
             <div>
               <h2 className="font-display text-[1.5em] font-semibold tracking-[-0.025em]">вашего города нет в списке?</h2>
               <p className="mt-2 max-w-[560px] leading-snug text-muted-foreground">

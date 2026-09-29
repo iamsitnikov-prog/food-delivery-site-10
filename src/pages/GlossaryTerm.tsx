@@ -112,7 +112,7 @@ const GlossaryTermPage = () => {
       <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
         <nav
           aria-label="Хлебные крошки"
-          className="mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground"
+          className="mb-6 md:mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground"
         >
           <Link to="/" className="hover:text-foreground">
             главная
@@ -129,7 +129,7 @@ const GlossaryTermPage = () => {
           {term.group}
         </span>
 
-        <h1 className="mt-5 max-w-[20ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
+        <h1 className="mt-5 max-w-[20ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
           {term.term}
         </h1>
         <p className="mt-6 max-w-[680px] text-[1.15em] leading-snug text-muted-foreground">
@@ -137,8 +137,8 @@ const GlossaryTermPage = () => {
         </p>
       </section>
 
-      <section className="grid items-start gap-4 px-5 pb-11 md:px-14 md:pb-24 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-6">
-        <div className="rounded-[32px] bg-surface p-7 text-cream md:p-10">
+      <section className="grid grid-cols-[minmax(0,1fr)] items-start gap-3 px-5 pb-11 md:px-14 md:pb-24 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-6">
+        <div className="rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-10">
           {/* Общая колонка: текст и врезки одной ширины, иначе правый край рвётся */}
           <div className="max-w-[760px]">
             <h2
@@ -163,7 +163,7 @@ const GlossaryTermPage = () => {
             )}
 
             {term.example && (
-              <div className="mt-6 rounded-2xl bg-brand/12 p-5">
+              <div className="mt-6 rounded-2xl bg-brand/12 p-4 md:p-5">
                 <h3 id="primer" className="flex scroll-mt-6 items-center gap-2 text-[0.85em] uppercase tracking-wide text-brand">
                   <Icon name="Lightbulb" size={15} />
                   пример
@@ -175,7 +175,7 @@ const GlossaryTermPage = () => {
             )}
 
             {term.mistake && (
-              <div className="mt-6 rounded-2xl border border-cream/15 bg-cream/[0.04] p-5">
+              <div className="mt-6 rounded-2xl border border-cream/15 bg-cream/[0.04] p-4 md:p-5">
                 <h3 id="tipichnaya-oshibka" className="flex scroll-mt-6 items-center gap-2 text-[0.85em] uppercase tracking-wide text-cream-muted">
                   <Icon name="TriangleAlert" size={15} />
                   типичная ошибка
@@ -219,16 +219,16 @@ const GlossaryTermPage = () => {
         <section className="px-5 pb-11 md:px-14 md:pb-24">
           <h2
             id="chastye-voprosy"
-            className="scroll-mt-6 font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]"
+            className="scroll-mt-6 font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]"
           >
             частые
             <span className="pl-3 text-muted-foreground">вопросы</span>
           </h2>
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
+          <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2">
             {term.faq.map((f) => (
               <div
                 key={f.q}
-                className="rounded-[24px] border border-foreground/12 p-6"
+                className="rounded-[24px] border border-foreground/12 p-4 md:p-6"
               >
                 <h3 className="font-display text-[1.1em] font-semibold leading-tight tracking-[-0.02em]">
                   {f.q}

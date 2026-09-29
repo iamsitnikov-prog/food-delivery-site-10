@@ -7,9 +7,9 @@ const Partners = () => {
   const ref = useReveal<HTMLElement>();
 
   return (
-    <section id="partners" ref={ref} className="hidden scroll-mt-4 px-5 pb-20 md:block md:px-14 md:pb-28">
+    <section id="partners" ref={ref} className="hidden scroll-mt-4 px-5 pb-10 md:block md:px-14 md:pb-28">
       <div className="reveal mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-        <h2 className="font-display text-[30px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[60px]">
+        <h2 className="font-display text-[23px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[60px]">
           с кем работаем
         </h2>
         <p className="max-w-[420px] text-[1.02em] leading-snug text-muted-foreground">
@@ -17,16 +17,16 @@ const Partners = () => {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
         {PARTNERS.map((p) => (
           <a
             key={p.slug}
             href={p.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="reveal group flex flex-col rounded-[28px] bg-surface p-7 text-cream transition-transform duration-500 hover:-translate-y-1 md:p-8"
+            className="reveal group flex flex-col rounded-[28px] bg-surface p-4 text-cream transition-transform duration-500 hover:-translate-y-1 md:p-8"
           >
-            <div className="flex items-start gap-4">
+            <div className="flex items-start gap-3 md:gap-4">
               <img
                 src={p.logo}
                 alt={`Логотип ${p.name}`}
@@ -72,7 +72,7 @@ const Partners = () => {
           </a>
         ))}
 
-        <div className="reveal flex flex-col justify-between rounded-[28px] bg-pale p-7 md:p-8">
+        <div className="reveal flex flex-col justify-between rounded-[28px] bg-pale p-4 md:p-8">
           <div>
             <h3 className="font-display text-[1.5em] font-semibold leading-tight tracking-[-0.025em] md:text-[1.9em]">
               Подробнее о партнёрах

@@ -111,12 +111,21 @@
   html {
     scroll-behavior: smooth;
     /* База для rem: на телефоне мельче, к десктопу плавно растёт */
-    font-size: 15px;
+    font-size: 13px;
   }
 
   @media (min-width: 640px) {
     html {
       font-size: 16px;
+    }
+  }
+
+  /* iOS увеличивает страницу при фокусе на поле со шрифтом меньше 16px */
+  @media (max-width: 639px) {
+    input,
+    textarea,
+    select {
+      font-size: 16px !important;
     }
   }
 

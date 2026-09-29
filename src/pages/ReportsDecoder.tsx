@@ -165,7 +165,7 @@ const ReportsDecoder = () => {
       <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
         <nav
           aria-label="Хлебные крошки"
-          className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
+          className="mb-6 md:mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
         >
           <Link to="/" className="hover:text-foreground">
             главная
@@ -218,11 +218,11 @@ const ReportsDecoder = () => {
           зачем
           <span className="pl-3 text-muted-foreground">это проверять</span>
         </h2>
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2">
           {REASONS.map((r) => (
             <article
               key={r.title}
-              className="rounded-[28px] border border-foreground/12 p-7 md:p-8"
+              className="rounded-[28px] border border-foreground/12 p-4 md:p-8"
             >
               <Icon name={r.icon} size={26} className="text-[#C7161B]" />
               <h3 className="mt-4 font-display text-[1.25em] font-semibold leading-tight tracking-[-0.02em]">
@@ -235,9 +235,9 @@ const ReportsDecoder = () => {
       </section>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <div className="rounded-[32px] bg-surface p-7 text-cream md:p-12">
+        <div className="rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-12">
           <Icon name="ShieldCheck" size={34} className="text-brand" />
-          <h2 className="mt-5 max-w-[20ch] font-display text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] md:text-[40px]">
+          <h2 className="mt-5 max-w-[20ch] font-display text-[24px] font-semibold leading-[1.05] tracking-[-0.02em] md:text-[40px]">
             Ваши файлы остаются у вас
           </h2>
           <div className="mt-7 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
