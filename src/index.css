@@ -110,11 +110,19 @@
 
   html {
     scroll-behavior: smooth;
+    /* База для rem: на телефоне мельче, к десктопу плавно растёт */
+    font-size: 15px;
+  }
+
+  @media (min-width: 640px) {
+    html {
+      font-size: 16px;
+    }
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-size: 17px;
+    font-size: 1.0625rem;
     overflow-x: hidden;
   }
 }
