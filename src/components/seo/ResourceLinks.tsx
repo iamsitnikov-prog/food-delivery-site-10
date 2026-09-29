@@ -9,7 +9,7 @@ const ResourceLinks = ({ slug, kind }: Props) => {
   if (!items.length) return null;
 
   return (
-    <section className="px-5 pb-16 md:px-14 md:pb-24">
+    <section className="px-5 pb-11 md:px-14 md:pb-24">
       <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
         полезное по теме
       </h2>

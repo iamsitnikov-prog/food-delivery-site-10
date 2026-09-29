@@ -36,7 +36,7 @@ const ChecklistsPage = () => {
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <div id="top">
         <Header />
-        <section className="px-5 pb-10 pt-12 md:px-14 md:pb-14 md:pt-16">
+        <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
             className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
@@ -57,7 +57,7 @@ const ChecklistsPage = () => {
         </section>
       </div>
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <div className="grid gap-4 md:grid-cols-2">
           {CHECKLIST_META.map((p) => (
             <Link

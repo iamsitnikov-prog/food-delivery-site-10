@@ -50,7 +50,7 @@ const CalcPreview = () => {
 
       {!page ? (
         <>
-          <section className="px-5 pb-10 pt-12 md:px-14 md:pb-14 md:pt-16">
+          <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
             <h1 className="max-w-[17ch] font-display text-[38px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
               Калькуляторы экономики доставки
             </h1>
@@ -64,11 +64,11 @@ const CalcPreview = () => {
             </div>
           </section>
 
-          <section className="px-5 pb-16 md:px-14 md:pb-24">
+          <section className="px-5 pb-11 md:px-14 md:pb-24">
             <Calculator mode="all" hideCta />
           </section>
 
-          <section className="px-5 pb-16 md:px-14 md:pb-24">
+          <section className="px-5 pb-11 md:px-14 md:pb-24">
             <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
               отдельные
               <span className="pl-3 text-muted-foreground">калькуляторы</span>
@@ -116,7 +116,7 @@ const CalcPreview = () => {
         </>
       ) : (
         <>
-          <section className="px-5 pb-10 pt-12 md:px-14 md:pb-14 md:pt-16">
+          <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
             <h1 className="max-w-[18ch] font-display text-[36px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
               {page.h1}
             </h1>
@@ -129,12 +129,12 @@ const CalcPreview = () => {
             </div>
           </section>
 
-          <section className="px-5 pb-16 md:px-14 md:pb-24">
+          <section className="px-5 pb-11 md:px-14 md:pb-24">
             {page.mode === "compare" ? <CompareCalc hideCta /> : <Calculator mode={page.mode} hideCta />}
           </section>
 
           {page.intro?.length > 0 && (
-            <section className="rounded-[40px] bg-surface px-5 py-16 text-cream md:mx-3 md:px-14 md:py-24">
+            <section className="rounded-[40px] bg-surface px-5 py-12 text-cream md:mx-3 md:px-14 md:py-24">
               <div className="max-w-[720px] space-y-5">
                 {page.intro.map((t) => (
                   <p key={t.slice(0, 40)} className="leading-relaxed text-cream-muted">

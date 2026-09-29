@@ -12,7 +12,7 @@ const rub = (n: number) => new Intl.NumberFormat("ru-RU").format(n);
 
 const BuildersBlock = () => (
   <>
-    <section className="px-5 pb-14 md:px-14 md:pb-20">
+    <section className="px-5 pb-10 md:px-14 md:pb-20">
       <div className="overflow-x-auto rounded-[28px] bg-surface p-2 md:p-4">
         <table className="w-full min-w-[760px] border-collapse text-cream">
           <thead>
@@ -96,7 +96,7 @@ const BuildersBlock = () => (
       </div>
     </section>
 
-    <section className="px-5 pb-16 md:px-14 md:pb-24">
+    <section className="px-5 pb-11 md:px-14 md:pb-24">
       <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
         посчитайте
         <span className="pl-3 text-muted-foreground">на своих цифрах</span>
@@ -110,7 +110,7 @@ const BuildersBlock = () => (
       </div>
     </section>
 
-    <section className="px-5 pb-16 md:px-14 md:pb-24">
+    <section className="px-5 pb-11 md:px-14 md:pb-24">
       <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
         сильные и слабые
         <span className="pl-3 text-muted-foreground">стороны</span>
@@ -169,7 +169,7 @@ const BuildersBlock = () => (
       </div>
     </section>
 
-    <section className="px-5 pb-16 md:px-14 md:pb-24">
+    <section className="px-5 pb-11 md:px-14 md:pb-24">
       <div className="rounded-[32px] bg-surface p-7 text-cream md:p-12">
         <h2 className="font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]">
           выводы

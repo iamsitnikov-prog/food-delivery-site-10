@@ -89,7 +89,7 @@ const ChecklistDetailPage = () => {
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <div id="top">
         <Header />
-        <section className="px-5 pb-10 pt-12 md:px-14 md:pb-14 md:pt-16">
+        <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
             className="mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground"
@@ -113,11 +113,11 @@ const ChecklistDetailPage = () => {
         </section>
       </div>
 
-      <section className="px-5 pb-14 md:px-14 md:pb-20">
+      <section className="px-5 pb-10 md:px-14 md:pb-20">
         <ChecklistBoard page={page} />
       </section>
 
-      <section className="mx-auto max-w-[820px] px-5 pb-16 md:px-14 md:pb-24">
+      <section className="mx-auto max-w-[820px] px-5 pb-11 md:px-14 md:pb-24">
         {page.intro.map((p) => (
           <p key={p} className="mb-5 text-[1.05em] leading-relaxed text-foreground/85">
             {p}
@@ -127,7 +127,7 @@ const ChecklistDetailPage = () => {
 
       <ChecklistCases slug={page.slug} />
 
-      <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">
+      <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           частые
           <span className="pl-3 text-muted-foreground">вопросы</span>
@@ -152,7 +152,7 @@ const ChecklistDetailPage = () => {
       </section>
 
       {others.length > 0 && (
-        <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">
+        <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
           <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
             другие чек-листы
           </h2>

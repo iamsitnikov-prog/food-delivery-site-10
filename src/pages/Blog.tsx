@@ -80,7 +80,7 @@ const Blog = () => {
             </button>
           </div>
         )}
-        <section className="px-5 pb-14 pt-12 md:px-14 md:pb-20 md:pt-16">
+        <section className="px-5 pb-10 pt-8 md:px-14 md:pb-20 md:pt-16">
           <nav aria-label="Хлебные крошки" className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               главная
@@ -123,7 +123,7 @@ const Blog = () => {
       </div>
 
       {top.length > 0 && (
-        <section className="px-5 pb-14 md:px-14 md:pb-16">
+        <section className="px-5 pb-10 md:px-14 md:pb-16">
           <div className="rounded-[32px] bg-surface p-7 text-cream md:p-10">
             <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
               <h2 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.1em]">
@@ -162,7 +162,7 @@ const Blog = () => {
         </section>
       )}
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <div className="mb-10 -mx-5 flex gap-2 overflow-x-auto px-5 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:flex-wrap md:overflow-visible md:px-0">
           <button
             onClick={() => setGroup(null)}

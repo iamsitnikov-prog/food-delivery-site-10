@@ -3,7 +3,7 @@ import Icon from "@/components/ui/icon";
 import { PEOPLE, COURSE } from "@/data/team";
 
 const ExpertiseStrip = () => (
-  <section className="px-5 pb-16 md:px-14 md:pb-24">
+  <section className="px-5 pb-11 md:px-14 md:pb-24">
     <div className="rounded-[32px] bg-pale p-7 md:p-11">
       <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <h2 className="font-display text-[1.7em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.3em]">

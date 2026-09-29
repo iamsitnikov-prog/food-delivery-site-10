@@ -108,7 +108,7 @@ const GlossaryTermPage = () => {
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <Header />
 
-      <section className="px-5 pb-10 pt-12 md:px-14 md:pb-14 md:pt-16">
+      <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
         <nav
           aria-label="Хлебные крошки"
           className="mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground"
@@ -136,7 +136,7 @@ const GlossaryTermPage = () => {
         </p>
       </section>
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <div className="max-w-[900px] rounded-[32px] bg-surface p-7 text-cream md:p-10">
           {/* Общая колонка: текст и врезки одной ширины, иначе правый край рвётся */}
           <div className="max-w-[760px]">
@@ -217,7 +217,7 @@ const GlossaryTermPage = () => {
       </section>
 
       {term.faq && term.faq.length > 0 && (
-        <section className="px-5 pb-16 md:px-14 md:pb-24">
+        <section className="px-5 pb-11 md:px-14 md:pb-24">
           <h2 className="font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]">
             частые
             <span className="pl-3 text-muted-foreground">вопросы</span>
@@ -241,7 +241,7 @@ const GlossaryTermPage = () => {
       )}
 
       {related.length > 0 && (
-        <section className="px-5 pb-16 md:px-14 md:pb-24">
+        <section className="px-5 pb-11 md:px-14 md:pb-24">
           <h2 className="font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]">
             связанные
             <span className="pl-3 text-muted-foreground">термины</span>
@@ -273,7 +273,7 @@ const GlossaryTermPage = () => {
       )}
 
       {sameGroup.length > 0 && (
-        <section className="px-5 pb-16 md:px-14 md:pb-24">
+        <section className="px-5 pb-11 md:px-14 md:pb-24">
           <h2 className="font-display text-[1.3em] font-semibold tracking-[-0.02em]">
             рядом по теме «{term.group}»
           </h2>
@@ -292,7 +292,7 @@ const GlossaryTermPage = () => {
         </section>
       )}
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <div className="flex flex-col gap-3 border-t border-foreground/12 pt-6 md:flex-row md:items-center md:justify-between">
           {prev ? (
             <Link

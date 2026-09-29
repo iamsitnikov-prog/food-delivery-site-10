@@ -218,7 +218,7 @@ const BlogPost = () => {
         </article>
       </div>
 
-      <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">
+      <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           частые
           <span className="pl-3 text-muted-foreground">вопросы</span>
@@ -235,7 +235,7 @@ const BlogPost = () => {
         </Accordion>
       </section>
 
-      <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">
+      <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">читайте также</h2>
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           {others.map((o, i) => (

@@ -40,7 +40,7 @@ const AggregatorsBlock = () => {
 
   return (
     <>
-      <section className="px-5 pb-14 md:px-14 md:pb-20">
+      <section className="px-5 pb-10 md:px-14 md:pb-20">
         <div className="mb-5 flex flex-wrap items-center gap-2">
           {FILTERS.map((f) => (
             <button
@@ -103,7 +103,7 @@ const AggregatorsBlock = () => {
 
       <ChannelCalc />
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           сильные и слабые
           <span className="pl-3 text-muted-foreground">стороны</span>
@@ -147,7 +147,7 @@ const AggregatorsBlock = () => {
 
       <ChannelPicker />
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           разборы
           <span className="pl-3 text-muted-foreground">типичных ситуаций</span>
@@ -172,7 +172,7 @@ const AggregatorsBlock = () => {
         </div>
       </section>
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <div className="rounded-[32px] bg-surface p-7 text-cream md:p-12">
           <h2 className="font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]">
             выводы

@@ -16,7 +16,7 @@ const TermsStrip = ({
   if (!terms.length) return null;
 
   return (
-    <section className="px-5 pb-16 md:px-14 md:pb-24">
+    <section className="px-5 pb-11 md:px-14 md:pb-24">
       <div className="rounded-[28px] bg-surface p-7 text-cream md:p-9">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="flex items-center gap-2.5 font-display text-[1.3em] font-semibold tracking-[-0.02em]">

@@ -66,7 +66,7 @@ const PageNotFound = () => {
       <div id="top">
         <Header />
 
-        <section className="px-5 pb-12 pt-12 md:px-14 md:pb-16 md:pt-16">
+        <section className="px-5 pb-9 pt-8 md:px-14 md:pb-16 md:pt-16">
           <p className="font-display text-[1.1em] font-semibold text-muted-foreground">404</p>
           <h1 className="mt-3 max-w-[18ch] font-display text-[38px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
             Такой страницы нет
@@ -94,7 +94,7 @@ const PageNotFound = () => {
         </section>
       </div>
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
           разделы сайта
         </h2>

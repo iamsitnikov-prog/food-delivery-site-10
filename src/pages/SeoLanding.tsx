@@ -82,7 +82,7 @@ const SeoLanding = () => {
       <div id="top" className="bg-background">
         <Header />
 
-        <section className="px-5 pb-16 pt-12 md:px-14 md:pb-24 md:pt-16">
+        <section className="px-5 pb-11 pt-8 md:px-14 md:pb-24 md:pt-16">
           <nav aria-label="Хлебные крошки" className="mb-8 flex flex-wrap items-center gap-2 text-[0.85em] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               главная
@@ -110,7 +110,7 @@ const SeoLanding = () => {
         </section>
       </div>
 
-      <section className="rounded-[40px] bg-surface px-5 py-16 text-cream md:mx-3 md:px-14 md:py-24">
+      <section className="rounded-[40px] bg-surface px-5 py-12 text-cream md:mx-3 md:px-14 md:py-24">
         <div className="grid gap-10 lg:grid-cols-[1fr_340px]">
           <div className="space-y-12">
             {page.blocks.map((b) => (
@@ -158,7 +158,7 @@ const SeoLanding = () => {
         <ExpertiseStrip />
       </div>
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[34px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[52px]">
           вопросы
           <span className="pl-3 text-muted-foreground">и ответы</span>
@@ -177,7 +177,7 @@ const SeoLanding = () => {
 
       <ResourceLinks slug={page.slug} kind={page.kind} />
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <div className="grid gap-10 md:grid-cols-2">
           <div>
             <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
@@ -204,7 +204,7 @@ const SeoLanding = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1240px] px-5 pb-16 md:px-14 md:pb-24">
+      <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
         <ChannelsBlock source={`seo:${page.slug}`} />
       </section>
 

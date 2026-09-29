@@ -37,7 +37,7 @@ const ReadPage = () => {
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <div id="top">
         <Header />
-        <section className="px-5 pb-10 pt-12 md:px-14 md:pb-14 md:pt-16">
+        <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
           <nav
             aria-label="Хлебные крошки"
             className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground"
@@ -58,7 +58,7 @@ const ReadPage = () => {
         </section>
       </div>
 
-      <section className="px-5 pb-14 md:px-14 md:pb-20">
+      <section className="px-5 pb-10 md:px-14 md:pb-20">
         <div className="grid gap-4 lg:grid-cols-3">
           {READ_CHANNELS.map((c) => (
             <a
@@ -101,7 +101,7 @@ const ReadPage = () => {
         </div>
       </section>
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <div className="rounded-[28px] bg-surface p-7 text-cream md:p-10">
           <h2 className="font-display text-[1.5em] font-semibold tracking-[-0.02em] md:text-[1.9em]">
             Что ещё почитать на сайте

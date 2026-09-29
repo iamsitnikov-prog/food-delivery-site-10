@@ -21,7 +21,7 @@ const PartnersPage = () => {
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
       <div id="top">
         <Header />
-        <section className="px-5 pb-14 pt-12 md:px-14 md:pb-20 md:pt-16">
+        <section className="px-5 pb-10 pt-8 md:px-14 md:pb-20 md:pt-16">
           <nav aria-label="Хлебные крошки" className="mb-8 flex items-center gap-2 text-[0.85em] text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               главная
@@ -38,7 +38,7 @@ const PartnersPage = () => {
         </section>
       </div>
 
-      <section className="px-5 pb-16 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {PARTNERS.map((p) => (
             <article
