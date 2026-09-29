@@ -550,7 +550,7 @@ for (const term of GLOSSARY) {
       term: clean(term.term),
       short: flat(term.short),
       formula: term.formula ? flat(term.formula) : undefined,
-      hasExample: Boolean(term.example || term.formula),
+      hasExample: Boolean(term.example),
     }),
     body: `<h1>${esc(clean(term.term))}</h1>
 <p>${esc(clean(term.short))}</p>
@@ -618,7 +618,13 @@ for (const term of GLOSSARY) {
       .join("")}</ul>${
       mini
         ? `\n<h2>${esc(mini.title)}</h2>\n<p><a href="${term.calculator}">${esc(mini.linkLabel)}</a></p>`
-        : ""
+        : term.calculator
+          ? `\n<p><a href="${term.calculator}">${
+              term.calculator === "/testy/dokumenty"
+                ? "Пройти тест по документам"
+                : "Проверить себя"
+            }</a></p>`
+          : ""
     }
 <h2>${esc(clean(cta.title))}</h2>
 <p>${esc(clean(cta.text))} <a href="/#lead">Оставить заявку на бесплатный анализ</a>.${
@@ -1067,6 +1073,9 @@ const lastmodOf = (route: string) => POST_DATES.get(route) || BUILD_DATE;
 const sitemapRoutes = Array.from(
   new Set([
     "/",
+    // /test — короткий адрес того же теста, на него ведут ссылки и QR,
+    // поэтому он нужен в карте сайта, хотя каноникал у него на /testy/audit.
+    "/test",
     ...pages.filter((p) => !p.canonical).map((p) => p.route),
   ]),
 ).sort();

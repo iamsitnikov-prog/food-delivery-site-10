@@ -78,7 +78,9 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
           >
             <span>
               <span className="block font-display text-[1.1em] font-semibold tracking-[-0.02em]">
-                проверить себя
+                {term.calculator === "/testy/dokumenty"
+                  ? "Пройти тест по документам"
+                  : "проверить себя"}
               </span>
               <span className="mt-1 block text-[0.88em] leading-snug text-foreground/60">
                 короткий тест по теме

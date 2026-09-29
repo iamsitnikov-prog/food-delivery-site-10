@@ -26,7 +26,7 @@ const GlossaryTermPage = () => {
   useSeo({
     title: term ? termTitle(term) : "Термин не найден | agregatory.pro",
     description: term
-      ? termDescription({ ...term, hasExample: Boolean(term.example || term.formula) })
+      ? termDescription({ ...term, hasExample: Boolean(term.example) })
       : "Термин не найден в глоссарии доставки.",
     path: pathname,
     jsonLd: term

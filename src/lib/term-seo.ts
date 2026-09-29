@@ -29,7 +29,7 @@ export const termDescription = (term: {
   term: string;
   short: string;
   formula?: string;
-  /** Есть ли на странице разбор с цифрами: блок «Пример» или формула. */
+  /** Есть ли на странице разбор с цифрами — блок «Пример». */
   hasExample?: boolean;
 }) => {
   const base = `${term.term}: ${term.short}`;
@@ -41,6 +41,10 @@ export const termDescription = (term: {
       ? " Простым языком, с примером расчёта."
       : " Простым языком: типичные ошибки и ответы на частые вопросы.";
     if (withFormula.length + tail.length <= MAX_DESC) return withFormula + tail;
+
+    // Если формула не оставляет места, она менее важна: что на странице
+    // есть на самом деле, читателю в выдаче полезнее знать.
+    if (base.length + tail.length <= MAX_DESC) return base + tail;
 
     const shortTail = term.hasExample ? " С примером расчёта." : " Простым языком.";
     return withFormula.length + shortTail.length <= MAX_DESC
