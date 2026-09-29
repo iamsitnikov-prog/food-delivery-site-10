@@ -59,7 +59,7 @@ const Pricing = () => {
           <article
             key={p.name}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className={`reveal flex flex-col rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 md:p-10 ${
+            className={`reveal flex flex-col rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 lg:p-10 ${
               p.accent ? "bg-pale text-foreground" : "bg-surface text-cream"
             }`}
           >
@@ -72,7 +72,7 @@ const Pricing = () => {
               {p.tag}
             </span>
 
-            <h3 className="mt-6 font-display text-[1.9em] font-semibold leading-[.95] tracking-[-0.03em] md:text-[2.4em]">
+            <h3 className="mt-6 font-display text-[1.9em] font-semibold leading-[.95] tracking-[-0.03em] hyphens-auto break-words lg:text-[2.4em]">
               {p.name}
             </h3>
             <div className="mt-5 flex items-baseline gap-2">

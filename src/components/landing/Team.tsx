@@ -21,11 +21,11 @@ const Team = () => {
           <article
             key={p.name}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className={`reveal group flex flex-col rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 md:p-10 ${
+            className={`reveal group flex flex-col rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 lg:p-10 ${
               i % 2 === 1 ? "bg-pale text-foreground" : "bg-surface text-cream"
             }`}
           >
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-4 lg:gap-5">
               <img
                 src={p.photo}
                 alt={`${p.name} — эксперт по продвижению ресторанов на Яндекс Еде, agregatory.pro`}
@@ -33,12 +33,12 @@ const Team = () => {
                 height={400}
                 loading="lazy"
                 decoding="async"
-                className={`h-20 w-20 shrink-0 rounded-full border-2 object-cover object-top grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0 md:h-24 md:w-24 ${
+                className={`h-20 w-20 shrink-0 rounded-full border-2 object-cover object-top grayscale transition-all duration-500 group-hover:scale-105 group-hover:grayscale-0 lg:h-24 lg:w-24 ${
                   i % 2 === 1 ? "border-foreground/20" : "border-brand"
                 }`}
               />
-              <div>
-                <h3 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.03em] md:text-[2.1em]">
+              <div className="min-w-0">
+                <h3 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.03em] hyphens-auto break-words lg:text-[2.1em]">
                   {p.name}
                 </h3>
                 <div
@@ -52,7 +52,7 @@ const Team = () => {
             </div>
 
             <div
-              className={`mt-7 flex items-start gap-4 rounded-[20px] border-2 p-5 ${
+              className={`mt-7 flex items-start gap-4 rounded-[20px] border-2 p-4 lg:p-5 ${
                 i % 2 === 1 ? "border-foreground/25 bg-foreground/[0.04]" : "border-brand bg-brand/10"
               }`}
             >

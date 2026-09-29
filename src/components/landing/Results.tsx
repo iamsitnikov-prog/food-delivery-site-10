@@ -120,15 +120,15 @@ const Results = () => {
         height={765}
         loading="lazy"
         decoding="async"
-        className="pointer-events-none absolute -right-10 -top-12 hidden w-[140px] animate-float opacity-90 sm:block md:right-auto md:-left-16 md:-top-10 md:w-[420px]"
+        className="pointer-events-none absolute -right-10 -top-12 hidden w-[140px] animate-float opacity-90 sm:block lg:right-auto lg:-left-16 lg:-top-10 lg:w-[420px]"
       />
       <div className="relative">
-        <div className="reveal mb-6 md:mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end md:pl-[34%]">
-          <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
+        <div className="reveal mb-6 md:mb-14 flex flex-col justify-between gap-6 lg:flex-row lg:items-end lg:pl-[34%]">
+          <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[52px] lg:text-[72px]">
             результаты
             <span className="block pl-[1.2em] text-brand">в&nbsp;цифрах</span>
           </h2>
-          <p className="max-w-[340px] text-[1.05em] leading-snug text-cream-muted">
+          <p className="max-w-[340px] text-[1.05em] leading-snug text-cream-muted lg:max-w-[340px]">
             Настраиваем работу таким образом, чтобы гарантировать реальные результаты для&nbsp;вашего бизнеса.
           </p>
         </div>

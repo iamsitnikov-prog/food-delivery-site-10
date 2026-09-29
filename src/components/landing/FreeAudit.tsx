@@ -38,9 +38,10 @@ const FreeAudit = () => {
           </div>
 
           <div>
-            <div className="grid gap-3 md:gap-4 sm:grid-cols-3 lg:grid-cols-1">
+            {/* Одна колонка: три карточки в ряд на планшете сжимались до 176 px и резали текст */}
+            <div className="grid grid-cols-1 gap-3 md:gap-4">
               {POINTS.map((p) => (
-                <div key={p.t} className="flex items-center gap-3 md:gap-4 rounded-[20px] bg-pale p-4 md:p-5 text-foreground">
+                <div key={p.t} className="flex items-center gap-3 md:gap-4 rounded-[20px] bg-pale p-4 md:p-5 text-foreground min-w-0">
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-foreground text-brand">
                     <Icon name={p.icon} size={20} />
                   </span>
