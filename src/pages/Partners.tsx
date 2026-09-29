@@ -77,9 +77,9 @@ const PartnersPage = () => {
               <p className="mt-4 flex-1 text-[0.92em] leading-relaxed text-cream-muted">{p.description}</p>
 
               {p.promo && (
-                <div className="mt-5 inline-flex w-fit items-center gap-2.5 rounded-xl border border-brand/40 px-3.5 py-2.5">
+                <div className="mt-5 inline-flex w-fit max-w-full flex-wrap items-center gap-x-2.5 gap-y-1 rounded-xl border border-brand/40 px-3.5 py-2.5">
                   <span className="text-[0.75em] uppercase tracking-wide text-cream-muted">промокод</span>
-                  <span className="font-display text-[1.05em] font-semibold tracking-[-0.01em] text-brand">
+                  <span className="min-w-0 break-all font-display text-[1.05em] font-semibold tracking-[-0.01em] text-brand">
                     {p.promo.code}
                   </span>
                 </div>

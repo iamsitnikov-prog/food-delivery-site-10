@@ -90,17 +90,26 @@ def mark_sent(lead_id):
 
 def send_telegram(lines, budget=2.2):
     token = os.environ.get('TELEGRAM_BOT_TOKEN')
-    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
-    if not token or not chat_id:
+    raw_chats = os.environ.get('TELEGRAM_CHAT_ID')
+    if not token or not raw_chats:
+        return False
+    # В TELEGRAM_CHAT_ID можно указать несколько чатов через запятую —
+    # заявка уходит в каждый из них.
+    chat_ids = [c.strip() for c in raw_chats.split(',') if c.strip()]
+    if not chat_ids:
         return False
     if budget <= 0.3:
         print('telegram skipped: no time budget')
         return False
-    payload = urllib.parse.urlencode({
-        'chat_id': chat_id,
-        'text': '\n'.join(lines),
-        'parse_mode': 'HTML',
-    }).encode()
+    text = '\n'.join(lines)
+    payloads = [
+        (chat, urllib.parse.urlencode({
+            'chat_id': chat,
+            'text': text,
+            'parse_mode': 'HTML',
+        }).encode())
+        for chat in chat_ids
+    ]
     targets = list(TG_IPS)
     try:
         for info in socket.getaddrinfo('api.telegram.org', 443, socket.AF_INET, socket.SOCK_STREAM):
@@ -111,29 +120,49 @@ def send_telegram(lines, budget=2.2):
         print(f'telegram dns error: {exc}')
 
     deadline = time.monotonic() + budget
+    pending = list(payloads)
+    delivered = []
     for ip in targets:
+        if not pending:
+            break
         left = deadline - time.monotonic()
         if left <= 0.3:
             print('telegram: time budget exceeded')
             break
+        conn = None
         try:
             ctx = ssl.create_default_context()
             raw = socket.create_connection((ip, 443), timeout=min(1.2, left))
             sock = ctx.wrap_socket(raw, server_hostname='api.telegram.org')
             conn = http.client.HTTPSConnection('api.telegram.org', timeout=max(0.5, deadline - time.monotonic()))
             conn.sock = sock
-            conn.request('POST', f'/bot{token}/sendMessage', body=payload,
-                         headers={'Content-Type': 'application/x-www-form-urlencoded'})
-            resp = conn.getresponse()
-            ok = resp.status == 200
-            print(f'telegram response {resp.status} via {ip}')
-            resp.read()
-            conn.close()
-            if ok:
-                return True
+            # Один дозвонившийся адрес обслуживает все чаты — новое соединение
+            # на каждый чат не укладывается в бюджет времени функции.
+            for chat, payload in list(pending):
+                if deadline - time.monotonic() <= 0.2:
+                    print('telegram: time budget exceeded')
+                    break
+                conn.request('POST', f'/bot{token}/sendMessage', body=payload,
+                             headers={'Content-Type': 'application/x-www-form-urlencoded'})
+                resp = conn.getresponse()
+                print(f'telegram response {resp.status} for chat {chat} via {ip}')
+                resp.read()
+                if resp.status == 200:
+                    delivered.append(chat)
+                    pending = [p for p in pending if p[0] != chat]
+                elif 400 <= resp.status < 500:
+                    # Чат недоступен боту — другой IP не поможет, не тратим время
+                    pending = [p for p in pending if p[0] != chat]
         except Exception as exc:
             print(f'telegram error via {ip}: {exc}')
-    return False
+        finally:
+            if conn is not None:
+                try:
+                    conn.close()
+                except Exception:
+                    pass
+    print(f'telegram delivered to {len(delivered)} of {len(payloads)} chats')
+    return bool(delivered)
 
 
 def handler(event, context):
