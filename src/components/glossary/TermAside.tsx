@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import MiniCalc from "./MiniCalc";
@@ -5,6 +6,7 @@ import type { GlossaryTerm } from "@/data/glossary";
 import { getRelated, getSameGroup } from "@/data/glossary";
 import { PEOPLE } from "@/data/team";
 import { buildToc } from "@/lib/term-anchors";
+import { useActiveAnchor } from "@/hooks/use-active-anchor";
 import { getCta, getExpertIndex, getExpertNote, getMiniCalc } from "@/data/term-sidebar";
 
 /** Правая колонка страницы термина: оглавление, расчёт, заявка, соседние термины. */
@@ -14,6 +16,9 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
   const cta = getCta(term);
   const expert = PEOPLE[getExpertIndex(term)];
   const note = getExpertNote(term);
+
+  const ids = useMemo(() => toc.map((i) => i.id), [toc]);
+  const active = useActiveAnchor(ids);
 
   // 5–7 ссылок: сначала прямые связи, добиваем соседями по теме.
   const direct = getRelated(term);
@@ -27,42 +32,52 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
       {toc.length > 1 && (
         <nav
           aria-label="Содержание статьи"
-          className="rounded-[24px] border border-foreground/12 p-6"
+          className="rounded-[24px] bg-pale p-6 text-foreground"
         >
-          <h2 className="flex items-center gap-2 font-display text-[1.1em] font-semibold tracking-[-0.02em]">
-            <Icon name="List" size={17} />
+          <h2 className="text-[0.78em] font-medium uppercase tracking-wide text-foreground/50">
             содержание
           </h2>
-          <ul className="mt-3.5 space-y-2">
-            {toc.map((i) => (
-              <li key={i.id} className={i.level === 3 ? "pl-3.5" : ""}>
-                <a
-                  href={`#${i.id}`}
-                  className="text-[0.92em] leading-snug text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {i.title}
-                </a>
-              </li>
-            ))}
+          <ul className="mt-3.5 space-y-1">
+            {toc.map((i) => {
+              const on = active === i.id;
+              return (
+                <li key={i.id}>
+                  <a
+                    href={`#${i.id}`}
+                    aria-current={on ? "true" : undefined}
+                    className={`flex gap-2.5 rounded-lg py-1.5 text-[0.92em] leading-snug transition-colors ${
+                      i.level === 3 ? "pl-3.5" : ""
+                    } ${on ? "font-medium text-foreground" : "text-foreground/60 hover:text-foreground"}`}
+                  >
+                    <span
+                      aria-hidden
+                      className={`mt-[3px] w-[3px] shrink-0 rounded-full transition-colors ${
+                        on ? "bg-foreground" : "bg-transparent"
+                      }`}
+                    />
+                    {i.title}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </nav>
       )}
 
       {mini && <MiniCalc meta={mini} />}
 
-      <div className="rounded-[24px] bg-brand p-6 text-foreground">
+      <div className="rounded-[24px] bg-surface p-6 text-cream">
         <h2 className="font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em]">
           {cta.title}
         </h2>
-        <p className="mt-2.5 text-[0.92em] leading-snug text-foreground/75">{cta.text}</p>
+        <p className="mt-2.5 text-[0.92em] leading-snug text-cream-muted">{cta.text}</p>
         <a
           href="#lead"
-          className="mt-4 inline-flex items-center gap-2 rounded-xl bg-foreground px-5 py-3 text-[0.92em] font-medium text-brand transition-transform hover:-translate-y-0.5"
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3.5 text-[0.92em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
         >
-          бесплатный анализ
-          <Icon name="ArrowRight" size={16} />
+          получить бесплатный анализ
         </a>
-        <p className="mt-2.5 text-[0.8em] text-foreground/60">
+        <p className="mt-2.5 text-center text-[0.8em] text-cream-muted">
           разбор занимает 20 минут, без обязательств
         </p>
       </div>
@@ -70,29 +85,23 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
       {links.length > 0 && (
         <nav
           aria-label="Связанные термины"
-          className="rounded-[24px] border border-foreground/12 p-6"
+          className="rounded-[24px] bg-pale p-6 text-foreground"
         >
-          <h2 className="flex items-center gap-2 font-display text-[1.1em] font-semibold tracking-[-0.02em]">
-            <Icon name="Network" size={17} />
+          <h2 className="text-[0.78em] font-medium uppercase tracking-wide text-foreground/50">
             связанные термины
           </h2>
-          <ul className="mt-3.5 space-y-2.5">
+          <div className="mt-3.5 flex flex-wrap gap-2">
             {links.map((l) => (
-              <li key={l.slug}>
-                <Link
-                  to={`/slovar/${l.slug}`}
-                  className="group flex items-start justify-between gap-2 text-[0.92em] leading-snug text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  {l.term}
-                  <Icon
-                    name="ArrowUpRight"
-                    size={15}
-                    className="mt-0.5 shrink-0 opacity-40 transition-opacity group-hover:opacity-100"
-                  />
-                </Link>
-              </li>
+              <Link
+                key={l.slug}
+                to={`/slovar/${l.slug}`}
+                title={l.short}
+                className="rounded-xl border border-foreground/15 bg-cream/70 px-3.5 py-2 text-[0.88em] leading-none transition-colors hover:border-foreground/40 hover:bg-cream"
+              >
+                {l.term}
+              </Link>
             ))}
-          </ul>
+          </div>
           <Link
             to="/slovar"
             className="mt-4 inline-flex items-center gap-1.5 text-[0.88em] font-medium transition-opacity hover:opacity-70"
@@ -103,31 +112,29 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
         </nav>
       )}
 
-      <div className="rounded-[24px] bg-surface p-6 text-cream">
-        <h2 className="text-[0.8em] uppercase tracking-wide text-cream-muted">
-          комментарий эксперта
-        </h2>
-        <div className="mt-3.5 flex items-center gap-3">
+      <div className="rounded-[24px] bg-cream p-6 text-foreground">
+        <div className="flex items-center gap-3">
           <img
             src={expert.photo}
             alt={expert.name}
-            width={48}
-            height={48}
+            width={44}
+            height={44}
             loading="lazy"
             decoding="async"
-            className="h-12 w-12 shrink-0 rounded-full object-cover"
+            className="h-11 w-11 shrink-0 rounded-full object-cover"
           />
           <div className="min-w-0">
             <p className="font-medium leading-tight">{expert.name}</p>
-            <p className="mt-0.5 text-[0.82em] leading-snug text-cream-muted">{expert.exp}</p>
+            <p className="mt-0.5 text-[0.82em] leading-snug text-foreground/55">
+              {expert.exp}
+            </p>
           </div>
         </div>
-        <p className="mt-3.5 text-[0.92em] leading-relaxed text-cream-muted">«{note}»</p>
+        <p className="mt-3.5 text-[0.92em] leading-relaxed text-foreground/75">«{note}»</p>
       </div>
 
-      <div className="rounded-[24px] border border-foreground/12 p-6">
-        <h2 className="flex items-center gap-2 font-display text-[1.1em] font-semibold tracking-[-0.02em]">
-          <Icon name="Compass" size={17} />
+      <div className="rounded-[24px] bg-cream p-6 text-foreground">
+        <h2 className="text-[0.78em] font-medium uppercase tracking-wide text-foreground/50">
           что дальше
         </h2>
         <ul className="mt-3.5 space-y-2.5 text-[0.92em]">
@@ -140,7 +147,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
             <li key={l.to}>
               <Link
                 to={l.to}
-                className="flex items-center gap-2.5 text-muted-foreground transition-colors hover:text-foreground"
+                className="flex items-center gap-2.5 text-foreground/70 transition-colors hover:text-foreground"
               >
                 <Icon name={l.icon} size={16} className="shrink-0" />
                 {l.label}

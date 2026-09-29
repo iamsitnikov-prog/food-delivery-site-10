@@ -1,7 +1,13 @@
 import type { GlossaryGroup, GlossaryTerm } from "@/data/glossary";
 
 /** Какой мини-расчёт показать рядом с термином. */
-export type MiniCalcKind = "drr" | "marzha" | "komissiya" | "okupaemost" | "nds";
+export type MiniCalcKind =
+  | "drr"
+  | "marzha"
+  | "akciya"
+  | "komissiya"
+  | "okupaemost"
+  | "nds";
 
 export type MiniCalcMeta = {
   kind: MiniCalcKind;
@@ -23,6 +29,12 @@ const MINI: Record<MiniCalcKind, MiniCalcMeta> = {
     title: "маржа заказа",
     to: "/kalkulyatory/rentabelnost-zakaza",
     linkLabel: "открыть калькулятор рентабельности",
+  },
+  akciya: {
+    kind: "akciya",
+    title: "маржа заказа со скидкой",
+    to: "/kalkulyatory/rentabelnost-zakaza",
+    linkLabel: "открыть полный калькулятор",
   },
   komissiya: {
     kind: "komissiya",
@@ -55,8 +67,8 @@ const BY_SLUG: Record<string, MiniCalcKind> = {
   cpc: "drr",
   cpm: "drr",
   "stavka-na-aukcione": "drr",
-  "promo-aktsii": "drr",
-  "akciya-za-schet-partnyora": "marzha",
+  "promo-aktsii": "akciya",
+  "akciya-za-schet-partnyora": "akciya",
   "kontekstnaya-reklama": "drr",
   cac: "drr",
 
@@ -76,7 +88,6 @@ const BY_SLUG: Record<string, MiniCalcKind> = {
   "operacionnaya-pribyl": "marzha",
   ebitda: "marzha",
   "menyu-inzhiniring": "marzha",
-  kombo: "marzha",
   doprodazhi: "marzha",
 
   komissiya: "komissiya",
@@ -109,6 +120,12 @@ const BY_SLUG: Record<string, MiniCalcKind> = {
   "povtornye-zakazy": "okupaemost",
   "chastota-zakazov": "okupaemost",
   kogorta: "okupaemost",
+
+  "akciya-za-schet-platformy": "akciya",
+  "podarok-k-zakazu": "akciya",
+  "besplatnaya-dostavka": "akciya",
+  promokod: "akciya",
+  kombo: "akciya",
 
   "porog-nds": "nds",
   "usn-dohody": "nds",

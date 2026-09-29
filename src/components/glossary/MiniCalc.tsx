@@ -15,6 +15,12 @@ const FIELDS: Record<MiniCalcMeta["kind"], Field[]> = {
     { key: "com", label: "комиссия сервиса", suffix: "%", init: 35, step: 1 },
     { key: "food", label: "себестоимость блюд", suffix: "%", init: 30, step: 1 },
   ],
+  akciya: [
+    { key: "check", label: "средний чек", suffix: "₽", init: 1500, step: 50 },
+    { key: "disc", label: "скидка", suffix: "%", init: 20, step: 1 },
+    { key: "com", label: "комиссия", suffix: "%", init: 30, step: 1 },
+    { key: "food", label: "себест. + упаковка", suffix: "%", init: 35, step: 1 },
+  ],
   komissiya: [
     { key: "rev", label: "оборот за месяц", suffix: "₽", init: 900000, step: 10000 },
     { key: "com", label: "комиссия сервиса", suffix: "%", init: 35, step: 1 },
@@ -71,6 +77,22 @@ const compute = (kind: MiniCalcMeta["kind"], v: Record<string, number>): Result 
     };
   }
 
+  if (kind === "akciya") {
+    const paid = v.check * (1 - v.disc / 100);
+    // Комиссия сервиса считается от полной цены блюда, а не от цены со скидкой.
+    const left = paid - v.check * (v.com / 100) - v.check * (v.food / 100);
+    const pct = paid > 0 ? (left / paid) * 100 : 0;
+    return {
+      label: "остаётся с одного заказа",
+      value: rub(left),
+      note:
+        left <= 0
+          ? "акция уводит заказ в минус — считайте до запуска"
+          : `${pct.toFixed(0)}% от суммы, которую платит гость. Комиссия — от цены до скидки`,
+      warn: pct < 15,
+    };
+  }
+
   if (kind === "komissiya") {
     const left = v.rev * (1 - v.com / 100 - v.ad / 100);
     return {
@@ -121,18 +143,22 @@ const MiniCalc = ({ meta }: { meta: MiniCalcMeta }) => {
   const res = compute(meta.kind, values);
 
   return (
-    <div className="rounded-[24px] bg-surface p-6 text-cream">
-      <h2 className="flex items-center gap-2 font-display text-[1.1em] font-semibold tracking-[-0.02em]">
-        <Icon name="Calculator" size={17} className="text-brand" />
-        {meta.title}
-      </h2>
+    <div className="rounded-[24px] bg-cream p-6 text-foreground">
+      <div className="flex items-baseline justify-between gap-3">
+        <h2 className="font-display text-[1.1em] font-semibold tracking-[-0.02em]">
+          {meta.title}
+        </h2>
+        <span className="text-[0.75em] uppercase tracking-wide text-foreground/40">
+          пример
+        </span>
+      </div>
 
-      <div className="mt-4 space-y-3">
+      <div className="mt-4 grid grid-cols-2 gap-x-3 gap-y-3">
         {fields.map((f) => (
           <div key={f.key}>
             <label
               htmlFor={`mini-${f.key}`}
-              className="block text-[0.85em] leading-snug text-cream-muted"
+              className="block text-[0.82em] leading-snug text-foreground/55"
             >
               {f.label}
             </label>
@@ -149,9 +175,9 @@ const MiniCalc = ({ meta }: { meta: MiniCalcMeta }) => {
                   const safe = Number.isFinite(raw) ? Math.max(0, raw) : 0;
                   setValues((s) => ({ ...s, [f.key]: safe }));
                 }}
-                className="h-11 w-full rounded-xl border border-cream/20 bg-cream/[0.06] py-2 pl-3.5 pr-11 text-[0.98em] font-medium text-cream outline-none transition-colors focus:border-brand [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                className="h-11 w-full rounded-xl border border-foreground/15 bg-background/0 py-2 pl-3.5 pr-11 text-[0.98em] font-medium text-foreground outline-none transition-colors focus:border-foreground/50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               />
-              <span className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[0.85em] text-cream-muted">
+              <span className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[0.85em] text-foreground/45">
                 {f.suffix}
               </span>
             </div>
@@ -160,18 +186,18 @@ const MiniCalc = ({ meta }: { meta: MiniCalcMeta }) => {
       </div>
 
       <div
-        className={`mt-4 rounded-2xl p-4 ${res.warn ? "bg-brand/12" : "bg-cream/[0.06]"}`}
+        className={`mt-4 rounded-2xl p-4 ${res.warn ? "bg-brand/35" : "bg-pale"}`}
       >
-        <p className="text-[0.8em] uppercase tracking-wide text-cream-muted">{res.label}</p>
-        <p className="mt-1 font-display text-[1.5em] font-semibold leading-none text-brand">
+        <p className="text-[0.78em] uppercase tracking-wide text-foreground/50">{res.label}</p>
+        <p className="mt-1 font-display text-[1.6em] font-semibold leading-none">
           {res.value}
         </p>
-        <p className="mt-2 text-[0.85em] leading-snug text-cream-muted">{res.note}</p>
+        <p className="mt-2 text-[0.85em] leading-snug text-foreground/65">{res.note}</p>
       </div>
 
       <Link
         to={meta.to}
-        className="mt-3.5 inline-flex items-center gap-1.5 text-[0.88em] font-medium text-brand transition-opacity hover:opacity-80"
+        className="mt-3.5 inline-flex items-center gap-1.5 text-[0.88em] font-medium underline underline-offset-4 transition-opacity hover:opacity-70"
       >
         {meta.linkLabel}
         <Icon name="ArrowRight" size={15} />
