@@ -514,6 +514,11 @@ for (const term of GLOSSARY) {
                 },
               ]
             : []),
+          ...(term.faq ?? []).map((f) => ({
+            "@type": "Question",
+            name: clean(f.q),
+            acceptedAnswer: { "@type": "Answer", text: clean(f.a) },
+          })),
         ],
       },
     ],
@@ -531,6 +536,29 @@ for (const term of GLOSSARY) {
         ? `\n<h2>Как считать</h2>\n<p>${esc(clean(term.formula))}</p>`
         : ""
     }${term.example ? `\n<h2>Пример</h2>\n<p>${esc(clean(term.example))}</p>` : ""}${
+      term.mistake
+        ? `\n<h2>Типичная ошибка</h2>\n<p>${esc(clean(term.mistake))}</p>`
+        : ""
+    }${
+      term.sections?.length
+        ? "\n" +
+          term.sections
+            .map(
+              (s) =>
+                `<h2>${esc(clean(s.title))}</h2>\n<p>${esc(clean(s.body))}</p>`,
+            )
+            .join("\n")
+        : ""
+    }${
+      term.faq?.length
+        ? `\n<h2>Частые вопросы</h2>\n` +
+          term.faq
+            .map(
+              (f) => `<h3>${esc(clean(f.q))}</h3>\n<p>${esc(clean(f.a))}</p>`,
+            )
+            .join("\n")
+        : ""
+    }${
       term.links && term.links.length
         ? `\n<h2>Применить на практике</h2>\n<p>${term.links
             .map((l) => `<a href="${l.to}">${esc(clean(l.label))}</a>`)
@@ -1007,3 +1035,35 @@ for (const p of pages) {
 }
 
 console.log(`Пререндер: ${count} страниц`);
+
+// --- Чистка служебных скриптов платформы -----------------------------------
+// Инспектор редактора, телеметрия и роутер предпросмотра нужны только внутри
+// poehali.dev. На своём хостинге это лишние запросы к чужому домену и
+// зависимость от его доступности.
+//
+// Страницы пререндера их и не содержат — теги остаются только в dist/index.html,
+// который Vite собирает из корневого index.html. Сам index.html не трогаем:
+// там эти теги нужны, иначе сломается предпросмотр в редакторе.
+const stripPlatformScripts = () => {
+  const target = path.join(OUT, "index.html");
+  if (!fs.existsSync(target)) return;
+
+  const src = fs.readFileSync(target, "utf-8");
+  const scriptRe =
+    /[ \t]*<script[^>]*src="https:\/\/cdn\.poehali\.dev\/[^"]*"[^>]*>\s*<\/script>\s*\n?/g;
+  const commentRe =
+    /[ \t]*<!--\s*IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS COMMENT!\s*-->\s*\n?/g;
+  const metaRe = /[ \t]*<meta name="pp-name"[^>]*>\s*\n?/g;
+
+  const hits = src.match(scriptRe)?.length ?? 0;
+  if (!hits) return;
+
+  fs.writeFileSync(
+    target,
+    src.replace(scriptRe, "").replace(commentRe, "").replace(metaRe, ""),
+    "utf-8",
+  );
+  console.log(`Служебные скрипты платформы удалены: ${hits} тегов`);
+};
+
+stripPlatformScripts();

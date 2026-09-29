@@ -80,6 +80,11 @@ const GlossaryTermPage = () => {
                     },
                   ]
                 : []),
+              ...(term.faq ?? []).map((f) => ({
+                "@type": "Question",
+                name: f.q,
+                acceptedAnswer: { "@type": "Answer", text: f.a },
+              })),
             ],
           },
         ]
@@ -150,6 +155,27 @@ const GlossaryTermPage = () => {
             </div>
           )}
 
+          {term.mistake && (
+            <div className="mt-6 rounded-2xl border border-cream/15 bg-cream/[0.04] p-5">
+              <h3 className="flex items-center gap-2 text-[0.85em] uppercase tracking-wide text-cream-muted">
+                <Icon name="TriangleAlert" size={15} />
+                типичная ошибка
+              </h3>
+              <p className="mt-2 text-[1em] leading-snug text-cream">{term.mistake}</p>
+            </div>
+          )}
+
+          {term.sections?.map((s) => (
+            <div key={s.title} className="mt-7 border-t border-cream/12 pt-6">
+              <h3 className="font-display text-[1.15em] font-semibold tracking-[-0.02em] text-cream">
+                {s.title}
+              </h3>
+              <p className="mt-3 max-w-[760px] text-[1.02em] leading-relaxed text-cream-muted">
+                {s.body}
+              </p>
+            </div>
+          ))}
+
           {term.links && term.links.length > 0 && (
             <div className="mt-7 border-t border-cream/12 pt-6">
               <h3 className="text-[0.85em] uppercase tracking-wide text-cream-muted">
@@ -171,6 +197,25 @@ const GlossaryTermPage = () => {
           )}
         </div>
       </section>
+
+      {term.faq && term.faq.length > 0 && (
+        <section className="px-5 pb-16 md:px-14 md:pb-24">
+          <h2 className="font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]">
+            частые
+            <span className="pl-3 text-muted-foreground">вопросы</span>
+          </h2>
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            {term.faq.map((f) => (
+              <div key={f.q} className="rounded-[24px] border border-foreground/12 p-6">
+                <h3 className="font-display text-[1.1em] font-semibold leading-tight tracking-[-0.02em]">
+                  {f.q}
+                </h3>
+                <p className="mt-2.5 leading-snug text-muted-foreground">{f.a}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {related.length > 0 && (
         <section className="px-5 pb-16 md:px-14 md:pb-24">
