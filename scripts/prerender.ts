@@ -959,6 +959,40 @@ const crumbs = (route: string, title: string) => {
   return { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: items };
 };
 
+
+// --- Скрипты и стили приложения ---------------------------------------------
+// Vite собирает dist/index.html и кладёт туда теги собранных файлов.
+// Раньше готовые страницы этих тегов не содержали: они догружали оболочку
+// запросом "/?pp-shell=1". На статическом хостинге (reg.ru, Apache) такой
+// запрос возвращает ту же самую страницу — получался пустой экран и
+// бесконечный цикл запросов.
+//
+// Поэтому теги читаем один раз здесь и вставляем в КАЖДУЮ страницу напрямую.
+// Никаких запросов за оболочкой больше не нужно.
+const readAppAssets = () => {
+  const shell = path.join(OUT, "index.html");
+  if (!fs.existsSync(shell)) {
+    console.warn("[prerender] dist/index.html не найден — страницы будут без скриптов.");
+    return { scripts: "", styles: "" };
+  }
+  const html = fs.readFileSync(shell, "utf-8");
+
+  // Служебные скрипты платформы (инспектор редактора) на боевой сайт не нужны.
+  const isPlatform = (tag: string) => tag.includes("cdn.poehali.dev");
+
+  const scripts = (html.match(/<script[^>]*src="[^"]+"[^>]*><\/script>/g) || [])
+    .filter((t) => !isPlatform(t))
+    .join("\n");
+
+  const styles = (
+    html.match(/<link[^>]+rel="(stylesheet|preconnect|preload|modulepreload)"[^>]*>/g) || []
+  ).join("\n");
+
+  return { scripts, styles };
+};
+
+const APP_ASSETS = readAppAssets();
+
 const render = (p: Page) => {
   const url = `${SITE}${p.route}`;
   const canonical = p.canonical ? `${SITE}${p.canonical}` : url;
@@ -1015,6 +1049,7 @@ const render = (p: Page) => {
 <meta name="twitter:image" content="${OG}"/>
 <meta name="theme-color" content="#FFD600"/>
 ${ldTags}
+${APP_ASSETS.styles}
 <style>
   #pp-static{max-width:760px;margin:0 auto;padding:40px 20px;font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1a1a1a}
   #pp-static h1{font-size:2em;line-height:1.15;margin:0 0 .4em}
@@ -1025,6 +1060,8 @@ ${ldTags}
 <body>
 <div id="root"></div>
 
+${APP_ASSETS.scripts}
+
 <div id="pp-static">
 ${headerLinks()}
 ${p.body}
@@ -1032,24 +1069,21 @@ ${footerLinks()}
 </div>
 
 <script>
+// Приложение загрузилось и отрисовало страницу — статический текст убираем.
+// Он нужен только до этого момента: поисковику и на случай, если скрипты
+// не выполнятся.
 (function () {
-  var s = document.getElementById("pp-static");
-  fetch("/?pp-shell=1", { cache: "no-cache" })
-    .then(function (r) { return r.text(); })
-    .then(function (html) {
-      var doc = new DOMParser().parseFromString(html, "text/html");
-      doc.querySelectorAll('link[rel="stylesheet"],link[rel="preconnect"],link[rel="preload"]')
-        .forEach(function (l) { document.head.appendChild(l.cloneNode(true)); });
+  var tries = 0;
+  function hide() {
+    var root = document.getElementById("root");
+    var s = document.getElementById("pp-static");
+    if (root && root.childNodes.length > 0) {
       if (s) s.remove();
-      doc.querySelectorAll("script").forEach(function (old) {
-        if (old.src && old.src.indexOf("inspector-min") !== -1) return;
-        var n = document.createElement("script");
-        if (old.type) n.type = old.type;
-        if (old.src) n.src = old.src; else n.textContent = old.textContent;
-        document.body.appendChild(n);
-      });
-    })
-    .catch(function () {});
+      return;
+    }
+    if (++tries < 100) setTimeout(hide, 100);
+  }
+  hide();
 })();
 </script>
 </body>
