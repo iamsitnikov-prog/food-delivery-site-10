@@ -91,7 +91,7 @@ const SeoLanding = () => {
             <span className="text-foreground">{page.navLabel}</span>
           </nav>
 
-          <h1 className="max-w-[16ch] font-display text-[40px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
+          <h1 className="max-w-[16ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
             {page.h1}
           </h1>
           <p className="mt-6 max-w-[560px] text-[1.1em] leading-snug text-muted-foreground">{page.lead}</p>
@@ -159,7 +159,7 @@ const SeoLanding = () => {
       </div>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <h2 className="font-display text-[34px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[52px]">
+        <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[52px]">
           вопросы
           <span className="pl-3 text-muted-foreground">и ответы</span>
         </h2>

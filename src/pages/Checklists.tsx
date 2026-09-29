@@ -47,7 +47,7 @@ const ChecklistsPage = () => {
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">чек-листы</span>
           </nav>
-          <h1 className="max-w-[17ch] font-display text-[38px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
+          <h1 className="max-w-[17ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
             Чек-листы для доставки
           </h1>
           <p className="mt-6 max-w-[620px] text-[1.08em] leading-snug text-muted-foreground">

@@ -128,7 +128,7 @@ const GlossaryTermPage = () => {
           {term.group}
         </span>
 
-        <h1 className="mt-5 max-w-[20ch] font-display text-[38px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
+        <h1 className="mt-5 max-w-[20ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
           {term.term}
         </h1>
         <p className="mt-6 max-w-[680px] text-[1.15em] leading-snug text-muted-foreground">

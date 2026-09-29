@@ -174,7 +174,7 @@ const ReportsDecoder = () => {
           <span className="text-foreground">разбор отчётов</span>
         </nav>
 
-        <h1 className="max-w-[19ch] font-display text-[36px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
+        <h1 className="max-w-[19ch] font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
           Разбор отчётов агрегаторов
         </h1>
         <p className="mt-6 max-w-[700px] text-[1.08em] leading-snug text-muted-foreground">
@@ -214,7 +214,7 @@ const ReportsDecoder = () => {
       </section>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
+        <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           зачем
           <span className="pl-3 text-muted-foreground">это проверять</span>
         </h2>
@@ -273,7 +273,7 @@ const ReportsDecoder = () => {
       </section>
 
       <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
-        <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
+        <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           частые
           <span className="pl-3 text-muted-foreground">вопросы</span>
         </h2>

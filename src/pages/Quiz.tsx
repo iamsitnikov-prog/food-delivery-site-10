@@ -102,7 +102,7 @@ const QuizPage = () => {
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">{quiz.navLabel}</span>
           </nav>
-          <h1 className="max-w-[20ch] font-display text-[34px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[56px]">
+          <h1 className="max-w-[20ch] font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[56px]">
             {quiz.h1}
           </h1>
           <p className="mt-6 max-w-[620px] text-[1.08em] leading-snug text-muted-foreground">
@@ -193,7 +193,7 @@ const QuizPage = () => {
 
               <div className="mt-6 flex flex-col gap-7 md:flex-row md:items-center md:gap-10">
                 <div className="shrink-0">
-                  <div className="font-display text-[64px] font-semibold leading-none tracking-[-0.04em] text-brand md:text-[88px]">
+                  <div className="font-display text-[36px] font-semibold leading-none tracking-[-0.04em] text-brand md:text-[88px]">
                     {percent}
                     <span className="text-[0.45em]">%</span>
                   </div>

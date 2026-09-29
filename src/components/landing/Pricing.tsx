@@ -45,7 +45,7 @@ const Pricing = () => {
   return (
     <section id="pricing" ref={ref} className="scroll-mt-4 px-5 py-20 md:px-14 md:py-28">
       <div className="reveal mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-        <h2 className="font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
+        <h2 className="font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
           стоимость
           <span className="block pl-[1.2em] text-muted-foreground">услуг</span>
         </h2>

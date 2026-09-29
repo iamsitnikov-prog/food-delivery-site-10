@@ -124,7 +124,7 @@ const Results = () => {
       />
       <div className="relative">
         <div className="reveal mb-14 flex flex-col justify-between gap-6 md:flex-row md:items-end md:pl-[34%]">
-          <h2 className="font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
+          <h2 className="font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
             результаты
             <span className="block pl-[1.2em] text-brand">в&nbsp;цифрах</span>
           </h2>
@@ -135,7 +135,7 @@ const Results = () => {
 
         <div className="reveal flex flex-col items-center gap-3 border-y border-cream/25 py-10 text-center md:py-14">
           <span className="flex items-baseline gap-3 font-display font-semibold leading-[.85] tracking-[-0.045em] text-brand">
-            <CountUp value={HERO_STAT.v} className="text-[72px] md:text-[130px]" />
+            <CountUp value={HERO_STAT.v} className="text-[40px] md:text-[130px]" />
             <span className="text-[26px] md:text-[44px]">{HERO_STAT.unit}</span>
           </span>
           <p className="max-w-[420px] text-[1em] leading-snug text-cream-muted md:text-[1.15em]">{HERO_STAT.l}</p>
@@ -149,7 +149,7 @@ const Results = () => {
             >
               <CountUp
                 value={s.v}
-                className="block font-display text-[44px] font-semibold leading-none tracking-[-0.04em] text-brand transition-transform duration-500 group-hover:-translate-y-1 md:text-[64px]"
+                className="block font-display text-[34px] font-semibold leading-none tracking-[-0.04em] text-brand transition-transform duration-500 group-hover:-translate-y-1 md:text-[64px]"
               />
               <p className="mt-3 max-w-[260px] text-[0.92em] leading-snug text-cream-muted">{s.l}</p>
             </div>

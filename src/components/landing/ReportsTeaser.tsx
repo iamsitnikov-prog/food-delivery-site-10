@@ -37,7 +37,7 @@ const ReportsTeaser = () => {
               <Icon name="Sparkles" size={13} />
               бесплатно и без регистрации
             </span>
-            <h2 className="mt-4 font-display text-[38px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
+            <h2 className="mt-4 font-display text-[30px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
               разбор отчётов
             </h2>
             <p className="mt-4 max-w-[560px] leading-snug text-cream-muted">

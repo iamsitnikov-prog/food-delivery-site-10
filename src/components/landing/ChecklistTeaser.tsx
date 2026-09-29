@@ -11,7 +11,7 @@ const ChecklistTeaser = () => {
       <div className="reveal">
         <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div className="min-w-0">
-            <h2 className="font-display text-[38px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
+            <h2 className="font-display text-[30px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
               чек-листы
             </h2>
             <p className="mt-4 max-w-[540px] leading-snug text-muted-foreground">

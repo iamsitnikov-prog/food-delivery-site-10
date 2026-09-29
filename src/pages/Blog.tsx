@@ -88,7 +88,7 @@ const Blog = () => {
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">блог</span>
           </nav>
-          <h1 className="max-w-[16ch] font-display text-[40px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
+          <h1 className="max-w-[16ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
             Разборы для рестораторов
           </h1>
           <p className="mt-6 max-w-[600px] text-[1.1em] leading-snug text-muted-foreground">

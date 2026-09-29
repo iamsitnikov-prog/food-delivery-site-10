@@ -50,7 +50,7 @@ const CalculatorsPage = () => {
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">калькуляторы</span>
           </nav>
-          <h1 className="max-w-[17ch] font-display text-[38px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
+          <h1 className="max-w-[17ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
             Калькуляторы экономики доставки
           </h1>
           <p className="mt-6 max-w-[620px] text-[1.08em] leading-snug text-muted-foreground">
@@ -68,7 +68,7 @@ const CalculatorsPage = () => {
       </section>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
+        <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           отдельные
           <span className="pl-3 text-muted-foreground">калькуляторы</span>
         </h2>

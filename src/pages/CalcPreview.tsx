@@ -51,7 +51,7 @@ const CalcPreview = () => {
       {!page ? (
         <>
           <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
-            <h1 className="max-w-[17ch] font-display text-[38px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
+            <h1 className="max-w-[17ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
               Калькуляторы экономики доставки
             </h1>
             <p className="mt-6 max-w-[620px] text-[1.08em] leading-snug text-muted-foreground">
@@ -69,7 +69,7 @@ const CalcPreview = () => {
           </section>
 
           <section className="px-5 pb-11 md:px-14 md:pb-24">
-            <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
+            <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
               отдельные
               <span className="pl-3 text-muted-foreground">калькуляторы</span>
             </h2>
@@ -117,7 +117,7 @@ const CalcPreview = () => {
       ) : (
         <>
           <section className="px-5 pb-7 pt-8 md:px-14 md:pb-14 md:pt-16">
-            <h1 className="max-w-[18ch] font-display text-[36px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
+            <h1 className="max-w-[18ch] font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
               {page.h1}
             </h1>
             <p className="mt-6 max-w-[620px] text-[1.08em] leading-snug text-muted-foreground">

@@ -24,7 +24,7 @@ const QuizTeaser = () => {
             бесплатно и без регистрации
           </span>
 
-          <h2 className="mt-5 font-display text-[38px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
+          <h2 className="mt-5 font-display text-[30px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
             проверьте свой проект
             <span className="block text-brand">за 3 минуты</span>
           </h2>

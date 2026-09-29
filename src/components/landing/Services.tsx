@@ -51,9 +51,9 @@ const Services = () => {
   const ref = useReveal<HTMLElement>();
 
   return (
-    <section id="services" ref={ref} className="scroll-mt-4 px-5 py-20 md:px-14 md:py-28">
-      <div className="reveal mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-        <h2 className="font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
+    <section id="services" ref={ref} className="scroll-mt-4 px-5 py-14 md:px-14 md:py-28">
+      <div className="reveal mb-8 flex flex-col md:mb-12 justify-between gap-6 md:flex-row md:items-end">
+        <h2 className="font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
           наши
           <span className="block pl-[1.2em] text-muted-foreground">услуги</span>
         </h2>
@@ -75,11 +75,11 @@ const Services = () => {
             >
               <div className="flex items-start justify-between gap-4">
                 <span
-                  className={`flex h-12 w-12 items-center justify-center rounded-xl transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110 ${
+                  className={`flex h-10 w-10 items-center justify-center rounded-xl md:h-12 md:w-12 transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110 ${
                     light ? "bg-foreground text-brand" : "bg-brand text-foreground"
                   }`}
                 >
-                  <Icon name={item.icon} size={24} />
+                  <Icon name={item.icon} size={20} className="md:size-6" />
                 </span>
                 <span
                   className={`font-display text-[1.1em] font-semibold ${light ? "text-foreground/40" : "text-cream/35"}`}
@@ -88,7 +88,7 @@ const Services = () => {
                 </span>
               </div>
 
-              <h3 className="mt-7 font-display text-[1.5em] font-semibold leading-[1.02] tracking-[-0.025em]">
+              <h3 className="mt-5 font-display text-[1.28em] font-semibold leading-[1.05] tracking-[-0.025em] md:mt-7 md:text-[1.5em]">
                 {item.title}
               </h3>
               <p className={`mt-2 text-[0.92em] ${light ? "text-foreground/70" : "text-brand"}`}>{item.short}</p>
@@ -99,7 +99,7 @@ const Services = () => {
               </p>
 
               <ul
-                className={`mt-7 flex-1 space-y-3 border-t pt-6 text-[0.93em] leading-snug ${
+                className={`mt-5 flex-1 space-y-2.5 border-t pt-4 text-[0.9em] leading-snug md:mt-7 md:space-y-3 md:pt-6 md:text-[0.93em] ${
                   light ? "border-foreground/20" : "border-cream/20"
                 }`}
               >

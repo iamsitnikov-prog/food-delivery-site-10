@@ -112,7 +112,7 @@ const PlayersCompare = () => {
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">сравнение игроков</span>
           </nav>
-          <h1 className="max-w-[18ch] font-display text-[36px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
+          <h1 className="max-w-[18ch] font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
             Сравнение игроков рынка доставки
           </h1>
           <p className="mt-6 max-w-[680px] text-[1.08em] leading-snug text-muted-foreground">
@@ -148,7 +148,7 @@ const PlayersCompare = () => {
       {tab === "agregatory" ? <AggregatorsBlock /> : <BuildersBlock />}
 
       <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
-        <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
+        <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           частые
           <span className="pl-3 text-muted-foreground">вопросы</span>
         </h2>

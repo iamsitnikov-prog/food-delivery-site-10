@@ -17,7 +17,7 @@ const ChecklistCases = ({ slug }: { slug: string }) => {
 
   return (
     <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
-      <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
+      <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
         это работает
         <span className="pl-3 text-muted-foreground">на практике</span>
       </h2>

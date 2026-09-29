@@ -23,7 +23,7 @@ const Contacts = () => {
     <footer id="contacts" className="scroll-mt-4 rounded-t-[40px] bg-surface px-5 pb-8 pt-16 text-cream md:px-14 md:pt-20">
       <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr]">
         <div>
-          <h2 className="font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
+          <h2 className="font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
             на&nbsp;связи
             <span className="block pl-[1.2em] text-brand">каждый день</span>
           </h2>

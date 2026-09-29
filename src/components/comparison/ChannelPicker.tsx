@@ -118,7 +118,7 @@ const ChannelPicker = () => {
 
   return (
     <section className="px-5 pb-11 md:px-14 md:pb-24">
-      <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
+      <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
         что подойдёт
         <span className="pl-3 text-muted-foreground">именно вам</span>
       </h2>

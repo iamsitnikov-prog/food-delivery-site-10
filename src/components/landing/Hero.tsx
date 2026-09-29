@@ -37,18 +37,18 @@ const Hero = () => {
           className="pointer-events-none absolute -right-20 bottom-[-14px] top-auto z-0 w-[300px] animate-float object-contain object-bottom mask-fade-left sm:w-[400px] md:-right-16 md:w-[440px] lg:-right-10 lg:h-[620px] lg:w-[620px]"
         />
         <div className="relative z-10 px-5 pb-10 pt-9 md:px-14 md:pt-11 lg:h-full lg:pb-28">
-          <h1 className="max-w-[860px] animate-rise font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] sm:text-[64px] lg:text-[88px] text-left">
+          <h1 className="max-w-[860px] animate-rise font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] sm:text-[64px] lg:text-[88px] text-left">
             Продвижение ресторана{" "}
             <span className="block px-0">в Яндекс Еде</span>
           </h1>
-          <div className="mt-[34px] flex animate-rise-delay flex-col items-start gap-6 lg:flex-row lg:items-end lg:gap-10">
-            <p className="max-w-[430px] leading-[1.2] md:text-[1.3em] text-xl text-left">
+          <div className="mt-6 flex animate-rise-delay md:mt-[34px] flex-col items-start gap-6 lg:flex-row lg:items-end lg:gap-10">
+            <p className="max-w-[430px] leading-[1.25] text-[1.02em] md:text-[1.3em] text-left">
               Заказы и&nbsp;выручка на&nbsp;Яндекс Еде уже&nbsp;с&nbsp;первой недели. Настраиваем вендор, акции, продвижение и&nbsp;лояльность, обучаем персонал.
             </p>
             <div className="flex flex-col items-start gap-2.5 lg:mx-auto lg:items-center lg:text-center">
               <a
                 href="#lead"
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary px-[30px] py-[18px] text-[1.06em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary px-[26px] py-[15px] text-[1em] md:px-[30px] md:py-[18px] md:text-[1.06em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
               >
                 начать сотрудничать
               </a>
@@ -61,7 +61,7 @@ const Hero = () => {
           className="relative z-10 mt-6 flex flex-wrap gap-2 px-5 pb-6 md:px-14 lg:absolute lg:bottom-[22px] lg:left-14 lg:mt-0 lg:px-0 lg:pb-0 lg:pr-5"
         >
           {TAGS.map((t) => (
-            <li key={t} className="rounded-full bg-pale px-3.5 py-[7px] text-[0.82em] text-foreground">
+            <li key={t} className="rounded-full bg-pale px-3 py-[5px] text-[0.75em] md:px-3.5 md:py-[7px] md:text-[0.82em] text-foreground">
               {t}
             </li>
           ))}

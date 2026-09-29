@@ -132,7 +132,7 @@ const BlogPost = () => {
             </span>
           </div>
 
-          <h1 className="mt-6 max-w-[20ch] font-display text-[38px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[60px]">
+          <h1 className="mt-6 max-w-[20ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[60px]">
             {post.h1}
           </h1>
           <p className="mt-6 max-w-[760px] text-[1.15em] leading-snug text-muted-foreground">{post.lead}</p>
@@ -219,7 +219,7 @@ const BlogPost = () => {
       </div>
 
       <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
-        <h2 className="font-display text-[32px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
+        <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
           частые
           <span className="pl-3 text-muted-foreground">вопросы</span>
         </h2>

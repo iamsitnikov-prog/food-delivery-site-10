@@ -19,7 +19,7 @@ const FreeAudit = () => {
               <Icon name="Gift" size={16} />
               бесплатно
             </span>
-            <h2 className="mt-6 font-display text-[36px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[56px]">
+            <h2 className="mt-6 font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[56px]">
               бесплатный анализ
               <span className="block text-brand">вашей точки</span>
             </h2>

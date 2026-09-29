@@ -42,7 +42,7 @@ const Reviews = () => {
       className="scroll-mt-4 rounded-[40px] bg-surface px-5 py-20 text-cream md:mx-3 md:px-14 md:py-28"
     >
       <div className="reveal mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
-        <h2 className="font-display text-[44px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
+        <h2 className="font-display text-[34px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
           отзывы
           <span className="block pl-[1.2em] text-brand">говорят за&nbsp;нас</span>
         </h2>

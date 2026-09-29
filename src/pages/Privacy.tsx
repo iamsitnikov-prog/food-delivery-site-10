@@ -82,7 +82,7 @@ const Privacy = () => {
           на главную
         </Link>
 
-        <h1 className="mt-10 max-w-[900px] font-display text-[40px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[64px]">
+        <h1 className="mt-10 max-w-[900px] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[64px]">
           политика обработки
           <span className="block text-muted-foreground">персональных данных</span>
         </h1>

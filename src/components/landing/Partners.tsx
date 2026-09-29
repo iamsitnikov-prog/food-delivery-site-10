@@ -9,7 +9,7 @@ const Partners = () => {
   return (
     <section id="partners" ref={ref} className="hidden scroll-mt-4 px-5 pb-20 md:block md:px-14 md:pb-28">
       <div className="reveal mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-        <h2 className="font-display text-[38px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[60px]">
+        <h2 className="font-display text-[30px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[60px]">
           с кем работаем
         </h2>
         <p className="max-w-[420px] text-[1.02em] leading-snug text-muted-foreground">

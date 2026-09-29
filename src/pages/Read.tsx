@@ -48,7 +48,7 @@ const ReadPage = () => {
             <Icon name="ChevronRight" size={14} />
             <span className="text-foreground">почитать</span>
           </nav>
-          <h1 className="max-w-[16ch] font-display text-[38px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
+          <h1 className="max-w-[16ch] font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
             Почитать о доставке
           </h1>
           <p className="mt-6 max-w-[640px] text-[1.08em] leading-snug text-muted-foreground">
