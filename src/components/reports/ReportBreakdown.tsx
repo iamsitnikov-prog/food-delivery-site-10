@@ -37,7 +37,7 @@ const ReportBreakdown = ({
   overpay: number | null;
 }) => (
   <>
-    <div className="mt-8 grid gap-4 md:grid-cols-3">
+    <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       <div className="rounded-2xl bg-cream/[0.06] p-5">
         <span className="text-[0.85em] text-cream-muted">Валовый оборот</span>
         <p className="mt-1.5 font-display text-[1.7em] font-semibold leading-none">

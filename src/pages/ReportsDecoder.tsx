@@ -240,7 +240,7 @@ const ReportsDecoder = () => {
           <h2 className="mt-5 max-w-[20ch] font-display text-[28px] font-semibold leading-[1.05] tracking-[-0.02em] md:text-[40px]">
             Ваши файлы остаются у вас
           </h2>
-          <div className="mt-7 grid gap-7 md:grid-cols-3">
+          <div className="mt-7 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
             <div>
               <h3 className="font-display text-[1.15em] font-semibold text-brand">
                 Ничего не загружается

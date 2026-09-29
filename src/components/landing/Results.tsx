@@ -156,7 +156,7 @@ const Results = () => {
           ))}
         </div>
 
-        <div className="mt-16 grid gap-4 md:grid-cols-3">
+        <div className="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {visible.map((c, i) => {
             const light = i % 2 === 1;
             return (

@@ -26,7 +26,7 @@ const ChecklistCases = ({ slug }: { slug: string }) => {
         работы.
       </p>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-3">
+      <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {cases.map(({ citySlug, data, city }) => (
           <Link
             key={citySlug}

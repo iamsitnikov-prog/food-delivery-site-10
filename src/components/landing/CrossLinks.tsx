@@ -89,7 +89,7 @@ const CrossLinks = ({
         {subtitle && <span className="pl-3 text-muted-foreground">{subtitle}</span>}
       </h2>
       <div
-        className={`mt-8 grid gap-4 ${cards.length > 2 ? "md:grid-cols-3" : "md:grid-cols-2"}`}
+        className={`mt-8 grid gap-4 ${cards.length > 2 ? "md:grid-cols-2 lg:grid-cols-3" : "md:grid-cols-2"}`}
       >
         {cards.map((c) => (
           <Link

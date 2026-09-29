@@ -17,7 +17,7 @@ const ResourceLinks = ({ slug, kind }: Props) => {
         Бесплатные материалы, которые помогут разобраться самостоятельно.
       </p>
 
-      <div className="mt-6 grid gap-4 md:grid-cols-3">
+      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {items.map((r) => (
           <Link
             key={r.to}

@@ -139,7 +139,7 @@ const CalculatorPage = () => {
         <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
           другие калькуляторы
         </h2>
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
+        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {others.map((o) => (
             <Link
               key={o.slug}
