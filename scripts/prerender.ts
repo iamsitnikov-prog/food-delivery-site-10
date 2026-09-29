@@ -973,7 +973,7 @@ const readAppAssets = () => {
   const shell = path.join(OUT, "index.html");
   if (!fs.existsSync(shell)) {
     console.warn("[prerender] dist/index.html не найден — страницы будут без скриптов.");
-    return { scripts: "", styles: "" };
+    return { scripts: "", styles: "", metrika: "", fallback: "" };
   }
   const html = fs.readFileSync(shell, "utf-8");
 
@@ -988,7 +988,28 @@ const readAppAssets = () => {
     html.match(/<link[^>]+rel="(stylesheet|preconnect|preload|modulepreload)"[^>]*>/g) || []
   ).join("\n");
 
-  return { scripts, styles };
+  // Счётчик Метрики — встроенный скрипт, а не файл, поэтому под выборку
+  // по src он не попадал: на готовых страницах не было ни счётчика, ни
+  // window.ym, и цели (lead_submit и остальные) не срабатывали.
+  // Берём блок целиком, вместе с noscript-картинкой.
+  const metrikaMatch = html.match(
+    /<!--\s*Yandex\.Metrika counter\s*-->[\s\S]*?<!--\s*\/Yandex\.Metrika counter\s*-->/,
+  );
+  const metrika = metrikaMatch ? metrikaMatch[0] : "";
+  if (!metrika) console.warn("[prerender] Блок Яндекс.Метрики не найден в dist/index.html");
+
+  // Запасной экран: показывается, если скрипты не загрузились (нестабильная
+  // связь, VPN). Тоже встроенный скрипт — берём блок вместе с ним.
+  const fbStart = html.indexOf('<div id="pp-fallback"');
+  let fallback = "";
+  if (fbStart !== -1) {
+    // Сразу за блоком идёт его собственный скрипт — забираем до его конца.
+    const after = html.indexOf("</script>", html.indexOf("<script>", fbStart));
+    if (after !== -1) fallback = html.slice(fbStart, after + "</script>".length);
+  }
+  if (!fallback) console.warn("[prerender] Блок pp-fallback не найден в dist/index.html");
+
+  return { scripts, styles, metrika, fallback };
 };
 
 const APP_ASSETS = readAppAssets();
@@ -1060,6 +1081,8 @@ ${APP_ASSETS.styles}
 <body>
 <div id="root"></div>
 
+${APP_ASSETS.fallback}
+
 ${APP_ASSETS.scripts}
 
 <div id="pp-static">
@@ -1086,6 +1109,8 @@ ${footerLinks()}
   hide();
 })();
 </script>
+
+${APP_ASSETS.metrika}
 </body>
 </html>
 `;
@@ -1096,10 +1121,11 @@ ${footerLinks()}
 // контейнером, и поисковик на самой важной странице не видел ни текста, ни ссылок.
 pages.push({
   route: "/",
-  title:
-    "Продвижение ресторана в Яндекс Еде и Деливери — подключение, настройка, поддержка | agregatory.pro",
+  // Длина под выдачу: заголовок до 65 символов, описание до 160 —
+  // иначе поисковик обрезает хвост многоточием.
+  title: "Продвижение ресторана в Яндекс Еде и Деливери | agregatory.pro",
   description:
-    "Подключаем и ведём рестораны на Яндекс Еде и Деливери: регистрация, настройка вендора, контент, акции и продвижение, работа с рейтингом, обучение персонала и поддержка 24/7. Первый заказ максимум через 7 дней.",
+    "Подключаем и ведём рестораны на Яндекс Еде и Деливери: настройка вендора, контент, акции, рейтинг и поддержка 24/7. Первый заказ — максимум через 7 дней.",
   jsonLd: [
     {
       "@context": "https://schema.org",

@@ -112,7 +112,9 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
             {b.items.map((item) => (
               <li key={item} className="flex gap-3 leading-relaxed text-foreground/85">
                 <Icon name="Check" size={19} className="mt-1 shrink-0" />
-                {linkify(item, slug, used)}
+                {/* min-w-0: без него длинная ссылка внутри flex не переносится
+                    и уезжает за правый край на телефоне. */}
+                <span className="min-w-0 break-words">{linkify(item, slug, used)}</span>
               </li>
             ))}
           </ul>
@@ -126,7 +128,7 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
                 <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-surface text-[max(12px,0.85em)] font-semibold text-brand">
                   {n + 1}
                 </span>
-                <span className="pt-0.5">{linkify(item, slug, used)}</span>
+                <span className="min-w-0 break-words pt-0.5">{linkify(item, slug, used)}</span>
               </li>
             ))}
           </ol>

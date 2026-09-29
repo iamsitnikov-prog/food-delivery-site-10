@@ -38,7 +38,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
           aria-label="Содержание статьи"
           className="rounded-[24px] bg-pale p-4 md:p-6 text-foreground"
         >
-          <h2 className="text-[max(12px,0.78em)] font-medium uppercase tracking-wide text-foreground/50">
+          <h2 className="text-[max(12px,0.78em)] font-medium uppercase tracking-wide text-foreground/70">
             содержание
           </h2>
           <ul className="mt-3.5 space-y-1">
@@ -51,7 +51,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
                     aria-current={on ? "true" : undefined}
                     className={`flex gap-2.5 rounded-lg py-1.5 text-[0.92em] leading-snug transition-colors ${
                       i.level === 3 ? "pl-3.5" : ""
-                    } ${on ? "font-medium text-foreground" : "text-foreground/60 hover:text-foreground"}`}
+                    } ${on ? "font-medium text-foreground" : "text-foreground/75 hover:text-foreground"}`}
                   >
                     <span
                       aria-hidden
@@ -82,7 +82,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
                   ? "Пройти тест по документам"
                   : "проверить себя"}
               </span>
-              <span className="mt-1 block text-[max(12px,0.88em)] leading-snug text-foreground/60">
+              <span className="mt-1 block text-[max(12px,0.88em)] leading-snug text-foreground/75">
                 короткий тест по теме
               </span>
             </span>
@@ -121,7 +121,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
           aria-label="Связанные термины"
           className="rounded-[24px] bg-pale p-4 md:p-6 text-foreground"
         >
-          <h2 className="text-[max(12px,0.78em)] font-medium uppercase tracking-wide text-foreground/50">
+          <h2 className="text-[max(12px,0.78em)] font-medium uppercase tracking-wide text-foreground/70">
             связанные термины
           </h2>
           <div className="mt-3.5 flex flex-wrap gap-2">
@@ -163,7 +163,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
             <div className="min-w-0">
               <p className="font-medium leading-tight">{expert.name}</p>
               {person && (
-                <p className="mt-0.5 text-[max(12px,0.82em)] leading-snug text-foreground/55">
+                <p className="mt-0.5 text-[max(12px,0.82em)] leading-snug text-foreground/70">
                   {person.exp}
                 </p>
               )}
@@ -176,7 +176,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
       )}
 
       <div className="rounded-[24px] bg-cream p-4 md:p-6 text-foreground">
-        <h2 className="text-[max(12px,0.78em)] font-medium uppercase tracking-wide text-foreground/50">
+        <h2 className="text-[max(12px,0.78em)] font-medium uppercase tracking-wide text-foreground/70">
           что дальше
         </h2>
         <ul className="mt-3.5 space-y-2.5 text-[0.92em]">
