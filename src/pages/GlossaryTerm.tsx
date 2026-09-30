@@ -10,6 +10,7 @@ import {
   TERM_INDEX,
   getBrief,
   loadTerm,
+  getCachedTerm,
   type GlossaryTerm,
 } from "@/data/term-index";
 import { termDescription, termTitle } from "@/lib/term-seo";
@@ -27,9 +28,15 @@ const GlossaryTermPage = () => {
 
   // Полный текст термина — отдельным файлом: страница больше не тянет
   // за собой все 146 терминов глоссария.
-  const [term, setTerm] = useState<GlossaryTerm | null>(null);
+  // Если термин уже загружен (страница отрисована заранее), он есть сразу.
+  const [term, setTerm] = useState<GlossaryTerm | null>(() => getCachedTerm(slug));
   useEffect(() => {
     let alive = true;
+    const cached = getCachedTerm(slug);
+    if (cached) {
+      setTerm(cached);
+      return;
+    }
     setTerm(null);
     if (slug) {
       loadTerm(slug).then((t) => {

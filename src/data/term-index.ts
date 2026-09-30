@@ -79,9 +79,18 @@ export const getSameGroup = (
  * Карточки для страницы /slovar: описание, формула, пример.
  * Отдельным файлом — на других страницах этот вес не нужен.
  */
+// Уже загруженные данные. Нужны, чтобы страница, отрисованная заранее на
+// сервере, сразу (без «загрузки») совпала с тем, что рисует браузер.
+let cardsCache: TermCard[] | null = null;
+const termCache = new Map<string, GlossaryTerm>();
+export const getCachedTermCards = () => cardsCache;
+export const getCachedTerm = (slug?: string) => (slug ? termCache.get(slug) ?? null : null);
+
 export const loadTermCards = async (): Promise<TermCard[]> => {
+  if (cardsCache) return cardsCache;
   const mod = await import("./generated/term-cards.json");
-  return (mod.default ?? mod) as TermCard[];
+  cardsCache = (mod.default ?? mod) as TermCard[];
+  return cardsCache;
 };
 
 /**
@@ -90,9 +99,13 @@ export const loadTermCards = async (): Promise<TermCard[]> => {
  */
 export const loadTerm = async (slug: string): Promise<GlossaryTerm | null> => {
   if (!getBrief(slug)) return null;
+  const cached = termCache.get(slug);
+  if (cached) return cached;
   try {
     const mod = await import(`./generated/terms/${slug}.json`);
-    return (mod.default ?? mod) as GlossaryTerm;
+    const term = (mod.default ?? mod) as GlossaryTerm;
+    termCache.set(slug, term);
+    return term;
   } catch {
     return null;
   }

@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
@@ -16,6 +15,7 @@ import useSeo from "@/hooks/use-seo";
 import PageNotFound from "@/pages/PageNotFound";
 import { CITY_PAGES, SERVICE_PAGES, findPage } from "@/data/seo-pages";
 import { PEOPLE } from "@/data/team";
+import FaqSection from "@/components/shared/FaqSection";
 
 const SeoLanding = () => {
   const { slug } = useParams();
@@ -167,10 +167,16 @@ const SeoLanding = () => {
       ) : null}
 
       <section className="rounded-[28px] md:rounded-[40px] bg-surface px-5 py-10 text-cream md:mx-3 md:px-14 md:py-24">
-        <div className={svc ? "space-y-9 md:space-y-14" : "grid gap-6 md:gap-10 lg:grid-cols-[1fr_340px]"}>
-          <div className={svc ? "grid gap-9 md:gap-12 lg:grid-cols-2 lg:gap-x-16" : "space-y-9 md:space-y-12"}>
+        <div className="space-y-9 md:space-y-14">
+          <div
+            className={
+              svc
+                ? "grid gap-9 md:gap-12 lg:grid-cols-2 lg:gap-x-16"
+                : "space-y-9 md:space-y-12 lg:columns-2 lg:gap-16 lg:space-y-0"
+            }
+          >
             {page.blocks.map((b) => (
-              <article key={b.h}>
+              <article key={b.h} className={svc ? undefined : "break-inside-avoid lg:mb-12"}>
                 <h2 className="font-display text-[1.4em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.2em]">
                   {b.h}
                 </h2>
@@ -187,28 +193,28 @@ const SeoLanding = () => {
                 <p className="mt-3 max-w-[560px] text-[0.95em] leading-snug text-foreground/80">{page.result.text}</p>
               </article>
             )}
-
-            {cityCase && (
-              <article id="case" className="scroll-mt-8">
-                <h2 className="font-display text-[1.7em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.2em]">
-                  Наш кейс в {cityCase.cityIn}
-                </h2>
-                <div className="mt-5">
-                  <CityCaseBlock data={cityCase} city={page.navLabel} inline />
-                </div>
-              </article>
-            )}
           </div>
+
+          {cityCase && (
+            <article id="case" className="scroll-mt-8">
+              <h2 className="font-display text-[1.7em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.2em]">
+                Наш кейс в {cityCase.cityIn}
+              </h2>
+              <div className="mt-5">
+                <CityCaseBlock data={cityCase} city={page.navLabel} inline />
+              </div>
+            </article>
+          )}
 
           <aside
             className={`h-fit rounded-[28px] border border-cream/20 p-4 md:p-7 ${
-              svc ? "lg:grid lg:grid-cols-[180px_1fr_230px] lg:items-center lg:gap-10" : "lg:sticky lg:top-24 lg:self-start"
+              "lg:grid lg:grid-cols-[180px_1fr_230px] lg:items-center lg:gap-10"
             }`}
           >
             <h2 className="font-display text-[1.35em] font-semibold text-brand">что входит</h2>
             <ul
               className={`mt-5 space-y-3 text-[0.95em] leading-snug text-cream-muted ${
-                svc ? "lg:mt-0 lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-3 lg:space-y-0" : ""
+                "lg:mt-0 lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-3 lg:space-y-0"
               }`}
             >
               {page.bullets.map((b) => (
@@ -221,7 +227,7 @@ const SeoLanding = () => {
             <a
               href="#lead"
               className={`mt-7 inline-flex w-full items-center justify-center rounded-xl bg-brand px-6 py-4 font-medium text-foreground ${
-                svc ? "lg:mt-0" : ""
+                "lg:mt-0"
               }`}
             >
               обсудить задачу
@@ -290,22 +296,7 @@ const SeoLanding = () => {
         <ExpertiseStrip />
       </div>
 
-      <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[52px]">
-          вопросы
-          <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">и ответы</span>
-        </h2>
-        <Accordion type="single" collapsible defaultValue="q-0" className="mt-8 max-w-[840px] border-t border-primary/25">
-          {page.faq.map((f, i) => (
-            <AccordionItem key={f.q} value={`q-${i}`} className="border-b border-primary/25">
-              <AccordionTrigger className="py-6 text-left font-display text-[1.2em] font-semibold hover:no-underline md:text-[1.4em]">
-                {f.q}
-              </AccordionTrigger>
-              <AccordionContent className="pb-6 leading-relaxed text-muted-foreground">{f.a}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </section>
+      <FaqSection items={page.faq} title={["вопросы", "и ответы"]} />
 
       <ResourceLinks slug={page.slug} kind={page.kind} />
 
@@ -336,7 +327,7 @@ const SeoLanding = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <ChannelsBlock source={`seo:${page.slug}`} />
       </section>
 

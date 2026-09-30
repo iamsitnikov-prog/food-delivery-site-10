@@ -15,6 +15,7 @@ import {
   LATIN_LETTERS,
   TERM_INDEX,
   loadTermCards,
+  getCachedTermCards,
   type GlossaryGroup,
   type TermCard as TermCardData,
 } from "@/data/term-index";
@@ -87,7 +88,7 @@ const GlossaryPage = () => {
 
   // Карточки с описанием и формулами — отдельным файлом: на других страницах
   // этот вес не нужен, а здесь приезжает сразу после открытия.
-  const [cards, setCards] = useState<TermCardData[] | null>(null);
+  const [cards, setCards] = useState<TermCardData[] | null>(() => getCachedTermCards());
   useEffect(() => {
     let alive = true;
     loadTermCards().then((c) => {

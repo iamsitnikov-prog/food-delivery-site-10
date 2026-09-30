@@ -97,7 +97,7 @@ const CalcPreview = () => {
                     {p.navLabel}
                   </h3>
                   <p
-                    className={`mt-3 leading-relaxed ${p.accent ? "text-white/80" : "text-cream-muted"}`}
+                    className={`mt-3 leading-relaxed ${p.accent ? "text-white/90" : "text-cream-muted"}`}
                   >
                     {p.lead}
                   </p>

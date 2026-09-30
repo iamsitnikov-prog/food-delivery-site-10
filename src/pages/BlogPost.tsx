@@ -18,7 +18,7 @@ import { isPreviewMode, isScheduled, visiblePosts, formatDate, exitPreview } fro
 import {
   POST_INDEX,
   findPostBrief,
-  loadPost,
+  loadPost, getCachedPost,
   type BlogPost as FullPost,
 } from "@/data/post-index";
 import { PEOPLE } from "@/data/team";
@@ -30,9 +30,14 @@ const BlogPost = () => {
 
   // Текст статьи — отдельным файлом: страница больше не тянет за собой
   // все 54 статьи блога.
-  const [post, setPost] = useState<FullPost | null>(null);
+  const [post, setPost] = useState<FullPost | null>(() => getCachedPost(slug));
   useEffect(() => {
     let alive = true;
+    const cached = getCachedPost(slug);
+    if (cached) {
+      setPost(cached);
+      return;
+    }
     setPost(null);
     if (slug) {
       loadPost(slug).then((p) => {
@@ -107,20 +112,37 @@ const BlogPost = () => {
 
   if (!brief) return <PageNotFound />;
 
-  // Пока текст едет, показываем заголовок и вступление из списка —
-  // читатель сразу видит, что открыл нужную статью.
+  // Пока текст едет, показываем шапку статьи из списка — в той же разметке
+  // и на тех же местах, что и у готовой статьи. Иначе при подгрузке текста
+  // заголовок прыгает, а браузер засчитывает сдвиг вёрстки (CLS).
   if (!post) {
     return (
       <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
-        <Header />
-        <section className="px-5 pb-16 pt-8 md:px-14 md:pt-16">
-          <h1 className="max-w-[24ch] font-display text-[26px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[58px]">
-            {brief.h1}
-          </h1>
-          <p className="mt-5 max-w-[680px] text-[1.08em] leading-snug text-muted-foreground">
-            {brief.lead}
-          </p>
-        </section>
+        <div id="top">
+          <Header />
+          {null}
+          <article className="mx-auto max-w-[1240px] px-5 pb-16 pt-12 md:px-14 md:pb-24 md:pt-16">
+            <nav aria-label="Хлебные крошки" className="mb-6 md:mb-8 flex items-center gap-2 text-[max(12px,0.85em)] text-muted-foreground">
+              <Link to="/" className="hover:text-foreground">
+                главная
+              </Link>
+              <Icon name="ChevronRight" size={14} />
+              <Link to="/blog" className="hover:text-foreground">
+                блог
+              </Link>
+            </nav>
+            <div className="flex flex-wrap items-center gap-3 md:gap-4 text-[max(12px,0.85em)] text-muted-foreground">
+              <span className="rounded-lg bg-pale px-3 py-1.5 font-medium text-foreground">{brief.tag}</span>
+              <span className="flex items-center gap-1.5">
+                <Icon name="Clock" size={15} /> {brief.readTime}
+              </span>
+            </div>
+            <h1 className="mt-6 max-w-[20ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[60px]">
+              {brief.h1}
+            </h1>
+            <p className="mt-6 max-w-[760px] text-[1.15em] leading-snug text-muted-foreground">{brief.lead}</p>
+          </article>
+        </div>
       </main>
     );
   }

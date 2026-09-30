@@ -18,6 +18,9 @@ const prerenderPlugin = {
     name: 'prerender-static-pages',
     apply: 'build' as const,
     async closeBundle() {
+        // Внутренняя серверная сборка (ниже) — пререндер в ней не запускаем.
+        if (process.env.PP_SSR_BUILD) return;
+
         const outDir = path.resolve(__dirname, 'dist');
         if (!fs.existsSync(outDir)) {
             console.warn('[prerender] dist не найден — пропускаю.');
@@ -31,6 +34,35 @@ const prerenderPlugin = {
         }
 
         const tmp = path.resolve(__dirname, 'node_modules/.prerender-build.mjs');
+
+        // Серверная сборка страниц: тот же React-код, но для Node. Пререндер
+        // отрисовывает им каждую страницу в готовую разметку. Если сборка
+        // не удалась, пререндер работает по-старому (текст для поисковиков,
+        // сайт рисуется в браузере) — выкладка не ломается.
+        const ssrOut = path.resolve(__dirname, 'node_modules/.ssr-build');
+        let ssrEntry = '';
+        try {
+            process.env.PP_SSR_BUILD = '1';
+            const vite = await import('vite');
+            await vite.build({
+                configFile: path.resolve(__dirname, 'vite.config.ts'),
+                mode: 'production',
+                logLevel: 'warn',
+                build: {
+                    ssr: path.resolve(__dirname, 'src/entry-server.tsx'),
+                    outDir: ssrOut,
+                    emptyOutDir: true,
+                    copyPublicDir: false,
+                    rollupOptions: {output: {entryFileNames: 'entry-server.mjs', format: 'esm'}},
+                },
+            });
+            const built = path.join(ssrOut, 'entry-server.mjs');
+            if (fs.existsSync(built)) ssrEntry = built;
+        } catch (e) {
+            console.warn('[prerender] Серверная сборка не удалась, страницы будут без готовой разметки:', (e as Error).message);
+        } finally {
+            delete process.env.PP_SSR_BUILD;
+        }
 
         try {
             const esbuild = await import('esbuild');
@@ -49,7 +81,7 @@ const prerenderPlugin = {
             const res = spawnSync(process.execPath, [tmp], {
                 stdio: 'inherit',
                 cwd: __dirname,
-                env: {...process.env, PRERENDER_OUT_DIR: outDir},
+                env: {...process.env, PRERENDER_OUT_DIR: outDir, PRERENDER_SSR_ENTRY: ssrEntry},
             });
 
             if (res.status !== 0) {
@@ -60,6 +92,7 @@ const prerenderPlugin = {
             console.warn('[prerender] Сайт выложится как SPA, без готового HTML для поисковиков.');
         } finally {
             if (fs.existsSync(tmp)) fs.rmSync(tmp, {force: true});
+            if (fs.existsSync(ssrOut)) fs.rmSync(ssrOut, {recursive: true, force: true});
         }
     },
 };
@@ -104,7 +137,8 @@ export default defineConfig(({mode}) => ({
         // файлом на 605 КБ, и текст ждёт загрузки всего сразу.
         rollupOptions: {
             output: {
-                manualChunks(id: string) {
+                // В серверной сборке (пререндер страниц) деление на чанки не нужно.
+                manualChunks: process.env.PP_SSR_BUILD ? undefined : (id: string) => {
                     if (!id.includes("node_modules")) return;
                     // xlsx, pdf и подобное нужны только на странице разбора
                     // отчётов. Оставляем их отдельными файлами, которые

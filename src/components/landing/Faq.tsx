@@ -15,7 +15,7 @@ const Faq = () => {
             <span className="block pl-[1.2em] text-muted-foreground">и&nbsp;ответы</span>
           </h2>
           <p className="mt-6 max-w-[320px] leading-snug">
-            Не нашли свой вопрос? Задайте его на&nbsp;консультации — это бесплатно.
+            Не нашли свой вопрос? Задайте его, когда оставите заявку на&nbsp;бесплатный анализ.
           </p>
         </div>
         <Accordion type="single" collapsible defaultValue="item-0" className="reveal border-t border-primary/25">

@@ -1,11 +1,5 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
@@ -16,6 +10,7 @@ import ReportUploader from "@/components/reports/ReportUploader";
 import ReportAnatomy from "@/components/reports/ReportAnatomy";
 import ReconcileCalc from "@/components/reports/ReconcileCalc";
 import useSeo from "@/hooks/use-seo";
+import FaqSection from "@/components/shared/FaqSection";
 
 const SITE = "https://agregatory.pro";
 
@@ -272,29 +267,7 @@ const ReportsDecoder = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
-        <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
-          частые
-          <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">вопросы</span>
-        </h2>
-        <Accordion
-          type="single"
-          collapsible
-          defaultValue="q-0"
-          className="mt-8 border-t border-primary/25"
-        >
-          {FAQ.map((f, i) => (
-            <AccordionItem key={f.q} value={`q-${i}`} className="border-b border-primary/25">
-              <AccordionTrigger className="py-6 text-left font-display text-[1.15em] font-semibold hover:no-underline md:text-[1.35em]">
-                {f.q}
-              </AccordionTrigger>
-              <AccordionContent className="pb-6 leading-relaxed text-muted-foreground">
-                {f.a}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </section>
+      <FaqSection items={FAQ} />
 
       <TermsStrip slugs={["otchet-agenta", "uderzhaniya", "vyruchka-k-vyplate", "komissiya", "pretenziya", "gmv"]} />
 

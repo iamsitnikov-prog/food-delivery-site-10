@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { pathToFileURL } from "url";
 import { BLOG_POSTS as ALL_POSTS } from "../src/data/blog-posts";
 
 import { SERVICE_PAGES, CITY_PAGES } from "../src/data/seo-pages";
@@ -1019,7 +1020,77 @@ const readAppAssets = () => {
 
 const APP_ASSETS = readAppAssets();
 
-const render = (p: Page) => {
+// Предзагрузка кода страницы. Каждая страница сайта — отдельный файл-чанк,
+// который браузер раньше узнавал только после загрузки основного скрипта.
+// Это лишний круг запросов перед отрисовкой: на мобильном LCP был 3–4 с.
+// Подсказываем браузеру чанк страницы, его зависимости и файл с текстом
+// статьи или термина сразу в <head>, чтобы всё грузилось параллельно.
+const ROUTE_CHUNKS: [RegExp, string][] = [
+  [/^\/privacy$/, "Privacy"],
+  [/^\/(uslugi|goroda)$/, "SeoIndex"],
+  [/^\/(uslugi|goroda)\/.+/, "SeoLanding"],
+  [/^\/blog$/, "Blog"],
+  [/^\/blog\/.+/, "BlogPost"],
+  [/^\/partnery$/, "Partners"],
+  [/^\/testy$/, "Quizzes"],
+  [/^\/(test|testy\/.+)$/, "Quiz"],
+  [/^\/kalkulyatory$/, "Calculators"],
+  [/^\/kalkulyatory\/.+/, "CalculatorPage"],
+  [/^\/chek-listy$/, "Checklists"],
+  [/^\/chek-listy\/.+/, "ChecklistPage"],
+  [/^\/pochitat$/, "Read"],
+  [/^\/slovar$/, "Glossary"],
+  [/^\/slovar\/.+/, "GlossaryTerm"],
+  [/^\/sravnenie-agregatorov$/, "PlayersCompare"],
+  [/^\/razbor-otchetov$/, "ReportsDecoder"],
+];
+
+const makePreloader = () => {
+  const dir = path.join(OUT, "assets");
+  if (!fs.existsSync(dir)) return () => "";
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith(".js"));
+  const code = new Map(files.map((f) => [f, fs.readFileSync(path.join(dir, f), "utf-8")]));
+  // Уже подключены в шаблоне — повторять не нужно.
+  const shellPreloads = new Set(
+    [...APP_ASSETS.styles.matchAll(/href="\/assets\/([^"]+\.js)"/g), ...APP_ASSETS.scripts.matchAll(/src="\/assets\/([^"]+\.js)"/g)].map((m) => m[1]),
+  );
+  const staticDeps = (file: string, acc = new Set<string>()) => {
+    if (acc.has(file) || !code.has(file)) return acc;
+    acc.add(file);
+    for (const m of code.get(file)!.matchAll(/(?:from|import)\s*"\.\/([^"]+\.js)"/g)) staticDeps(m[1], acc);
+    return acc;
+  };
+  // Файлы с текстом статей и терминов: "./generated/posts/<slug>.json" → чанк.
+  const dataChunk = new Map<string, string>();
+  for (const src of code.values()) {
+    for (const m of src.matchAll(/"\.\/generated\/(posts|terms)\/([^"]+)\.json":\(\)=>\w+\(\(\)=>import\(`\.\/([^`]+\.js)`\)/g)) {
+      dataChunk.set(`${m[1]}/${m[2]}`, m[3]);
+    }
+  }
+  const pageChunk = (name: string) => files.find((f) => new RegExp(`^${name}-[\\w-]{8}\\.js$`).test(f));
+
+  return (route: string) => {
+    const hit = ROUTE_CHUNKS.find(([re]) => re.test(route));
+    if (!hit) return "";
+    const chunk = pageChunk(hit[1]);
+    if (!chunk) return "";
+    const list = [...staticDeps(chunk)];
+    const slug = route.split("/")[2];
+    const data = route.startsWith("/blog/") ? dataChunk.get(`posts/${slug}`) : route.startsWith("/slovar/") ? dataChunk.get(`terms/${slug}`) : undefined;
+    if (data) list.push(data);
+    return list
+      .filter((f) => !shellPreloads.has(f))
+      .map((f) => `<link rel="modulepreload" crossorigin href="/assets/${f}">`)
+      .join("\n");
+  };
+};
+const preloadFor = makePreloader();
+
+const render = (p: Page, app = "") => {
+  // Готовая разметка страницы (серверная отрисовка). Если её текст не беднее
+  // статического, отдельный текстовый блок для поисковиков не нужен.
+  const words = (h: string) => h.replace(/<[^>]+>/g, " ").split(/\s+/).filter(Boolean).length;
+  const keepStatic = !app || words(app) < words(p.body) * 0.7;
   const url = `${SITE}${p.route}`;
   const canonical = p.canonical ? `${SITE}${p.canonical}` : url;
   const ld: unknown[] = [];
@@ -1087,6 +1158,7 @@ ${ldTags}
 <script>document.documentElement.classList.add("js")</script>
 <style>.js #pp-static{display:none}</style>
 ${APP_ASSETS.styles}
+${preloadFor(p.route)}
 <style>
   #pp-static{max-width:760px;margin:0 auto;padding:40px 20px;font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1a1a1a}
   #pp-static h1{font-size:2em;line-height:1.15;margin:0 0 .4em}
@@ -1095,17 +1167,17 @@ ${APP_ASSETS.styles}
 </style>
 </head>
 <body>
-<div id="root"></div>
+<div id="root">${app}</div>
 
 ${APP_ASSETS.fallback}
 
 ${APP_ASSETS.scripts}
 
-<div id="pp-static">
+${keepStatic ? `<div id="pp-static">
 ${headerLinks()}
 ${p.body}
 ${footerLinks()}
-</div>
+</div>` : ""}
 
 <script>
 // Приложение загрузилось и отрисовало страницу — статический текст убираем.
@@ -1299,15 +1371,40 @@ ${sitemapRoutes
 fs.writeFileSync(path.join(OUT, "sitemap.xml"), sitemap, "utf-8");
 console.log(`Sitemap: ${sitemapRoutes.length} страниц`);
 
+// Серверная отрисовка страниц (см. src/entry-server.tsx). Собирается отдельно
+// в vite.config.ts; если её нет или страница не отрисовалась — страница
+// остаётся как раньше: пустой #root и статический текст.
+const SSR_ENTRY = process.env.PRERENDER_SSR_ENTRY || "";
+let ssrRender: ((url: string) => Promise<string>) | null = null;
+if (SSR_ENTRY && fs.existsSync(SSR_ENTRY)) {
+  try {
+    ssrRender = (await import(pathToFileURL(SSR_ENTRY).href)).render;
+  } catch (e) {
+    console.warn("[prerender] Серверная отрисовка не загрузилась:", (e as Error).message);
+  }
+}
+
 let count = 0;
+let ssrOk = 0;
+const ssrFailed: string[] = [];
 for (const p of pages) {
   const dir = path.join(OUT, p.route);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, "index.html"), render(p), "utf-8");
+  let app = "";
+  if (ssrRender) {
+    try {
+      app = await ssrRender(p.route);
+      ssrOk++;
+    } catch (e) {
+      ssrFailed.push(`${p.route}: ${(e as Error).message?.slice(0, 120)}`);
+    }
+  }
+  fs.writeFileSync(path.join(dir, "index.html"), render(p, app), "utf-8");
   count++;
 }
 
-console.log(`Пререндер: ${count} страниц`);
+console.log(`Пререндер: ${count} страниц${ssrRender ? `, с готовой разметкой: ${ssrOk}` : ""}`);
+if (ssrFailed.length) console.warn(`[prerender] Без готовой разметки ${ssrFailed.length}:\n  ` + ssrFailed.slice(0, 15).join("\n  "));
 
 // --- Чистка служебных скриптов платформы -----------------------------------
 // Инспектор редактора, телеметрия и роутер предпросмотра нужны только внутри

@@ -109,7 +109,7 @@ const CrossLinks = ({
             </h3>
             <p
               className={`mt-3 flex-1 leading-relaxed ${
-                c.accent ? "text-white/80" : "text-cream-muted"
+                c.accent ? "text-white/90" : "text-cream-muted"
               }`}
             >
               {c.text}

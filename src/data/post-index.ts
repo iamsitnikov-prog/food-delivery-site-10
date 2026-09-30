@@ -36,11 +36,20 @@ export const findPostBrief = (slug?: string) =>
   POST_INDEX.find((p) => p.slug === slug);
 
 /** Полный текст одной статьи — отдельным файлом. */
+// Уже загруженные статьи — чтобы отрисованная заранее страница сразу
+// совпала с тем, что рисует браузер.
+const postCache = new Map<string, BlogPost>();
+export const getCachedPost = (slug?: string) => (slug ? postCache.get(slug) ?? null : null);
+
 export const loadPost = async (slug: string): Promise<BlogPost | null> => {
   if (!findPostBrief(slug)) return null;
+  const cached = postCache.get(slug);
+  if (cached) return cached;
   try {
     const mod = await import(`./generated/posts/${slug}.json`);
-    return (mod.default ?? mod) as BlogPost;
+    const post = (mod.default ?? mod) as BlogPost;
+    postCache.set(slug, post);
+    return post;
   } catch {
     return null;
   }

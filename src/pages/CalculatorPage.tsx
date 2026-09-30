@@ -108,34 +108,43 @@ const CalculatorPage = () => {
         {page.mode === "compare" ? <CompareCalc /> : <Calculator mode={page.mode} />}
       </section>
 
-      <section className="mx-auto max-w-[820px] px-5 pb-11 md:px-14 md:pb-24">
-        {page.intro.map((p) => (
-          <p key={p} className="mb-5 text-[1.05em] leading-relaxed text-foreground/85">
-            {p}
-          </p>
-        ))}
+      {/* Описание показателя и частые вопросы — в две колонки на десктопе,
+          чтобы на широких экранах не было узкой колонки по центру. */}
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 xl:gap-24">
+          <div className="lg:sticky lg:top-8 lg:self-start">
+            <h2 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.02em]">
+              {page.navLabel}
+            </h2>
+            {page.intro.map((p) => (
+              <p key={p} className="mt-4 text-[1.05em] leading-relaxed text-foreground/85">
+                {p}
+              </p>
+            ))}
+          </div>
+
+          <div>
+            <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
+              частые
+              <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">вопросы</span>
+            </h2>
+            <Accordion type="single" collapsible defaultValue="q-0" className="mt-8 border-t border-primary/25">
+              {page.faq.map((f, i) => (
+                <AccordionItem key={f.q} value={`q-${i}`} className="border-b border-primary/25">
+                  <AccordionTrigger className="py-6 text-left font-display text-[1.15em] font-semibold hover:no-underline md:text-[1.35em]">
+                    {f.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-6 leading-relaxed text-muted-foreground">
+                    {f.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
       </section>
 
-      <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
-        <h2 className="font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[48px]">
-          частые
-          <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">вопросы</span>
-        </h2>
-        <Accordion type="single" collapsible defaultValue="q-0" className="mt-8 border-t border-primary/25">
-          {page.faq.map((f, i) => (
-            <AccordionItem key={f.q} value={`q-${i}`} className="border-b border-primary/25">
-              <AccordionTrigger className="py-6 text-left font-display text-[1.15em] font-semibold hover:no-underline md:text-[1.35em]">
-                {f.q}
-              </AccordionTrigger>
-              <AccordionContent className="pb-6 leading-relaxed text-muted-foreground">
-                {f.a}
-              </AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </section>
-
-      <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-24">
+      <section className="px-5 pb-11 md:px-14 md:pb-24">
         <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
           другие калькуляторы
         </h2>

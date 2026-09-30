@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
@@ -29,7 +29,13 @@ const QuizPage = () => {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const [done, setDone] = useState(false);
-  const [seed] = useState(() => Math.floor(Math.random() * 100000) + 1);
+  // Порядок ответов перемешивается случайно. Первый вопрос показываем без
+  // перемешивания: страница отрисована заранее, и браузер должен получить
+  // ту же разметку, иначе React её перерисует. Случайное число — после загрузки.
+  const [seed, setSeed] = useState(1);
+  useEffect(() => {
+    setSeed(Math.floor(Math.random() * 100000) + 1);
+  }, []);
 
   useSeo({
     title: quiz?.title || "",
@@ -49,7 +55,7 @@ const QuizPage = () => {
   if (!quiz) return <Navigate to="/testy" replace />;
 
   const current = quiz.questions[step];
-  const options = shuffle(current.options, seed + step * 7919);
+  const options = step === 0 ? current.options : shuffle(current.options, seed + step * 7919);
   const progress = done ? 100 : Math.round((step / total) * 100);
   const percent = max > 0 ? Math.round((score / max) * 100) : 0;
   const others = QUIZZES.filter((q) => q.slug !== quiz.slug);

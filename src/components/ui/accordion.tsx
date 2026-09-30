@@ -44,7 +44,10 @@ const AccordionContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
   <AccordionPrimitive.Content
     ref={ref}
-    className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+    // Ответы есть в HTML и у закрытых вопросов (скрыты атрибутом hidden):
+    // страница отрисовывается заранее, и поисковик должен видеть все ответы.
+    forceMount
+    className="overflow-hidden text-[max(13px,0.875rem)] transition-all data-[state=closed]:hidden data-[state=open]:animate-accordion-down"
     {...props}
   >
     <div className={cn("pb-4 pt-0", className)}>{children}</div>

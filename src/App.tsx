@@ -1,5 +1,5 @@
 
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, type ReactNode } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -31,7 +31,13 @@ const NotFound = lazy(() => import("./pages/PageNotFound"));
 
 const queryClient = new QueryClient();
 
-const App = () => {
+/**
+ * Общая оболочка приложения. Роутер передаётся снаружи: в браузере —
+ * BrowserRouter, при заранее отрисованных страницах — StaticRouter
+ * (src/entry-server.tsx). Остальное дерево одинаковое, иначе браузер не сможет
+ * «подхватить» готовую разметку без перерисовки.
+ */
+export const AppShell = ({ Router }: { Router: (p: { children: ReactNode }) => JSX.Element }) => {
   useContactGoals();
 
   return (
@@ -39,7 +45,7 @@ const App = () => {
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <Router>
         <ScrollToTop />
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
         <Routes>
@@ -73,10 +79,14 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
         </Suspense>
-      </BrowserRouter>
+      </Router>
     </TooltipProvider>
   </QueryClientProvider>
   );
 };
+
+const ClientRouter = ({ children }: { children: ReactNode }) => <BrowserRouter>{children}</BrowserRouter>;
+
+const App = () => <AppShell Router={ClientRouter} />;
 
 export default App;
