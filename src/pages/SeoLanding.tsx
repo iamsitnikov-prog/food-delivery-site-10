@@ -76,6 +76,9 @@ const SeoLanding = () => {
   const cross = page.kind === "service" ? CITY_PAGES : SERVICE_PAGES;
   const base = page.kind === "service" ? "/uslugi" : "/goroda";
   const crossBase = page.kind === "service" ? "/goroda" : "/uslugi";
+  // У страниц услуг на десктопе: карточка с цифрой справа от заголовка
+  // и тексты в две колонки — чтобы не оставалось пустых полей.
+  const svc = page.kind === "service" && Boolean(page.when?.length);
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
@@ -91,6 +94,8 @@ const SeoLanding = () => {
             <span className="text-foreground">{page.navLabel}</span>
           </nav>
 
+          <div className={svc ? "lg:grid lg:grid-cols-[1fr_400px] lg:items-center lg:gap-12" : undefined}>
+          <div>
           <h1 className="max-w-[16ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
             {page.h1}
           </h1>
@@ -107,20 +112,81 @@ const SeoLanding = () => {
               +7 931 002-82-22
             </a>
           </div>
+          </div>
+
+          {svc && (
+            <aside className="hidden rounded-[32px] bg-surface p-8 text-cream lg:block">
+              {page.result ? (
+                <>
+                  <div className="text-[0.85em] font-medium text-cream-muted">результат в нашем кейсе</div>
+                  <div
+                    className={`mt-3 text-balance font-display font-semibold leading-[0.95] tracking-[-0.04em] text-brand ${
+                      page.result.value.length > 9 ? "text-[2.8em]" : "text-[4.2em]"
+                    }`}
+                  >
+                    {page.result.value.replace(/ (\S+)$/, "\u00a0$1")}
+                  </div>
+                  <div className="mt-3 font-display text-[1.15em] font-semibold leading-tight">{page.result.label}</div>
+                  <p className="mt-3 text-[0.92em] leading-snug text-cream-muted">{page.result.text}</p>
+                </>
+              ) : (
+                <ul className="divide-y divide-cream/15">
+                  {[
+                    ["до 7 дней", "от заявки до первого заказа"],
+                    ["124", "проекта в работе"],
+                    ["24/7", "команда в ваших рабочих чатах"],
+                  ].map(([v, l]) => (
+                    <li key={v} className="py-4 first:pt-0 last:pb-0">
+                      <div className="font-display text-[2.6em] font-semibold leading-none tracking-[-0.04em] text-brand">{v}</div>
+                      <div className="mt-2 text-[0.95em] text-cream-muted">{l}</div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </aside>
+          )}
+          </div>
         </section>
       </div>
 
-      <section className="rounded-[28px] md:rounded-[40px] bg-surface px-5 py-10 text-cream md:mx-3 md:px-14 md:py-24">
-        <div className="grid gap-6 md:gap-10 lg:grid-cols-[1fr_340px]">
-          <div className="space-y-12">
-            {page.blocks.map((b) => (
-              <article key={b.h}>
-                <h2 className="font-display text-[1.7em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.2em]">
-                  {b.h}
-                </h2>
-                <p className="mt-4 max-w-[680px] leading-relaxed text-cream-muted">{b.p}</p>
+      {page.when?.length ? (
+        <section aria-label="Когда нужна услуга" className="px-5 pb-10 md:px-14 md:pb-20">
+          <h2 className="font-display text-[1.5em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.2em]">
+            когда это нужно
+          </h2>
+          <div className="mt-5 grid gap-3 md:mt-8 md:grid-cols-2 md:gap-4 lg:grid-cols-4">
+            {page.when.map((w, i) => (
+              <article key={w.t} className="rounded-[20px] bg-pale p-4 md:rounded-[24px] md:p-6">
+                <span className="font-display text-[0.9em] font-semibold text-foreground/70">0{i + 1}</span>
+                <h3 className="mt-2 font-display text-[1.1em] font-semibold leading-tight md:text-[1.2em]">{w.t}</h3>
+                <p className="mt-2 text-[0.95em] leading-snug text-foreground/75">{w.d}</p>
               </article>
             ))}
+          </div>
+        </section>
+      ) : null}
+
+      <section className="rounded-[28px] md:rounded-[40px] bg-surface px-5 py-10 text-cream md:mx-3 md:px-14 md:py-24">
+        <div className={svc ? "space-y-9 md:space-y-14" : "grid gap-6 md:gap-10 lg:grid-cols-[1fr_340px]"}>
+          <div className={svc ? "grid gap-9 md:gap-12 lg:grid-cols-2 lg:gap-x-16" : "space-y-9 md:space-y-12"}>
+            {page.blocks.map((b) => (
+              <article key={b.h}>
+                <h2 className="font-display text-[1.4em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.2em]">
+                  {b.h}
+                </h2>
+                <p className="mt-3 max-w-[680px] leading-relaxed text-cream-muted md:mt-4">{b.p}</p>
+              </article>
+            ))}
+
+            {page.result && (
+              <article className={`rounded-[24px] bg-brand p-5 text-foreground md:rounded-[28px] md:p-8 ${svc ? "lg:hidden" : ""}`}>
+                <div className="font-display text-[2.6em] font-semibold leading-none tracking-[-0.04em] md:text-[4em]">
+                  {page.result.value.replace(/ (\S+)$/, "\u00a0$1")}
+                </div>
+                <div className="mt-2 font-display text-[1.05em] font-semibold md:text-[1.2em]">{page.result.label}</div>
+                <p className="mt-3 max-w-[560px] text-[0.95em] leading-snug text-foreground/80">{page.result.text}</p>
+              </article>
+            )}
 
             {cityCase && (
               <article id="case" className="scroll-mt-8">
@@ -134,9 +200,17 @@ const SeoLanding = () => {
             )}
           </div>
 
-          <aside className="h-fit rounded-[28px] border border-cream/20 p-4 md:p-7">
+          <aside
+            className={`h-fit rounded-[28px] border border-cream/20 p-4 md:p-7 ${
+              svc ? "lg:grid lg:grid-cols-[180px_1fr_230px] lg:items-center lg:gap-10" : "lg:sticky lg:top-24 lg:self-start"
+            }`}
+          >
             <h2 className="font-display text-[1.35em] font-semibold text-brand">что входит</h2>
-            <ul className="mt-5 space-y-3 text-[0.95em] leading-snug text-cream-muted">
+            <ul
+              className={`mt-5 space-y-3 text-[0.95em] leading-snug text-cream-muted ${
+                svc ? "lg:mt-0 lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-3 lg:space-y-0" : ""
+              }`}
+            >
               {page.bullets.map((b) => (
                 <li key={b} className="flex gap-3">
                   <Icon name="Check" size={18} className="mt-0.5 shrink-0 text-brand" />
@@ -146,13 +220,71 @@ const SeoLanding = () => {
             </ul>
             <a
               href="#lead"
-              className="mt-7 inline-flex w-full items-center justify-center rounded-xl bg-brand px-6 py-4 font-medium text-foreground"
+              className={`mt-7 inline-flex w-full items-center justify-center rounded-xl bg-brand px-6 py-4 font-medium text-foreground ${
+                svc ? "lg:mt-0" : ""
+              }`}
             >
               обсудить задачу
             </a>
           </aside>
         </div>
       </section>
+
+      {page.steps?.length ? (
+        <section aria-label="Как проходит работа" className="px-5 pt-10 md:px-14 md:pt-24">
+          <h2 className="font-display text-[1.5em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.2em]">
+            как проходит работа
+          </h2>
+          <ol className="mt-5 grid gap-3 md:mt-8 md:gap-4 lg:grid-cols-5">
+            {page.steps.map((st, i) => (
+              <li key={st.t} className="flex gap-3 rounded-[20px] border border-foreground/15 p-4 md:rounded-[24px] md:p-5 lg:block">
+                <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-foreground font-display text-[0.9em] font-semibold text-brand">
+                  {i + 1}
+                </span>
+                <div>
+                  <h3 className="pt-1 font-display text-[1.05em] font-semibold leading-tight lg:mt-3 lg:pt-0">{st.t}</h3>
+                  <p className="mt-1.5 text-[0.92em] leading-snug text-foreground/75 lg:mt-2">{st.d}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
+
+      {page.needFromYou?.length || page.price ? (
+        <section className="px-5 pt-10 md:px-14 md:pt-16">
+          <div className="grid gap-3 md:grid-cols-2 md:gap-4">
+            {page.needFromYou?.length ? (
+              <article className="rounded-[24px] bg-pale p-5 md:rounded-[28px] md:p-8">
+                <h2 className="font-display text-[1.3em] font-semibold leading-tight md:text-[1.6em]">что нужно от вас</h2>
+                <ul className="mt-4 space-y-2.5 text-[0.95em] leading-snug">
+                  {page.needFromYou.map((n) => (
+                    <li key={n} className="flex gap-3">
+                      <Icon name="Check" size={18} className="mt-0.5 shrink-0" />
+                      {n}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ) : null}
+            {page.price ? (
+              <article className="flex flex-col rounded-[24px] bg-surface p-5 text-cream md:rounded-[28px] md:p-8">
+                <h2 className="font-display text-[1.3em] font-semibold leading-tight md:text-[1.6em]">сколько стоит</h2>
+                <div className="mt-4 font-display text-[1.9em] font-semibold leading-none tracking-[-0.03em] text-brand md:text-[2.4em]">
+                  {page.price.value}
+                </div>
+                <p className="mt-3 text-[0.95em] leading-snug text-cream-muted">{page.price.text}</p>
+                <a
+                  href="#lead"
+                  className="mt-6 inline-flex items-center justify-center self-start rounded-xl bg-brand px-6 py-3.5 font-medium text-foreground md:mt-auto"
+                >
+                  получить расчёт <Icon name="ArrowRight" size={18} className="ml-2" />
+                </a>
+              </article>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
 
       <div className="pt-10 md:pt-24">
         <ExpertiseStrip />

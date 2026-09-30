@@ -85,7 +85,7 @@ const Header = () => {
       </nav>
 
       <div className="flex items-center gap-2">
-        <div className="hidden items-center gap-1.5 xl:flex">
+        <div className="hidden items-center gap-1.5 min-[1440px]:flex">
           {MESSENGERS.map((m) => (
             <a
               key={m.label}

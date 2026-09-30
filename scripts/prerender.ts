@@ -258,7 +258,12 @@ for (const p of [...SERVICE_PAGES, ...CITY_PAGES]) {
         ]
       : undefined,
     body: `<article><h1>${esc(clean(p.h1))}</h1><p>${esc(clean(p.lead))}</p>
-${blocks}${caseHtml}${bullets}${faqToText(p.faq)}
+${p.when?.length ? `<h2>Когда это нужно</h2><ul>${p.when.map((w) => `<li><b>${esc(clean(w.t))}.</b> ${esc(clean(w.d))}</li>`).join("")}</ul>` : ""}
+${blocks}${p.result ? `<p><b>${esc(clean(p.result.value))} — ${esc(clean(p.result.label))}.</b> ${esc(clean(p.result.text))}</p>` : ""}${caseHtml}${bullets}
+${p.steps?.length ? `<h2>Как проходит работа</h2><ol>${p.steps.map((st) => `<li><b>${esc(clean(st.t))}.</b> ${esc(clean(st.d))}</li>`).join("")}</ol>` : ""}
+${p.needFromYou?.length ? `<h2>Что нужно от вас</h2><ul>${p.needFromYou.map((n) => `<li>${esc(clean(n))}</li>`).join("")}</ul>` : ""}
+${p.price ? `<h2>Сколько стоит</h2><p><b>${esc(clean(p.price.value))}.</b> ${esc(clean(p.price.text))}</p>` : ""}
+${faqToText(p.faq)}
 <h2>Полезное по теме</h2>
 <ul>${getServiceResources(p.slug, p.kind)
       .map(

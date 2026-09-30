@@ -1,6 +1,7 @@
 import type { SeoPage } from "./seo-types";
+import { SERVICE_CONTENT } from "./seo-services-content";
 
-export const SERVICE_PAGES: SeoPage[] = [
+const BASE_SERVICE_PAGES: SeoPage[] = [
   {
     slug: "podklyuchenie-k-yandex-ede",
     kind: "service",
@@ -720,3 +721,8 @@ export const SERVICE_PAGES: SeoPage[] = [
     ],
   },
 ];
+
+export const SERVICE_PAGES: SeoPage[] = BASE_SERVICE_PAGES.map((p) => ({
+  ...p,
+  ...(SERVICE_CONTENT[p.slug] ?? {}),
+}));
