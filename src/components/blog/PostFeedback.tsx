@@ -62,7 +62,7 @@ const PostFeedback = ({ slug, title }: { slug: string; title: string }) => {
           <Icon name={voted ? "Check" : "Star"} size={19} />
           {voted ? "спасибо за отзыв" : "статья полезна"}
           {likes !== null && likes > 0 && (
-            <span className={voted ? "text-primary-foreground/60" : "text-foreground/45"}>{likes}</span>
+            <span className={voted ? "text-primary-foreground/60" : "text-foreground/70"}>{likes}</span>
           )}
         </button>
 

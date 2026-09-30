@@ -31,7 +31,7 @@ const ExpertiseStrip = () => (
                 <h3 className="font-display text-[1.25em] font-semibold leading-tight tracking-[-0.02em]">
                   {p.name}
                 </h3>
-                <div className="mt-1 text-[max(12px,0.85em)] text-foreground/60">{p.exp}</div>
+                <div className="mt-1 text-[max(12px,0.85em)] text-foreground/70">{p.exp}</div>
               </div>
             </div>
             <p className="mt-4 text-[0.92em] leading-snug text-foreground/75">{p.role}</p>
@@ -43,7 +43,7 @@ const ExpertiseStrip = () => (
         <div className="flex items-start gap-3 md:gap-4">
           <Icon name="GraduationCap" size={26} className="mt-0.5 shrink-0" />
           <div>
-            <div className="text-[max(12px,0.78em)] font-medium uppercase tracking-wide text-foreground/60">
+            <div className="text-[max(12px,0.78em)] font-medium uppercase tracking-wide text-foreground/70">
               создатели и соавторы курса
             </div>
             <div className="mt-1.5 font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.3em]">

@@ -85,7 +85,7 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
               <span className="rounded-lg bg-foreground px-3 py-1.5 text-[max(12px,0.75em)] font-medium uppercase tracking-wide text-brand">
                 новое
               </span>
-              <span className="text-[max(12px,0.85em)] text-foreground/60">инструмент, который мы советуем</span>
+              <span className="text-[max(12px,0.85em)] text-foreground/70">инструмент, который мы советуем</span>
             </div>
             <p className="mt-4 leading-relaxed text-foreground/85">{b.text}</p>
             {b.promo && (

@@ -391,7 +391,7 @@ const BuildersCalc = () => {
                   </div>
                   <p
                     className={`mt-1 text-[max(12px,0.82em)] leading-snug ${
-                      isBest ? "text-foreground/60" : "text-cream-muted"
+                      isBest ? "text-foreground/70" : "text-cream-muted"
                     }`}
                   >
                     {b.tagline}

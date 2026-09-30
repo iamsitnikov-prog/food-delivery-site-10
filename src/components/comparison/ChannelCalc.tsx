@@ -278,7 +278,7 @@ const ChannelCalc = () => {
                         {r.name}
                         <span
                           className={`pl-2.5 text-[max(12px,0.72em)] font-normal ${
-                            isBest ? "text-foreground/60" : "text-cream-muted"
+                            isBest ? "text-foreground/70" : "text-cream-muted"
                           }`}
                         >
                           {r.note}

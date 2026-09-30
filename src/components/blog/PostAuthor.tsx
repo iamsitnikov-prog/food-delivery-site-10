@@ -4,7 +4,7 @@ import { PEOPLE, COURSE } from "@/data/team";
 
 const PostAuthor = () => (
   <aside className="mt-8 md:mt-14 rounded-[28px] bg-pale p-4 md:p-9">
-    <div className="text-[max(12px,0.8em)] font-medium uppercase tracking-wide text-foreground/55">
+    <div className="text-[max(12px,0.8em)] font-medium uppercase tracking-wide text-foreground/70">
       материал подготовили
     </div>
 
@@ -24,7 +24,7 @@ const PostAuthor = () => (
             <div className="font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em]">
               {p.name}
             </div>
-            <div className="mt-1 text-[max(12px,0.82em)] text-foreground/55">{p.exp}</div>
+            <div className="mt-1 text-[max(12px,0.82em)] text-foreground/70">{p.exp}</div>
             <p className="mt-2.5 text-[max(12px,0.88em)] leading-snug text-foreground/75">{p.role}</p>
           </div>
         </div>
@@ -39,7 +39,7 @@ const PostAuthor = () => (
           <span className="font-medium text-foreground">{COURSE}</span>
         </div>
       </div>
-      <div className="flex shrink-0 items-center gap-5 text-[max(12px,0.85em)] text-foreground/55">
+      <div className="flex shrink-0 items-center gap-5 text-[max(12px,0.85em)] text-foreground/70">
         <Link to="/#team" className="underline underline-offset-4 hover:text-foreground">
           о нас
         </Link>

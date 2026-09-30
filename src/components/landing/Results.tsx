@@ -93,13 +93,13 @@ const Results = () => {
                   }`}
                 >
                   <span>{c.tag}</span>
-                  <span className={light ? "text-foreground/60" : "text-cream-muted"}>{c.city}</span>
+                  <span className={light ? "text-foreground/70" : "text-cream-muted"}>{c.city}</span>
                 </div>
                 <h3 className="mt-2 font-display text-[1.4em] font-semibold tracking-[-0.02em]">{c.name}</h3>
                 <div className="mt-6 text-[0.92em]">
                   <span
                     className={`line-through ${
-                      light ? "text-foreground/60 decoration-foreground/40" : "text-cream-muted decoration-cream/40"
+                      light ? "text-foreground/70 decoration-foreground/60" : "text-cream-muted decoration-cream/40"
                     }`}
                   >
                     {c.before}

@@ -13,13 +13,16 @@ const TermCard = ({
     id={term.slug}
     className="scroll-mt-24 rounded-[28px] bg-surface p-4 text-cream md:p-8"
   >
-    <div className="flex items-start justify-between gap-3 md:gap-4">
-      <h2 className="font-display text-[1.45em] font-semibold leading-tight tracking-[-0.02em] text-cream">
-        <Link to={`/slovar/${term.slug}`} className="transition-colors hover:text-brand">
+    {/* flex-wrap и min-w-0: на узком экране (320px) длинная категория
+        вроде «Документы и право» больше не выталкивает плашку за край,
+        а переносится под заголовок. */}
+    <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2 md:gap-x-4">
+      <h2 className="min-w-0 font-display text-[1.45em] font-semibold leading-tight tracking-[-0.02em] text-cream">
+        <Link to={`/slovar/${term.slug}`} className="break-words transition-colors hover:text-brand">
           {term.term}
         </Link>
       </h2>
-      <span className="shrink-0 rounded-lg bg-cream/10 px-2.5 py-1 text-[max(12px,0.72em)] text-cream-muted">
+      <span className="max-w-full rounded-lg bg-cream/10 px-2.5 py-1 text-[max(12px,0.72em)] text-cream-muted">
         {term.group}
       </span>
     </div>

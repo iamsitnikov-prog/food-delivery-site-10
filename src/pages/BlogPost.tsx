@@ -211,7 +211,7 @@ const BlogPost = () => {
               <ol className="mt-4 space-y-2.5 text-[max(12px,0.9em)] leading-snug">
                 {post.toc.map((t, i) => (
                   <li key={t.id} className="flex gap-2.5">
-                    <span className="text-foreground/40">{i + 1}.</span>
+                    <span className="text-foreground/70">{i + 1}.</span>
                     <a href={`#${t.id}`} className="text-foreground/75 transition-colors hover:text-foreground">
                       {t.label}
                     </a>

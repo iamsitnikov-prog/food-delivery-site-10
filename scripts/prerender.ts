@@ -1070,6 +1070,17 @@ const render = (p: Page) => {
 <meta name="twitter:image" content="${OG}"/>
 <meta name="theme-color" content="#FFD600"/>
 ${ldTags}
+<!--
+  Статический текст нужен поисковикам и браузерам без скриптов, но посетителю
+  со скриптами он показывался поверх сайта и исчезал после отрисовки —
+  весь экран дёргался (сдвиг макета 1.0). Помечаем документ классом "js"
+  ещё до стилей и сразу прячем блок: при работающих скриптах его никто
+  не увидит, в исходном HTML он остаётся.
+  Если скрипты не выполнятся, класс не поставится и текст будет виден;
+  на случай сбоя загрузки есть запасной экран pp-fallback.
+-->
+<script>document.documentElement.classList.add("js")</script>
+<style>.js #pp-static{display:none}</style>
 ${APP_ASSETS.styles}
 <style>
   #pp-static{max-width:760px;margin:0 auto;padding:40px 20px;font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#1a1a1a}

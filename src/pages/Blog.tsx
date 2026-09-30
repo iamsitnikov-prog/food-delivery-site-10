@@ -233,14 +233,14 @@ const Blog = () => {
                     </span>
                   )
                 )}
-                <span className={i % 2 === 1 ? "text-foreground/60" : "text-cream-muted"}>{post.readTime}</span>
+                <span className={i % 2 === 1 ? "text-foreground/70" : "text-cream-muted"}>{post.readTime}</span>
                 {(likes[post.slug] ?? 0) > 0 && (
                   <span
                     className={`inline-flex items-center gap-1.5 ${
-                      i % 2 === 1 ? "text-foreground/60" : "text-cream-muted"
+                      i % 2 === 1 ? "text-foreground/70" : "text-cream-muted"
                     }`}
                   >
-                    <Icon name="Star" size={13} className={i % 2 === 1 ? "text-foreground/50" : "text-brand"} />
+                    <Icon name="Star" size={13} className={i % 2 === 1 ? "text-foreground/70" : "text-brand"} />
                     {likes[post.slug]}
                   </span>
                 )}
