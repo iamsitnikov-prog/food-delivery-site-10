@@ -16,6 +16,7 @@ import { termDescription, termTitle } from "@/lib/term-seo";
 import { richText } from "@/lib/rich-text";
 import TermSectionBlock from "@/components/glossary/TermSectionBlock";
 import TermAside from "@/components/glossary/TermAside";
+import { PEOPLE } from "@/data/team";
 
 const SITE = "https://agregatory.pro";
 
@@ -145,6 +146,10 @@ const GlossaryTermPage = () => {
     );
   }
 
+  const expertPerson = term.expert ? PEOPLE.find((p) => p.name === term.expert?.name) : undefined;
+  // Внутренние блоки тёмной карточки. На экранах от 1600 px они
+  // раскладываются в две колонки, чтобы не оставалось пустого поля справа.
+  const blk = "break-inside-avoid";
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground">
@@ -178,10 +183,14 @@ const GlossaryTermPage = () => {
         </p>
       </section>
 
-      <section className="grid grid-cols-[minmax(0,1fr)] items-start gap-3 px-5 pb-11 md:px-14 md:pb-24 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-6">
-        <div className="rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-10">
+      {/* Сетка: слева карточка статьи и под ней частые вопросы, справа —
+          боковая колонка на всю высоту. Так под короткой карточкой
+          не остаётся пустого жёлтого поля. */}
+      <section className="grid grid-cols-[minmax(0,1fr)] items-start gap-3 px-5 pb-11 md:px-14 md:pb-24 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-x-6 lg:gap-y-0">
+        <div className="rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-10 lg:col-start-1 lg:row-start-1 min-[1600px]:p-12">
           {/* Общая колонка: текст и врезки одной ширины, иначе правый край рвётся */}
-          <div className="max-w-[760px]">
+          <div className="max-w-[760px] min-[1600px]:max-w-none min-[1600px]:columns-2 min-[1600px]:gap-16 min-[2200px]:columns-3">
+            <div className={blk}>
             <h2
               id="chto-eto-znachit"
               className="scroll-mt-6 font-display text-[1.4em] font-semibold tracking-[-0.02em]"
@@ -191,9 +200,10 @@ const GlossaryTermPage = () => {
             <p className="mt-4 text-[1.05em] leading-relaxed text-cream-muted">
               {richText(term.full)}
             </p>
+            </div>
 
             {term.formula && (
-              <div className="mt-7">
+              <div className={`mt-7 ${blk}`}>
                 <h3 id="kak-schitat" className="scroll-mt-6 text-[max(12px,0.85em)] uppercase tracking-wide text-cream-muted">
                   как считать
                 </h3>
@@ -204,7 +214,7 @@ const GlossaryTermPage = () => {
             )}
 
             {term.example && (
-              <div className="mt-6 rounded-2xl bg-brand/12 p-4 md:p-5">
+              <div className={`mt-6 rounded-2xl bg-brand/12 p-4 md:p-5 ${blk}`}>
                 <h3 id="primer" className="flex scroll-mt-6 items-center gap-2 text-[max(12px,0.85em)] uppercase tracking-wide text-brand">
                   <Icon name="Lightbulb" size={15} />
                   пример
@@ -216,7 +226,7 @@ const GlossaryTermPage = () => {
             )}
 
             {term.mistake && (
-              <div className="mt-6 rounded-2xl border border-cream/15 bg-cream/[0.04] p-4 md:p-5">
+              <div className={`mt-6 rounded-2xl border border-cream/15 bg-cream/[0.04] p-4 md:p-5 ${blk}`}>
                 <h3 id="tipichnaya-oshibka" className="flex scroll-mt-6 items-center gap-2 text-[max(12px,0.85em)] uppercase tracking-wide text-cream-muted">
                   <Icon name="TriangleAlert" size={15} />
                   типичная ошибка
@@ -228,11 +238,43 @@ const GlossaryTermPage = () => {
             )}
 
             {term.sections?.map((s) => (
-              <TermSectionBlock key={s.title} section={s} />
+              <div key={s.title} className={blk}>
+                <TermSectionBlock section={s} />
+              </div>
             ))}
 
+            {/* Комментарий эксперта внутри карточки — только на широких
+                экранах; на остальных он стоит в боковой колонке. */}
+            {term.expert && (
+              <figure className={`mt-7 hidden rounded-2xl bg-cream/[0.06] p-5 min-[1600px]:block ${blk}`}>
+                <Icon name="Quote" size={22} className="text-brand" />
+                <blockquote className="mt-3 text-[1em] leading-relaxed text-cream">«{term.expert.text}»</blockquote>
+                <figcaption className="mt-4 flex items-center gap-3">
+                  {expertPerson && (
+                    <img
+                      src={expertPerson.photo}
+                      alt={term.expert.name}
+                      width={40}
+                      height={40}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-10 w-10 shrink-0 rounded-full object-cover"
+                    />
+                  )}
+                  <span className="min-w-0">
+                    <span className="block font-medium leading-tight text-cream">{term.expert.name}</span>
+                    {expertPerson && (
+                      <span className="mt-0.5 block text-[max(12px,0.82em)] leading-snug text-cream-muted">
+                        {expertPerson.exp}
+                      </span>
+                    )}
+                  </span>
+                </figcaption>
+              </figure>
+            )}
+
             {term.links && term.links.length > 0 && (
-              <div className="mt-7 border-t border-cream/12 pt-6">
+              <div className={`mt-7 border-t border-cream/12 pt-6 ${blk}`}>
                 <h3 className="text-[max(12px,0.85em)] uppercase tracking-wide text-cream-muted">
                   применить на практике
                 </h3>
@@ -253,11 +295,12 @@ const GlossaryTermPage = () => {
           </div>
         </div>
 
-        <TermAside term={term} />
-      </section>
+        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-stretch">
+          <TermAside term={term} />
+        </div>
 
       {term.faq && term.faq.length > 0 && (
-        <section className="px-5 pb-11 md:px-14 md:pb-24">
+        <section className="pt-8 lg:col-start-1 lg:row-start-2 lg:pt-14">
           <h2
             id="chastye-voprosy"
             className="scroll-mt-6 font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[44px]"
@@ -265,7 +308,7 @@ const GlossaryTermPage = () => {
             частые
             <span className="pl-3 text-muted-foreground max-sm:pl-0 max-sm:before:content-['_']">вопросы</span>
           </h2>
-          <div className="mt-8 grid gap-3 md:gap-4 md:grid-cols-2">
+          <div className="mt-8 grid gap-3 md:grid-cols-2 md:gap-4 lg:grid-cols-1 xl:grid-cols-2 min-[2200px]:grid-cols-3">
             {term.faq.map((f) => (
               <div
                 key={f.q}
@@ -282,6 +325,7 @@ const GlossaryTermPage = () => {
           </div>
         </section>
       )}
+      </section>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
         <div className="flex flex-col gap-3 border-t border-foreground/12 pt-6 md:flex-row md:items-center md:justify-between">

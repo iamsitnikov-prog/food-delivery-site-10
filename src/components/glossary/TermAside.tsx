@@ -147,7 +147,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
       )}
 
       {expert && (
-        <div className="rounded-[24px] bg-cream p-4 md:p-6 text-foreground">
+        <div className="rounded-[24px] bg-cream p-4 md:p-6 text-foreground min-[1600px]:hidden">
           <div className="flex items-center gap-3">
             {person && (
               <img
