@@ -35,6 +35,12 @@ export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
     GLOSSARY("komissiya", "Комиссия агрегатора", "Почему ставка 35% или 20%"),
   ],
   "nastroyka-vendora": [
+    {
+      to: "/blog/razdely-lichnogo-kabineta-vendor",
+      label: "Яндекс Еда Вендор: обзор кабинета",
+      note: "Как войти и что лежит в каждом разделе",
+      icon: "BookA",
+    },
     CHECK("zapusk-na-agregatore", "Чек-лист запуска", "Пошаговая настройка кабинета"),
     GLOSSARY("kabinet-partnera", "Кабинет партнёра", "Что где лежит и как читать отчёты"),
     COMPARE,
