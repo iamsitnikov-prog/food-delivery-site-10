@@ -27,6 +27,20 @@ const BY_SLUG: Record<string, PostService> = {
   "obuchenie-komandy-rabote-s-dostavkoy": S("obuchenie-personala", "Обучение персонала", "Курс для команды по работе с агрегатором"),
   "rezhim-vysokaya-nagruzka-yandex-eda": S("obuchenie-personala", "Обучение персонала", "Научим смену работать в пик без отмен"),
   "kak-podklyuchit-restoran-k-yandex-ede": PODKL,
+  "kak-snizit-drr-na-agregatore": DRR,
+  "reklamnye-vlozheniya-v-zakaz": DRR,
+  "prodvizhenie-dostavki-na-yandex-ede": DRR,
+  "prodvizhenie-na-yandex-dostavke": DRR,
+  "telegram-bot-otchety-yandex-eda": ANALITIKA,
+  "akty-i-otchety-yandex-eda-13-dney": ANALITIKA,
+  "kak-yandex-eda-uderzhivaet-dengi": SHTRAFY,
+  "referalnaya-programma-yandex-eda": S("nastroyka-aktsiy", "Настройка акций", "Подберём акции под вашу экономику"),
+  "kak-vernut-gostya-v-dostavke": S("nastroyka-aktsiy", "Настройка акций", "Акции и программы, которые возвращают гостей"),
+  "pochemu-net-zakazov-na-yandex-ede": AUDIT,
+  "skolko-stoit-prodvizhenie-na-yandex-ede": AUDIT,
+  "uslugi-po-prodvizheniyu-servisa-yandex-eda": AUDIT,
+  "restoran-skryt-na-servise-chto-delat": S("rabota-s-otmenami", "Работа с отменами", "Разбор причин и процессы на кухне"),
+  "podderzhka-yandex-edy-dlya-restoranov": KONSULT,
 };
 
 const BY_TAG: Record<string, PostService> = {
@@ -36,7 +50,8 @@ const BY_TAG: Record<string, PostService> = {
   "качество": REYTING,
   "рейтинг": REYTING,
   "штрафы": SHTRAFY,
-  "удержание": SHTRAFY,
+  // «удержание» в тегах — это удержание гостей (возвращаемость), а не удержания денег.
+  "удержание": S("nastroyka-aktsiy", "Настройка акций", "Акции и программы, которые возвращают гостей"),
   "документы": KONSULT,
   "акции": S("nastroyka-aktsiy", "Настройка акций", "Подберём акции под вашу экономику"),
   "инструменты": DRR,
