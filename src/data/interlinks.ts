@@ -1,12 +1,48 @@
-export type Interlink = { phrase: string; slug: string; to?: string };
+export type Interlink = { phrase: string; slug: string; to?: string; from?: string };
 
-const post = (phrase: string, slug: string): Interlink => ({ phrase, slug });
+// from — дата выхода статьи: до неё ссылка не ставится.
+const post = (phrase: string, slug: string, from?: string): Interlink => ({ phrase, slug, from });
 
 const page = (phrase: string, to: string, slug: string): Interlink => ({ phrase, slug, to });
 
 export const INTERLINKS: Interlink[] = [
+  // Ссылки на услуги — длинные фразы, стоят первыми, чтобы выигрывать у коротких.
+  page("аудит кабинета", "/uslugi/audit-kabineta", "svc-audit"),
+  page("настройка кабинета", "/uslugi/nastroyka-vendora", "svc-vendor"),
+  page("подключение к Яндекс Еде", "/uslugi/podklyuchenie-k-yandex-ede", "svc-podkl"),
+  page("оспорить штраф", "/uslugi/shtrafy-i-uderzhaniya", "svc-shtrafy"),
+  page("снизить ДРР", "/uslugi/snizhenie-drr", "svc-drr"),
+  page("поднять рейтинг", "/uslugi/povyshenie-reytinga", "svc-reyting"),
+  page("обучение персонала", "/uslugi/obuchenie-personala", "svc-obuch"),
+  page("консультаци", "/uslugi/konsultatsiya-restoratora", "svc-konsult"),
+
+  // Статьи блога.
+  post("услуги по продвижению", "uslugi-po-prodvizheniyu-servisa-yandex-eda"),
+  post("раскрутк", "raskrutka-restorana-v-yandex-ede"),
+  post("агентств", "agentstvo-po-prodvizheniyu-na-yandex-ede"),
+  post("выходить на агрегатор", "stoit-li-restoranu-vyhodit-na-agregator"),
+  post("сеть ресторанов", "set-restoranov-na-agregatore"),
+  post("сети ресторанов", "set-restoranov-na-agregatore"),
+  post("типичные ошибки", "oshibki-restoranov-na-agregatorah"),
+  post("ошибки ресторанов", "oshibki-restoranov-na-agregatorah"),
+  post("личный кабинет", "razdely-lichnogo-kabineta-vendor"),
+  post("Вендор", "razdely-lichnogo-kabineta-vendor"),
+  post("п. 14.7", "oferta-yandex-eda-razbor"),
+  post("договор оферты", "oferta-yandex-eda-razbor"),
+  post("правила и стандарты", "pravila-i-standarty-yandex-edy", "2026-10-15"),
+  post("рекламн", "reklama-v-yandex-ede"),
+  post("подключить ресторан", "kak-podklyuchit-restoran-k-yandex-ede"),
+  post("поддержк", "podderzhka-yandex-edy-dlya-restoranov", "2026-10-13"),
+  post("модерац", "moderatsiya-blyud-yandex-eda", "2026-10-14"),
+  post("описание блюд", "opisanie-blyuda-dlya-agregatora", "2026-10-19"),
+  post("стоп-лист", "stop-list-yandex-eda", "2026-10-12"),
+  post("комбо-набор", "kombo-v-yandex-ede", "2026-10-16"),
+  post("Купер", "kuper-dlya-restorana", "2026-10-23"),
+  post("свой сайт", "svoy-sayt-dostavki-ili-agregator", "2026-10-21"),
+  post("сезонност", "sezonnost-dostavki-edy", "2026-10-26"),
+
   post("рейтинг отмен", "kak-snizit-otmeny-zakazov"),
-  post("режим высокой нагрузки", "zony-dostavki-i-grafik-raboty"),
+  post("режим высокой нагрузки", "rezhim-vysokaya-nagruzka-yandex-eda"),
   post("аукцион второй цены", "prodvizhenie-restorana-na-yandex-ede"),
   post("индекс видимости", "kak-popast-v-top-vydachi"),
   post("медианное место", "kak-popast-v-top-vydachi"),

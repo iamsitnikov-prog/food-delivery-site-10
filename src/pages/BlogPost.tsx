@@ -12,6 +12,7 @@ import PostBody from "@/components/blog/PostBody";
 import PostAuthor from "@/components/blog/PostAuthor";
 import PostFeedback from "@/components/blog/PostFeedback";
 import ChannelsBlock from "@/components/shared/ChannelsBlock";
+import { serviceForPost } from "@/data/post-services";
 import useSeo from "@/hooks/use-seo";
 import PageNotFound from "@/pages/PageNotFound";
 import { isPreviewMode, isScheduled, visiblePosts, formatDate, exitPreview } from "@/lib/schedule";
@@ -221,7 +222,25 @@ const BlogPost = () => {
           <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-20 lg:items-start">
             <div className="min-w-0">
               <PostBody blocks={post.blocks} slug={post.slug} />
-              <div className="mt-12">
+              {(() => {
+                const svc = serviceForPost(post.slug, post.tag);
+                return (
+                  <Link
+                    to={svc.to}
+                    className="group mt-12 flex items-center justify-between gap-4 rounded-[24px] border border-foreground/12 p-5 transition-colors hover:border-foreground/40 md:p-6"
+                  >
+                    <span className="min-w-0">
+                      <span className="block text-[max(12px,0.8em)] uppercase tracking-wide text-muted-foreground">
+                        поможем с этим
+                      </span>
+                      <span className="mt-1.5 block font-display text-[1.2em] font-semibold leading-tight">{svc.label}</span>
+                      <span className="mt-1.5 block text-[max(12px,0.9em)] leading-snug text-muted-foreground">{svc.note}</span>
+                    </span>
+                    <Icon name="ArrowUpRight" size={22} className="shrink-0 text-foreground/60 transition-colors group-hover:text-foreground" />
+                  </Link>
+                );
+              })()}
+              <div className="mt-8">
                 <ChannelsBlock source={`blog:${post.slug}`} />
               </div>
               <PostFeedback slug={post.slug} title={post.h1} />

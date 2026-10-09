@@ -6,7 +6,11 @@ import { INTERLINKS } from "@/data/interlinks";
 type Node = string | JSX.Element;
 
 const linkify = (text: string, currentSlug: string, used: Set<string>): Node[] => {
-  const targets = INTERLINKS.filter((l) => l.slug !== currentSlug && !used.has(l.slug));
+  // Дата по UTC, как в пререндере: на статьи с будущей датой ссылку не ставим.
+  const today = new Date().toISOString().slice(0, 10);
+  const targets = INTERLINKS.filter(
+    (l) => l.slug !== currentSlug && !used.has(l.slug) && (!l.from || l.from <= today),
+  );
   if (!targets.length) return [text];
 
   let best: { idx: number; slug: string; phrase: string; to: string } | null = null;
