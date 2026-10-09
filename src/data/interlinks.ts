@@ -6,7 +6,7 @@ const page = (phrase: string, to: string, slug: string): Interlink => ({ phrase,
 
 export const INTERLINKS: Interlink[] = [
   post("рейтинг отмен", "kak-snizit-otmeny-zakazov"),
-  post("режим высокой загрузки", "zony-dostavki-i-grafik-raboty"),
+  post("режим высокой нагрузки", "zony-dostavki-i-grafik-raboty"),
   post("аукцион второй цены", "prodvizhenie-restorana-na-yandex-ede"),
   post("индекс видимости", "kak-popast-v-top-vydachi"),
   post("медианное место", "kak-popast-v-top-vydachi"),
