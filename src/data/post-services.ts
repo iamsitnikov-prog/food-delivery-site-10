@@ -41,6 +41,15 @@ const BY_SLUG: Record<string, PostService> = {
   "uslugi-po-prodvizheniyu-servisa-yandex-eda": AUDIT,
   "restoran-skryt-na-servise-chto-delat": S("rabota-s-otmenami", "Работа с отменами", "Разбор причин и процессы на кухне"),
   "podderzhka-yandex-edy-dlya-restoranov": KONSULT,
+  "yandex-eda-integratsiya-iiko": VENDOR,
+  "otchet-agenta-yandex-eda": ANALITIKA,
+  "dark-kitchen-kak-otkryt": PODKL,
+  "pretenziya-k-yandex-ede": SHTRAFY,
+  "kak-otkryt-dostavku-edy": PODKL,
+  "chibbis-dlya-restorana": KONSULT,
+  "upakovka-dlya-dostavki-edy": REYTING,
+  "kakoy-drr-normalnyy-dlya-restorana": DRR,
+  "marketing-dostavki-edy": DRR,
 };
 
 const BY_TAG: Record<string, PostService> = {

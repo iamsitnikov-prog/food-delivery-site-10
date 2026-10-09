@@ -39,6 +39,8 @@ const CHECK = (slug: string, label: string, note: string): ResourceLink => ({
 
 export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
   "podklyuchenie-k-yandex-ede": [
+    BLOG("kak-otkryt-dostavku-edy", "Как открыть доставку еды с нуля", "Модели, документы и расходы", "2026-10-27"),
+    BLOG("dark-kitchen-kak-otkryt", "Дарк китчен", "Как запустить кухню только на доставку", "2026-10-20"),
     BLOG("stoit-li-restoranu-vyhodit-na-agregator", "Стоит ли выходить на агрегатор", "Плюсы, минусы и экономика"),
     BLOG("kak-podklyuchit-restoran-k-yandex-ede", "Как подключить ресторан к Яндекс Еде", "Требования, документы и сроки"),
     BLOG("oferta-yandex-eda-razbor", "Разбор оферты Яндекс Еды", "Что подписываете при подключении"),
@@ -47,6 +49,7 @@ export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
     GLOSSARY("komissiya", "Комиссия агрегатора", "Почему ставка 35% или 20%"),
   ],
   "nastroyka-vendora": [
+    BLOG("yandex-eda-integratsiya-iiko", "Интеграция с iiko, r_keeper и 1С", "Как подключить кассу к Яндекс Еде"),
     BLOG("rezhim-vysokaya-nagruzka-yandex-eda", "Режим «высокая нагрузка»", "Когда включать и как не терять заказы"),
     BLOG("stop-list-yandex-eda", "Стоп-лист в Яндекс Еде", "Как вести без отмен и штрафов", "2026-10-12"),
     {
@@ -75,6 +78,8 @@ export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
     GLOSSARY("kabinet-partnera", "Кабинет партнёра", "Чему учим команду в первую очередь"),
   ],
   "snizhenie-drr": [
+    BLOG("kakoy-drr-normalnyy-dlya-restorana", "Какой ДРР нормальный", "Как посчитать свою норму", "2026-11-05"),
+    BLOG("marketing-dostavki-edy", "Маркетинг доставки еды", "Каналы и бюджет", "2026-11-10"),
     BLOG("kak-snizit-drr-na-agregatore", "Как снизить ДРР", "Разбор по шагам"),
     BLOG("reklama-v-yandex-ede", "Реклама в Яндекс Еде", "Форматы и сколько стоит каждый"),
     CALC("drr", "Калькулятор ДРР", "Считаем предельный ДРР по вашей марже"),
@@ -82,6 +87,7 @@ export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
     GLOSSARY("romi", "ROMI", "Отдача рекламы в прибыли, а не в выручке"),
   ],
   "povyshenie-reytinga": [
+    BLOG("upakovka-dlya-dostavki-edy", "Упаковка для доставки еды", "Требования и выбор тары", "2026-11-03"),
     BLOG("kontrol-kachestva-zakazov", "Контроль качества заказов", "Как не попасть в тот самый 1%"),
     BLOG("kak-podnyat-reyting-na-yandex-ede", "Как поднять рейтинг", "Что влияет на оценку"),
     BLOG("kak-rabotat-s-otzyvami-v-dostavke", "Как работать с отзывами", "Ответы на негатив и жалобы"),
@@ -127,6 +133,7 @@ export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
     CHECK("kachestvo-i-reyting", "Чек-лист качества", "Разбор причин по сменам"),
   ],
   "shtrafy-i-uderzhaniya": [
+    BLOG("pretenziya-k-yandex-ede", "Претензия к Яндекс Еде", "Как составить и куда отправить", "2026-10-22"),
     BLOG("shtrafy-po-oferte-kak-osporit", "Как оспорить штраф по оферте", "Основания и порядок спора"),
     BLOG("oferta-yandex-eda-razbor", "Разбор оферты и п. 14.7", "Как штрафы попадают в отчёт"),
     GLOSSARY("uderzhaniya", "Удержания", "За что сервис вычитает деньги"),
@@ -134,6 +141,7 @@ export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
     CHECK("kachestvo-i-reyting", "Чек-лист качества", "Профилактика удержаний"),
   ],
   "analitika-i-otchetnost": [
+    BLOG("otchet-agenta-yandex-eda", "Отчёт агента Яндекс Еды", "Как читать и провести в 1С"),
     BLOG("analitika-restorana-na-agregatore", "Аналитика ресторана", "Какие отчёты смотреть"),
     BLOG("akty-i-otchety-yandex-eda-13-dney", "Акты и отчёты Яндекс Еды", "Сроки и что проверять"),
     GLOSSARY("abc-analiz", "ABC-анализ", "Разделение меню по вкладу в выручку"),
@@ -160,6 +168,7 @@ export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
     COMPARE,
   ],
   "konsultatsiya-restoratora": [
+    BLOG("chibbis-dlya-restorana", "Чиббис для ресторана", "Подключение и условия", "2026-10-29"),
     BLOG("agentstvo-po-prodvizheniyu-na-yandex-ede", "Агентство по продвижению на Яндекс Еде", "Когда нужно и как выбрать"),
     BLOG("stoit-li-restoranu-vyhodit-na-agregator", "Стоит ли выходить на агрегатор", "Плюсы, минусы и экономика"),
     BLOG("pochemu-net-zakazov-na-yandex-ede", "Почему нет заказов", "С чего начать разбор"),

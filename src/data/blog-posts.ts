@@ -13,10 +13,12 @@ import { FINANCE_POSTS } from "./posts/finance";
 import { OFERTA_POSTS } from "./posts/oferta";
 import { PLANNED_POSTS } from "./posts/planned";
 import { OCTOBER_POSTS } from "./posts/october";
+import { SEMCORE_POSTS } from "./posts/semcore";
 
 export type { PostBlock, BlogPost } from "./blog-types";
 
 export const BLOG_POSTS: BlogPost[] = [
+  ...SEMCORE_POSTS,
   ...OCTOBER_POSTS,
   ...PLANNED_POSTS,
   ...OFERTA_POSTS,
