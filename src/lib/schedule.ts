@@ -30,12 +30,8 @@ export const isPreviewMode = (): boolean => {
   }
 };
 
-const today = () => {
-  const d = new Date();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${d.getFullYear()}-${m}-${day}`;
-};
+// Дата по Москве, одинаковая у посетителя, при сборке и в пререндере (scripts/prerender.ts).
+const today = () => new Date(Date.now() + 3 * 3600 * 1000).toISOString().slice(0, 10);
 
 export const isPublished = (post: Pick<BlogPost, "date">): boolean =>
   !post.date || post.date <= today();
