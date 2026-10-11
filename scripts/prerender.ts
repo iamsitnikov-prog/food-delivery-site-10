@@ -34,7 +34,8 @@ import {
 } from "../src/data/home";
 import { NAV, USEFUL_LINKS } from "../src/components/landing/nav-links";
 
-const todayISO = () => new Date().toISOString().slice(0, 10);
+// Дата по Москве: статья выходит в 00:00 МСК своего дня, а не в 03:00 (UTC).
+const todayISO = () => new Date(Date.now() + 3 * 3600 * 1000).toISOString().slice(0, 10);
 const BLOG_POSTS = ALL_POSTS.filter((p) => !p.date || p.date <= todayISO());
 
 const SITE = "https://agregatory.pro";
