@@ -10,7 +10,7 @@ import { BLOG_POSTS } from "@/data/post-index";
 import { visiblePosts, isPreviewMode, isScheduled, formatDate, exitPreview } from "@/lib/schedule";
 import { BLOG_GROUPS } from "@/data/blog-groups";
 
-const REACTIONS_API = "https://functions.poehali.dev/5384928e-d232-4529-9e00-cfdcc6458060";
+const REACTIONS_API = "/api/reactions.php";
 const TOP_MIN_LIKES = 3;
 
 const Blog = () => {

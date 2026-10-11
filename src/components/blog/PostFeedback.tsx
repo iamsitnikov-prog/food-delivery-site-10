@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Icon from "@/components/ui/icon";
 import { reachGoal } from "@/lib/metrika";
 
-const API = "https://functions.poehali.dev/5384928e-d232-4529-9e00-cfdcc6458060";
+const API = "/api/reactions.php";
 const TELEGRAM = "https://t.me/sitnikovy1";
 const WHATSAPP = "https://wa.me/79310028222";
 

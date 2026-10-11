@@ -20,7 +20,7 @@ const STATUSES = [
 
 const CHANNELS = ["Телефон", "Telegram", "WhatsApp", "MAX"];
 
-const LEAD_URL = "https://functions.poehali.dev/3df83e5c-d49d-4a84-8862-107cedfd17f0";
+const LEAD_URL = "/api/lead.php";
 
 type Errors = Partial<Record<"name" | "phone" | "agree", string>>;
 
