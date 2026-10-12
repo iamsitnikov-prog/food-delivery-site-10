@@ -81,13 +81,12 @@ const MiniQuizPage = () => {
   const current = quiz.questions[step];
   const answer = picked[step] ?? null;
   const answered = answer !== null;
-  const isRight = answered && answer === current.correct;
   const progress = done ? 100 : Math.round(((step + (answered ? 1 : 0)) / total) * 100);
   const pageUrl = `${SITE}${pathname}`;
   const shareText = `Мой результат в мини тесте «${quiz.navLabel}»: ${score} из ${total}. А у вас сколько?`;
 
+  // Ответ можно менять, пока тест не закончен. Верно или нет, видно только в конце.
   const choose = (i: number) => {
-    if (answered) return;
     const next = [...picked];
     next[step] = i;
     setPicked(next);
@@ -103,6 +102,10 @@ const MiniQuizPage = () => {
     setDone(true);
     reachGoal("mini_quiz_finish", { quiz: quiz.slug, score: finalScore });
     window.scrollTo({ top: document.getElementById("quiz")?.offsetTop ?? 0, behavior: "smooth" });
+  };
+
+  const back = () => {
+    if (step > 0) setStep(step - 1);
   };
 
   const restart = () => {
@@ -278,59 +281,57 @@ const MiniQuizPage = () => {
 
               <div className="mt-7 space-y-3">
                 {current.options.map((o, i) => {
-                  const right = i === current.correct;
                   const mine = i === answer;
-                  const state = !answered
-                    ? "border-cream/15 bg-cream/[0.04] hover:border-brand hover:bg-brand hover:text-foreground"
-                    : right
-                      ? "border-brand bg-brand text-foreground"
-                      : mine
-                        ? "border-[#ff7a59] bg-[#ff7a59]/15 text-cream"
-                        : "border-cream/10 bg-transparent text-cream-muted";
                   return (
                     <button
                       key={o}
                       type="button"
-                      disabled={answered}
+                      aria-pressed={mine}
                       onClick={() => choose(i)}
-                      className={`flex w-full items-start gap-3 rounded-2xl border px-4 py-4 text-left text-[1em] leading-snug transition-colors md:px-5 ${state}`}
+                      className={`flex w-full items-start gap-3 rounded-2xl border px-4 py-4 text-left text-[1em] leading-snug transition-colors md:px-5 ${
+                        mine
+                          ? "border-brand bg-brand text-foreground"
+                          : "border-cream/15 bg-cream/[0.04] hover:border-brand"
+                      }`}
                     >
                       <span
                         className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[0.9em] font-bold ${
-                          answered && right ? "bg-foreground text-brand" : "bg-cream/10"
+                          mine ? "bg-foreground text-brand" : "bg-cream/10"
                         }`}
                       >
                         {LETTERS[i]}
                       </span>
                       <span className="pt-0.5">{o}</span>
-                      {answered && (right || mine) && (
-                        <Icon
-                          name={right ? "Check" : "X"}
-                          size={20}
-                          className="ml-auto mt-0.5 shrink-0"
-                        />
-                      )}
                     </button>
                   );
                 })}
               </div>
 
-              {answered && (
-                <div className="mt-6 rounded-2xl bg-cream/[0.07] p-4 md:p-6" aria-live="polite">
-                  <div className={`font-display text-[1.1em] font-semibold ${isRight ? "text-brand" : "text-[#ff9a80]"}`}>
-                    {isRight ? "Верно" : `Неверно. Правильный ответ: ${LETTERS[current.correct]}`}
-                  </div>
-                  <p className="mt-2 leading-relaxed text-cream-muted">{current.explain}</p>
+              <div className="mt-7 flex flex-wrap items-center justify-between gap-4">
+                {step > 0 ? (
                   <button
                     type="button"
-                    onClick={goNext}
-                    className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 font-semibold text-foreground transition-transform hover:-translate-y-0.5 sm:w-auto"
+                    onClick={back}
+                    className="inline-flex items-center gap-2 text-[max(12px,0.9em)] text-cream-muted transition-colors hover:text-cream"
                   >
-                    {step + 1 < total ? "следующий вопрос" : "показать результат"}
-                    <Icon name="ArrowRight" size={18} />
+                    <Icon name="ArrowLeft" size={16} />
+                    назад
                   </button>
-                </div>
-              )}
+                ) : (
+                  <span className="text-[max(12px,0.85em)] text-cream-muted">
+                    ответы и разбор покажем в конце
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={goNext}
+                  disabled={!answered}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand px-6 py-3.5 font-semibold text-foreground transition-transform enabled:hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 sm:w-auto"
+                >
+                  {step + 1 < total ? "следующий вопрос" : "показать результат"}
+                  <Icon name="ArrowRight" size={18} />
+                </button>
+              </div>
             </>
           ) : (
             <>
@@ -411,26 +412,42 @@ const MiniQuizPage = () => {
                 </div>
               </div>
 
-              <h3 className="mt-9 font-display text-[1.2em] font-semibold">Ваши ответы</h3>
-              <ol className="mt-4 space-y-3">
+              <h3 className="mt-9 font-display text-[1.3em] font-semibold">Разбор ответов</h3>
+              <ol className="mt-4 space-y-4">
                 {quiz.questions.map((q, i) => {
-                  const ok = picked[i] === q.correct;
+                  const mine = picked[i];
+                  const ok = mine === q.correct;
                   return (
-                    <li key={q.question} className="flex gap-3 leading-snug">
-                      <Icon
-                        name={ok ? "Check" : "X"}
-                        size={18}
-                        className={`mt-0.5 shrink-0 ${ok ? "text-brand" : "text-[#ff9a80]"}`}
-                      />
-                      <span className="text-cream-muted">
-                        <span className="text-cream">{i + 1}. {q.question}</span>
-                        {!ok && (
-                          <>
-                            {" "}
-                            Правильно: {LETTERS[q.correct]}. {q.options[q.correct]}
-                          </>
-                        )}
-                      </span>
+                    <li key={q.question} className="rounded-2xl bg-cream/[0.06] p-4 md:p-6">
+                      <div className="flex items-start gap-3">
+                        <span
+                          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${
+                            ok ? "bg-brand text-foreground" : "bg-[#ff7a59] text-foreground"
+                          }`}
+                        >
+                          <Icon name={ok ? "Check" : "X"} size={16} />
+                        </span>
+                        <div className="min-w-0">
+                          <div className="font-semibold leading-snug">
+                            {i + 1}. {q.question}
+                            {q.hard && (
+                              <span className="ml-2 inline-block rounded-md bg-brand px-2 py-0.5 align-middle text-[0.72em] font-semibold text-foreground">
+                                с подвохом
+                              </span>
+                            )}
+                          </div>
+                          {!ok && mine != null && (
+                            <p className="mt-2 leading-snug text-[#ff9a80]">
+                              Ваш ответ: {LETTERS[mine]}. {q.options[mine]}
+                            </p>
+                          )}
+                          <p className="mt-2 leading-snug text-brand">
+                            {ok ? "Ваш ответ верный: " : "Правильно: "}
+                            {LETTERS[q.correct]}. {q.options[q.correct]}
+                          </p>
+                          <p className="mt-2 leading-relaxed text-cream-muted">{q.explain}</p>
+                        </div>
+                      </div>
                     </li>
                   );
                 })}

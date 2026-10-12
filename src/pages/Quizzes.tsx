@@ -66,7 +66,7 @@ const QuizzesPage = () => {
           мини тесты
         </h2>
         <p className="mt-2 max-w-[600px] leading-snug text-muted-foreground">
-          10 сложных вопросов на одну тему. После каждого ответа разбор, в&nbsp;конце карточка
+          10 сложных вопросов на одну тему. В&nbsp;конце счёт, разбор каждого ответа и&nbsp;карточка
           с&nbsp;результатом, которой можно поделиться.
         </p>
         <div className="mt-6 grid gap-3 md:gap-4 sm:grid-cols-2">
