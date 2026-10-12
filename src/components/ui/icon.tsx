@@ -19,11 +19,13 @@ import {
   CircleHelp,
   ClipboardCheck,
   Clock,
+  Copy,
   Download,
   Eye,
   FileBarChart,
   FileSignature,
   FileText,
+  Flame,
   Gift,
   GitCompare,
   GraduationCap,
@@ -70,6 +72,7 @@ import {
   Wallet,
   Wrench,
   X,
+  Zap,
 } from 'lucide-react';
 
 const ICONS: Record<string, React.FC<LucideProps>> = {
@@ -91,11 +94,13 @@ const ICONS: Record<string, React.FC<LucideProps>> = {
   CircleHelp,
   ClipboardCheck,
   Clock,
+  Copy,
   Download,
   Eye,
   FileBarChart,
   FileSignature,
   FileText,
+  Flame,
   Gift,
   GitCompare,
   GraduationCap,
@@ -142,6 +147,7 @@ const ICONS: Record<string, React.FC<LucideProps>> = {
   Wallet,
   Wrench,
   X,
+  Zap,
 };
 
 interface IconProps extends LucideProps {

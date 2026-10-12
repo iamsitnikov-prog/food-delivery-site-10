@@ -10,6 +10,7 @@ import { CALC_PAGES, VISIBLE_CALC_PAGES } from "../src/data/calculators";
 import { CHECKLIST_PAGES } from "../src/data/checklists";
 import { READ_CHANNELS } from "../src/data/channels";
 import { QUIZZES } from "../src/data/quizzes";
+import { MINI_QUIZZES } from "../src/data/mini-quizzes";
 import { getCityCase, CITY_CASES } from "../src/data/city-cases";
 import { getChecklistPage } from "../src/data/checklists";
 import { GLOSSARY, GLOSSARY_LETTERS } from "../src/data/glossary";
@@ -333,12 +334,31 @@ pages.push({
     "Бесплатные тесты: экспресс-аудит заведения, знание кабинета Яндекс Еды, экономика доставки, качество и рейтинг, требования 289-ФЗ. С разбором ответов.",
   body: `<h1>Тесты о работе с агрегаторами</h1>
 <p>Проверьте своё заведение или собственные знания. Все тесты бесплатны, регистрация не нужна.</p>
+<h2>Мини тесты</h2>
+<ul>${MINI_QUIZZES.map(
+    (q) =>
+      `<li><a href="/testy/mini/${q.slug}">${esc(clean(q.navLabel))}</a> — ${esc(clean(q.lead))}</li>`,
+  ).join("")}</ul>
 <ul>${QUIZZES.map(
     (q) =>
       `<li><a href="/testy/${q.slug}">${esc(clean(q.navLabel))}</a> — ${esc(clean(q.lead))}</li>`,
   ).join("")}</ul>
 <p>Телефон: +7 931 002-82-22</p>`,
 });
+
+for (const q of MINI_QUIZZES) {
+  pages.push({
+    route: `/testy/mini/${q.slug}`,
+    title: q.title,
+    description: q.description,
+    body: `<h1>${esc(clean(q.h1))}</h1>
+<p>${esc(clean(q.intro))}</p>
+<p>Вопросов: ${q.questions.length}. Время прохождения: ${esc(clean(q.minutes))}.</p>
+<h2>Вопросы</h2>
+<ol>${q.questions.map((x) => `<li>${esc(clean(x.question))}</li>`).join("")}</ol>
+<p><a href="/testy">Все тесты</a></p>`,
+  });
+}
 
 for (const q of QUIZZES) {
   pages.push({
@@ -1034,6 +1054,7 @@ const ROUTE_CHUNKS: [RegExp, string][] = [
   [/^\/blog\/.+/, "BlogPost"],
   [/^\/partnery$/, "Partners"],
   [/^\/testy$/, "Quizzes"],
+  [/^\/testy\/mini\/.+$/, "MiniQuiz"],
   [/^\/(test|testy\/.+)$/, "Quiz"],
   [/^\/kalkulyatory$/, "Calculators"],
   [/^\/kalkulyatory\/.+/, "CalculatorPage"],

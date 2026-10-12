@@ -6,6 +6,7 @@ import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
 import { QUIZ_META } from "@/data/quiz-meta";
+import { MINI_QUIZZES } from "@/data/mini-quizzes";
 
 const QuizzesPage = () => {
   const { pathname } = useLocation();
@@ -59,6 +60,42 @@ const QuizzesPage = () => {
           </p>
         </section>
       </div>
+
+      <section className="px-5 pb-10 md:px-14 md:pb-16">
+        <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
+          мини тесты
+        </h2>
+        <p className="mt-2 max-w-[600px] leading-snug text-muted-foreground">
+          10 сложных вопросов на одну тему. После каждого ответа разбор, в&nbsp;конце карточка
+          с&nbsp;результатом, которой можно поделиться.
+        </p>
+        <div className="mt-6 grid gap-3 md:gap-4 sm:grid-cols-2">
+          {MINI_QUIZZES.map((q) => (
+            <Link
+              key={q.slug}
+              to={`/testy/mini/${q.slug}`}
+              className="group rounded-[28px] bg-surface p-4 text-cream transition-transform hover:-translate-y-1 md:p-8"
+            >
+              <div className="flex items-center justify-between gap-3 md:gap-4">
+                <span className="rounded-lg bg-brand px-2.5 py-1 text-[max(12px,0.78em)] font-semibold text-foreground">
+                  Мини тест
+                </span>
+                <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[max(12px,0.78em)] font-medium text-cream-muted">
+                  {q.questions.length} вопросов · {q.minutes}
+                </span>
+              </div>
+              <h3 className="mt-4 font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em]">
+                {q.navLabel}
+              </h3>
+              <p className="mt-3 leading-relaxed text-cream-muted">{q.lead}</p>
+              <span className="mt-5 inline-flex items-center gap-2 text-[0.92em] font-medium text-brand">
+                пройти тест
+                <Icon name="ArrowRight" size={16} />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
 
       <section className="px-5 pb-10 md:px-14 md:pb-16">
         <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">

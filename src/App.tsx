@@ -17,6 +17,7 @@ const PartnersPage = lazy(() => import("./pages/Partners"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Quiz = lazy(() => import("./pages/Quiz"));
 const Quizzes = lazy(() => import("./pages/Quizzes"));
+const MiniQuiz = lazy(() => import("./pages/MiniQuiz"));
 const Calculators = lazy(() => import("./pages/Calculators"));
 const CalcPreview = lazy(() => import("./pages/CalcPreview"));
 const CalculatorPage = lazy(() => import("./pages/CalculatorPage"));
@@ -60,6 +61,7 @@ export const AppShell = ({ Router }: { Router: (p: { children: ReactNode }) => J
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/test" element={<Quiz />} />
           <Route path="/testy" element={<Quizzes />} />
+          <Route path="/testy/mini/:slug" element={<MiniQuiz />} />
           <Route path="/testy/:slug" element={<Quiz />} />
           <Route path="/preview/kalkulyatory-a7f3k9" element={<CalcPreview />} />
           <Route path="/kalkulyatory" element={<Calculators />} />
