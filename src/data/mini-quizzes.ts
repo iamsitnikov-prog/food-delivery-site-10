@@ -1,6 +1,8 @@
 // Мини тесты: 10 вопросов, после каждого ответа разбор, в конце карточка результата.
 // На страницах мини тестов нет блоков услуг и формы заявки (решение Юрия 13.10.2026).
 // Варианты ответов НЕ перемешиваются: правильные ответы заранее стоят на разных местах.
+// Каждый тест появляется на сайте в свою дату (поле date, по московскому времени).
+import { NEXT_MINI_QUIZZES } from "./mini-quizzes-next";
 
 export type MiniQuestion = {
   question: string;
@@ -15,6 +17,8 @@ export type MiniLevel = { min: number; title: string; text: string };
 
 export type MiniQuiz = {
   slug: string;
+  /** Дата выхода теста, YYYY-MM-DD. До этой даты тест скрыт */
+  date: string;
   navLabel: string;
   h1: string;
   title: string;
@@ -30,9 +34,10 @@ export type MiniQuiz = {
   levels: MiniLevel[];
 };
 
-export const MINI_QUIZZES: MiniQuiz[] = [
+const FIRST_MINI_QUIZZES: MiniQuiz[] = [
   {
     slug: "platformennaya-ekonomika",
+    date: "2026-10-13",
     navLabel: "Платформенная экономика",
     h1: "Мини тест: платформенная экономика",
     title: "Мини тест по платформенной экономике | agregatory.pro",
@@ -187,6 +192,16 @@ export const MINI_QUIZZES: MiniQuiz[] = [
     ],
   },
 ];
+
+export const ALL_MINI_QUIZZES: MiniQuiz[] = [...FIRST_MINI_QUIZZES, ...NEXT_MINI_QUIZZES];
+
+/** Сегодняшняя дата по Москве, YYYY-MM-DD */
+const moscowToday = () => new Date(Date.now() + 3 * 3600 * 1000).toISOString().slice(0, 10);
+
+/** Вышедшие тесты, новые первыми */
+export const MINI_QUIZZES: MiniQuiz[] = ALL_MINI_QUIZZES.filter((q) => q.date <= moscowToday()).sort(
+  (a, b) => b.date.localeCompare(a.date),
+);
 
 export const getMiniQuiz = (slug: string) => MINI_QUIZZES.find((q) => q.slug === slug);
 
