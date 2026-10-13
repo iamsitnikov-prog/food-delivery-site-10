@@ -1,7 +1,7 @@
 // Мини тесты: 10 вопросов, после каждого ответа разбор, в конце карточка результата.
 // На страницах мини тестов нет блоков услуг и формы заявки (решение Юрия 13.10.2026).
 // Варианты ответов НЕ перемешиваются: правильные ответы заранее стоят на разных местах.
-// Каждый тест появляется на сайте в свою дату (поле date, по московскому времени).
+// Поле date: дата поста о тесте в канале «Внутри Еды».
 import { NEXT_MINI_QUIZZES } from "./mini-quizzes-next";
 
 export type MiniQuestion = {
@@ -195,13 +195,8 @@ const FIRST_MINI_QUIZZES: MiniQuiz[] = [
 
 export const ALL_MINI_QUIZZES: MiniQuiz[] = [...FIRST_MINI_QUIZZES, ...NEXT_MINI_QUIZZES];
 
-/** Сегодняшняя дата по Москве, YYYY-MM-DD */
-const moscowToday = () => new Date(Date.now() + 3 * 3600 * 1000).toISOString().slice(0, 10);
-
-/** Вышедшие тесты, новые первыми */
-export const MINI_QUIZZES: MiniQuiz[] = ALL_MINI_QUIZZES.filter((q) => q.date <= moscowToday()).sort(
-  (a, b) => b.date.localeCompare(a.date),
-);
+/** Все мини тесты опубликованы сразу (решение Юрия 13.10), порядок по дате поста в канале */
+export const MINI_QUIZZES: MiniQuiz[] = [...ALL_MINI_QUIZZES].sort((a, b) => a.date.localeCompare(b.date));
 
 export const getMiniQuiz = (slug: string) => MINI_QUIZZES.find((q) => q.slug === slug);
 

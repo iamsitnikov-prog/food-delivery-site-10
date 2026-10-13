@@ -3,8 +3,7 @@ import { Link, Navigate, useLocation, useParams } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import useSeo from "@/hooks/use-seo";
 import { reachGoal } from "@/lib/metrika";
-import { getMiniLevel, getMiniQuiz, MINI_QUIZZES } from "@/data/mini-quizzes";
-import { QUIZ_META } from "@/data/quiz-meta";
+import { getMiniLevel, getMiniQuiz } from "@/data/mini-quizzes";
 
 // Мини тест: без блоков услуг, формы заявки и контактов (решение Юрия 13.10.2026).
 // Варианты не перемешиваются: правильные ответы заранее стоят на разных местах.
@@ -463,43 +462,6 @@ const MiniQuizPage = () => {
               </button>
             </>
           )}
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-[1240px] px-5 pb-11 md:px-14 md:pb-16">
-        <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">другие тесты</h2>
-        <div className="mt-6 grid gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3">
-          {[
-            ...MINI_QUIZZES.filter((m) => m.slug !== quiz.slug).map((m) => ({
-              href: `/testy/mini/${m.slug}`,
-              icon: "Zap",
-              tag: "Мини тест",
-              title: m.navLabel,
-              lead: m.lead,
-            })),
-            ...QUIZ_META.map((m) => ({
-              href: `/testy/${m.slug}`,
-              icon: m.icon,
-              tag: m.kind === "audit" ? m.minutes : `${m.count} вопросов`,
-              title: m.navLabel,
-              lead: m.lead,
-            })),
-          ].map((o) => (
-            <Link
-              key={o.href}
-              to={o.href}
-              className="rounded-[24px] bg-surface p-4 text-cream transition-transform hover:-translate-y-1 md:p-6"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <Icon name={o.icon} size={22} className="text-brand" />
-                <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[max(12px,0.74em)] font-medium text-cream-muted">
-                  {o.tag}
-                </span>
-              </div>
-              <h3 className="mt-3 font-display text-[1.12em] font-semibold leading-tight">{o.title}</h3>
-              <p className="mt-2 text-[max(12px,0.9em)] leading-snug text-cream-muted">{o.lead}</p>
-            </Link>
-          ))}
         </div>
       </section>
 
