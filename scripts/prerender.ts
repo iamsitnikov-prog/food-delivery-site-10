@@ -354,8 +354,6 @@ for (const q of MINI_QUIZZES) {
     body: `<h1>${esc(clean(q.h1))}</h1>
 <p>${esc(clean(q.intro))}</p>
 <p>Вопросов: ${q.questions.length}. Время прохождения: ${esc(clean(q.minutes))}.</p>
-<h2>Вопросы</h2>
-<ol>${q.questions.map((x) => `<li>${esc(clean(x.question))}</li>`).join("")}</ol>
 <p><a href="/testy">Все тесты</a></p>`,
   });
 }
