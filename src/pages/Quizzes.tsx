@@ -66,34 +66,38 @@ const QuizzesPage = () => {
           мини тесты
         </h2>
         <p className="mt-2 max-w-[600px] leading-snug text-muted-foreground">
-          10 сложных вопросов на одну тему. В&nbsp;конце счёт, разбор каждого ответа и&nbsp;карточка
-          с&nbsp;результатом, которой можно поделиться.
+          10 сложных вопросов по&nbsp;справке Яндекс Еды на&nbsp;одну тему. В&nbsp;конце счёт, разбор
+          каждого ответа и&nbsp;карточка с&nbsp;результатом, которой можно поделиться.
         </p>
-        <div className="mt-6 grid gap-3 md:gap-4 sm:grid-cols-2">
-          {MINI_QUIZZES.map((q) => (
-            <Link
-              key={q.slug}
-              to={`/testy/mini/${q.slug}`}
-              className="group rounded-[28px] bg-surface p-4 text-cream transition-transform hover:-translate-y-1 md:p-8"
-            >
-              <div className="flex items-center justify-between gap-3 md:gap-4">
-                <span className="rounded-lg bg-brand px-2.5 py-1 text-[max(12px,0.78em)] font-semibold text-foreground">
-                  Мини тест
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3">
+          {MINI_QUIZZES.map((q, i) => {
+            const short = q.lead.replace(/^\d+\s+вопросов по справке Яндекс Еды:\s*/i, "");
+            const lead = short.charAt(0).toUpperCase() + short.slice(1);
+            return (
+              <Link
+                key={q.slug}
+                to={`/testy/mini/${q.slug}`}
+                className="group flex h-full flex-col rounded-[24px] bg-surface p-5 text-cream transition-transform hover:-translate-y-1 md:p-6"
+              >
+                <span className="font-display text-[0.95em] font-semibold tabular-nums text-brand">
+                  {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[max(12px,0.78em)] font-medium text-cream-muted">
-                  {q.questions.length} вопросов · {q.minutes}
-                </span>
-              </div>
-              <h3 className="mt-4 font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em]">
-                {q.navLabel}
-              </h3>
-              <p className="mt-3 leading-relaxed text-cream-muted">{q.lead}</p>
-              <span className="mt-5 inline-flex items-center gap-2 text-[0.92em] font-medium text-brand">
-                пройти тест
-                <Icon name="ArrowRight" size={16} />
-              </span>
-            </Link>
-          ))}
+                <h3 className="mt-2 font-display text-[1.25em] font-semibold leading-tight tracking-[-0.02em]">
+                  {q.navLabel}
+                </h3>
+                <p className="mt-2 text-[0.95em] leading-snug text-cream-muted">{lead}</p>
+                <div className="mt-auto flex items-center justify-between gap-3 pt-5">
+                  <span className="text-[max(12px,0.82em)] text-cream-muted">
+                    {q.questions.length} вопросов · {q.minutes}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 text-[0.92em] font-medium text-brand">
+                    пройти
+                    <Icon name="ArrowRight" size={16} className="transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
