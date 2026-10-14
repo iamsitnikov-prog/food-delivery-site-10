@@ -74,10 +74,10 @@ const RussiaMap = () => {
       <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-cream/20 pt-6">
         <span className="flex items-center gap-2 text-[max(12px,0.9em)]">
           <span className="h-2 w-2 rounded-full bg-brand" />
-          {CITY_PAGES.length} городов с отдельным разбором
+          {CITY_PAGES.filter((c) => !["kazakhstan", "belarus", "uzbekistan", "armeniya"].includes(c.slug)).length} городов с отдельным разбором
         </span>
         <span className="text-[max(12px,0.9em)] text-cream-muted">
-          и вся остальная Россия — работаем онлайн, от&nbsp;Калининграда до&nbsp;Дальнего Востока
+          и вся остальная Россия, а также Казахстан, Беларусь, Узбекистан и Армения — работаем онлайн
         </span>
       </div>
     </div>
