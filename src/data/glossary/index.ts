@@ -4,6 +4,7 @@ import { ECONOMICS_TERMS } from "./economics";
 import { OPERATIONS_TERMS } from "./operations";
 import { OWN_CHANNEL_TERMS } from "./own-channel";
 import type { GlossaryEntry, GlossaryTerm } from "./types";
+import { TERM_EXTRA } from "./extra";
 import { BLOG_POSTS } from "../blog-posts";
 
 export { GLOSSARY_GROUPS } from "./types";
@@ -38,6 +39,8 @@ const keepLiveLinks = (links?: { label: string; to: string }[]) => {
 
 export const GLOSSARY: GlossaryTerm[] = ALL.map((t) => ({
   ...t,
+  sections: [...(t.sections ?? []), ...(TERM_EXTRA[t.slug]?.sections ?? [])],
+  faq: [...(t.faq ?? []), ...(TERM_EXTRA[t.slug]?.faq ?? [])],
   letter: firstLetter(t.term),
   links: keepLiveLinks(t.links),
 })).sort((a, b) => a.term.localeCompare(b.term, "ru"));
