@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { SELLER_INN, SELLER_OGRNIP } from "@/data/payments";
 import { CITY_PAGES } from "@/data/seo-cities";
 import { SERVICE_PAGES } from "@/data/seo-services";
 import Icon from "@/components/ui/icon";
@@ -154,12 +155,24 @@ const Contacts = () => {
           >
             политика конфиденциальности
           </Link>
+          <Link
+            to="/oferta"
+            className="inline-flex min-h-[24px] items-center hover:text-cream"
+          >
+            оферта
+          </Link>
+          <Link
+            to="/oplata"
+            className="inline-flex min-h-[24px] items-center hover:text-cream"
+          >
+            оплата услуг
+          </Link>
         </nav>
         <span>© {new Date().getFullYear()} agregatory.pro</span>
       </div>
 
       <div className="mt-6 space-y-2 text-[max(12px,0.78em)] leading-relaxed text-cream-muted/80">
-        <p>ИП Ситников Юрий Сергеевич, ИНН 632509481120 · ИП Ковальчук Лилия Максимовна, ИНН 681601399981</p>
+        <p>ИП Ситников Юрий Сергеевич, ИНН {SELLER_INN}{SELLER_OGRNIP ? `, ОГРНИП ${SELLER_OGRNIP}` : ""} · ИП Ковальчук Лилия Максимовна, ИНН 681601399981</p>
         <p>
           При создании сайта все партнёры дали согласие на размещение и публикацию персональных и коммерческих данных.
         </p>

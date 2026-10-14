@@ -28,6 +28,9 @@ const ChecklistPage = lazy(() => import("./pages/ChecklistPage"));
 const Read = lazy(() => import("./pages/Read"));
 const Glossary = lazy(() => import("./pages/Glossary"));
 const GlossaryTerm = lazy(() => import("./pages/GlossaryTerm"));
+const Payment = lazy(() => import("./pages/Payment"));
+const PaymentResult = lazy(() => import("./pages/PaymentResult"));
+const Offer = lazy(() => import("./pages/Offer"));
 const NotFound = lazy(() => import("./pages/PageNotFound"));
 
 const queryClient = new QueryClient();
@@ -52,6 +55,9 @@ export const AppShell = ({ Router }: { Router: (p: { children: ReactNode }) => J
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/oplata" element={<Payment />} />
+          <Route path="/oplata/spasibo" element={<PaymentResult />} />
+          <Route path="/oferta" element={<Offer />} />
           <Route path="/uslugi" element={<SeoIndex kind="service" />} />
           <Route path="/uslugi/:slug" element={<SeoLanding />} />
           <Route path="/goroda" element={<SeoIndex kind="city" />} />

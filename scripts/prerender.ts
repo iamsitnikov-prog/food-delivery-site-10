@@ -34,6 +34,8 @@ import {
   HOME_ADVANTAGES,
 } from "../src/data/home";
 import { NAV, USEFUL_LINKS } from "../src/components/landing/nav-links";
+import { PAY_PRODUCTS, SELLER_INN, SELLER_OGRNIP, formatRub } from "../src/data/payments";
+import { OFFER_SECTIONS } from "../src/data/offer";
 
 // Дата по Москве: статья выходит в 00:00 МСК своего дня, а не в 03:00 (UTC).
 const todayISO = () => new Date(Date.now() + 3 * 3600 * 1000).toISOString().slice(0, 10);
@@ -85,6 +87,8 @@ type Page = {
   description: string;
   body: string;
   jsonLd?: unknown[];
+  /** Служебная страница: не индексировать и не класть в карту сайта. */
+  noindex?: boolean;
 };
 
 const blocksToText = (blocks: any[]): string => {
@@ -835,6 +839,39 @@ pages.push({
 });
 
 pages.push({
+  route: "/oplata",
+  title: "Оплата услуг онлайн картой и СБП | agregatory.pro",
+  description:
+    "Оплатите консультацию, аудит ресторана на агрегаторе или курс для команды банковской картой или через СБП. Чек придёт на почту, свяжемся в течение рабочего дня.",
+  body: `<h1>Оплата услуг картой или через СБП</h1>
+<p>Выберите услугу и заполните данные. Оплата проходит на защищённой странице ЮKassa, кассовый чек придёт на почту. После оплаты свяжемся с вами в течение рабочего дня.</p>
+<ul>${PAY_PRODUCTS.map(
+    (x) => `<li>${esc(x.title)}: ${x.price ? esc(formatRub(x.price)) : "сумма по счёту"}. ${esc(x.note)}</li>`,
+  ).join("")}</ul>
+<p>Исполнитель: ИП Ситников Юрий Сергеевич, ИНН ${SELLER_INN}${SELLER_OGRNIP ? `, ОГРНИП ${SELLER_OGRNIP}` : ""}. <a href="/oferta">Публичная оферта</a> · <a href="/privacy">Политика конфиденциальности</a></p>
+<p>Телефон: +7 931 002-82-22</p>`,
+});
+
+pages.push({
+  route: "/oplata/spasibo",
+  noindex: true,
+  title: "Статус оплаты | agregatory.pro",
+  description: "Статус оплаты услуги на agregatory.pro: подтверждение платежа, чек на почту и следующие шаги.",
+  body: `<h1>Статус оплаты</h1>
+<p>Проверяем оплату. Если вопросы, позвоните: +7 931 002-82-22.</p>`,
+});
+
+pages.push({
+  route: "/oferta",
+  title: "Публичная оферта на консультационные услуги | agregatory.pro",
+  description:
+    "Условия оказания консультаций, аудита ресторана на агрегаторе и обучения команды: стоимость, порядок оплаты картой и СБП, сроки, возврат, реквизиты исполнителя.",
+  body: `<h1>Публичная оферта на консультационные услуги</h1>
+${OFFER_SECTIONS.map((x) => `<h2>${esc(x.t)}</h2>${x.p.map((t) => `<p>${esc(t)}</p>`).join("")}`).join("\n")}
+<p><a href="/oplata">Оплата услуг</a> · <a href="/privacy">Политика конфиденциальности</a></p>`,
+});
+
+pages.push({
   route: "/chek-listy",
   title: "Чек-листы для ресторанов на агрегаторах | agregatory.pro",
   description:
@@ -1046,6 +1083,9 @@ const APP_ASSETS = readAppAssets();
 // статьи или термина сразу в <head>, чтобы всё грузилось параллельно.
 const ROUTE_CHUNKS: [RegExp, string][] = [
   [/^\/privacy$/, "Privacy"],
+  [/^\/oplata$/, "Payment"],
+  [/^\/oplata\/spasibo$/, "PaymentResult"],
+  [/^\/oferta$/, "Offer"],
   [/^\/(uslugi|goroda)$/, "SeoIndex"],
   [/^\/(uslugi|goroda)\/.+/, "SeoLanding"],
   [/^\/blog$/, "Blog"],
@@ -1142,9 +1182,9 @@ const render = (p: Page, app = "") => {
 <title>${esc(p.title)}</title>
 <meta name="description" content="${esc(p.description)}"/>
 <meta name="author" content="agregatory.pro"/>
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"/>
+<meta name="robots" content="${p.noindex ? "noindex, follow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}"/>
 <meta name="google-site-verification" content="6qSlSsAxE47iQkzbcwZK3msN0JIrBGB_DI4po2djsfI"/>
-<meta name="yandex" content="index, follow"/>
+<meta name="yandex" content="${p.noindex ? "noindex" : "index, follow"}"/>
 <link rel="canonical" href="${canonical}"/>
 <link rel="icon" href="/favicon.ico" sizes="any"/>
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=3"/>
@@ -1370,7 +1410,7 @@ const sitemapRoutes = Array.from(
     "/",
     // /test в карту сайта не попадает: это короткий адрес того же теста,
     // на сервере он отдаёт 301 на /testy/audit.
-    ...pages.filter((p) => !p.canonical).map((p) => p.route),
+    ...pages.filter((p) => !p.canonical && !p.noindex).map((p) => p.route),
   ]),
 ).sort();
 

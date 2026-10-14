@@ -1,14 +1,20 @@
 import Icon from "@/components/ui/icon";
+import { Link } from "react-router-dom";
 import useReveal from "@/hooks/use-reveal";
+import usePayEnabled from "@/hooks/use-pay-enabled";
+import { PAY_PRODUCTS, formatRub } from "@/data/payments";
+
+const priceOf = (code: string) => PAY_PRODUCTS.find((p) => p.code === code)!.price;
 
 const ITEMS = [
   {
     icon: "PhoneCall",
     tag: "личная встреча",
     title: "консультация",
-    price: "от 20 000 ₽",
-    note: "от 60 минут",
+    price: formatRub(priceOf("konsultaciya")),
+    note: "60 минут",
     cta: "заказать консультацию",
+    pay: "konsultaciya",
     points: [
       "Ответы на любые вопросы и сложности, связанные с доставкой",
       "Возможность записи консультации для последующего просмотра",
@@ -20,9 +26,10 @@ const ITEMS = [
     icon: "ClipboardCheck",
     tag: "анализ проекта",
     title: "аудит ресторана на агрегаторе",
-    price: "от 30 000 ₽",
+    price: formatRub(priceOf("audit")),
     note: "разовая услуга",
     cta: "заказать аудит",
+    pay: "audit",
     points: [
       "Всестороннее изучение текущего состояния проекта на агрегаторе",
       "Анализ внешнего вида проекта глазами пользователя",
@@ -49,6 +56,7 @@ const PROGRAM = [
 
 const Extra = () => {
   const ref = useReveal<HTMLElement>();
+  const payEnabled = usePayEnabled();
 
   return (
     <section id="extra" ref={ref} className="scroll-mt-4 px-5 pb-10 md:px-14 md:pb-28">
@@ -106,14 +114,27 @@ const Extra = () => {
                   </li>
                 ))}
               </ul>
-              <a
-                href="#lead"
-                className={`mt-8 inline-flex w-fit items-center justify-center rounded-xl px-7 py-4 font-medium transition-transform hover:-translate-y-0.5 ${
-                  light ? "bg-foreground text-brand" : "bg-brand text-foreground"
-                }`}
-              >
-                {item.cta}
-              </a>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a
+                  href="#lead"
+                  className={`inline-flex w-fit items-center justify-center rounded-xl px-7 py-4 font-medium transition-transform hover:-translate-y-0.5 ${
+                    light ? "bg-foreground text-brand" : "bg-brand text-foreground"
+                  }`}
+                >
+                  {item.cta}
+                </a>
+                {payEnabled && (
+                  <Link
+                    to={`/oplata?usluga=${item.pay}`}
+                    className={`inline-flex w-fit items-center justify-center gap-2 rounded-xl border px-7 py-4 font-medium transition-transform hover:-translate-y-0.5 ${
+                      light ? "border-foreground/30" : "border-cream/30"
+                    }`}
+                  >
+                    <Icon name="CreditCard" size={18} />
+                    оплатить онлайн
+                  </Link>
+                )}
+              </div>
             </article>
           );
         })}
@@ -132,7 +153,7 @@ const Extra = () => {
             </h3>
             <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <span className="font-display text-[1.8em] font-semibold leading-none tracking-[-0.03em] md:text-[2.4em]">
-                от 80 000 ₽
+                {formatRub(priceOf("kurs-komandy"))}
               </span>
               <span className="text-cream-muted">до 6 человек</span>
             </div>
@@ -147,12 +168,23 @@ const Extra = () => {
               ))}
             </ul>
 
-            <a
-              href="#lead"
-              className="mt-8 inline-flex items-center justify-center rounded-xl bg-brand px-7 py-4 font-medium text-foreground transition-transform hover:-translate-y-0.5"
-            >
-              записать команду на курс
-            </a>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href="#lead"
+                className="inline-flex items-center justify-center rounded-xl bg-brand px-7 py-4 font-medium text-foreground transition-transform hover:-translate-y-0.5"
+              >
+                записать команду на курс
+              </a>
+              {payEnabled && (
+                <Link
+                  to="/oplata?usluga=kurs-komandy"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-cream/30 px-7 py-4 font-medium transition-transform hover:-translate-y-0.5"
+                >
+                  <Icon name="CreditCard" size={18} />
+                  оплатить онлайн
+                </Link>
+              )}
+            </div>
           </div>
 
           <div className="rounded-xl border border-cream/20 p-4 md:p-7">
