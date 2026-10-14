@@ -260,6 +260,11 @@ const MiniQuizPage = () => {
                     вопрос с подвохом
                   </span>
                 )}
+                {current.superhard && (
+                  <span className="rounded-lg bg-[#ff9a80] px-3 py-1.5 font-semibold text-foreground">
+                    суперсложный вопрос
+                  </span>
+                )}
               </div>
               <div
                 className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-cream/15"
@@ -432,6 +437,11 @@ const MiniQuizPage = () => {
                             {q.hard && (
                               <span className="ml-2 inline-block rounded-md bg-brand px-2 py-0.5 align-middle text-[0.72em] font-semibold text-foreground">
                                 с подвохом
+                              </span>
+                            )}
+                            {q.superhard && (
+                              <span className="ml-2 inline-block rounded-md bg-[#ff9a80] px-2 py-0.5 align-middle text-[0.72em] font-semibold text-foreground">
+                                суперсложный
                               </span>
                             )}
                           </div>

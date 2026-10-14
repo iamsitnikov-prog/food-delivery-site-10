@@ -66,7 +66,7 @@ const QuizzesPage = () => {
           мини тесты
         </h2>
         <p className="mt-2 max-w-[600px] leading-snug text-muted-foreground">
-          10 сложных вопросов по&nbsp;справке Яндекс Еды на&nbsp;одну тему. В&nbsp;конце счёт, разбор
+          Сложные вопросы по&nbsp;справке Яндекс Еды на&nbsp;одну тему, в&nbsp;новых тестах по&nbsp;20, есть вопросы с&nbsp;подвохом и&nbsp;суперсложные. В&nbsp;конце счёт, разбор
           каждого ответа и&nbsp;карточка с&nbsp;результатом, которой можно поделиться.
         </p>
         <div className="mt-6 grid gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3">
