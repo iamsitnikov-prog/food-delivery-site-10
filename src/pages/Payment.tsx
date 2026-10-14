@@ -139,12 +139,12 @@ const Payment = () => {
                   aria-checked={active}
                   onClick={() => setCode(p.code)}
                   className={`flex items-start gap-4 rounded-[24px] p-5 text-left transition-colors md:p-6 ${
-                    active ? "bg-brand text-foreground" : "bg-pale text-foreground hover:bg-pale/70"
+                    active ? "bg-surface text-cream ring-2 ring-surface" : "bg-pale text-foreground hover:bg-pale/70"
                   }`}
                 >
                   <span
                     className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${
-                      active ? "bg-foreground text-brand" : "bg-foreground/10"
+                      active ? "bg-brand text-foreground" : "bg-foreground/10"
                     }`}
                   >
                     <Icon name={p.icon} size={20} />
@@ -156,7 +156,7 @@ const Payment = () => {
                         {p.price ? formatRub(p.price) : "своя сумма"}
                       </span>
                     </span>
-                    <span className="mt-1 block text-[0.92em] leading-snug text-foreground/75">{p.note}</span>
+                    <span className={`mt-1 block text-[0.92em] leading-snug ${active ? "text-cream-muted" : "text-foreground/75"}`}>{p.note}</span>
                   </span>
                 </button>
               );
