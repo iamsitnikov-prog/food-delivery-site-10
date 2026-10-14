@@ -16,11 +16,22 @@ import PageNotFound from "@/pages/PageNotFound";
 import { CITY_PAGES, SERVICE_PAGES, findPage } from "@/data/seo-pages";
 import { PEOPLE } from "@/data/team";
 import FaqSection from "@/components/shared/FaqSection";
+import usePayEnabled from "@/hooks/use-pay-enabled";
+
+// Страницы услуг с онлайн оплатой: адрес страницы → код услуги на /oplata.
+const PAY_BY_SLUG: Record<string, string> = {
+  "audit-kabineta": "audit",
+  "konsultatsiya-restoratora": "konsultaciya",
+  "obuchenie-personala": "kurs-komandy",
+};
 
 const SeoLanding = () => {
   const { slug } = useParams();
   const { pathname } = useLocation();
   const page = findPage(slug);
+  const payEnabled = usePayEnabled();
+  const payCode = page && page.kind === "service" ? PAY_BY_SLUG[page.slug] : undefined;
+  const payHref = payEnabled && payCode ? `/oplata?usluga=${payCode}` : "";
 
   const jsonLd = useMemo(() => {
     if (!page) return [];
@@ -108,6 +119,14 @@ const SeoLanding = () => {
             >
               бесплатный анализ <Icon name="ArrowRight" size={18} />
             </a>
+            {payHref && (
+              <Link
+                to={payHref}
+                className="inline-flex items-center gap-2 rounded-xl border border-foreground/25 px-7 py-4 font-medium transition-transform hover:-translate-y-0.5"
+              >
+                <Icon name="CreditCard" size={18} /> оплатить онлайн
+              </Link>
+            )}
             <a href="tel:+79310028222" className="text-[0.95em] text-muted-foreground hover:text-foreground">
               +7 931 002-82-22
             </a>
@@ -280,12 +299,22 @@ const SeoLanding = () => {
                   {page.price.value}
                 </div>
                 <p className="mt-3 text-[0.95em] leading-snug text-cream-muted">{page.price.text}</p>
-                <a
-                  href="#lead"
-                  className="mt-6 inline-flex items-center justify-center self-start rounded-xl bg-brand px-6 py-3.5 font-medium text-foreground md:mt-auto"
-                >
-                  получить расчёт <Icon name="ArrowRight" size={18} className="ml-2" />
-                </a>
+                <div className="mt-6 flex flex-wrap gap-3 md:mt-auto">
+                  <a
+                    href="#lead"
+                    className="inline-flex items-center justify-center rounded-xl bg-brand px-6 py-3.5 font-medium text-foreground"
+                  >
+                    получить расчёт <Icon name="ArrowRight" size={18} className="ml-2" />
+                  </a>
+                  {payHref && (
+                    <Link
+                      to={payHref}
+                      className="inline-flex items-center justify-center gap-2 rounded-xl border border-cream/30 px-6 py-3.5 font-medium"
+                    >
+                      <Icon name="CreditCard" size={18} /> оплатить онлайн
+                    </Link>
+                  )}
+                </div>
               </article>
             ) : null}
           </div>
