@@ -48,7 +48,7 @@ const SeoLanding = () => {
             jobTitle: p.role,
           })),
         },
-        areaServed: page.kind === "city" ? page.navLabel : "RU",
+        areaServed: page.kind === "city" ? page.navLabel : ["RU", "KZ", "BY", "UZ", "AM"],
       },
       {
         "@context": "https://schema.org",
@@ -304,22 +304,22 @@ const SeoLanding = () => {
         <div className="grid gap-6 md:gap-10 md:grid-cols-2">
           <div>
             <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
-              {page.kind === "service" ? "другие услуги" : "другие города"}
+              {page.kind === "service" ? "другие услуги" : "другие города и страны"}
             </h2>
             {page.kind === "city" && (
               <p className="mt-3 max-w-[460px] text-[0.95em] leading-snug text-muted-foreground">
-                Это лишь часть городов&nbsp;— работаем с&nbsp;ресторанами по&nbsp;всей России, от&nbsp;Калининграда до&nbsp;Дальнего Востока.
+                Это лишь часть городов&nbsp;— работаем с&nbsp;ресторанами по&nbsp;всей России, а&nbsp;также в&nbsp;Казахстане, Беларуси, Узбекистане и&nbsp;Армении.
               </p>
             )}
             <LinkCloud items={others} base={base} />
           </div>
           <div>
             <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em]">
-              {page.kind === "service" ? "работаем по всей России" : "наши услуги"}
+              {page.kind === "service" ? "работаем в России и СНГ" : "наши услуги"}
             </h2>
             {page.kind === "service" && (
               <p className="mt-3 max-w-[460px] text-[0.95em] leading-snug text-muted-foreground">
-                Обучение и&nbsp;поддержка проходят онлайн, поэтому подключаем и&nbsp;ведём рестораны в&nbsp;любом городе страны. Ниже&nbsp;— города, по&nbsp;которым мы&nbsp;расписали местную специфику.
+                Обучение и&nbsp;поддержка проходят онлайн, поэтому подключаем и&nbsp;ведём рестораны в&nbsp;любом городе России, а&nbsp;также в&nbsp;Казахстане, Беларуси, Узбекистане и&nbsp;Армении. Ниже&nbsp;— города и&nbsp;страны с&nbsp;местной спецификой.
               </p>
             )}
             <LinkCloud items={cross} base={crossBase} />

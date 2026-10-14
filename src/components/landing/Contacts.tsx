@@ -28,7 +28,7 @@ const Contacts = () => {
             <span className="block pl-[1.2em] text-brand">каждый день</span>
           </h2>
           <p className="mt-6 max-w-[380px] text-cream-muted">
-            Увеличьте свою выручку уже&nbsp;в&nbsp;первую неделю — просто оставьте заявку. Работаем с&nbsp;ресторанами по&nbsp;всей России.
+            Увеличьте свою выручку уже&nbsp;в&nbsp;первую неделю — просто оставьте заявку. Работаем с&nbsp;ресторанами по&nbsp;всей России и&nbsp;в&nbsp;странах СНГ, где есть Яндекс Еда.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a
@@ -121,7 +121,7 @@ const Contacts = () => {
               </li>
             ))}
           </ul>
-          <p className="mt-3 text-[max(12px,0.82em)] text-cream-muted/80">Работаем по всей России.</p>
+          <p className="mt-3 text-[max(12px,0.82em)] text-cream-muted/80">Работаем онлайн по всей России, а также в Казахстане, Беларуси, Узбекистане и Армении. Связь в Telegram и WhatsApp.</p>
         </nav>
       </div>
 
