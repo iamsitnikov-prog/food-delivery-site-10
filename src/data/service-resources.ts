@@ -39,6 +39,8 @@ const CHECK = (slug: string, label: string, note: string): ResourceLink => ({
 
 export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
   "podklyuchenie-k-yandex-ede": [
+    BLOG("yandex-eda-prodvizhenie-restorana-s-nulya", "Продвижение с нуля", "Чек-лист запуска на Яндекс Еде"),
+    BLOG("pervyy-mesyats-na-yandex-ede", "Первый месяц на Яндекс Еде", "Что делать по неделям"),
     BLOG("kak-otkryt-dostavku-edy", "Как открыть доставку еды с нуля", "Модели, документы и расходы", "2026-10-27"),
     BLOG("dark-kitchen-kak-otkryt", "Дарк китчен", "Как запустить кухню только на доставку", "2026-10-20"),
     BLOG("stoit-li-restoranu-vyhodit-na-agregator", "Стоит ли выходить на агрегатор", "Плюсы, минусы и экономика"),
@@ -63,6 +65,7 @@ export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
     COMPARE,
   ],
   "audit-kabineta": [
+    BLOG("oshibki-restoranov-na-agregatorah", "15 ошибок ресторанов на агрегаторах", "Что проверить у себя в первую очередь"),
     BLOG("uslugi-po-prodvizheniyu-servisa-yandex-eda", "Услуги по продвижению в Яндекс Еде", "Что входит и как выбрать подрядчика"),
     BLOG("pochemu-net-zakazov-na-yandex-ede", "Почему нет заказов", "Частые причины и что проверить"),
     BLOG("razdely-lichnogo-kabineta-vendor", "Яндекс Еда Вендор: обзор кабинета", "Что смотреть в каждом разделе"),
@@ -78,6 +81,8 @@ export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
     GLOSSARY("kabinet-partnera", "Кабинет партнёра", "Чему учим команду в первую очередь"),
   ],
   "snizhenie-drr": [
+    BLOG("prodvizhenie-dostavki-na-yandex-ede", "Продвижение доставки на Яндекс Еде", "Как вырастить канал"),
+    BLOG("prodvizhenie-na-yandex-dostavke", "Продвижение на Яндекс Доставке", "Чем отличается от Яндекс Еды"),
     BLOG("kakoy-drr-normalnyy-dlya-restorana", "Какой ДРР нормальный", "Как посчитать свою норму", "2026-11-05"),
     BLOG("marketing-dostavki-edy", "Маркетинг доставки еды", "Каналы и бюджет", "2026-11-10"),
     BLOG("kak-snizit-drr-na-agregatore", "Как снизить ДРР", "Разбор по шагам"),
@@ -117,6 +122,8 @@ export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
     GLOSSARY("konversiya-kartochki", "Конверсия карточки", "Как её измерить"),
   ],
   "nastroyka-aktsiy": [
+    BLOG("obedomaniya-yandex-eda", "Обедомания в Яндекс Еде", "Как попасть в обеденную подборку"),
+    BLOG("aktsiya-sekret-set", "Акция «Секрет сет»", "Продажа остатков через самовывоз"),
     BLOG("zadaniya-i-nagrady-yandex-eda", "Задания и награды Яндекс Еды", "Как получить бонусы на продвижение"),
     BLOG("referalnaya-programma-yandex-eda", "Реферальная программа", "Как привести гостей и получить бонус"),
     BLOG("kakie-aktsii-zapuskat-na-agregatore", "Какие акции запускать", "Механики и их экономика"),
@@ -126,6 +133,7 @@ export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
     CALC("rentabelnost-zakaza", "Рентабельность заказа", "Посчитайте акцию до запуска"),
   ],
   "rabota-s-otmenami": [
+    BLOG("otmeny-bez-ogranicheniya-dostupa", "Какие отмены не ведут к блокировке", "Три вида отмен без ограничения доступа"),
     BLOG("kak-snizit-otmeny-zakazov", "Как снизить отмены", "Причины и решения"),
     BLOG("stop-list-yandex-eda", "Стоп-лист в Яндекс Еде", "Главный источник отмен", "2026-10-12"),
     GLOSSARY("otmeny", "Отмены заказов", "Чем они бьют по выдаче"),
@@ -192,6 +200,8 @@ export const CITY_RESOURCES: ResourceLink[] = [
   BLOG("prodvizhenie-restorana-na-yandex-ede", "Продвижение ресторана в Яндекс Еде", "С чего начать"),
   BLOG("uslugi-po-prodvizheniyu-servisa-yandex-eda", "Услуги по продвижению в Яндекс Еде", "Что входит и как выбрать подрядчика"),
   BLOG("raskrutka-restorana-v-yandex-ede", "Раскрутка ресторана в Яндекс Еде", "Первые шаги и частые ошибки"),
+  BLOG("kak-podnyat-reyting-na-yandex-ede", "Как поднять рейтинг на Яндекс Еде", "Что влияет на оценку и как её вернуть"),
+  BLOG("set-restoranov-na-agregatore", "Сеть ресторанов на агрегаторе", "Как управлять всеми точками"),
 ];
 
 // Дата по UTC — так же, как в пререндере: статья с будущей датой ещё не опубликована.
