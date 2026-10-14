@@ -176,6 +176,46 @@ const footerLinks = () => {
 
 const pages: Page[] = [];
 
+// Услуги с фиксированной ценой и онлайн оплатой: разметка Service + Offer,
+// чтобы цена могла показываться в выдаче. Цены те же, что на странице оплаты.
+const PAY_BY_SLUG: Record<string, string> = {
+  "audit-kabineta": "audit",
+  "konsultatsiya-restoratora": "konsultaciya",
+  "obuchenie-personala": "kurs-komandy",
+};
+const serviceOfferLd = (p: { slug: string; kind: string; h1: string; description: string }) => {
+  const prod = p.kind === "service" ? PAY_PRODUCTS.find((x) => x.code === PAY_BY_SLUG[p.slug]) : undefined;
+  if (!prod) return [];
+  const url = `${SITE}/uslugi/${p.slug}`;
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": `${url}#service`,
+      name: clean(p.h1),
+      description: clean(p.description),
+      url,
+      serviceType: prod.title,
+      areaServed: [
+        { "@type": "Country", name: "Россия" },
+        { "@type": "Country", name: "Казахстан" },
+        { "@type": "Country", name: "Беларусь" },
+        { "@type": "Country", name: "Узбекистан" },
+        { "@type": "Country", name: "Армения" },
+      ],
+      provider: { "@type": "Organization", name: "agregatory.pro", url: `${SITE}/`, telephone: "+7-931-002-82-22" },
+      offers: {
+        "@type": "Offer",
+        price: String(prod.price),
+        priceCurrency: "RUB",
+        availability: "https://schema.org/InStock",
+        url: `${SITE}/oplata?usluga=${prod.code}`,
+        seller: { "@type": "Organization", name: `ИП Ситников Юрий Сергеевич`, taxID: SELLER_INN },
+      },
+    },
+  ];
+};
+
 for (const p of BLOG_POSTS) {
   pages.push({
     route: `/blog/${p.slug}`,
@@ -251,7 +291,9 @@ for (const p of [...SERVICE_PAGES, ...CITY_PAGES]) {
     route: `${prefix}/${p.slug}`,
     title: p.title,
     description: p.description,
-    jsonLd: p.faq?.length
+    jsonLd: [
+      ...serviceOfferLd(p),
+      ...(p.faq?.length
       ? [
           {
             "@context": "https://schema.org",
@@ -263,7 +305,8 @@ for (const p of [...SERVICE_PAGES, ...CITY_PAGES]) {
             })),
           },
         ]
-      : undefined,
+      : []),
+    ],
     body: `<article><h1>${esc(clean(p.h1))}</h1><p>${esc(clean(p.lead))}</p>
 ${p.when?.length ? `<h2>Когда это нужно</h2><ul>${p.when.map((w) => `<li><b>${esc(clean(w.t))}.</b> ${esc(clean(w.d))}</li>`).join("")}</ul>` : ""}
 ${blocks}${p.result ? `<p><b>${esc(clean(p.result.value))} — ${esc(clean(p.result.label))}.</b> ${esc(clean(p.result.text))}</p>` : ""}${caseHtml}${bullets}
