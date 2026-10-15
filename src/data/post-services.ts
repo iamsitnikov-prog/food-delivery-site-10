@@ -51,6 +51,8 @@ const BY_SLUG: Record<string, PostService> = {
   "upakovka-dlya-dostavki-edy": REYTING,
   "kakoy-drr-normalnyy-dlya-restorana": DRR,
   "marketing-dostavki-edy": DRR,
+  "reklama-restorana": AUDIT,
+  "sayt-dlya-dostavki-edy": KONSULT,
 };
 
 const BY_TAG: Record<string, PostService> = {

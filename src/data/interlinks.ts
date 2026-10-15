@@ -61,6 +61,11 @@ export const INTERLINKS: Interlink[] = [
   post("хороший ДРР", "kakoy-drr-normalnyy-dlya-restorana", "2026-11-05"),
   post("предельный ДРР", "kakoy-drr-normalnyy-dlya-restorana", "2026-11-05"),
   post("маркетинг доставки", "marketing-dostavki-edy", "2026-10-15"),
+  post("реклама ресторана", "reklama-restorana", "2026-10-15"),
+  post("рекламу ресторана", "reklama-restorana", "2026-10-15"),
+  post("сайт для доставки", "sayt-dlya-dostavki-edy", "2026-10-22"),
+  post("сайт доставки еды", "sayt-dlya-dostavki-edy", "2026-10-22"),
+  post("приложение для доставки", "sayt-dlya-dostavki-edy", "2026-10-22"),
 
   post("рейтинг отмен", "kak-snizit-otmeny-zakazov"),
   post("режим высокой нагрузки", "rezhim-vysokaya-nagruzka-yandex-eda"),
