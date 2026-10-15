@@ -42,7 +42,6 @@ const Payment = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [company, setCompany] = useState("");
   const [amount, setAmount] = useState("");
   const [invoice, setInvoice] = useState("");
   const [agree, setAgree] = useState(false);
@@ -83,7 +82,6 @@ const Payment = () => {
           name,
           phone,
           email: email.trim(),
-          company,
           amount: custom ? amountNum : undefined,
           invoice: custom ? invoice : undefined,
           agree,
@@ -123,8 +121,8 @@ const Payment = () => {
           <span className="block text-muted-foreground">картой или через СБП</span>
         </h1>
         <p className="mt-6 max-w-[620px] text-[1.05em] leading-snug">
-          Выберите услугу и&nbsp;заполните данные. Оплата проходит на&nbsp;защищённой странице ЮKassa, чек придёт
-          на&nbsp;почту. После оплаты свяжемся с&nbsp;вами в&nbsp;течение рабочего дня.
+          Онлайн оплата для физических лиц. Выберите услугу и&nbsp;заполните данные: оплата проходит на&nbsp;защищённой
+          странице ЮKassa, чек придёт на&nbsp;почту. После оплаты свяжемся с&nbsp;вами в&nbsp;течение рабочего дня.
         </p>
 
         <div className="mt-10 grid gap-4 lg:grid-cols-[1fr_1.05fr]">
@@ -161,6 +159,22 @@ const Payment = () => {
                 </button>
               );
             })}
+            <div className="flex flex-col items-start gap-4 rounded-[24px] border-2 border-foreground/15 p-5 md:p-6">
+              <span className="flex items-center gap-3 font-display text-[1.15em] font-semibold tracking-[-0.02em]">
+                <Icon name="Building2" size={20} />
+                оплата для ресторанов и&nbsp;компаний
+              </span>
+              <p className="text-[0.95em] leading-snug text-foreground/75">
+                Онлайн оплата на&nbsp;сайте только для физических лиц. Ресторанам, ИП и&nbsp;компаниям выставим счёт
+                и&nbsp;пришлём договор: оплата на&nbsp;расчётный счёт, с&nbsp;закрывающими документами.
+              </p>
+              <Link
+                to="/#lead"
+                className="inline-flex items-center gap-2 rounded-xl bg-foreground px-6 py-3.5 font-medium text-brand transition-transform hover:-translate-y-0.5"
+              >
+                запросить счёт <Icon name="ArrowRight" size={18} />
+              </Link>
+            </div>
           </div>
 
           <div className="rounded-[28px] bg-surface p-5 text-cream md:p-10">
@@ -258,13 +272,6 @@ const Payment = () => {
                   />
                   {err("email")}
                 </div>
-                <Input
-                  className={field}
-                  placeholder="Ресторан или компания (необязательно)"
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value)}
-                  aria-label="Ресторан или компания"
-                />
 
                 <label htmlFor="pay-agree" className="flex cursor-pointer items-start gap-3 pt-1 text-[max(12px,0.86em)] leading-snug text-cream-muted">
                   <Checkbox

@@ -1,4 +1,6 @@
-// Услуги с онлайн оплатой. Цены для показа на сайте.
+// Услуги с онлайн оплатой (только для физических лиц: условие ЮKassa).
+// Организации и ИП платят по счёту на расчётный счёт, не через сайт.
+// Цены для показа на сайте.
 // Сумму платежа считает сервер (api/pay.php в репозитории agregatory-deploy):
 // менять цену нужно в обоих местах.
 
@@ -7,7 +9,7 @@ export const SELLER_INN = "632509481120";
 export const SELLER_OGRNIP = "325632700100793";
 
 export type PayProduct = {
-  code: "konsultaciya" | "audit" | "kurs-komandy" | "po-schetu";
+  code: "konsultaciya" | "audit" | "kurs-komandy";
   title: string;
   short: string;
   price: number; // 0 — сумму вводит клиент
@@ -39,14 +41,6 @@ export const PAY_PRODUCTS: PayProduct[] = [
     price: 80000,
     note: "5 недель, 5 уроков по 45 минут, до 6 человек",
     icon: "GraduationCap",
-  },
-  {
-    code: "po-schetu",
-    title: "Оплата по счёту или договору",
-    short: "по счёту",
-    price: 0,
-    note: "для тарифов сопровождения и услуг по КП",
-    icon: "FileText",
   },
 ];
 
