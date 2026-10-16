@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import Icon from "@/components/ui/icon";
@@ -9,7 +9,9 @@ import {
   genderOf,
   genitive,
   money,
-  monthYear,
+  firstPeriod,
+  PERIOD_UNIT,
+  type Period,
   numberWords,
   plural,
   renderDocx,
@@ -61,28 +63,51 @@ const api = async (key: string, q: string, init?: RequestInit) => {
   return data;
 };
 
+// Текст для рабочего чата с клиентом после того, как договор готов
+const CHAT_TEXT =
+  "Коллеги, добрый день! Направляем договор на просмотр. В нём условия сотрудничества, описание услуг по каждой точке и образцы закрывающих документов (счёт, акт, УПД). После вашей проверки отправим договор вместе со счётом через ЭДО. Ждём от вас подтверждения или правок.";
+
 const EDO = ["СБИС", "Контур.Диадок", "Такском", "Калуга Астрал", "Другой оператор", "Нет ЭДО"];
 
 const field =
   "h-12 rounded-xl border-cream/20 bg-cream/5 px-4 text-[1em] text-cream placeholder:text-cream-muted/60 focus-visible:ring-1 focus-visible:ring-brand focus-visible:ring-offset-0";
 
-const Label = ({ t, hint, children, wide }: { t: string; hint?: string; children: React.ReactNode; wide?: boolean }) => (
-  <label className={`block ${wide ? "md:col-span-2" : ""}`}>
-    <span className="mb-1.5 block text-[max(12px,0.86em)] font-medium text-cream-muted">{t}</span>
-    {children}
-    {hint && <span className="mt-1 block text-[max(12px,0.78em)] text-cream-muted/70">{hint}</span>}
-  </label>
-);
+// Что не заполнено: подписи полей (по ним подсвечиваем) и сколько осталось в каждом блоке
+type Missing = { labels: Set<string>; perCard: Record<number, number>; show: boolean };
+const MissCtx = createContext<Missing>({ labels: new Set(), perCard: {}, show: false });
 
-const Card = ({ n, t, children }: { n: number; t: string; children: React.ReactNode }) => (
-  <section className="rounded-[24px] bg-surface p-5 text-cream md:p-8">
-    <h2 className="flex items-center gap-3 font-display text-[1.3em] font-semibold tracking-[-0.02em]">
-      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand text-[0.8em] text-foreground">{n}</span>
-      {t}
-    </h2>
-    <div className="mt-5 grid gap-4 md:grid-cols-2">{children}</div>
-  </section>
-);
+const Label = ({ t, hint, children, wide }: { t: string; hint?: string; children: React.ReactNode; wide?: boolean }) => {
+  const miss = useContext(MissCtx);
+  const bad = miss.show && miss.labels.has(t);
+  return (
+    <label className={`block ${wide ? "md:col-span-2" : ""} ${bad ? "rounded-xl outline outline-2 outline-offset-4 outline-red-400/70" : ""}`}>
+      <span className={`mb-1.5 block text-[max(12px,0.86em)] font-medium ${bad ? "text-red-300" : "text-cream-muted"}`}>
+        {t}
+        {bad && <span className="ml-2 font-normal">· заполните</span>}
+      </span>
+      {children}
+      {hint && <span className="mt-1 block text-[max(12px,0.78em)] text-cream-muted/70">{hint}</span>}
+    </label>
+  );
+};
+
+const Card = ({ n, t, children }: { n: number; t: string; children: React.ReactNode }) => {
+  const left = useContext(MissCtx).perCard[n] || 0;
+  return (
+    <section id={`card-${n}`} className="scroll-mt-6 rounded-[24px] bg-surface p-5 text-cream md:p-8">
+      <h2 className="flex flex-wrap items-center gap-3 font-display text-[1.3em] font-semibold tracking-[-0.02em]">
+        <span className={`flex h-8 w-8 items-center justify-center rounded-lg text-[0.8em] ${left ? "bg-brand text-foreground" : "bg-green-500 text-white"}`}>
+          {left ? n : <Icon name="Check" size={16} />}
+        </span>
+        {t}
+        <span className={`ml-auto font-sans text-[max(12px,0.6em)] font-normal ${left ? "text-cream-muted" : "text-green-400"}`}>
+          {left ? `осталось ${left}` : "готово"}
+        </span>
+      </h2>
+      <div className="mt-5 grid gap-4 md:grid-cols-2">{children}</div>
+    </section>
+  );
+};
 
 // Поле адреса с подсказками DaData (когда ключ задан на сервере)
 type AddrItem = { value: string; full: string; city: string; city_part: string };
@@ -148,6 +173,24 @@ const AddressInput = ({
   );
 };
 
+// Контрольный ключ счёта по правилам Банка России (весовые коэффициенты 7, 1, 3)
+const accKey = (s: string) => {
+  const w = [7, 1, 3];
+  let t = 0;
+  for (let i = 0; i < 23; i++) t += (Number(s[i]) * w[i % 3]) % 10;
+  return t % 10 === 0;
+};
+/** Ошибка в счёте или "" — длина и сверка с БИК */
+const accError = (acc: string, bik: string, corr: boolean) => {
+  const a = acc.replace(/\D/g, "");
+  if (!a) return "";
+  if (a.length !== 20) return `В счёте 20 цифр, сейчас ${a.length}`;
+  const b = bik.replace(/\D/g, "");
+  if (b.length !== 9) return "";
+  const ok = corr ? accKey("0" + b.slice(4, 6) + a) : accKey(b.slice(-3) + a);
+  return ok ? "" : "Счёт не сходится с БИК: проверьте цифры счёта и БИК";
+};
+
 // Префикс номера договора: три первые буквы названия первой точки (Молодость → МОЛ)
 const numPrefix = (title: string) => title.replace(/[^A-Za-zА-Яа-яЁё]/g, "").slice(0, 3).toUpperCase();
 
@@ -200,6 +243,7 @@ const Docs = () => {
   const [numAuto, setNumAuto] = useState(true); // номер ставится сам, пока бухгалтер не впишет свой
   const [date, setDate] = useState("");
   const [month, setMonth] = useState(thisMonth());
+  const [period, setPeriod] = useState<Period>("month");
   const [inn, setInn] = useState("");
   const [name, setName] = useState("");
   const [ogrn, setOgrn] = useState("");
@@ -223,6 +267,7 @@ const Docs = () => {
   const [points, setPoints] = useState<Point[]>([{ title: "", address: "", city: "" }]);
   const [price, setPrice] = useState("25000");
 
+  const [bankMsg, setBankMsg] = useState("");
   const [lookupBusy, setLookupBusy] = useState(false);
   const [lookupMsg, setLookupMsg] = useState("");
   const [busy, setBusy] = useState(false);
@@ -284,6 +329,25 @@ const Docs = () => {
     return () => clearTimeout(t);
   }, [prefix, numAuto, key]);
 
+  // БИК → банк и корр. счёт из справочника Банка России
+  useEffect(() => {
+    if (!key || bik.length !== 9) return setBankMsg(bik ? `В БИК 9 цифр, сейчас ${bik.length}` : "");
+    let alive = true;
+    api(key, `a=bank&bik=${bik}`)
+      .then((d) => {
+        if (!alive) return;
+        if (d.name) setBank(d.name);
+        if (d.ks) setKs(d.ks);
+        setBankMsg(d.ks ? "" : "Банк найден, корр. счёта у него нет: впишите вручную, если есть");
+      })
+      .catch((e) => alive && setBankMsg((e as Error).message));
+    return () => {
+      alive = false;
+    };
+  }, [bik, key]);
+  const rsErr = accError(rs, bik, false);
+  const ksErr = accError(ks, bik, true);
+
   const priceNum = Number(digits(price)) || 0;
   const filledPoints = points.filter((p) => p.title.trim() || p.address.trim());
   const pointsN = Math.max(filledPoints.length, 1);
@@ -329,14 +393,14 @@ const Docs = () => {
   };
 
   const snapshot = () => ({
-    kind, executor, num, date, month, inn, name, ogrn, kpp, address, person, gender, position, basis, proxy, personGen,
+    kind, executor, num, date, month, period, inn, name, ogrn, kpp, address, person, gender, position, basis, proxy, personGen,
     bank, rs, bik, ks, phone, email, edo, edoId, contact, points, price,
   });
   type Snap = ReturnType<typeof snapshot>;
   const restore = (f: Partial<Snap>) => {
     const set = <T,>(v: T | undefined, fn: (x: T) => void) => v !== undefined && fn(v);
     if (f.num !== undefined) setNumAuto(false);
-    set(f.kind, setKind); set(f.executor, setExecutor); set(f.num, setNum); set(f.date, setDate); set(f.month, setMonth);
+    set(f.kind, setKind); set(f.executor, setExecutor); set(f.num, setNum); set(f.date, setDate); set(f.month, setMonth); set(f.period, setPeriod);
     set(f.inn, setInn); set(f.name, setName); set(f.ogrn, setOgrn); set(f.kpp, setKpp); set(f.address, setAddress);
     set(f.person, setPerson); set(f.position, setPosition); set(f.basis, setBasis); set(f.proxy, setProxy);
     set(f.bank, setBank); set(f.rs, setRs); set(f.bik, setBik); set(f.ks, setKs); set(f.phone, setPhone); set(f.email, setEmail);
@@ -370,30 +434,58 @@ const Docs = () => {
     return { blob: await res.blob(), file: `Договор ${num}`.replace(/[\\/:*?"<>|«»]+/g, " ") };
   };
 
+  // Обязательные поля: card = номер блока, label = подпись поля (по ней подсвечиваем), msg = текст ошибки
+  const ooo = kind === "ooo";
+  const priceLabel = `Стоимость за одну точку в месяц, ₽ (точек в договоре: ${pointsN})`;
+  const checks: { card: number; label: string; msg: string; ok: boolean }[] = [
+    { card: 1, label: "", msg: `У исполнителя ${exec.label} не заполнено: ${exec.missing.join(", ")}`, ok: !exec.missing.length },
+    { card: 2, label: "ИНН", msg: "ИНН: 10 цифр у ООО, 12 у ИП", ok: /^\d{10}$|^\d{12}$/.test(digits(inn)) },
+    { card: 2, label: ooo ? "ОГРН" : "ОГРНИП", msg: ooo ? "ОГРН: 13 цифр" : "ОГРНИП: 15 цифр", ok: ooo ? /^\d{13}$/.test(digits(ogrn)) : /^\d{15}$/.test(digits(ogrn)) },
+    ...(ooo
+      ? [
+          { card: 2, label: "Название ООО (без кавычек)", msg: "Название ООО", ok: !!name.trim() },
+          { card: 2, label: "КПП", msg: "КПП: 9 цифр", ok: /^\d{9}$/.test(digits(kpp)) },
+        ]
+      : []),
+    { card: 2, label: ooo ? "Юридический адрес" : "Адрес регистрации ИП", msg: "Адрес", ok: !!address.trim() },
+    {
+      card: 3, label: ooo ? "ФИО руководителя полностью" : "ФИО полностью",
+      msg: ooo ? "ФИО руководителя" : "ФИО предпринимателя", ok: person.trim().split(/\s+/).length >= 2,
+    },
+    ...(ooo && basis === "Доверенность"
+      ? [{ card: 3, label: "Номер и дата доверенности", msg: "Номер и дата доверенности", ok: !!proxy.trim() }]
+      : []),
+    { card: 4, label: "БИК", msg: "БИК: 9 цифр", ok: /^\d{9}$/.test(digits(bik)) },
+    { card: 4, label: "Расчётный счёт", msg: rsErr ? "Расчётный счёт не сходится с БИК" : "Расчётный счёт: 20 цифр", ok: /^\d{20}$/.test(digits(rs)) && !rsErr },
+    { card: 4, label: "Банк", msg: "Банк", ok: !!bank.trim() },
+    { card: 4, label: "Корреспондентский счёт", msg: ksErr ? "Корр. счёт не сходится с БИК" : "Корр. счёт: 20 цифр", ok: /^\d{20}$/.test(digits(ks)) && !ksErr },
+    { card: 5, label: "Телефон", msg: "Телефон", ok: !!phone.trim() },
+    {
+      card: 5, label: "Электронная почта", msg: "Электронная почта (на неё идут юридически значимые сообщения, п. 15.1)",
+      ok: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()),
+    },
+    {
+      card: 6, label: "", msg: "Точки: название, адрес и город у каждой",
+      ok: filledPoints.length > 0 && !filledPoints.some((p) => !p.title.trim() || !p.address.trim() || !p.city.trim()),
+    },
+    { card: 7, label: priceLabel, msg: "Стоимость за точку", ok: !!priceNum },
+    { card: 7, label: "Номер договора", msg: "Номер договора", ok: !!num.trim() },
+    { card: 7, label: "Дата договора", msg: "Дата договора (выберите в календаре)", ok: !!date },
+  ];
+  const left = checks.filter((c) => !c.ok);
+  const doneShare = Math.round((100 * (checks.length - left.length)) / checks.length);
+  const [showMiss, setShowMiss] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const missing: Missing = {
+    labels: new Set(left.map((c) => c.label).filter(Boolean)),
+    perCard: left.reduce<Record<number, number>>((m, c) => ({ ...m, [c.card]: (m[c.card] || 0) + 1 }), {}),
+    show: showMiss,
+  };
   const validate = () => {
-    const e: string[] = [];
-    if (exec.missing.length) e.push(`У исполнителя ${exec.label} не заполнено: ${exec.missing.join(", ")}`);
-    if (!num.trim()) e.push("Номер договора");
-    if (!date) e.push("Дата договора (выберите в календаре)");
-    if (!/^\d{10}$|^\d{12}$/.test(digits(inn))) e.push("ИНН: 10 цифр у ООО, 12 у ИП");
-    if (kind === "ooo") {
-      if (!name.trim()) e.push("Название ООО");
-      if (!/^\d{13}$/.test(digits(ogrn))) e.push("ОГРН: 13 цифр");
-      if (!/^\d{9}$/.test(digits(kpp))) e.push("КПП: 9 цифр");
-      if (basis === "Доверенность" && !proxy.trim()) e.push("Номер и дата доверенности");
-    } else if (!/^\d{15}$/.test(digits(ogrn))) e.push("ОГРНИП: 15 цифр");
-    if (person.trim().split(/\s+/).length < 2) e.push(kind === "ooo" ? "ФИО руководителя" : "ФИО предпринимателя");
-    if (!address.trim()) e.push("Адрес");
-    if (!bank.trim()) e.push("Банк");
-    if (!/^\d{20}$/.test(digits(rs))) e.push("Расчётный счёт: 20 цифр");
-    if (!/^\d{9}$/.test(digits(bik))) e.push("БИК: 9 цифр");
-    if (!/^\d{20}$/.test(digits(ks))) e.push("Корр. счёт: 20 цифр");
-    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) e.push("Электронная почта (на неё идут юридически значимые сообщения, п. 15.1)");
-    if (!phone.trim()) e.push("Телефон");
-    if (!filledPoints.length || filledPoints.some((p) => !p.title.trim() || !p.address.trim() || !p.city.trim()))
-      e.push("Точки: название, адрес и город у каждой");
-    if (!priceNum) e.push("Стоимость за точку");
+    const e = left.map((c) => c.msg);
+    setShowMiss(true);
     setErrors(e);
+    if (e.length) document.getElementById(`card-${left[0].card}`)?.scrollIntoView({ behavior: "smooth" });
     return e.length === 0;
   };
 
@@ -401,7 +493,8 @@ const Docs = () => {
     ...exec.data,
     num: num.trim(),
     date: dateWords(date),
-    month_year: monthYear(month),
+    month_year: firstPeriod(month, period),
+    period_unit: PERIOD_UNIT[period],
     total: money(total),
     total_words: numberWords(total),
     price: money(priceNum),
@@ -530,6 +623,7 @@ const Docs = () => {
 
   // --- Форма ------------------------------------------------------------------
   return (
+    <MissCtx.Provider value={missing}>
     <main className="min-h-screen bg-background text-foreground">
       <div className="px-5 py-8 md:px-14 md:py-12">
         <div className="flex flex-wrap items-end justify-between gap-4">
@@ -681,17 +775,30 @@ const Docs = () => {
             </Card>
 
             <Card n={4} t="Банковские реквизиты">
+              <Label t="БИК" hint="Начните с БИК: банк и корр. счёт подставятся сами">
+                <Input className={field} inputMode="numeric" value={bik} onChange={(e) => setBik(digits(e.target.value).slice(0, 9))} />
+              </Label>
+              <Label t="Расчётный счёт">
+                <Input
+                  className={`${field} ${rsErr ? "border-red-400" : ""}`}
+                  inputMode="numeric"
+                  value={rs}
+                  onChange={(e) => setRs(digits(e.target.value).slice(0, 20))}
+                />
+                {rsErr && <span className="mt-1 block text-[max(12px,0.78em)] text-red-400">{rsErr}</span>}
+              </Label>
+              {bankMsg && <p className="text-[max(12px,0.86em)] text-brand md:col-span-2">{bankMsg}</p>}
               <Label t="Банк" wide>
                 <Input className={field} value={bank} onChange={(e) => setBank(e.target.value)} />
               </Label>
-              <Label t="Расчётный счёт">
-                <Input className={field} inputMode="numeric" value={rs} onChange={(e) => setRs(digits(e.target.value).slice(0, 20))} />
-              </Label>
-              <Label t="БИК">
-                <Input className={field} inputMode="numeric" value={bik} onChange={(e) => setBik(digits(e.target.value).slice(0, 9))} />
-              </Label>
               <Label t="Корреспондентский счёт" wide>
-                <Input className={field} inputMode="numeric" value={ks} onChange={(e) => setKs(digits(e.target.value).slice(0, 20))} />
+                <Input
+                  className={`${field} ${ksErr ? "border-red-400" : ""}`}
+                  inputMode="numeric"
+                  value={ks}
+                  onChange={(e) => setKs(digits(e.target.value).slice(0, 20))}
+                />
+                {ksErr && <span className="mt-1 block text-[max(12px,0.78em)] text-red-400">{ksErr}</span>}
               </Label>
             </Card>
 
@@ -721,7 +828,7 @@ const Docs = () => {
               <div className="space-y-3 md:col-span-2">
                 {points.map((p, i) => (
                   <div key={i} className="grid gap-2 rounded-xl bg-cream/5 p-3 md:grid-cols-[1fr_1.3fr_0.8fr_auto]">
-                    <Input className={field} placeholder="Название на сервисе" value={p.title} onChange={(e) => setPoint(i, "title", e.target.value)} />
+                    <Input className={`${field} ${showMiss && !p.title.trim() ? "border-red-400" : ""}`} placeholder="Название на сервисе" value={p.title} onChange={(e) => setPoint(i, "title", e.target.value)} />
                     <AddressInput
                       apiKey={key}
                       enabled={dadata}
@@ -734,7 +841,7 @@ const Docs = () => {
                         if (a.city) setPoint(i, "city", a.city);
                       }}
                     />
-                    <Input className={field} placeholder="Город" value={p.city} onChange={(e) => setPoint(i, "city", e.target.value)} />
+                    <Input className={`${field} ${showMiss && !p.city.trim() ? "border-red-400" : ""}`} placeholder="Город" value={p.city} onChange={(e) => setPoint(i, "city", e.target.value)} />
                     <button
                       type="button"
                       onClick={() => setPoints((ps) => (ps.length > 1 ? ps.filter((_, j) => j !== i) : ps))}
@@ -757,7 +864,14 @@ const Docs = () => {
             </Card>
 
             <Card n={7} t="Стоимость и даты">
-              <Label t="Стоимость за одну точку в месяц, ₽">
+              <Label
+                t={priceLabel}
+                hint={
+                  pointsN > 1
+                    ? `Сеть из ${pointsN} ${plural(pointsN, "точки", "точек", "точек")}: можно поставить цену со скидкой. Итого ${money(total)} ₽ в месяц (${pointsN} × ${money(priceNum)} ₽)`
+                    : `Одна точка: ${money(total)} ₽ в месяц. Для сетей цену за точку можно снизить`
+                }
+              >
                 <Input className={field} inputMode="numeric" value={price} onChange={(e) => setPrice(digits(e.target.value))} />
               </Label>
               <Label
@@ -777,7 +891,16 @@ const Docs = () => {
               <Label t="Дата договора" hint="Выберите в календаре">
                 <Input className={field} type="date" value={date} onChange={(e) => setDate(e.target.value)} />
               </Label>
-              <Label t="Первый месяц работ" hint="Подставляется в образцы счёта и закрывающих в приложениях">
+              <Label t="Отчётный период" hint="Попадает в п. 1.3 и 6.1 договора и в образцы счёта">
+                <select className={`${field} w-full border`} value={period} onChange={(e) => setPeriod(e.target.value as Period)}>
+                  <option value="month">календарный месяц</option>
+                  <option value="16-15">с 16-го по 15-е число</option>
+                </select>
+              </Label>
+              <Label
+                t={period === "month" ? "Первый месяц работ" : "Первый период начинается 16-го числа месяца"}
+                hint={`В образцах будет: «за ${firstPeriod(month, period) || "…"}»`}
+              >
                 <Input className={field} type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
               </Label>
             </Card>
@@ -785,6 +908,34 @@ const Docs = () => {
 
           <aside className="lg:sticky lg:top-6 lg:self-start">
             <div className="rounded-[24px] bg-pale p-6 text-foreground md:p-8">
+              <div className="mb-5">
+                <div className="flex items-baseline justify-between text-[0.9em]">
+                  <b>{left.length ? `Заполнено ${doneShare}%` : "Всё заполнено"}</b>
+                  <span className="text-foreground/60">
+                    {checks.length - left.length} из {checks.length}
+                  </span>
+                </div>
+                <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-foreground/10">
+                  <div className={`h-full rounded-full transition-all ${left.length ? "bg-brand" : "bg-green-500"}`} style={{ width: `${doneShare}%` }} />
+                </div>
+                {left.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {left.map((c) => (
+                      <button
+                        key={c.msg}
+                        type="button"
+                        onClick={() => {
+                          setShowMiss(true);
+                          document.getElementById(`card-${c.card}`)?.scrollIntoView({ behavior: "smooth" });
+                        }}
+                        className="rounded-full bg-foreground/10 px-2.5 py-1 text-[max(12px,0.78em)] hover:bg-foreground/20"
+                      >
+                        {c.label || c.msg.split(":")[0]}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               <p className="text-[0.9em] text-foreground/70">{clientTitle.trim().length > 6 ? clientTitle : "Заказчик не заполнен"}</p>
               <p className="mt-4 text-[0.9em] text-foreground/70">
                 {pointsN} {plural(pointsN, "точка", "точки", "точек")} × {money(priceNum)} ₽
@@ -798,28 +949,37 @@ const Docs = () => {
               >
                 {busy ? <Icon name="Loader2" size={20} className="animate-spin" /> : <>сформировать договор <Icon name="ArrowRight" size={18} /></>}
               </button>
-              {errors.length > 0 && (
-                <div className="mt-4 rounded-xl bg-foreground/10 p-4 text-[max(12px,0.86em)]">
-                  <b>Проверьте поля:</b>
-                  <ul className="mt-1 list-disc pl-5">
-                    {errors.map((x) => (
-                      <li key={x}>{x}</li>
-                    ))}
-                  </ul>
-                </div>
+              {errors.length > 0 && left.length > 0 && (
+                <p className="mt-4 rounded-xl bg-foreground/10 p-4 text-[max(12px,0.86em)]">
+                  Не хватает данных: незаполненные поля подсвечены красным, список вверху этого блока.
+                </p>
               )}
               {msg && <p className="mt-4 text-[max(12px,0.86em)]">{msg}</p>}
               {result && (
                 <div className="mt-4 grid gap-2">
                   <button onClick={() => downloadWord()} className="flex h-12 items-center justify-center gap-2 rounded-xl bg-brand font-medium">
-                    <Icon name="FileText" size={18} /> скачать Word
+                    <Icon name="FileText" size={18} /> Word, для нас (можно править)
                   </button>
                   <button onClick={() => printPdf()} className="flex h-12 items-center justify-center gap-2 rounded-xl border border-foreground/30 font-medium">
-                    <Icon name="FileDown" size={18} /> сохранить PDF
+                    <Icon name="FileDown" size={18} /> PDF, для клиента
                   </button>
                   <p className="text-[max(12px,0.78em)] text-foreground/60">
                     Для PDF откроется окно печати: выберите «Сохранить как PDF».
                   </p>
+                  <div className="mt-2 rounded-xl bg-foreground p-4 text-cream">
+                    <p className="font-medium text-brand">Не забудьте: отправьте PDF в рабочий чат с клиентом</p>
+                    <p className="mt-2 text-[max(12px,0.86em)] leading-relaxed text-cream/90">{CHAT_TEXT}</p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard?.writeText(CHAT_TEXT).then(() => setCopied(true)).catch(() => {});
+                        setTimeout(() => setCopied(false), 2500);
+                      }}
+                      className="mt-3 inline-flex items-center gap-2 rounded-lg bg-brand px-3 py-2 text-[0.85em] font-medium text-foreground"
+                    >
+                      <Icon name={copied ? "Check" : "Copy"} size={16} /> {copied ? "скопировано" : "скопировать текст"}
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
@@ -871,6 +1031,7 @@ const Docs = () => {
         </div>
       </div>
     </main>
+    </MissCtx.Provider>
   );
 };
 

@@ -63,6 +63,23 @@ export const monthYear = (ym: string) => {
   return `${MONTHS_NOM[m - 1]} ${y}`;
 };
 
+/** Отчётный период: календарный месяц или с 16-го по 15-е число следующего месяца. */
+export type Period = "month" | "16-15";
+export const PERIOD_UNIT: Record<Period, string> = {
+  month: "календарный месяц",
+  "16-15": "период с 16-го числа календарного месяца по 15-е число следующего календарного месяца",
+};
+/** Первый отчётный период для образцов: «ноябрь 2026» или «период с 16.11.2026 по 15.12.2026». */
+export const firstPeriod = (ym: string, p: Period) => {
+  const [y, m] = ym.split("-").map(Number);
+  if (!y || !m) return "";
+  if (p === "month") return monthYear(ym);
+  const ny = m === 12 ? y + 1 : y;
+  const nm = m === 12 ? 1 : m + 1;
+  const mm = (n: number) => String(n).padStart(2, "0");
+  return `период с 16.${mm(m)}.${y} по 15.${mm(nm)}.${ny}`;
+};
+
 /** ЗАГЛАВНЫЕ из реестра → «Иванов Иван Иванович». */
 export const titleCase = (s: string) =>
   s.toLowerCase().replace(/(^|[\s\-«"(])([а-яёa-z])/g, (_, p, c) => p + c.toUpperCase());
