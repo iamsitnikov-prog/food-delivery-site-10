@@ -207,5 +207,10 @@ export const CITY_RESOURCES: ResourceLink[] = [
 // Дата по UTC — так же, как в пререндере: статья с будущей датой ещё не опубликована.
 const isLive = (r: ResourceLink) => !r.from || r.from <= new Date().toISOString().slice(0, 10);
 
+// В странах СНГ нет Купера и Чиббиса: сравнение российских агрегаторов там не показываем (17.10.2026).
+const CIS = ["kazakhstan", "belarus", "uzbekistan", "armeniya"];
+
 export const getServiceResources = (slug: string, kind: "service" | "city"): ResourceLink[] =>
-  (kind === "city" ? CITY_RESOURCES : SERVICE_RESOURCES[slug] || CITY_RESOURCES).filter(isLive);
+  (kind === "city" ? CITY_RESOURCES : SERVICE_RESOURCES[slug] || CITY_RESOURCES)
+    .filter(isLive)
+    .filter((r) => !(kind === "city" && CIS.includes(slug) && r === COMPARE));

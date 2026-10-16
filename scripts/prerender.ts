@@ -11,9 +11,32 @@ import { CHECKLIST_PAGES } from "../src/data/checklists";
 import { READ_CHANNELS } from "../src/data/channels";
 import { QUIZZES } from "../src/data/quizzes";
 import { MINI_QUIZZES } from "../src/data/mini-quizzes";
+import { MINI_ABOUT } from "../src/data/mini-quiz-about";
+import { PRICE_ROWS, PRICE_NOTE } from "../src/components/landing/PriceTable";
+
+// Текст под мини тестом без ответов на вопросы (решение Юрия 17.10.2026).
+const miniAboutHtml = (slug: string): string => {
+  const a = MINI_ABOUT[slug];
+  if (!a) return "";
+  const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+  const terms = a.terms
+    .map((s) => {
+      const t = getTerm(s);
+      return t ? `<li><a href="/slovar/${s}">${esc(clean(t.term))}</a></li>` : "";
+    })
+    .join("");
+  return `<h2>О чём этот тест</h2>
+<ul>${a.topics.map((x) => `<li>${esc(clean(cap(x)))}</li>`).join("")}</ul>
+<h2>Кому пригодится</h2>
+<p>${esc(clean(a.forWhom))}</p>
+<h2>Почему это важно</h2>
+${a.why.map((p) => `<p>${esc(clean(p))}</p>`).join("\n")}
+<h2>Термины из словаря</h2>
+<ul>${terms}</ul>`;
+};
 import { getCityCase, CITY_CASES } from "../src/data/city-cases";
 import { getChecklistPage } from "../src/data/checklists";
-import { GLOSSARY, GLOSSARY_LETTERS } from "../src/data/glossary";
+import { GLOSSARY, GLOSSARY_LETTERS, getTerm } from "../src/data/glossary";
 import { anchorId, buildToc } from "../src/lib/term-anchors";
 import { PEOPLE } from "../src/data/team";
 import {
@@ -343,6 +366,12 @@ pages.push({
   description:
     "Подключение и ведение ресторанов в Яндекс Еде и Деливери: настройка вендора, меню и фото, акции, ДРР, рейтинг, штрафы. Работаем по всей России.",
   body: `<h1>Услуги</h1>
+<h2>Сколько стоит</h2>
+<table><thead><tr><th>Что</th><th>Для кого</th><th>Цена</th></tr></thead><tbody>${PRICE_ROWS.map(
+    (r) => `<tr><td>${esc(r.name)}</td><td>${esc(clean(r.kind))}</td><td>${esc(r.price)} ${esc(r.period)}</td></tr>`,
+  ).join("")}</tbody></table>
+<p>${esc(PRICE_NOTE)}</p>
+<h2>Направления работы</h2>
 <ul>${SERVICE_PAGES.map(
     (p) => `<li><a href="${SITE}/uslugi/${p.slug}">${esc(clean(p.h1))}</a> — ${esc(clean(p.description))}</li>`,
   ).join("")}</ul>`,
@@ -401,6 +430,9 @@ for (const q of MINI_QUIZZES) {
     body: `<h1>${esc(clean(q.h1))}</h1>
 <p>${esc(clean(q.intro))}</p>
 <p>Вопросов: ${q.questions.length}. Время прохождения: ${esc(clean(q.minutes))}.</p>
+${miniAboutHtml(q.slug)}
+<h2>Источники</h2>
+<ul>${q.sources.map((s) => `<li><a href="${s.url}">${esc(clean(s.title))}</a></li>`).join("")}</ul>
 <p><a href="/testy">Все тесты</a></p>`,
   });
 }

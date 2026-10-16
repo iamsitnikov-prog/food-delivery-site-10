@@ -13,6 +13,9 @@ const Team = () => {
         </h2>
         <p className="max-w-[380px] text-[1.05em] leading-snug">
           Два опытных специалиста-практика в&nbsp;сфере доставки. За&nbsp;нами стоит целая команда специалистов поддержки и&nbsp;контента.
+          <span className="mt-3 block font-semibold">
+            Мы не&nbsp;сотрудники Яндекса, работаем на&nbsp;стороне ресторана.
+          </span>
         </p>
       </div>
 

@@ -4,6 +4,8 @@ import Icon from "@/components/ui/icon";
 import useSeo from "@/hooks/use-seo";
 import { reachGoal } from "@/lib/metrika";
 import { getMiniLevel, getMiniQuiz } from "@/data/mini-quizzes";
+import { MINI_ABOUT } from "@/data/mini-quiz-about";
+import { getBrief } from "@/data/term-index";
 
 // Мини тест: без блоков услуг, формы заявки и контактов (решение Юрия 13.10.2026).
 // Варианты не перемешиваются: правильные ответы заранее стоят на разных местах.
@@ -474,6 +476,37 @@ const MiniQuizPage = () => {
           )}
         </div>
       </section>
+
+      {MINI_ABOUT[quiz.slug] && (
+        <section className="mx-auto max-w-[840px] px-5 pb-10 md:px-0 md:pb-14">
+          <h2 className="font-display text-[1.35em] font-semibold tracking-[-0.02em] md:text-[1.6em]">О чём этот тест</h2>
+          <ul className="mt-4 space-y-2 leading-snug text-muted-foreground">
+            {MINI_ABOUT[quiz.slug].topics.map((x) => (
+              <li key={x} className="flex gap-2">
+                <span className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/60" aria-hidden />
+                <span>{x.charAt(0).toUpperCase() + x.slice(1)}</span>
+              </li>
+            ))}
+          </ul>
+          <h2 className="mt-9 font-display text-[1.35em] font-semibold tracking-[-0.02em] md:text-[1.6em]">Кому пригодится</h2>
+          <p className="mt-3 leading-relaxed text-muted-foreground">{MINI_ABOUT[quiz.slug].forWhom}</p>
+          <h2 className="mt-9 font-display text-[1.35em] font-semibold tracking-[-0.02em] md:text-[1.6em]">Почему это важно</h2>
+          {MINI_ABOUT[quiz.slug].why.map((p) => (
+            <p key={p} className="mt-3 leading-relaxed text-muted-foreground">{p}</p>
+          ))}
+          <h2 className="mt-9 font-display text-[1.35em] font-semibold tracking-[-0.02em] md:text-[1.6em]">Термины из словаря</h2>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {MINI_ABOUT[quiz.slug].terms.map((s) => {
+              const b = getBrief(s);
+              return b ? (
+                <Link key={s} to={`/slovar/${s}`} className="rounded-full border border-foreground/15 px-3.5 py-1.5 text-[max(12px,0.9em)] hover:border-foreground/40">
+                  {b.term}
+                </Link>
+              ) : null;
+            })}
+          </div>
+        </section>
+      )}
 
       <section className="mx-auto max-w-[840px] px-5 pb-14 text-[max(12px,0.9em)] text-muted-foreground md:px-0 md:pb-20">
         <h2 className="font-display text-[1.15em] font-semibold text-foreground">Источники</h2>

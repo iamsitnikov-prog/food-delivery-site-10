@@ -6,6 +6,7 @@ import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import RussiaMap from "@/components/landing/RussiaMap";
+import PriceTable from "@/components/landing/PriceTable";
 import useSeo from "@/hooks/use-seo";
 import { CITY_PAGES, SERVICE_PAGES } from "@/data/seo-pages";
 
@@ -55,6 +56,8 @@ const SeoIndex = ({ kind }: Props) => {
           <p className="mt-6 max-w-[560px] text-[1.1em] leading-snug text-muted-foreground">{copy.lead}</p>
         </section>
       </div>
+
+      {kind === "service" && <PriceTable />}
 
       {kind === "city" && (
         <section className="px-5 pb-9 md:px-14 md:pb-16">
