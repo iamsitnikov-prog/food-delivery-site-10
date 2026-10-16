@@ -906,6 +906,14 @@ pages.push({
 });
 
 pages.push({
+  route: "/dokumenty",
+  noindex: true,
+  title: "Документы | agregatory.pro",
+  description: "Служебная страница agregatory.pro для подготовки договоров с ресторанами. Доступ только у сотрудников по паролю.",
+  body: `<h1>Документы</h1><p>Служебная страница. Доступ по паролю.</p>`,
+});
+
+pages.push({
   route: "/oferta",
   title: "Публичная оферта на консультационные услуги | agregatory.pro",
   description:
@@ -1130,6 +1138,7 @@ const ROUTE_CHUNKS: [RegExp, string][] = [
   [/^\/oplata$/, "Payment"],
   [/^\/oplata\/spasibo$/, "PaymentResult"],
   [/^\/oferta$/, "Offer"],
+  [/^\/dokumenty$/, "Docs"],
   [/^\/(uslugi|goroda)$/, "SeoIndex"],
   [/^\/(uslugi|goroda)\/.+/, "SeoLanding"],
   [/^\/blog$/, "Blog"],
