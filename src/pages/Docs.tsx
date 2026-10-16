@@ -84,6 +84,73 @@ const Card = ({ n, t, children }: { n: number; t: string; children: React.ReactN
   </section>
 );
 
+// Поле адреса с подсказками DaData (когда ключ задан на сервере)
+type AddrItem = { value: string; full: string; city: string; city_part: string };
+const AddressInput = ({
+  value, onChange, onPick, placeholder, apiKey, enabled,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  onPick: (a: AddrItem) => void;
+  placeholder?: string;
+  apiKey: string;
+  enabled: boolean;
+}) => {
+  const [items, setItems] = useState<AddrItem[]>([]);
+  const [open, setOpen] = useState(false);
+  const [typed, setTyped] = useState(false);
+  useEffect(() => {
+    if (!enabled || !typed || value.trim().length < 3) return setItems([]);
+    const t = setTimeout(() => {
+      api(apiKey, `a=addr&q=${encodeURIComponent(value.trim())}`)
+        .then((d) => setItems(d.items || []))
+        .catch(() => setItems([]));
+    }, 300);
+    return () => clearTimeout(t);
+  }, [value, enabled, typed, apiKey]);
+  return (
+    <div className="relative">
+      <Input
+        className={field}
+        placeholder={placeholder}
+        value={value}
+        autoComplete="off"
+        onFocus={() => setOpen(true)}
+        onBlur={() => setTimeout(() => setOpen(false), 150)}
+        onChange={(e) => {
+          setTyped(true);
+          setOpen(true);
+          onChange(e.target.value);
+        }}
+      />
+      {open && items.length > 0 && (
+        <ul className="absolute left-0 right-0 top-full z-20 mt-1 max-h-72 overflow-auto rounded-xl border border-cream/20 bg-surface py-1 shadow-xl">
+          {items.map((a) => (
+            <li key={a.full}>
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  onPick(a);
+                  setTyped(false);
+                  setItems([]);
+                  setOpen(false);
+                }}
+                className="block w-full px-4 py-2 text-left text-[max(13px,0.9em)] text-cream hover:bg-cream/10"
+              >
+                {a.full}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+// Префикс номера договора: три первые буквы названия первой точки (Молодость → МОЛ)
+const numPrefix = (title: string) => title.replace(/[^A-Za-zА-Яа-яЁё]/g, "").slice(0, 3).toUpperCase();
+
 const Docs = () => {
   const { pathname } = useLocation();
   useSeo({
@@ -97,12 +164,16 @@ const Docs = () => {
   const [pw, setPw] = useState("");
   const [authErr, setAuthErr] = useState("");
   const [authBusy, setAuthBusy] = useState(false);
+  const [dadata, setDadata] = useState(false);
 
   useEffect(() => {
     const k = readKey();
     if (!k) return;
     api(k, "a=login", { method: "POST" })
-      .then(() => setKey(k))
+      .then((d) => {
+        setDadata(!!d.dadata);
+        setKey(k);
+      })
       .catch(() => writeKey(""));
   }, []);
 
@@ -111,7 +182,8 @@ const Docs = () => {
     setAuthBusy(true);
     setAuthErr("");
     try {
-      await api(pw.trim(), "a=login", { method: "POST" });
+      const d = await api(pw.trim(), "a=login", { method: "POST" });
+      setDadata(!!d.dadata);
       writeKey(pw.trim());
       setKey(pw.trim());
     } catch (err) {
@@ -125,6 +197,7 @@ const Docs = () => {
   const [kind, setKind] = useState<Kind>("ooo");
   const [executor, setExecutor] = useState(EXECUTORS[0].id as string);
   const [num, setNum] = useState("");
+  const [numAuto, setNumAuto] = useState(true); // номер ставится сам, пока бухгалтер не впишет свой
   const [date, setDate] = useState("");
   const [month, setMonth] = useState(thisMonth());
   const [inn, setInn] = useState("");
@@ -198,6 +271,19 @@ const Docs = () => {
     return () => clearTimeout(t);
   }, [num, key]);
 
+  // Номер договора сам: МОЛ01, а если такой уже есть в журнале — МОЛ02 и дальше
+  const prefix = numPrefix(points[0]?.title || "");
+  useEffect(() => {
+    if (!numAuto || !key) return;
+    if (!prefix) return setNum("");
+    const t = setTimeout(() => {
+      api(key, `a=nextnum&prefix=${encodeURIComponent(prefix)}`)
+        .then((d) => d.num && setNum(d.num))
+        .catch(() => {});
+    }, 400);
+    return () => clearTimeout(t);
+  }, [prefix, numAuto, key]);
+
   const priceNum = Number(digits(price)) || 0;
   const filledPoints = points.filter((p) => p.title.trim() || p.address.trim());
   const pointsN = Math.max(filledPoints.length, 1);
@@ -249,6 +335,7 @@ const Docs = () => {
   type Snap = ReturnType<typeof snapshot>;
   const restore = (f: Partial<Snap>) => {
     const set = <T,>(v: T | undefined, fn: (x: T) => void) => v !== undefined && fn(v);
+    if (f.num !== undefined) setNumAuto(false);
     set(f.kind, setKind); set(f.executor, setExecutor); set(f.num, setNum); set(f.date, setDate); set(f.month, setMonth);
     set(f.inn, setInn); set(f.name, setName); set(f.ogrn, setOgrn); set(f.kpp, setKpp); set(f.address, setAddress);
     set(f.person, setPerson); set(f.position, setPosition); set(f.basis, setBasis); set(f.proxy, setProxy);
@@ -536,7 +623,14 @@ const Docs = () => {
                 </>
               ) : null}
               <Label t={kind === "ooo" ? "Юридический адрес" : "Адрес регистрации ИП"} wide>
-                <Input className={field} value={address} onChange={(e) => setAddress(e.target.value)} />
+                <AddressInput
+                  apiKey={key}
+                  enabled={dadata}
+                  value={address}
+                  onChange={setAddress}
+                  onPick={(a) => setAddress(a.full)}
+                  placeholder={dadata ? "Начните вводить, появятся подсказки" : ""}
+                />
               </Label>
             </Card>
 
@@ -628,7 +722,18 @@ const Docs = () => {
                 {points.map((p, i) => (
                   <div key={i} className="grid gap-2 rounded-xl bg-cream/5 p-3 md:grid-cols-[1fr_1.3fr_0.8fr_auto]">
                     <Input className={field} placeholder="Название на сервисе" value={p.title} onChange={(e) => setPoint(i, "title", e.target.value)} />
-                    <Input className={field} placeholder="Адрес" value={p.address} onChange={(e) => setPoint(i, "address", e.target.value)} />
+                    <AddressInput
+                      apiKey={key}
+                      enabled={dadata}
+                      placeholder="Адрес"
+                      value={p.address}
+                      onChange={(v) => setPoint(i, "address", v)}
+                      onPick={(a) => {
+                        const street = a.city_part && a.value.startsWith(a.city_part + ", ") ? a.value.slice(a.city_part.length + 2) : a.value;
+                        setPoint(i, "address", street);
+                        if (a.city) setPoint(i, "city", a.city);
+                      }}
+                    />
                     <Input className={field} placeholder="Город" value={p.city} onChange={(e) => setPoint(i, "city", e.target.value)} />
                     <button
                       type="button"
@@ -655,8 +760,18 @@ const Docs = () => {
               <Label t="Стоимость за одну точку в месяц, ₽">
                 <Input className={field} inputMode="numeric" value={price} onChange={(e) => setPrice(digits(e.target.value))} />
               </Label>
-              <Label t="Номер договора">
-                <Input className={field} value={num} onChange={(e) => setNum(e.target.value)} />
+              <Label
+                t="Номер договора"
+                hint={numAuto ? "Ставится сам: три буквы названия первой точки и порядковый номер (Молодость → МОЛ01). Можно вписать свой." : "Номер вписан вручную. Сотрите его, и номер снова поставится сам."}
+              >
+                <Input
+                  className={field}
+                  value={num}
+                  onChange={(e) => {
+                    setNum(e.target.value);
+                    setNumAuto(e.target.value.trim() === "");
+                  }}
+                />
               </Label>
               {dupe && <p className="text-[max(12px,0.86em)] text-brand md:col-span-2">{dupe}</p>}
               <Label t="Дата договора" hint="Выберите в календаре">
