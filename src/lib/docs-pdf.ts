@@ -121,6 +121,25 @@ function keepTogether(doc: Document) {
   });
 }
 
+/** Строки «Дистанционно (онлайн) … дата»: в Word дата прижата табуляцией вправо, здесь то же через flex. */
+function rightTabs(doc: Document) {
+  doc.querySelectorAll("p").forEach((p) => {
+    if (!/^\s*Дистанционно \(онлайн\)/.test(p.textContent || "")) return;
+    const tab = Array.from(p.querySelectorAll("span")).find((s) => s.children.length === 0 && s.textContent === "\u2003");
+    if (!tab) return;
+    let cell: Element = tab;
+    while (cell.parentElement && cell.parentElement !== p) cell = cell.parentElement;
+    (p as HTMLElement).style.display = "flex";
+    (p as HTMLElement).style.whiteSpace = "pre";
+    if ((cell.textContent || "").trim() === "") (cell as HTMLElement).style.flex = "1 1 auto";
+    else {
+      // табуляция внутри куска с текстом: прижимаем этот кусок к правому краю
+      (p as HTMLElement).style.justifyContent = "space-between";
+      tab.textContent = "";
+    }
+  });
+}
+
 /** Рисует договор в окне frame и готовит его к печати. */
 export async function renderForPrint(blob: Blob, frame: HTMLIFrameElement, title: string) {
   const { renderAsync } = await import("docx-preview");
@@ -144,5 +163,6 @@ export async function renderForPrint(blob: Blob, frame: HTMLIFrameElement, title
   });
   d.head.appendChild(st); // после стилей docx-preview, чтобы наши правила были главнее
   await (d as Document & { fonts?: FontFaceSet }).fonts?.ready;
+  rightTabs(d);
   keepTogether(d);
 }
