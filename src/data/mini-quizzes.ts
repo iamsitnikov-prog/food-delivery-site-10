@@ -20,7 +20,7 @@ export type MiniLevel = { min: number; title: string; text: string };
 
 export type MiniQuiz = {
   slug: string;
-  /** Дата выхода теста, YYYY-MM-DD. До этой даты тест скрыт */
+  /** Дата поста о тесте, YYYY-MM-DD. На сайте тест появляется за день до неё */
   date: string;
   navLabel: string;
   h1: string;
@@ -199,7 +199,18 @@ const FIRST_MINI_QUIZZES: MiniQuiz[] = [
 export const ALL_MINI_QUIZZES: MiniQuiz[] = [...FIRST_MINI_QUIZZES, ...NEXT_MINI_QUIZZES];
 
 /** Все мини тесты опубликованы сразу (решение Юрия 13.10), порядок по дате поста в канале */
-export const MINI_QUIZZES: MiniQuiz[] = [...ALL_MINI_QUIZZES].sort((a, b) => a.date.localeCompare(b.date));
+// Тест появляется на сайте за день до поста в канале (решение Юрия 17.10.2026).
+// Дата по UTC, как у статей: сайт пересобирается каждые 30 минут и раз в сутки,
+// поэтому тест открывается в 03:00 по Москве накануне поста.
+export const miniVisibleFrom = (q: Pick<MiniQuiz, "date">): string =>
+  new Date(Date.parse(`${q.date}T00:00:00Z`) - 86_400_000).toISOString().slice(0, 10);
+
+export const isMiniVisible = (q: Pick<MiniQuiz, "date">): boolean =>
+  miniVisibleFrom(q) <= new Date().toISOString().slice(0, 10);
+
+export const MINI_QUIZZES: MiniQuiz[] = [...ALL_MINI_QUIZZES]
+  .filter(isMiniVisible)
+  .sort((a, b) => a.date.localeCompare(b.date));
 
 export const getMiniQuiz = (slug: string) => MINI_QUIZZES.find((q) => q.slug === slug);
 
