@@ -17,6 +17,7 @@ import {
   titleCase,
   type Gender,
 } from "@/lib/docs-gen";
+import { EXECUTORS, getExecutor } from "@/data/executors";
 
 // Закрытая страница для бухгалтера: договор с рестораном (ИП или ООО) по шаблонам Юрия.
 // Договор собирается здесь, в браузере; сервер (api/docs.php) проверяет пароль,
@@ -27,7 +28,7 @@ const KEY_STORE = "agd-key";
 
 type Kind = "ooo" | "ip";
 type Point = { title: string; address: string; city: string };
-type Journal = { num: string; client: string; inn: string; total: number; points: number; created: string }[];
+type Journal = { id: number; num: string; version?: number; client: string; executor?: string; inn: string; total: number; points: number; created: string; has_form?: boolean }[];
 
 const thisMonth = () => new Date().toISOString().slice(0, 7);
 const digits = (s: string) => s.replace(/\D/g, "");
@@ -121,6 +122,7 @@ const Docs = () => {
 
   // --- Данные формы ---------------------------------------------------------
   const [kind, setKind] = useState<Kind>("ooo");
+  const [executor, setExecutor] = useState(EXECUTORS[0].id as string);
   const [num, setNum] = useState("");
   const [date, setDate] = useState("");
   const [month, setMonth] = useState(thisMonth());
@@ -155,6 +157,8 @@ const Docs = () => {
   const [result, setResult] = useState<{ blob: Blob; file: string } | null>(null);
   const [journal, setJournal] = useState<Journal>([]);
   const [dupe, setDupe] = useState("");
+  const [histBusy, setHistBusy] = useState<number | null>(null);
+  const exec = getExecutor(executor);
 
   const loadJournal = () => key && api(key, "a=journal").then((d) => setJournal(d.items || [])).catch(() => {});
   useEffect(() => {
@@ -181,7 +185,13 @@ const Docs = () => {
     if (!num.trim() || !key) return setDupe("");
     const t = setTimeout(() => {
       api(key, `a=check&num=${encodeURIComponent(num.trim())}`)
-        .then((d) => setDupe(d.exists ? `Договор № ${d.item.num} уже есть: ${d.item.client}, ${d.item.created}` : ""))
+        .then((d) =>
+          setDupe(
+            d.exists
+              ? `Договор № ${d.item.num} уже есть (${d.item.client}, ${d.item.created}). Новый сохранится как версия ${d.versions + 1}, прошлые останутся в журнале.`
+              : "",
+          ),
+        )
         .catch(() => {});
     }, 500);
     return () => clearTimeout(t);
@@ -231,8 +241,50 @@ const Docs = () => {
     }
   };
 
+  const snapshot = () => ({
+    kind, executor, num, date, month, inn, name, ogrn, kpp, address, person, gender, position, basis, proxy, personGen,
+    bank, rs, bik, ks, phone, email, edo, edoId, contact, points, price,
+  });
+  type Snap = ReturnType<typeof snapshot>;
+  const restore = (f: Partial<Snap>) => {
+    const set = <T,>(v: T | undefined, fn: (x: T) => void) => v !== undefined && fn(v);
+    set(f.kind, setKind); set(f.executor, setExecutor); set(f.num, setNum); set(f.date, setDate); set(f.month, setMonth);
+    set(f.inn, setInn); set(f.name, setName); set(f.ogrn, setOgrn); set(f.kpp, setKpp); set(f.address, setAddress);
+    set(f.person, setPerson); set(f.position, setPosition); set(f.basis, setBasis); set(f.proxy, setProxy);
+    set(f.bank, setBank); set(f.rs, setRs); set(f.bik, setBik); set(f.ks, setKs); set(f.phone, setPhone); set(f.email, setEmail);
+    set(f.edo, setEdo); set(f.edoId, setEdoId); set(f.contact, setContact); set(f.points, setPoints); set(f.price, setPrice);
+    // Пол и падеж пересчитываются из ФИО; ставим сохранённые после пересчёта
+    setTimeout(() => {
+      set(f.gender, setGender);
+      set(f.personGen, setPersonGen);
+    }, 300);
+    setResult(null);
+    setErrors([]);
+    setMsg("Данные загружены из журнала. Поправьте, что нужно, и сформируйте договор заново.");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const fillFrom = async (id: number) => {
+    setHistBusy(id);
+    try {
+      const { form } = await api(key, `a=form&id=${id}`);
+      restore(form);
+    } catch (err) {
+      setMsg(`Ошибка: ${(err as Error).message}`);
+    } finally {
+      setHistBusy(null);
+    }
+  };
+
+  const fileFrom = async (id: number, num: string) => {
+    const res = await fetch(`${API}?a=file&id=${id}`, { headers: { "X-Docs-Key": encodeURIComponent(key) }, cache: "no-store" });
+    if (!res.ok) throw new Error("Файл не найден");
+    return { blob: await res.blob(), file: `Договор ${num}`.replace(/[\\/:*?"<>|«»]+/g, " ") };
+  };
+
   const validate = () => {
     const e: string[] = [];
+    if (exec.missing.length) e.push(`У исполнителя ${exec.label} не заполнено: ${exec.missing.join(", ")}`);
     if (!num.trim()) e.push("Номер договора");
     if (!date) e.push("Дата договора (выберите в календаре)");
     if (!/^\d{10}$|^\d{12}$/.test(digits(inn))) e.push("ИНН: 10 цифр у ООО, 12 у ИП");
@@ -258,6 +310,7 @@ const Docs = () => {
   };
 
   const data = () => ({
+    ...exec.data,
     num: num.trim(),
     date: dateWords(date),
     month_year: monthYear(month),
@@ -314,10 +367,14 @@ const Docs = () => {
       fd.append("docx", blob, `${file}.docx`);
       fd.append(
         "meta",
-        JSON.stringify({ num: num.trim(), client: clientTitle, inn: digits(inn), total, points: pointsN, date: dateWords(date) }),
+        JSON.stringify({
+          num: num.trim(), client: clientTitle, inn: digits(inn), total, points: pointsN, date: dateWords(date),
+          executor: exec.label, form: snapshot(),
+        }),
       );
       const saved = await api(key, "a=save", { method: "POST", body: fd });
-      setMsg(saved.telegram ? "Договор готов. Сохранён в журнале, копия отправлена Юрию в Telegram." : "Договор готов и сохранён в журнале.");
+      const v = saved.version > 1 ? ` (версия ${saved.version})` : "";
+      setMsg(saved.telegram ? `Договор готов${v}. Сохранён в журнале, копия отправлена Юрию в Telegram.` : `Договор готов${v} и сохранён в журнале.`);
       loadJournal();
     } catch (err) {
       setMsg(`Ошибка: ${(err as Error).message}`);
@@ -326,8 +383,9 @@ const Docs = () => {
     }
   };
 
-  const downloadWord = () => {
-    if (!result) return;
+  const downloadWord = (r = result) => {
+    if (!r) return;
+    const result = r;
     const a = document.createElement("a");
     a.href = URL.createObjectURL(result.blob);
     a.download = `${result.file}.docx`;
@@ -336,8 +394,9 @@ const Docs = () => {
   };
 
   // PDF: рисуем договор в скрытом окне и открываем печать → «Сохранить как PDF»
-  const printPdf = async () => {
-    if (!result) return;
+  const printPdf = async (r = result) => {
+    if (!r) return;
+    const result = r;
     const { renderAsync } = await import("docx-preview");
     const frame = document.createElement("iframe");
     frame.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0";
@@ -373,15 +432,17 @@ const Docs = () => {
             <Icon name="Lock" size={22} />
           </span>
           <h1 className="mt-6 font-display text-[1.9em] font-semibold leading-none tracking-[-0.02em]">документы</h1>
-          <p className="mt-3 text-cream-muted">Служебная страница для подготовки договоров. Введите пароль.</p>
+          <p className="mt-3 text-cream-muted">Служебная страница для подготовки договоров. Введите пин-код.</p>
           <Input
             type="password"
+            inputMode="numeric"
             autoComplete="current-password"
-            className={`${field} mt-6`}
-            placeholder="Пароль"
+            className={`${field} mt-6 text-center text-[1.4em] tracking-[0.5em]`}
+            placeholder="••••"
+            maxLength={8}
             value={pw}
-            onChange={(e) => setPw(e.target.value)}
-            aria-label="Пароль"
+            onChange={(e) => setPw(e.target.value.replace(/\D/g, ""))}
+            aria-label="Пин-код"
           />
           {authErr && <p className="mt-2 text-[max(12px,0.86em)] text-destructive">{authErr}</p>}
           <button
@@ -421,7 +482,32 @@ const Docs = () => {
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_380px]">
           <div className="space-y-4">
-            <Card n={1} t="Заказчик">
+            <Card n={1} t="Исполнитель">
+              <div className="flex flex-col gap-2 md:col-span-2 md:flex-row" role="radiogroup" aria-label="Исполнитель">
+                {EXECUTORS.map((x) => (
+                  <button
+                    key={x.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={executor === x.id}
+                    onClick={() => setExecutor(x.id)}
+                    className={`flex-1 rounded-xl px-4 py-3 text-left font-medium ${executor === x.id ? "bg-brand text-foreground" : "bg-cream/10 text-cream"}`}
+                  >
+                    {x.label}
+                    <span className={`block text-[0.8em] font-normal ${executor === x.id ? "text-foreground/70" : "text-cream-muted"}`}>
+                      ИНН {x.data.e_inn} · {x.data.e_tax_gen.match(/\((\S+)\)/)?.[1]}
+                    </span>
+                  </button>
+                ))}
+              </div>
+              {exec.missing.length > 0 && (
+                <p className="text-[max(12px,0.86em)] text-brand md:col-span-2">
+                  Не хватает данных исполнителя: {exec.missing.join(", ")}. Договор от этого исполнителя пока сформировать нельзя.
+                </p>
+              )}
+            </Card>
+
+            <Card n={2} t="Заказчик">
               <div className="flex gap-2 md:col-span-2" role="radiogroup" aria-label="Форма заказчика">
                 {(["ooo", "ip"] as Kind[]).map((k) => (
                   <button
@@ -468,7 +554,7 @@ const Docs = () => {
               </Label>
             </Card>
 
-            <Card n={2} t={kind === "ooo" ? "Кто подписывает" : "Предприниматель"}>
+            <Card n={3} t={kind === "ooo" ? "Кто подписывает" : "Предприниматель"}>
               <Label t={kind === "ooo" ? "ФИО руководителя полностью" : "ФИО полностью"} hint="Например: Иванов Иван Иванович">
                 <Input className={field} value={person} onChange={(e) => setPerson(e.target.value)} />
               </Label>
@@ -514,7 +600,7 @@ const Docs = () => {
               </div>
             </Card>
 
-            <Card n={3} t="Банковские реквизиты">
+            <Card n={4} t="Банковские реквизиты">
               <Label t="Банк" wide>
                 <Input className={field} value={bank} onChange={(e) => setBank(e.target.value)} />
               </Label>
@@ -529,7 +615,7 @@ const Docs = () => {
               </Label>
             </Card>
 
-            <Card n={4} t="Контакты заказчика">
+            <Card n={5} t="Контакты заказчика">
               <Label t="Телефон">
                 <Input className={field} inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
               </Label>
@@ -551,7 +637,7 @@ const Docs = () => {
               </Label>
             </Card>
 
-            <Card n={5} t="Точки ресторана">
+            <Card n={6} t="Точки ресторана">
               <div className="space-y-3 md:col-span-2">
                 {points.map((p, i) => (
                   <div key={i} className="grid gap-2 rounded-xl bg-cream/5 p-3 md:grid-cols-[1fr_1.3fr_0.8fr_auto]">
@@ -579,7 +665,7 @@ const Docs = () => {
               </div>
             </Card>
 
-            <Card n={6} t="Стоимость и даты">
+            <Card n={7} t="Стоимость и даты">
               <Label t="Стоимость за одну точку в месяц, ₽">
                 <Input className={field} inputMode="numeric" value={price} onChange={(e) => setPrice(digits(e.target.value))} />
               </Label>
@@ -624,10 +710,10 @@ const Docs = () => {
               {msg && <p className="mt-4 text-[max(12px,0.86em)]">{msg}</p>}
               {result && (
                 <div className="mt-4 grid gap-2">
-                  <button onClick={downloadWord} className="flex h-12 items-center justify-center gap-2 rounded-xl bg-brand font-medium">
+                  <button onClick={() => downloadWord()} className="flex h-12 items-center justify-center gap-2 rounded-xl bg-brand font-medium">
                     <Icon name="FileText" size={18} /> скачать Word
                   </button>
-                  <button onClick={printPdf} className="flex h-12 items-center justify-center gap-2 rounded-xl border border-foreground/30 font-medium">
+                  <button onClick={() => printPdf()} className="flex h-12 items-center justify-center gap-2 rounded-xl border border-foreground/30 font-medium">
                     <Icon name="FileDown" size={18} /> сохранить PDF
                   </button>
                   <p className="text-[max(12px,0.78em)] text-foreground/60">
@@ -639,15 +725,41 @@ const Docs = () => {
 
             <div className="mt-4 rounded-[24px] bg-surface p-6 text-cream">
               <h2 className="font-display text-[1.2em] font-semibold">журнал договоров</h2>
+              <p className="mt-1 text-[max(12px,0.8em)] text-cream-muted">Нашли ошибку: «заполнить из этого», поправьте и сформируйте снова. Сохранится новая версия.</p>
               {journal.length === 0 ? (
                 <p className="mt-3 text-[0.9em] text-cream-muted">Пока пусто.</p>
               ) : (
                 <ul className="mt-3 space-y-3 text-[0.9em]">
                   {journal.map((j, i) => (
                     <li key={i} className="border-t border-cream/15 pt-3">
-                      <b>№ {j.num}</b> · {j.client}
+                      <b>№ {j.num}</b>
+                      {j.version && j.version > 1 ? <span className="text-brand"> · версия {j.version}</span> : null} · {j.client}
                       <span className="block text-cream-muted">
                         {j.points} {plural(j.points, "точка", "точки", "точек")}, {money(j.total)} ₽ в месяц · {j.created}
+                        {j.executor ? ` · ${j.executor.replace("ИП ", "")}` : ""}
+                      </span>
+                      <span className="mt-2 flex flex-wrap gap-2">
+                        {j.has_form && (
+                          <button
+                            onClick={() => fillFrom(j.id)}
+                            disabled={histBusy === j.id}
+                            className="rounded-lg bg-brand px-3 py-1.5 text-[0.85em] font-medium text-foreground disabled:opacity-60"
+                          >
+                            заполнить из этого
+                          </button>
+                        )}
+                        <button
+                          onClick={() => fileFrom(j.id, j.num).then((r) => downloadWord(r)).catch((e) => setMsg(`Ошибка: ${e.message}`))}
+                          className="rounded-lg border border-cream/30 px-3 py-1.5 text-[0.85em]"
+                        >
+                          Word
+                        </button>
+                        <button
+                          onClick={() => fileFrom(j.id, j.num).then((r) => printPdf(r)).catch((e) => setMsg(`Ошибка: ${e.message}`))}
+                          className="rounded-lg border border-cream/30 px-3 py-1.5 text-[0.85em]"
+                        >
+                          PDF
+                        </button>
                       </span>
                     </li>
                   ))}
