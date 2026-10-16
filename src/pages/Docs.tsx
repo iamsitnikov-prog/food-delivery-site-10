@@ -367,7 +367,7 @@ const Docs = () => {
     setLookupBusy(true);
     setLookupMsg("");
     try {
-      const { row } = await api(key, `a=lookup&inn=${digits(inn)}`);
+      const { row, source } = await api(key, `a=lookup&inn=${digits(inn)}`);
       if (row.closed) setLookupMsg("Внимание: по данным налоговой деятельность прекращена.");
       setKind(row.kind);
       setOgrn(row.ogrn);
@@ -384,7 +384,12 @@ const Docs = () => {
       } else {
         setPerson(titleCase(row.full));
       }
-      if (!row.closed) setLookupMsg("Заполнено из ЕГРЮЛ. Проверьте и поправьте написание, если нужно.");
+      if (!row.closed)
+        setLookupMsg(
+          source === "dadata"
+            ? `Заполнено по данным ЕГРЮЛ/ЕГРИП (DaData), адрес тоже. Проверьте написание.${row.kind === "ip" ? " У ИП реестр показывает только город: допишите улицу и дом." : ""}`
+            : "Заполнено из ЕГРЮЛ, адрес впишите вручную. Проверьте написание.",
+        );
     } catch (err) {
       setLookupMsg((err as Error).message);
     } finally {

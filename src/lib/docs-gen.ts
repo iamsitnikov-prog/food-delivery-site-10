@@ -82,7 +82,7 @@ export const firstPeriod = (ym: string, p: Period) => {
 
 /** ЗАГЛАВНЫЕ из реестра → «Иванов Иван Иванович». */
 export const titleCase = (s: string) =>
-  s.toLowerCase().replace(/(^|[\s\-«"(])([а-яёa-z])/g, (_, p, c) => p + c.toUpperCase());
+  s.toLowerCase().replace(/(^|[\s\-«"(.])([а-яёa-z])/g, (_, p, c) => p + c.toUpperCase());
 
 /** «Иванов Иван Иванович» → «Иванов И.И.» */
 export const shortName = (full: string) => {
