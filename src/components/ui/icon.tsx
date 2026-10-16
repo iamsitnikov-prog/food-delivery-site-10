@@ -2,6 +2,11 @@ import React from 'react';
 import type { LucideProps } from 'lucide-react';
 import {
   Activity,
+  FileDown,
+  Lock,
+  LogOut,
+  Trash2,
+
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
@@ -76,6 +81,11 @@ import {
 } from 'lucide-react';
 
 const ICONS: Record<string, React.FC<LucideProps>> = {
+  FileDown,
+  Lock,
+  LogOut,
+  Trash2,
+
   Activity,
   ArrowLeft,
   ArrowRight,

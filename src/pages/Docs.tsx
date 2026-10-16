@@ -64,8 +64,8 @@ const api = async (key: string, q: string, init?: RequestInit) => {
 };
 
 // Текст для рабочего чата с клиентом после того, как договор готов
-const CHAT_TEXT =
-  "Коллеги, добрый день! Направляем договор на просмотр. В нём условия сотрудничества, описание услуг по каждой точке и образцы закрывающих документов (счёт, акт, УПД). После вашей проверки отправим договор вместе со счётом через ЭДО. Ждём от вас подтверждения или правок.";
+const chatText = (points: number) =>
+  `Коллеги, добрый день! Направляем договор на просмотр. В нём условия сотрудничества, описание услуг${points > 1 ? " по каждой точке" : ""} и образцы закрывающих документов (счёт, акт, УПД). После вашей проверки отправим договор вместе со счётом через ЭДО. Ждём от вас подтверждения или правок.`;
 
 const EDO = ["СБИС", "Контур.Диадок", "Такском", "Калуга Астрал", "Другой оператор", "Нет ЭДО"];
 
@@ -220,6 +220,14 @@ const SAMPLE = {
     { title: "Вкусная точка на Садовой", address: "Садовая ул., д. 12", city: "Санкт-Петербург" },
   ],
   price: "25000",
+};
+
+// Пустая форма: для кнопки «сбросить»
+const EMPTY = {
+  kind: "ooo" as const, num: "", date: "", inn: "", name: "", ogrn: "", kpp: "", address: "", person: "",
+  position: "Генеральный директор" as const, basis: "Устав" as const, proxy: "", personGen: "",
+  bik: "", bank: "", ks: "", rs: "", phone: "", email: "", edo: "СБИС", edoId: "", contact: "",
+  points: [{ title: "", address: "", city: "" }], price: "25000", period: "month" as const,
 };
 
 // Префикс номера договора: три первые буквы названия первой точки (Молодость → МОЛ)
@@ -513,6 +521,7 @@ const Docs = () => {
   const doneShare = Math.round((100 * (checks.length - left.length)) / checks.length);
   const [showMiss, setShowMiss] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [confirmReset, setConfirmReset] = useState(false);
   const missing: Missing = {
     labels: new Set(left.map((c) => c.label).filter(Boolean)),
     perCard: left.reduce<Record<number, number>>((m, c) => ({ ...m, [c.card]: (m[c.card] || 0) + 1 }), {}),
@@ -692,7 +701,7 @@ const Docs = () => {
         <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_380px]">
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-3 rounded-[24px] border border-dashed border-foreground/25 bg-pale/60 p-4 md:p-5">
-              <Icon name="Sparkles" size={20} />
+              <Icon name="FileText" size={20} />
               <p className="flex-1 text-[max(13px,0.92em)]">
                 Хотите показать клиенту, как будет выглядеть договор, ещё до его реквизитов? Заполните форму примером.
               </p>
@@ -709,6 +718,39 @@ const Docs = () => {
               >
                 заполнить примером
               </button>
+              {confirmReset ? (
+                <span className="flex items-center gap-2">
+                  <span className="text-[0.9em]">Стереть всё?</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      restore({ ...EMPTY, month: thisMonth() });
+                      setNumAuto(true);
+                      setShowMiss(false);
+                      setErrors([]);
+                      setLookupMsg("");
+                      setBankMsg("");
+                      setConfirmReset(false);
+                      setTimeout(() => setMsg("Форма очищена."), 350);
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    className="rounded-xl bg-red-600 px-4 py-2.5 text-[0.95em] font-medium text-white"
+                  >
+                    да, сбросить
+                  </button>
+                  <button type="button" onClick={() => setConfirmReset(false)} className="rounded-xl border border-foreground/30 px-4 py-2.5 text-[0.95em]">
+                    нет
+                  </button>
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setConfirmReset(true)}
+                  className="inline-flex items-center gap-2 rounded-xl border border-foreground/30 bg-white/60 px-4 py-2.5 text-[0.95em] font-medium"
+                >
+                  <Icon name="RotateCcw" size={16} /> сбросить всё
+                </button>
+              )}
             </div>
 
             <Card n={1} t="Исполнитель">
@@ -1034,11 +1076,11 @@ const Docs = () => {
                   </p>
                   <div className="mt-2 rounded-xl bg-[#23100B] p-4 text-[#FFFBF5]">
                     <p className="font-medium text-brand">Не забудьте: отправьте PDF в рабочий чат с клиентом</p>
-                    <p className="mt-2 text-[max(12px,0.86em)] leading-relaxed text-[#FFFBF5]/90">{CHAT_TEXT}</p>
+                    <p className="mt-2 text-[max(12px,0.86em)] leading-relaxed text-[#FFFBF5]/90">{chatText(pointsN)}</p>
                     <button
                       type="button"
                       onClick={() => {
-                        navigator.clipboard?.writeText(CHAT_TEXT).then(() => setCopied(true)).catch(() => {});
+                        navigator.clipboard?.writeText(chatText(pointsN)).then(() => setCopied(true)).catch(() => {});
                         setTimeout(() => setCopied(false), 2500);
                       }}
                       className="mt-3 inline-flex items-center gap-2 rounded-lg bg-brand px-3 py-2 text-[0.85em] font-medium text-foreground"

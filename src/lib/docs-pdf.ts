@@ -64,7 +64,7 @@ html, body { margin: 0; padding: 0; background: #fff; }
 }
 .docx-wrapper > section.docx + section.docx { break-before: page; }
 section.docx > header, section.docx > footer { display: none !important; }
-table { table-layout: fixed !important; width: 100% !important; max-width: 100% !important; }
+table { table-layout: fixed !important; width: calc(100% - 2px) !important; max-width: calc(100% - 2px) !important; }
 td, th { overflow-wrap: anywhere; }
 tr { break-inside: avoid; }
 .keep { break-after: avoid; }
