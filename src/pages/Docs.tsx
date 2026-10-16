@@ -10,6 +10,11 @@ import {
   genitive,
   money,
   firstPeriod,
+  innError,
+  ogrnError,
+  kppError,
+  parseCard,
+  type CardData,
   PERIOD_UNIT,
   type Period,
   numberWords,
@@ -31,7 +36,7 @@ const KEY_STORE = "agd-key";
 
 type Kind = "ooo" | "ip";
 type Point = { title: string; address: string; city: string };
-type Journal = { id: number; num: string; version?: number; client: string; executor?: string; inn: string; total: number; points: number; created: string; has_form?: boolean }[];
+type Journal = { id: number; num: string; version?: number; client: string; executor?: string; author?: string; inn: string; total: number; points: number; created: string; has_form?: boolean }[];
 
 const thisMonth = () => new Date().toISOString().slice(0, 7);
 const digits = (s: string) => s.replace(/\D/g, "");
@@ -67,25 +72,61 @@ const api = async (key: string, q: string, init?: RequestInit) => {
 const chatText = (points: number) =>
   `Коллеги, добрый день! Направляем договор на просмотр. В нём условия сотрудничества, описание услуг${points > 1 ? " по каждой точке" : ""} и образцы закрывающих документов (счёт, акт, УПД). После вашей проверки отправим договор вместе со счётом через ЭДО. Ждём от вас подтверждения или правок.`;
 
+// Памятка: что запросить у ресторана (кнопка «скопировать»)
+const ASK_TEXT = `Добрый день! Чтобы подготовить договор, пришлите, пожалуйста:
+1. Карточку организации: полное название, ИНН, КПП, ОГРН (у ИП ОГРНИП), юридический адрес.
+2. Кто подписывает договор: ФИО и должность, на основании чего действует (Устав или доверенность с номером и датой).
+3. Банковские реквизиты: БИК, расчётный счёт, название банка, корреспондентский счёт.
+4. Телефон и электронную почту для документов.
+5. Оператора ЭДО и ваш ID в ЭДО.
+6. Точки на Яндекс Еде: название на сервисе, адрес и город каждой.
+Проще всего прислать карточку организации файлом или текстом, остальное допишите в сообщении.`;
+
+const LS = {
+  get: (k: string) => {
+    try {
+      return localStorage.getItem(k);
+    } catch {
+      return null;
+    }
+  },
+  set: (k: string, v: string | null) => {
+    try {
+      if (v === null) localStorage.removeItem(k);
+      else localStorage.setItem(k, v);
+    } catch {
+      /* приватный режим */
+    }
+  },
+};
+const DRAFT_KEY = "agd-draft";
+
 const EDO = ["СБИС", "Контур.Диадок", "Такском", "Калуга Астрал", "Другой оператор", "Нет ЭДО"];
 
 const field =
   "h-12 rounded-xl border-cream/20 bg-cream/5 px-4 text-[1em] text-cream placeholder:text-cream-muted/60 focus-visible:ring-1 focus-visible:ring-brand focus-visible:ring-offset-0";
 
 // Что не заполнено: подписи полей (по ним подсвечиваем) и сколько осталось в каждом блоке
-type Missing = { labels: Set<string>; perCard: Record<number, number>; show: boolean };
-const MissCtx = createContext<Missing>({ labels: new Set(), perCard: {}, show: false });
+type Missing = { labels: Set<string>; perCard: Record<number, number>; show: boolean; parsed: Set<string> };
+const MissCtx = createContext<Missing>({ labels: new Set(), perCard: {}, show: false, parsed: new Set() });
 
-const Label = ({ t, hint, children, wide }: { t: string; hint?: string; children: React.ReactNode; wide?: boolean }) => {
+const Label = ({ t, hint, children, wide, err }: { t: string; hint?: string; children: React.ReactNode; wide?: boolean; err?: string }) => {
   const miss = useContext(MissCtx);
-  const bad = miss.show && miss.labels.has(t);
+  const bad = (miss.show && miss.labels.has(t)) || !!err;
+  const found = !bad && miss.parsed.has(t);
   return (
-    <label className={`block ${wide ? "md:col-span-2" : ""} ${bad ? "rounded-xl outline outline-2 outline-offset-4 outline-red-400/70" : ""}`}>
-      <span className={`mb-1.5 block text-[max(12px,0.86em)] font-medium ${bad ? "text-red-600" : "text-cream-muted"}`}>
+    <label
+      className={`block ${wide ? "md:col-span-2" : ""} ${
+        bad ? "rounded-xl outline outline-2 outline-offset-4 outline-red-400/70" : found ? "rounded-xl outline outline-2 outline-offset-4 outline-green-500/70" : ""
+      }`}
+    >
+      <span className={`mb-1.5 block text-[max(12px,0.86em)] font-medium ${bad ? "text-red-600" : found ? "text-green-700" : "text-cream-muted"}`}>
         {t}
-        {bad && <span className="ml-2 font-normal">· заполните</span>}
+        {bad && !err && <span className="ml-2 font-normal">· заполните</span>}
+        {found && <span className="ml-2 font-normal">· распознано, проверьте</span>}
       </span>
       {children}
+      {err && <span className="mt-1 block text-[max(12px,0.78em)] font-medium text-red-600">{err}</span>}
       {hint && <span className="mt-1 block text-[max(12px,0.78em)] text-cream-muted/70">{hint}</span>}
     </label>
   );
@@ -197,9 +238,9 @@ const today = () => new Date().toISOString().slice(0, 10);
 const SAMPLE = {
   kind: "ooo" as const,
   num: SAMPLE_NUM,
-  inn: "7801234567",
+  inn: "7801234564",
   name: "Вкусная точка",
-  ogrn: "1217800012345",
+  ogrn: "1217800012341",
   kpp: "780101001",
   address: "191186, г. Санкт-Петербург, Невский пр-кт, д. 28, помещ. 1-Н",
   person: "Петров Пётр Петрович",
@@ -481,15 +522,18 @@ const Docs = () => {
 
   // Обязательные поля: card = номер блока, label = подпись поля (по ней подсвечиваем), msg = текст ошибки
   const ooo = kind === "ooo";
+  const innErr = innError(inn, kind);
+  const ogrnErr = ogrnError(ogrn, kind);
+  const kppErr = kind === "ooo" ? kppError(kpp) : "";
   const priceLabel = `Стоимость за одну точку в месяц, ₽ (точек в договоре: ${pointsN})`;
   const checks: { card: number; label: string; msg: string; ok: boolean }[] = [
     { card: 1, label: "", msg: `У исполнителя ${exec.label} не заполнено: ${exec.missing.join(", ")}`, ok: !exec.missing.length },
-    { card: 2, label: "ИНН", msg: "ИНН: 10 цифр у ООО, 12 у ИП", ok: /^\d{10}$|^\d{12}$/.test(digits(inn)) },
-    { card: 2, label: ooo ? "ОГРН" : "ОГРНИП", msg: ooo ? "ОГРН: 13 цифр" : "ОГРНИП: 15 цифр", ok: ooo ? /^\d{13}$/.test(digits(ogrn)) : /^\d{15}$/.test(digits(ogrn)) },
+    { card: 2, label: "ИНН", msg: innErr || (ooo ? "ИНН: 10 цифр" : "ИНН: 12 цифр"), ok: !!digits(inn) && !innErr },
+    { card: 2, label: ooo ? "ОГРН" : "ОГРНИП", msg: ogrnErr || (ooo ? "ОГРН: 13 цифр" : "ОГРНИП: 15 цифр"), ok: !!digits(ogrn) && !ogrnErr },
     ...(ooo
       ? [
           { card: 2, label: "Название ООО (без кавычек)", msg: "Название ООО", ok: !!name.trim() },
-          { card: 2, label: "КПП", msg: "КПП: 9 цифр", ok: /^\d{9}$/.test(digits(kpp)) },
+          { card: 2, label: "КПП", msg: kppErr || "КПП: 9 знаков", ok: !!kpp.trim() && !kppErr },
         ]
       : []),
     ...(ooo ? [{ card: 2, label: "Юридический адрес", msg: "Юридический адрес", ok: !!address.trim() }] : []),
@@ -520,12 +564,84 @@ const Docs = () => {
   const left = checks.filter((c) => !c.ok);
   const doneShare = Math.round((100 * (checks.length - left.length)) / checks.length);
   const [showMiss, setShowMiss] = useState(false);
+  const [parsed, setParsed] = useState<Set<string>>(new Set());
+  const [cardText, setCardText] = useState("");
+  const [parseMsg, setParseMsg] = useState("");
+  const [helloOpen, setHelloOpen] = useState(() => LS.get("agd-hello") !== "0");
+  const [askCopied, setAskCopied] = useState(false);
+  const [journalAll, setJournalAll] = useState(false);
+  const [author, setAuthor] = useState(() => LS.get("agd-author") || "Алиса");
+  const [draftReady, setDraftReady] = useState(false);
+
+  // Черновик: форма сохраняется в браузере и возвращается, если закрыть вкладку
+  const draftJson = JSON.stringify(snapshot());
+  useEffect(() => {
+    if (!key || draftReady) return;
+    setDraftReady(true);
+    const raw = LS.get(DRAFT_KEY);
+    if (!raw) return;
+    try {
+      const d = JSON.parse(raw) as { at: number; form: Partial<Snap> };
+      restore(d.form);
+      const at = new Date(d.at);
+      setTimeout(
+        () =>
+          setMsg(
+            `Восстановлен черновик от ${at.toLocaleDateString("ru-RU")} ${at.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" })}. Начать заново: кнопка «очистить».`,
+          ),
+        400,
+      );
+    } catch {
+      LS.set(DRAFT_KEY, null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
+  useEffect(() => {
+    if (!key || !draftReady) return;
+    const t = setTimeout(() => LS.set(DRAFT_KEY, JSON.stringify({ at: Date.now(), form: JSON.parse(draftJson) })), 600);
+    return () => clearTimeout(t);
+  }, [draftJson, key, draftReady]);
+
+  // Карточка организации одним текстом → поля; распознанное подсвечиваем зелёным
+  const applyCard = () => {
+    const c: CardData = parseCard(cardText);
+    const k = c.kind || kind;
+    const L: Record<string, string> = {
+      inn: "ИНН", kpp: "КПП", ogrn: k === "ooo" ? "ОГРН" : "ОГРНИП", name: "Название ООО (без кавычек)",
+      address: k === "ooo" ? "Юридический адрес" : "Адрес регистрации ИП (необязательно)",
+      person: k === "ooo" ? "ФИО руководителя полностью" : "ФИО полностью",
+      bik: "БИК", rs: "Расчётный счёт", ks: "Корреспондентский счёт", bank: "Банк", phone: "Телефон", email: "Электронная почта",
+    };
+    if (c.kind) setKind(c.kind);
+    if (c.inn) setInn(c.inn);
+    if (c.kpp && k === "ooo") setKpp(c.kpp);
+    if (c.ogrn) setOgrn(c.ogrn);
+    if (c.name && k === "ooo") setName(c.name);
+    if (c.address) setAddress(c.address);
+    if (c.person) setPerson(c.person);
+    if (c.position && k === "ooo") setPosition(c.position);
+    if (c.bik) setBik(c.bik);
+    if (c.rs) setRs(c.rs);
+    if (c.ks) setKs(c.ks);
+    if (c.bank && !c.bik) setBank(c.bank);
+    if (c.phone) setPhone(c.phone);
+    if (c.email) setEmail(c.email);
+    const found = Object.keys(c).filter((x) => L[x] && !(k === "ip" && (x === "kpp" || x === "name")));
+    setParsed(new Set(found.map((x) => L[x])));
+    setParseMsg(
+      found.length
+        ? `Распознано: ${found.map((x) => L[x].replace(/ \(.*\)/, "")).join(", ")}. Поля подсвечены зелёным: проверьте их глазами.`
+        : "Ничего не распознал. Проверьте, что в тексте есть слова ИНН, КПП, БИК и т. п., или заполните поля вручную.",
+    );
+    if (found.length) setTimeout(() => document.getElementById("card-2")?.scrollIntoView({ behavior: "smooth" }), 100);
+  };
   const [copied, setCopied] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
   const missing: Missing = {
     labels: new Set(left.map((c) => c.label).filter(Boolean)),
     perCard: left.reduce<Record<number, number>>((m, c) => ({ ...m, [c.card]: (m[c.card] || 0) + 1 }), {}),
     show: showMiss,
+    parsed,
   };
   const validate = () => {
     const e = left.map((c) => c.msg);
@@ -601,7 +717,7 @@ const Docs = () => {
         "meta",
         JSON.stringify({
           num: num.trim(), client: clientTitle, inn: digits(inn), total, points: pointsN, date: dateWords(date),
-          executor: exec.label, form: snapshot(),
+          executor: exec.label, author, form: snapshot(),
         }),
       );
       const saved = await api(key, "a=save", { method: "POST", body: fd });
@@ -700,6 +816,87 @@ const Docs = () => {
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_380px]">
           <div className="space-y-4">
+            <section className="docs-card rounded-[24px] bg-surface p-5 text-cream md:p-7">
+              <button
+                type="button"
+                onClick={() => {
+                  setHelloOpen((o) => !o);
+                  LS.set("agd-hello", helloOpen ? "0" : "1");
+                }}
+                className="flex w-full items-center justify-between gap-3 text-left"
+                aria-expanded={helloOpen}
+              >
+                <span className="font-display text-[1.3em] font-semibold tracking-[-0.02em]">Алиса, привет! 👋</span>
+                <span className="inline-flex items-center gap-1 text-[max(12px,0.85em)] text-cream-muted">
+                  {helloOpen ? "свернуть" : "развернуть"}
+                  <Icon name={helloOpen ? "ChevronUp" : "ChevronDown"} size={16} />
+                </span>
+              </button>
+              {helloOpen && (
+                <div className="mt-3 space-y-3 text-[max(14px,0.95em)] leading-relaxed">
+                  <p>Это твой кабинет для договоров с ресторанами. Больше не нужно открывать Word и копировать реквизиты по строчке.</p>
+                  <p className="font-medium">Как работать:</p>
+                  <ol className="list-decimal space-y-1 pl-5">
+                    <li>Ресторан прислал свои данные, ты переносишь их в поля.</li>
+                    <li>Кабинет сам соберёт договор и Приложения 1–4 по шаблону Юрия. Текст шаблона не меняется, поэтому юридически всё в порядке.</li>
+                    <li>Если нужна мелкая правка, скачай Word. Клиенту отправляй PDF.</li>
+                  </ol>
+                  <p className="rounded-xl bg-pale/70 p-3">
+                    Перед отправкой проверь глазами ИНН, название юрлица, банк и подписанта: опечатку в реквизитах кабинет за тебя не заметит.
+                  </p>
+                  <p>Если что-то непонятно или не работает, пиши Юрию. Удачи, у тебя всё получится! 🌷</p>
+                </div>
+              )}
+            </section>
+
+            <div className="grid gap-4 xl:grid-cols-[1.25fr_1fr]">
+              <section className="docs-card rounded-[24px] bg-surface p-5 text-cream md:p-7">
+                <h2 className="font-display text-[1.2em] font-semibold tracking-[-0.02em]">Вставь реквизиты ресторана одним текстом</h2>
+                <p className="mt-1 text-[max(12px,0.85em)] text-cream-muted">
+                  Скопируй карточку организации из письма, Word или PDF. Кабинет сам разложит ИНН, КПП, ОГРН, адрес, директора, БИК и счета по полям.
+                </p>
+                <textarea
+                  value={cardText}
+                  onChange={(e) => setCardText(e.target.value)}
+                  rows={6}
+                  placeholder={"ООО «Вкусная точка»\nИНН/КПП 7801234564/780101001\nОГРН 1217800012341\nЮридический адрес: 191186, г. Санкт-Петербург, Невский пр., д. 28\nГенеральный директор: Петров Пётр Петрович\nБИК 044030653, р/с 40702810550000123455"}
+                  className="mt-3 w-full rounded-xl border border-cream/20 bg-cream/5 p-3 text-[max(13px,0.9em)] text-cream placeholder:text-cream-muted/50 focus:outline-none focus:ring-1 focus:ring-brand"
+                />
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={applyCard}
+                    disabled={!cardText.trim()}
+                    className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 font-medium text-foreground disabled:opacity-50"
+                  >
+                    <Icon name="ArrowRight" size={16} /> разложить по полям
+                  </button>
+                  {cardText && (
+                    <button type="button" onClick={() => setCardText("")} className="rounded-xl px-3 py-2.5 text-[0.9em] text-cream-muted">
+                      стереть текст
+                    </button>
+                  )}
+                </div>
+                {parseMsg && <p className="mt-3 rounded-xl bg-green-50 p-3 text-[max(12px,0.86em)] text-green-800">{parseMsg}</p>}
+              </section>
+
+              <section className="docs-card rounded-[24px] bg-surface p-5 text-cream md:p-7">
+                <h2 className="font-display text-[1.2em] font-semibold tracking-[-0.02em]">Что запросить у ресторана</h2>
+                <p className="mt-1 text-[max(12px,0.85em)] text-cream-muted">Готовое сообщение со списком реквизитов: скопируй и отправь ресторану.</p>
+                <pre className="mt-3 max-h-56 overflow-auto whitespace-pre-wrap rounded-xl bg-cream/5 p-3 font-sans text-[max(12px,0.85em)] leading-relaxed">{ASK_TEXT}</pre>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard?.writeText(ASK_TEXT).then(() => setAskCopied(true)).catch(() => {});
+                    setTimeout(() => setAskCopied(false), 2500);
+                  }}
+                  className="mt-3 inline-flex items-center gap-2 rounded-xl bg-foreground px-4 py-2.5 font-medium text-brand"
+                >
+                  <Icon name={askCopied ? "Check" : "Copy"} size={16} /> {askCopied ? "скопировано" : "скопировать"}
+                </button>
+              </section>
+            </div>
+
             <div className="flex flex-wrap items-center gap-3 rounded-[24px] border border-dashed border-foreground/25 bg-pale/60 p-4 md:p-5">
               <Icon name="FileText" size={20} />
               <p className="flex-1 text-[max(13px,0.92em)]">
@@ -710,6 +907,7 @@ const Docs = () => {
                 onClick={() => {
                   setNumAuto(false);
                   restore({ ...SAMPLE, date: today(), month: today().slice(0, 7) });
+                  setParsed(new Set());
                   setShowMiss(false);
                   setErrors([]);
                   setMsg("Форма заполнена примером с вымышленными данными. Номер «ОБРАЗЕЦ»: такой договор не попадёт в журнал.");
@@ -720,23 +918,27 @@ const Docs = () => {
               </button>
               {confirmReset ? (
                 <span className="flex items-center gap-2">
-                  <span className="text-[0.9em]">Стереть всё?</span>
+                  <span className="text-[0.9em]">Очистить форму и черновик?</span>
                   <button
                     type="button"
                     onClick={() => {
                       restore({ ...EMPTY, month: thisMonth() });
+                      LS.set(DRAFT_KEY, null);
+                      setParsed(new Set());
+                      setParseMsg("");
+                      setCardText("");
                       setNumAuto(true);
                       setShowMiss(false);
                       setErrors([]);
                       setLookupMsg("");
                       setBankMsg("");
                       setConfirmReset(false);
-                      setTimeout(() => setMsg("Форма очищена."), 350);
+                      setTimeout(() => setMsg("Форма и черновик очищены."), 350);
                       window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
                     className="rounded-xl bg-red-600 px-4 py-2.5 text-[0.95em] font-medium text-white"
                   >
-                    да, сбросить
+                    да, очистить
                   </button>
                   <button type="button" onClick={() => setConfirmReset(false)} className="rounded-xl border border-foreground/30 px-4 py-2.5 text-[0.95em]">
                     нет
@@ -748,7 +950,7 @@ const Docs = () => {
                   onClick={() => setConfirmReset(true)}
                   className="inline-flex items-center gap-2 rounded-xl border border-foreground/30 bg-white/60 px-4 py-2.5 text-[0.95em] font-medium"
                 >
-                  <Icon name="RotateCcw" size={16} /> сбросить всё
+                  <Icon name="RotateCcw" size={16} /> очистить
                 </button>
               )}
             </div>
@@ -793,7 +995,7 @@ const Docs = () => {
                   </button>
                 ))}
               </div>
-              <Label t="ИНН" hint="Нажмите «найти», и реквизиты подтянутся из реестра налоговой">
+              <Label t="ИНН" err={innErr} hint="10 цифр у ООО, 12 у ИП. Есть в карточке организации и в выписке ЕГРЮЛ. Нажмите «найти», и реквизиты подтянутся сами">
                 <div className="flex gap-2">
                   <Input className={field} inputMode="numeric" value={inn} onChange={(e) => setInn(digits(e.target.value).slice(0, 12))} />
                   <button
@@ -806,23 +1008,27 @@ const Docs = () => {
                   </button>
                 </div>
               </Label>
-              <Label t={kind === "ooo" ? "ОГРН" : "ОГРНИП"}>
+              <Label
+                t={kind === "ooo" ? "ОГРН" : "ОГРНИП"}
+                err={ogrnErr}
+                hint={kind === "ooo" ? "13 цифр, например 1217800012341. В карточке организации или выписке ЕГРЮЛ" : "15 цифр, например 325780000123458. В выписке ЕГРИП или карточке ИП"}
+              >
                 <Input className={field} inputMode="numeric" value={ogrn} onChange={(e) => setOgrn(digits(e.target.value).slice(0, 15))} />
               </Label>
               {lookupMsg && <p className="text-[max(12px,0.86em)] text-brand md:col-span-2">{lookupMsg}</p>}
               {kind === "ooo" ? (
                 <>
-                  <Label t="Название ООО (без кавычек)">
+                  <Label t="Название ООО (без кавычек)" hint="Например: Вкусная точка. Без «ООО» и без кавычек, как в выписке">
                     <Input className={field} value={name} onChange={(e) => setName(e.target.value)} />
                   </Label>
-                  <Label t="КПП">
-                    <Input className={field} inputMode="numeric" value={kpp} onChange={(e) => setKpp(digits(e.target.value).slice(0, 9))} />
+                  <Label t="КПП" err={kppErr} hint="9 знаков, например 780101001. В карточке организации рядом с ИНН">
+                    <Input className={field} value={kpp} onChange={(e) => setKpp(e.target.value.toUpperCase().replace(/[^0-9A-Z]/g, "").slice(0, 9))} />
                   </Label>
                 </>
               ) : null}
               <Label
                 t={kind === "ooo" ? "Юридический адрес" : "Адрес регистрации ИП (необязательно)"}
-                hint={kind === "ooo" ? undefined : "Можно оставить город из реестра или пусто: в договоре будет «—»"}
+                hint={kind === "ooo" ? "С индексом, как в выписке ЕГРЮЛ: 191186, г. Санкт-Петербург, Невский пр., д. 28" : "Можно оставить город из реестра или пусто: в договоре будет «—»"}
                 wide
               >
                 <AddressInput
@@ -837,7 +1043,7 @@ const Docs = () => {
             </Card>
 
             <Card n={3} t={kind === "ooo" ? "Кто подписывает" : "Предприниматель"}>
-              <Label t={kind === "ooo" ? "ФИО руководителя полностью" : "ФИО полностью"} hint="Например: Иванов Иван Иванович">
+              <Label t={kind === "ooo" ? "ФИО руководителя полностью" : "ФИО полностью"} hint={kind === "ooo" ? "Полностью, как в выписке: Иванов Иван Иванович. В карточке строка «Генеральный директор»" : "Полностью, как в выписке ЕГРИП: Иванов Иван Иванович"}>
                 <Input className={field} value={person} onChange={(e) => setPerson(e.target.value)} />
               </Label>
               <Label t="Пол (для «действующий / действующая»)">
@@ -883,10 +1089,10 @@ const Docs = () => {
             </Card>
 
             <Card n={4} t="Банковские реквизиты">
-              <Label t="БИК" hint="Начните с БИК: банк и корр. счёт подставятся сами">
+              <Label t="БИК" hint="9 цифр, обычно начинается с 04. Начните с БИК: банк и корр. счёт подставятся сами">
                 <Input className={field} inputMode="numeric" value={bik} onChange={(e) => setBik(digits(e.target.value).slice(0, 9))} />
               </Label>
-              <Label t="Расчётный счёт">
+              <Label t="Расчётный счёт" hint="20 цифр: у ООО обычно начинается с 40702, у ИП с 40802">
                 <Input
                   className={`${field} ${rsErr ? "border-red-400" : ""}`}
                   inputMode="numeric"
@@ -896,10 +1102,10 @@ const Docs = () => {
                 {rsErr && <span className="mt-1 block text-[max(12px,0.78em)] text-red-600">{rsErr}</span>}
               </Label>
               {bankMsg && <p className="text-[max(12px,0.86em)] text-brand md:col-span-2">{bankMsg}</p>}
-              <Label t="Банк" wide>
+              <Label t="Банк" hint="Подставится по БИК из справочника Банка России" wide>
                 <Input className={field} value={bank} onChange={(e) => setBank(e.target.value)} />
               </Label>
-              <Label t="Корреспондентский счёт" wide>
+              <Label t="Корреспондентский счёт" hint="20 цифр, начинается с 30101. Подставится по БИК" wide>
                 <Input
                   className={`${field} ${ksErr ? "border-red-400" : ""}`}
                   inputMode="numeric"
@@ -911,20 +1117,20 @@ const Docs = () => {
             </Card>
 
             <Card n={5} t="Контакты заказчика">
-              <Label t="Телефон">
+              <Label t="Телефон" hint="Например: +7 900 123-45-67. Бухгалтерия или управляющий">
                 <Input className={field} inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
               </Label>
               <Label t="Электронная почта" hint="Сюда по договору идут юридически значимые сообщения">
                 <Input className={field} type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
               </Label>
-              <Label t="Оператор ЭДО">
+              <Label t="Оператор ЭДО" hint="Спросите у ресторана, через кого они подписывают документы">
                 <select className={`${field} w-full border`} value={edo} onChange={(e) => setEdo(e.target.value)}>
                   {EDO.map((x) => (
                     <option key={x}>{x}</option>
                   ))}
                 </select>
               </Label>
-              <Label t="ID ЭДО">
+              <Label t="ID ЭДО" hint="Например: 2BM-7801234564-780101001-… Есть в кабинете ЭДО ресторана, в реквизитах">
                 <Input className={field} value={edoId} disabled={edo === "Нет ЭДО"} onChange={(e) => setEdoId(e.target.value)} />
               </Label>
               <Label t="Ответственное контактное лицо" hint="ФИО и должность; пусто = руководитель" wide>
@@ -1050,6 +1256,20 @@ const Docs = () => {
               </p>
               <p className="mt-1 font-display text-[2.2em] font-semibold leading-none tracking-[-0.03em]">{money(total)} ₽</p>
               <p className="mt-2 text-[0.9em] text-foreground/70">в месяц, {numberWords(total)} рублей</p>
+              <label className="mt-5 flex items-center justify-between gap-3 text-[0.9em]">
+                <span className="text-foreground/70">Оформляет</span>
+                <select
+                  value={author}
+                  onChange={(e) => {
+                    setAuthor(e.target.value);
+                    LS.set("agd-author", e.target.value);
+                  }}
+                  className="h-10 rounded-lg border border-foreground/20 bg-white/70 px-3"
+                >
+                  <option>Алиса</option>
+                  <option>Юрий</option>
+                </select>
+              </label>
               <button
                 onClick={generate}
                 disabled={busy}
@@ -1094,18 +1314,24 @@ const Docs = () => {
 
             <div className="mt-4 rounded-[24px] bg-surface p-6 text-cream">
               <h2 className="font-display text-[1.2em] font-semibold">журнал договоров</h2>
-              <p className="mt-1 text-[max(12px,0.8em)] text-cream-muted">Нашли ошибку: «заполнить из этого», поправьте и сформируйте снова. Сохранится новая версия.</p>
+              <p className="mt-1 text-[max(12px,0.8em)] text-cream-muted">
+                Общий для Юрия и Алисы: видно, кто и когда оформил договор. Любой старый договор можно скачать заново (Word или PDF). Нашли ошибку: «заполнить из этого», поправьте и сформируйте снова, сохранится новая версия.
+              </p>
               {journal.length === 0 ? (
                 <p className="mt-3 text-[0.9em] text-cream-muted">Пока пусто.</p>
               ) : (
                 <ul className="mt-3 space-y-3 text-[0.9em]">
-                  {journal.map((j, i) => (
+                  {journal.slice(0, journalAll ? undefined : 8).map((j, i) => (
                     <li key={i} className="border-t border-cream/15 pt-3">
                       <b>№ {j.num}</b>
                       {j.version && j.version > 1 ? <span className="text-brand"> · версия {j.version}</span> : null} · {j.client}
                       <span className="block text-cream-muted">
-                        {j.points} {plural(j.points, "точка", "точки", "точек")}, {money(j.total)} ₽ в месяц · {j.created}
-                        {j.executor ? ` · ${j.executor.replace("ИП ", "")}` : ""}
+                        {j.points} {plural(j.points, "точка", "точки", "точек")}, {money(j.total)} ₽ в месяц
+                        {j.executor ? ` · исполнитель ${j.executor.replace("ИП ", "")}` : ""}
+                      </span>
+                      <span className="block text-[0.92em] text-cream-muted">
+                        {j.author ? `Оформил(а): ${j.author} · ` : "Кто оформил: не записано · "}
+                        {j.created} МСК
                       </span>
                       <span className="mt-2 flex flex-wrap gap-2">
                         {j.has_form && (
@@ -1133,6 +1359,11 @@ const Docs = () => {
                     </li>
                   ))}
                 </ul>
+              )}
+              {journal.length > 8 && (
+                <button type="button" onClick={() => setJournalAll((v) => !v)} className="mt-3 text-[0.9em] font-medium underline underline-offset-4">
+                  {journalAll ? "свернуть" : `показать все (${journal.length})`}
+                </button>
               )}
             </div>
           </aside>

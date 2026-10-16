@@ -144,3 +144,91 @@ export const renderDocx = async (template: ArrayBuffer, data: Record<string, unk
     mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   }) as Blob;
 };
+
+// --- Проверка реквизитов по контрольным числам ФНС -----------------------------
+
+const sumW = (d: string, w: number[]) => w.reduce((s, k, i) => s + Number(d[i]) * k, 0);
+
+/** Ошибка в ИНН или "" (10 цифр у организации, 12 у ИП, контрольные цифры по правилам ФНС). */
+export const innError = (v: string, kind: "ooo" | "ip") => {
+  const d = v.replace(/\D/g, "");
+  if (!d) return "";
+  const need = kind === "ooo" ? 10 : 12;
+  if (d.length !== need) return `ИНН ${kind === "ooo" ? "организации" : "ИП"}: ${need} цифр, сейчас ${d.length}`;
+  if (need === 10) {
+    const c = (sumW(d, [2, 4, 10, 3, 5, 9, 4, 6, 8]) % 11) % 10;
+    return c === Number(d[9]) ? "" : "ИНН не проходит проверку: где-то опечатка";
+  }
+  const c1 = (sumW(d, [7, 2, 4, 10, 3, 5, 9, 4, 6, 8]) % 11) % 10;
+  const c2 = (sumW(d, [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8]) % 11) % 10;
+  return c1 === Number(d[10]) && c2 === Number(d[11]) ? "" : "ИНН не проходит проверку: где-то опечатка";
+};
+
+/** Ошибка в ОГРН (13 цифр) или ОГРНИП (15 цифр) или "". */
+export const ogrnError = (v: string, kind: "ooo" | "ip") => {
+  const d = v.replace(/\D/g, "");
+  if (!d) return "";
+  const need = kind === "ooo" ? 13 : 15;
+  const nm = kind === "ooo" ? "ОГРН" : "ОГРНИП";
+  if (d.length !== need) return `${nm}: ${need} цифр, сейчас ${d.length}`;
+  const mod = kind === "ooo" ? 11n : 13n;
+  const c = Number((BigInt(d.slice(0, -1)) % mod) % 10n);
+  return c === Number(d[need - 1]) ? "" : `${nm} не проходит проверку: где-то опечатка`;
+};
+
+/** Ошибка в КПП или "": 9 знаков, 5 и 6 могут быть буквами. */
+export const kppError = (v: string) => {
+  const d = v.trim().toUpperCase();
+  if (!d) return "";
+  if (d.length !== 9) return `КПП: 9 знаков, сейчас ${d.length}`;
+  return /^\d{4}[\dA-Z]{2}\d{3}$/.test(d) ? "" : "КПП: 9 цифр (5 и 6 знак могут быть латинскими буквами)";
+};
+
+// --- Карточка организации одним текстом → поля формы ---------------------------
+
+export type CardData = Partial<{
+  kind: "ooo" | "ip";
+  inn: string; kpp: string; ogrn: string; name: string; address: string; person: string;
+  position: "Генеральный директор" | "Директор";
+  bik: string; rs: string; ks: string; bank: string; phone: string; email: string;
+}>;
+
+/** Раскладывает карточку организации (текст из письма, Word или PDF) по полям. */
+export const parseCard = (raw: string): CardData => {
+  const t = raw.replace(/ /g, " ").replace(/[ \t]+/g, " ");
+  const out: CardData = {};
+  const num = (re: RegExp) => t.match(re)?.[1];
+  // ИНН/КПП часто пишут вместе: «ИНН/КПП 7801234564/780101001»
+  const pair = t.match(/ИНН\s*\/\s*КПП[^\d]{0,10}(\d{10})\s*\/\s*(\d{4}[\dA-Z]{2}\d{3})/i);
+  out.inn = pair?.[1] || num(/ИНН[^\d\n]{0,15}(\d{12}|\d{10})(?!\d)/i);
+  out.kpp = pair?.[2] || num(/КПП[^\d\n]{0,15}(\d{4}[\dA-Z]{2}\d{3})(?![\dA-Z])/i);
+  out.ogrn = num(/ОГРН(?:ИП)?[^\d\n]{0,15}(\d{15}|\d{13})(?!\d)/i);
+  out.bik = num(/БИК[^\d\n]{0,15}(\d{9})(?!\d)/i);
+  out.rs =
+    num(/(?:р\s*\/\s*с(?:ч[её]т)?|р\.\s*с\.|расч[её]тный\s+сч[её]т|расч\.\s*сч[её]т)[^\d\n]{0,20}(\d{20})/i) ||
+    t.match(/\b(40[5-8]\d{17})\b/)?.[1];
+  out.ks =
+    num(/(?:к\s*\/\s*с(?:ч[её]т)?|кор+\.?\s*\/?\s*сч[её]т|корреспондентский\s+сч[её]т|корр?\.\s*сч\.?)[^\d\n]{0,20}(\d{20})/i) ||
+    t.match(/\b(301\d{17})\b/)?.[1];
+  const bank = t.match(/(?:^|\n)\s*(?:Банк(?:\s+получателя)?|Наименование\s+банка)\s*[:\-–]?\s*([^\n]{4,})/i)?.[1];
+  if (bank && !/^\s*БИК/i.test(bank)) out.bank = bank.trim().replace(/[;,.]$/, "");
+  const addr = t.match(/(?:Юридический\s+адрес|Юр\.?\s*адрес|Адрес\s+регистрации|Адрес\s+места\s+нахождения|Местонахождение|Адрес)\s*[:\-–]?\s*([^\n]{8,})/i)?.[1];
+  if (addr) out.address = addr.trim().replace(/[;]$/, "");
+  const fio = "([А-ЯЁ][а-яё]+(?:-[А-ЯЁ][а-яё]+)?\\s+[А-ЯЁ][а-яё]+(?:\\s+[А-ЯЁ][а-яё]+)?)";
+  const head = t.match(new RegExp(`(Генеральный\\s+директор|Директор|Руководитель)\\s*[:\\-–]?\\s*${fio}`, "i"));
+  if (head) {
+    out.person = head[2].trim();
+    out.position = /^Директор/i.test(head[1]) ? "Директор" : "Генеральный директор";
+  }
+  const ip = t.match(new RegExp(`(?:Индивидуальный\\s+предприниматель|(?:^|[^А-Яа-яЁё])ИП)\\s+${fio}`));
+  if (ip && (!out.inn || out.inn.length === 12)) {
+    out.kind = "ip";
+    out.person = ip[1].trim();
+  } else if (out.inn?.length === 10 || /ООО|Общество с ограниченной/i.test(t)) out.kind = "ooo";
+  const name = t.match(/(?:ООО|Общество\s+с\s+ограниченной\s+ответственностью)\s*[«"“„']([^»"”“']+)[»"”“']/i)?.[1];
+  if (name) out.name = name.trim();
+  out.phone = t.match(/(?:\+7|(?<!\d)8)[\s(-]*\d{3}[\s)-]*\d{3}[\s-]*\d{2}[\s-]*\d{2}\b/)?.[0]?.trim();
+  out.email = t.match(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/)?.[0];
+  (Object.keys(out) as (keyof CardData)[]).forEach((k) => out[k] === undefined && delete out[k]);
+  return out;
+};
