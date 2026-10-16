@@ -18,6 +18,7 @@ import {
   type Gender,
 } from "@/lib/docs-gen";
 import { EXECUTORS, getExecutor } from "@/data/executors";
+import { renderForPrint } from "@/lib/docs-pdf";
 
 // Закрытая страница для бухгалтера: договор с рестораном (ИП или ООО) по шаблонам Юрия.
 // Договор собирается здесь, в браузере; сервер (api/docs.php) проверяет пароль,
@@ -393,28 +394,13 @@ const Docs = () => {
     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
   };
 
-  // PDF: рисуем договор в скрытом окне и открываем печать → «Сохранить как PDF»
+  // PDF: рисуем договор в скрытом окне шириной с текст страницы A4 и открываем печать → «Сохранить как PDF»
   const printPdf = async (r = result) => {
     if (!r) return;
-    const result = r;
-    const { renderAsync } = await import("docx-preview");
     const frame = document.createElement("iframe");
-    frame.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0";
+    frame.style.cssText = "position:fixed;left:-10000px;top:0;width:624px;height:900px;border:0";
     document.body.appendChild(frame);
-    const d = frame.contentDocument!;
-    d.open();
-    d.write(
-      `<!doctype html><html><head><meta charset="utf-8"><title>${result.file}</title><style>@page{margin:0}body{margin:0;background:#fff}.docx-wrapper{background:#fff!important;padding:0!important}.docx-wrapper>section.docx{box-shadow:none!important;margin:0 auto!important}</style></head><body><div id="c"></div></body></html>`,
-    );
-    d.close();
-    await renderAsync(result.blob, d.getElementById("c")!, d.head, {
-      inWrapper: true,
-      ignoreLastRenderedPageBreak: true,
-      renderHeaders: true,
-      renderFooters: true,
-      breakPages: true,
-    });
-    await new Promise((r) => setTimeout(r, 400));
+    await renderForPrint(r.blob, frame, r.file.replace(/\.docx$/i, ""));
     frame.contentWindow!.focus();
     frame.contentWindow!.print();
     setTimeout(() => frame.remove(), 60000);
