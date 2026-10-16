@@ -191,6 +191,37 @@ const accError = (acc: string, bik: string, corr: boolean) => {
   return ok ? "" : "Счёт не сходится с БИК: проверьте цифры счёта и БИК";
 };
 
+// Пример для ознакомления: вымышленный ресторан, счёт сходится с БИК
+const SAMPLE_NUM = "ОБРАЗЕЦ";
+const today = () => new Date().toISOString().slice(0, 10);
+const SAMPLE = {
+  kind: "ooo" as const,
+  num: SAMPLE_NUM,
+  inn: "7801234567",
+  name: "Вкусная точка",
+  ogrn: "1217800012345",
+  kpp: "780101001",
+  address: "191186, г. Санкт-Петербург, Невский пр-кт, д. 28, помещ. 1-Н",
+  person: "Петров Пётр Петрович",
+  position: "Генеральный директор" as const,
+  basis: "Устав" as const,
+  proxy: "",
+  bik: "044030653",
+  bank: "Северо-Западный банк ПАО Сбербанк",
+  ks: "30101810500000000653",
+  rs: "40702810550000123455",
+  phone: "+7 900 123-45-67",
+  email: "buh@vkusnaya-tochka.ru",
+  edo: "Контур.Диадок",
+  edoId: "2BM-7801234567-780101001-000000000000000",
+  contact: "Иванова Мария, управляющая",
+  points: [
+    { title: "Вкусная точка на Невском", address: "Невский пр-кт, д. 28", city: "Санкт-Петербург" },
+    { title: "Вкусная точка на Садовой", address: "Садовая ул., д. 12", city: "Санкт-Петербург" },
+  ],
+  price: "25000",
+};
+
 // Префикс номера договора: три первые буквы названия первой точки (Молодость → МОЛ)
 const numPrefix = (title: string) => title.replace(/[^A-Za-zА-Яа-яЁё]/g, "").slice(0, 3).toUpperCase();
 
@@ -550,6 +581,11 @@ const Docs = () => {
       const file = `Договор ${num.trim()} ${clientTitle}`.replace(/[\\/:*?"<>|«»]+/g, " ").replace(/\s+/g, " ").trim();
       setResult({ blob, file });
 
+      // Пример для ознакомления клиента: в журнал не пишем, Юрию не отправляем
+      if (num.trim() === SAMPLE_NUM) {
+        setMsg("Пример готов. Это образец с вымышленными данными: в журнал он не попал.");
+        return;
+      }
       const fd = new FormData();
       fd.append("docx", blob, `${file}.docx`);
       fd.append(
@@ -655,6 +691,26 @@ const Docs = () => {
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_380px]">
           <div className="space-y-4">
+            <div className="flex flex-wrap items-center gap-3 rounded-[24px] border border-dashed border-foreground/25 bg-pale/60 p-4 md:p-5">
+              <Icon name="Sparkles" size={20} />
+              <p className="flex-1 text-[max(13px,0.92em)]">
+                Хотите показать клиенту, как будет выглядеть договор, ещё до его реквизитов? Заполните форму примером.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setNumAuto(false);
+                  restore({ ...SAMPLE, date: today(), month: today().slice(0, 7) });
+                  setShowMiss(false);
+                  setErrors([]);
+                  setMsg("Форма заполнена примером с вымышленными данными. Номер «ОБРАЗЕЦ»: такой договор не попадёт в журнал.");
+                }}
+                className="rounded-xl bg-foreground px-4 py-2.5 text-[0.95em] font-medium text-brand"
+              >
+                заполнить примером
+              </button>
+            </div>
+
             <Card n={1} t="Исполнитель">
               <div className="flex flex-col gap-2 md:col-span-2 md:flex-row" role="radiogroup" aria-label="Исполнитель">
                 {EXECUTORS.map((x) => (
