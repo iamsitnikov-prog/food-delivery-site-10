@@ -6,7 +6,7 @@ import Icon from "@/components/ui/icon";
 import useSeo from "@/hooks/use-seo";
 import usePayEnabled from "@/hooks/use-pay-enabled";
 import { reachGoal } from "@/lib/metrika";
-import { PAY_PRODUCTS, SELLER_INN, SELLER_OGRNIP, formatRub, type PayProduct } from "@/data/payments";
+import { PAY_PRODUCTS, TEST_PRODUCT, SELLER_INN, SELLER_OGRNIP, formatRub, type PayProduct } from "@/data/payments";
 
 type Errors = Partial<Record<"name" | "phone" | "email" | "amount" | "invoice" | "agree" | "form", string>>;
 
@@ -37,7 +37,8 @@ const Payment = () => {
     path: pathname,
   });
 
-  const initial = PAY_PRODUCTS.find((p) => p.code === params.get("usluga"))?.code ?? PAY_PRODUCTS[0].code;
+  const products = params.get("usluga") === "test" ? [TEST_PRODUCT] : PAY_PRODUCTS;
+  const initial = products.find((p) => p.code === params.get("usluga"))?.code ?? products[0].code;
   const [code, setCode] = useState<PayProduct["code"]>(initial);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -49,7 +50,7 @@ const Payment = () => {
   const [errors, setErrors] = useState<Errors>({});
   const [loading, setLoading] = useState(false);
 
-  const product = PAY_PRODUCTS.find((p) => p.code === code)!;
+  const product = products.find((p) => p.code === code)!;
   const custom = product.price === 0;
   const amountNum = Number(amount.replace(/\s/g, "").replace(",", "."));
   const total = custom ? (Number.isFinite(amountNum) ? amountNum : 0) : product.price;
@@ -127,7 +128,7 @@ const Payment = () => {
 
         <div className="mt-10 grid gap-4 lg:grid-cols-[1fr_1.05fr]">
           <div className="grid content-start gap-3" role="radiogroup" aria-label="Услуга">
-            {PAY_PRODUCTS.map((p) => {
+            {products.map((p) => {
               const active = p.code === code;
               return (
                 <button

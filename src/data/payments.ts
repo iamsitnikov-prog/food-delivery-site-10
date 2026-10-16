@@ -9,7 +9,7 @@ export const SELLER_INN = "632509481120";
 export const SELLER_OGRNIP = "325632700100793";
 
 export type PayProduct = {
-  code: "konsultaciya" | "audit" | "kurs-komandy";
+  code: "konsultaciya" | "audit" | "kurs-komandy" | "test";
   title: string;
   short: string;
   price: number; // 0 — сумму вводит клиент
@@ -43,5 +43,15 @@ export const PAY_PRODUCTS: PayProduct[] = [
     icon: "GraduationCap",
   },
 ];
+
+// Скрытая проверочная услуга: видна только по ссылке /oplata?usluga=test. Удалить после пробного платежа.
+export const TEST_PRODUCT: PayProduct = {
+  code: "test",
+  title: "Проверка оплаты на сайте",
+  short: "проверка оплаты",
+  price: 10,
+  note: "пробный платёж 10 ₽",
+  icon: "FlaskConical",
+};
 
 export const formatRub = (n: number) => `${n.toLocaleString("ru-RU").replace(/ /g, " ")} ₽`;
