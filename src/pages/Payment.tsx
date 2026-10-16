@@ -6,7 +6,7 @@ import Icon from "@/components/ui/icon";
 import useSeo from "@/hooks/use-seo";
 import usePayEnabled from "@/hooks/use-pay-enabled";
 import { reachGoal } from "@/lib/metrika";
-import { PAY_PRODUCTS, TEST_PRODUCT, SELLER_INN, SELLER_OGRNIP, formatRub, type PayProduct } from "@/data/payments";
+import { PAY_PRODUCTS, SELLER_INN, SELLER_OGRNIP, formatRub, type PayProduct } from "@/data/payments";
 
 type Errors = Partial<Record<"name" | "phone" | "email" | "amount" | "invoice" | "agree" | "form", string>>;
 
@@ -37,7 +37,7 @@ const Payment = () => {
     path: pathname,
   });
 
-  const products = params.get("usluga") === "test" ? [TEST_PRODUCT] : PAY_PRODUCTS;
+  const products = PAY_PRODUCTS;
   const initial = products.find((p) => p.code === params.get("usluga"))?.code ?? products[0].code;
   const [code, setCode] = useState<PayProduct["code"]>(initial);
   const [name, setName] = useState("");
@@ -303,7 +303,7 @@ const Payment = () => {
                     <Icon name="Loader2" size={20} className="animate-spin" />
                   ) : (
                     <>
-                      оплатить {total >= 1000 ? formatRub(total) : ""}
+                      оплатить {total > 0 ? formatRub(total) : ""}
                       <Icon name="ArrowRight" size={20} />
                     </>
                   )}
