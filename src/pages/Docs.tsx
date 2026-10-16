@@ -81,7 +81,7 @@ const Label = ({ t, hint, children, wide }: { t: string; hint?: string; children
   const bad = miss.show && miss.labels.has(t);
   return (
     <label className={`block ${wide ? "md:col-span-2" : ""} ${bad ? "rounded-xl outline outline-2 outline-offset-4 outline-red-400/70" : ""}`}>
-      <span className={`mb-1.5 block text-[max(12px,0.86em)] font-medium ${bad ? "text-red-300" : "text-cream-muted"}`}>
+      <span className={`mb-1.5 block text-[max(12px,0.86em)] font-medium ${bad ? "text-red-600" : "text-cream-muted"}`}>
         {t}
         {bad && <span className="ml-2 font-normal">· заполните</span>}
       </span>
@@ -94,13 +94,13 @@ const Label = ({ t, hint, children, wide }: { t: string; hint?: string; children
 const Card = ({ n, t, children }: { n: number; t: string; children: React.ReactNode }) => {
   const left = useContext(MissCtx).perCard[n] || 0;
   return (
-    <section id={`card-${n}`} className="scroll-mt-6 rounded-[24px] bg-surface p-5 text-cream md:p-8">
+    <section id={`card-${n}`} className="docs-card scroll-mt-6 rounded-[24px] bg-surface p-5 text-cream md:p-8">
       <h2 className="flex flex-wrap items-center gap-3 font-display text-[1.3em] font-semibold tracking-[-0.02em]">
         <span className={`flex h-8 w-8 items-center justify-center rounded-lg text-[0.8em] ${left ? "bg-brand text-foreground" : "bg-green-500 text-white"}`}>
           {left ? n : <Icon name="Check" size={16} />}
         </span>
         {t}
-        <span className={`ml-auto font-sans text-[max(12px,0.6em)] font-normal ${left ? "text-cream-muted" : "text-green-400"}`}>
+        <span className={`ml-auto font-sans text-[max(12px,0.6em)] font-normal ${left ? "text-cream-muted" : "text-green-700"}`}>
           {left ? `осталось ${left}` : "готово"}
         </span>
       </h2>
@@ -383,6 +383,7 @@ const Docs = () => {
         else setPosition("Генеральный директор");
       } else {
         setPerson(titleCase(row.full));
+        if (row.address) setAddress(row.address);
       }
       if (!row.closed)
         setLookupMsg(
@@ -452,7 +453,7 @@ const Docs = () => {
           { card: 2, label: "КПП", msg: "КПП: 9 цифр", ok: /^\d{9}$/.test(digits(kpp)) },
         ]
       : []),
-    { card: 2, label: ooo ? "Юридический адрес" : "Адрес регистрации ИП", msg: "Адрес", ok: !!address.trim() },
+    ...(ooo ? [{ card: 2, label: "Юридический адрес", msg: "Юридический адрес", ok: !!address.trim() }] : []),
     {
       card: 3, label: ooo ? "ФИО руководителя полностью" : "ФИО полностью",
       msg: ooo ? "ФИО руководителя" : "ФИО предпринимателя", ok: person.trim().split(/\s+/).length >= 2,
@@ -505,7 +506,7 @@ const Docs = () => {
     price: money(priceNum),
     points_phrase: `${pointsN} (${numberWords(pointsN, true)}) ${plural(pointsN, "точка, указанная", "точки, указанные", "точек, указанных")} в Приложении № 1 к Договору`,
     inn: digits(inn),
-    address: address.trim(),
+    address: address.trim() || "—",
     short: shortName(person),
     bank: bank.trim(),
     rs: digits(rs),
@@ -597,7 +598,7 @@ const Docs = () => {
   // --- Вход -------------------------------------------------------------------
   if (!key)
     return (
-      <main className="flex min-h-screen items-center justify-center bg-background px-5 py-16 text-foreground">
+      <main className="docs-light flex min-h-screen items-center justify-center bg-background px-5 py-16 text-foreground">
         <form onSubmit={login} className="w-full max-w-[420px] rounded-[28px] bg-surface p-7 text-cream md:p-10">
           <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand text-foreground">
             <Icon name="Lock" size={22} />
@@ -629,7 +630,7 @@ const Docs = () => {
   // --- Форма ------------------------------------------------------------------
   return (
     <MissCtx.Provider value={missing}>
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="docs-light min-h-screen bg-background text-foreground">
       <div className="px-5 py-8 md:px-14 md:py-12">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -721,7 +722,11 @@ const Docs = () => {
                   </Label>
                 </>
               ) : null}
-              <Label t={kind === "ooo" ? "Юридический адрес" : "Адрес регистрации ИП"} wide>
+              <Label
+                t={kind === "ooo" ? "Юридический адрес" : "Адрес регистрации ИП (необязательно)"}
+                hint={kind === "ooo" ? undefined : "Можно оставить город из реестра или пусто: в договоре будет «—»"}
+                wide
+              >
                 <AddressInput
                   apiKey={key}
                   enabled={dadata}
@@ -790,7 +795,7 @@ const Docs = () => {
                   value={rs}
                   onChange={(e) => setRs(digits(e.target.value).slice(0, 20))}
                 />
-                {rsErr && <span className="mt-1 block text-[max(12px,0.78em)] text-red-400">{rsErr}</span>}
+                {rsErr && <span className="mt-1 block text-[max(12px,0.78em)] text-red-600">{rsErr}</span>}
               </Label>
               {bankMsg && <p className="text-[max(12px,0.86em)] text-brand md:col-span-2">{bankMsg}</p>}
               <Label t="Банк" wide>
@@ -803,7 +808,7 @@ const Docs = () => {
                   value={ks}
                   onChange={(e) => setKs(digits(e.target.value).slice(0, 20))}
                 />
-                {ksErr && <span className="mt-1 block text-[max(12px,0.78em)] text-red-400">{ksErr}</span>}
+                {ksErr && <span className="mt-1 block text-[max(12px,0.78em)] text-red-600">{ksErr}</span>}
               </Label>
             </Card>
 
@@ -971,9 +976,9 @@ const Docs = () => {
                   <p className="text-[max(12px,0.78em)] text-foreground/60">
                     Для PDF откроется окно печати: выберите «Сохранить как PDF».
                   </p>
-                  <div className="mt-2 rounded-xl bg-foreground p-4 text-cream">
+                  <div className="mt-2 rounded-xl bg-[#23100B] p-4 text-[#FFFBF5]">
                     <p className="font-medium text-brand">Не забудьте: отправьте PDF в рабочий чат с клиентом</p>
-                    <p className="mt-2 text-[max(12px,0.86em)] leading-relaxed text-cream/90">{CHAT_TEXT}</p>
+                    <p className="mt-2 text-[max(12px,0.86em)] leading-relaxed text-[#FFFBF5]/90">{CHAT_TEXT}</p>
                     <button
                       type="button"
                       onClick={() => {

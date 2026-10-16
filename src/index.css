@@ -233,3 +233,26 @@
     margin: 14mm 14mm 12mm;
   }
 }
+
+/* Страница /dokumenty: светлая тема для бухгалтера (белые карточки на тёплом фоне, жёлтые акценты) */
+.docs-light {
+  --background: 45 70% 96%;
+  --surface: 0 0% 100%;
+  --cream: 12 53% 9%;
+  --cream-muted: 16 14% 40%;
+  --pale: 50 100% 88%;
+  color-scheme: light;
+}
+.docs-light .docs-card,
+.docs-light aside > div {
+  box-shadow: 0 1px 2px rgba(35, 16, 11, 0.06), 0 12px 32px -18px rgba(35, 16, 11, 0.25);
+  border: 1px solid rgba(35, 16, 11, 0.06);
+}
+.docs-light input,
+.docs-light select {
+  background-color: hsl(45 40% 98%);
+}
+.docs-light input:focus,
+.docs-light select:focus {
+  background-color: #fff;
+}
