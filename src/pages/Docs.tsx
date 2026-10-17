@@ -101,6 +101,10 @@ const LS = {
 };
 const DRAFT_KEY = "agd-draft";
 
+// Кабинеты: Алиса (и Юрий) видят всех исполнителей и весь журнал, Лиля свои договоры
+type DocsUser = { id: string; name: string; all: boolean; tpl: string };
+const ALISA: DocsUser = { id: "alisa", name: "Алиса", all: true, tpl: "" };
+
 const EDO = ["СБИС", "Контур.Диадок", "Такском", "Калуга Астрал", "Другой оператор", "Нет ЭДО"];
 
 const field =
@@ -288,6 +292,7 @@ const Docs = () => {
   const [authErr, setAuthErr] = useState("");
   const [authBusy, setAuthBusy] = useState(false);
   const [dadata, setDadata] = useState(false);
+  const [user, setUser] = useState<DocsUser>(ALISA);
 
   useEffect(() => {
     const k = readKey();
@@ -295,6 +300,7 @@ const Docs = () => {
     api(k, "a=login", { method: "POST" })
       .then((d) => {
         setDadata(!!d.dadata);
+        if (d.user) setUser(d.user);
         setKey(k);
       })
       .catch(() => writeKey(""));
@@ -307,6 +313,7 @@ const Docs = () => {
     try {
       const d = await api(pw.trim(), "a=login", { method: "POST" });
       setDadata(!!d.dadata);
+      if (d.user) setUser(d.user);
       writeKey(pw.trim());
       setKey(pw.trim());
     } catch (err) {
@@ -357,6 +364,12 @@ const Docs = () => {
   const [journal, setJournal] = useState<Journal>([]);
   const [dupe, setDupe] = useState("");
   const [histBusy, setHistBusy] = useState<number | null>(null);
+  const myExecutors = user.all ? EXECUTORS : EXECUTORS.filter((x) => x.users?.includes(user.id));
+  // Лиле по умолчанию её ИП; чужого исполнителя из черновика или журнала не оставляем
+  useEffect(() => {
+    if (!myExecutors.some((x) => x.id === executor)) setExecutor(myExecutors[0]?.id || EXECUTORS[0].id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.id, executor]);
   const exec = getExecutor(executor);
 
   const loadJournal = () => key && api(key, "a=journal").then((d) => setJournal(d.items || [])).catch(() => {});
@@ -386,9 +399,11 @@ const Docs = () => {
       api(key, `a=check&num=${encodeURIComponent(num.trim())}`)
         .then((d) =>
           setDupe(
-            d.exists
-              ? `Договор № ${d.item.num} уже есть (${d.item.client}, ${d.item.created}). Новый сохранится как версия ${d.versions + 1}, прошлые останутся в журнале.`
-              : "",
+            d.other
+              ? "Такой номер уже занят другим договором. Укажите другой номер."
+              : d.exists
+                ? `Договор № ${d.item.num} уже есть (${d.item.client}, ${d.item.created}). Новый сохранится как версия ${d.versions + 1}, прошлые останутся в журнале.`
+                : "",
           ),
         )
         .catch(() => {});
@@ -558,7 +573,7 @@ const Docs = () => {
       ok: filledPoints.length > 0 && !filledPoints.some((p) => !p.title.trim() || !p.address.trim() || !p.city.trim()),
     },
     { card: 7, label: priceLabel, msg: "Стоимость за точку", ok: !!priceNum },
-    { card: 7, label: "Номер договора", msg: "Номер договора", ok: !!num.trim() },
+    { card: 7, label: "Номер договора", msg: dupe.startsWith("Такой номер уже занят") ? "Номер договора занят" : "Номер договора", ok: !!num.trim() && !dupe.startsWith("Такой номер уже занят") },
     { card: 7, label: "Дата договора", msg: "Дата договора (выберите в календаре)", ok: !!date },
   ];
   const left = checks.filter((c) => !c.ok);
@@ -591,7 +606,9 @@ const Docs = () => {
   const [helloOpen, setHelloOpen] = useState(() => LS.get("agd-hello") !== "0");
   const [askCopied, setAskCopied] = useState(false);
   const [journalAll, setJournalAll] = useState(false);
-  const [author, setAuthor] = useState(() => LS.get("agd-author") || "Алиса");
+  const [authorPick, setAuthor] = useState(() => LS.get("agd-author") || "Алиса");
+  const author = user.all ? authorPick : user.name;
+  const draftKey = `${DRAFT_KEY}-${user.id}`;
   const [draftReady, setDraftReady] = useState(false);
 
   // Черновик: форма сохраняется в браузере и возвращается, если закрыть вкладку
@@ -599,7 +616,7 @@ const Docs = () => {
   useEffect(() => {
     if (!key || draftReady) return;
     setDraftReady(true);
-    const raw = LS.get(DRAFT_KEY);
+    const raw = LS.get(draftKey);
     if (!raw) return;
     try {
       const d = JSON.parse(raw) as { at: number; form: Partial<Snap> };
@@ -613,13 +630,13 @@ const Docs = () => {
         400,
       );
     } catch {
-      LS.set(DRAFT_KEY, null);
+      LS.set(draftKey, null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
   useEffect(() => {
     if (!key || !draftReady) return;
-    const t = setTimeout(() => LS.set(DRAFT_KEY, JSON.stringify({ at: Date.now(), form: JSON.parse(draftJson) })), 600);
+    const t = setTimeout(() => LS.set(draftKey, JSON.stringify({ at: Date.now(), form: JSON.parse(draftJson) })), 600);
     return () => clearTimeout(t);
   }, [draftJson, key, draftReady]);
 
@@ -718,7 +735,7 @@ const Docs = () => {
     if (!validate()) return;
     setBusy(true);
     try {
-      const enc = await fetch(`/api/docs/${kind}.docx.enc`, { cache: "no-store" }).then((r) => {
+      const enc = await fetch(`/api/docs/${user.tpl}${kind}.docx.enc`, { cache: "no-store" }).then((r) => {
         if (!r.ok) throw new Error("Шаблон не загрузился");
         return r.arrayBuffer();
       });
@@ -847,7 +864,7 @@ const Docs = () => {
                 className="flex w-full items-center justify-between gap-3 text-left"
                 aria-expanded={helloOpen}
               >
-                <span className="font-display text-[1.3em] font-semibold tracking-[-0.02em]">Алиса, привет! 👋</span>
+                <span className="font-display text-[1.3em] font-semibold tracking-[-0.02em]">{user.id === "lilia" ? "Лиля" : "Алиса"}, привет! 👋</span>
                 <span className="inline-flex items-center gap-1 text-[max(12px,0.85em)] text-cream-muted">
                   {helloOpen ? "свернуть" : "развернуть"}
                   <Icon name={helloOpen ? "ChevronUp" : "ChevronDown"} size={16} />
@@ -865,7 +882,14 @@ const Docs = () => {
                   <p className="rounded-xl bg-pale/70 p-3">
                     Перед отправкой проверь глазами ИНН, название юрлица, банк и подписанта: опечатку в реквизитах кабинет за тебя не заметит.
                   </p>
-                  <p>Если что-то непонятно или не работает, пиши Юрию. Удачи, у тебя всё получится! 🌷</p>
+                  {user.id === "lilia" && (
+                    <p>
+                      Договоры здесь оформляются от твоего ИП, а в журнале видны только твои договоры. Номер ставится сам по названию первой точки, его можно поменять.
+                    </p>
+                  )}
+                  <p>
+                    Если что-то непонятно или не работает, пиши Юрию. {user.id === "lilia" ? "Удачи, пусть договоров будет много! 🚀" : "Удачи, у тебя всё получится! 🌷"}
+                  </p>
                 </div>
               )}
             </section>
@@ -982,7 +1006,7 @@ const Docs = () => {
                     type="button"
                     onClick={() => {
                       restore({ ...EMPTY, month: thisMonth() });
-                      LS.set(DRAFT_KEY, null);
+                      LS.set(draftKey, null);
                       setParsed(new Set());
                       setParseMsg("");
                       setCardText("");
@@ -1016,7 +1040,7 @@ const Docs = () => {
 
             <Card n={1} t="Исполнитель">
               <div className="flex flex-col gap-2 md:col-span-2 md:flex-row" role="radiogroup" aria-label="Исполнитель">
-                {EXECUTORS.map((x) => (
+                {myExecutors.map((x) => (
                   <button
                     key={x.id}
                     type="button"
@@ -1027,13 +1051,13 @@ const Docs = () => {
                   >
                     {x.label}
                     <span className={`block text-[0.8em] font-normal ${executor === x.id ? "text-foreground/70" : "text-cream-muted"}`}>
-                      ИНН {x.data.e_inn} · {x.data.e_tax_gen.match(/\((\S+)\)/)?.[1]}
+                      ИНН {x.data.e_inn} · {x.missing.includes("система налогообложения") ? "налоги уточняются" : x.data.e_tax_gen.match(/\((\S+)\)/)?.[1]}
                     </span>
                   </button>
                 ))}
               </div>
               {exec.missing.length > 0 && (
-                <p className="text-[max(12px,0.86em)] text-brand md:col-span-2">
+                <p className="rounded-xl bg-pale/70 p-3 text-[max(12px,0.86em)] text-foreground md:col-span-2">
                   Не хватает данных исполнителя: {exec.missing.join(", ")}. Договор от этого исполнителя пока сформировать нельзя.
                 </p>
               )}
@@ -1074,7 +1098,7 @@ const Docs = () => {
               >
                 <Input className={field} inputMode="numeric" value={ogrn} onChange={(e) => setOgrn(digits(e.target.value).slice(0, 15))} />
               </Label>
-              {lookupMsg && <p className="text-[max(12px,0.86em)] text-brand md:col-span-2">{lookupMsg}</p>}
+              {lookupMsg && <p className="rounded-xl bg-pale/70 p-3 text-[max(12px,0.86em)] text-foreground md:col-span-2">{lookupMsg}</p>}
               {kind === "ooo" ? (
                 <>
                   <Label t="Название ООО (без кавычек)" hint="Например: Вкусная точка. Без «ООО» и без кавычек, как в выписке">
@@ -1160,7 +1184,7 @@ const Docs = () => {
                 />
                 {rsErr && <span className="mt-1 block text-[max(12px,0.78em)] text-red-600">{rsErr}</span>}
               </Label>
-              {bankMsg && <p className="text-[max(12px,0.86em)] text-brand md:col-span-2">{bankMsg}</p>}
+              {bankMsg && <p className="rounded-xl bg-pale/70 p-3 text-[max(12px,0.86em)] text-foreground md:col-span-2">{bankMsg}</p>}
               <Label t="Банк" hint="Подставится по БИК из справочника Банка России" wide>
                 <Input className={field} value={bank} onChange={(e) => setBank(e.target.value)} />
               </Label>
@@ -1260,7 +1284,7 @@ const Docs = () => {
                   }}
                 />
               </Label>
-              {dupe && <p className="text-[max(12px,0.86em)] text-brand md:col-span-2">{dupe}</p>}
+              {dupe && <p className="rounded-xl bg-pale/70 p-3 text-[max(12px,0.86em)] text-foreground md:col-span-2">{dupe}</p>}
               <Label t="Дата договора" hint="Выберите в календаре">
                 <Input className={field} type="date" value={date} onChange={(e) => setDate(e.target.value)} />
               </Label>
@@ -1315,6 +1339,7 @@ const Docs = () => {
               </p>
               <p className="mt-1 font-display text-[2.2em] font-semibold leading-none tracking-[-0.03em]">{money(total)} ₽</p>
               <p className="mt-2 text-[0.9em] text-foreground/70">в месяц, {numberWords(total)} рублей</p>
+              {user.all ? (
               <label className="mt-5 flex items-center justify-between gap-3 text-[0.9em]">
                 <span className="text-foreground/70">Оформляет</span>
                 <select
@@ -1329,6 +1354,13 @@ const Docs = () => {
                   <option>Юрий</option>
                 </select>
               </label>
+              ) : (
+                <p className="mt-5 flex items-center justify-between text-[0.9em]">
+                  <span className="text-foreground/70">Оформляет</span>
+                  <b>{user.name}</b>
+                </p>
+              )}
+
               <button
                 onClick={generate}
                 disabled={busy}
@@ -1372,9 +1404,9 @@ const Docs = () => {
             </div>
 
             <div className="mt-4 rounded-[24px] bg-surface p-6 text-cream">
-              <h2 className="font-display text-[1.2em] font-semibold">журнал договоров</h2>
+              <h2 className="font-display text-[1.2em] font-semibold">{user.all ? "журнал договоров" : "мои договоры"}</h2>
               <p className="mt-1 text-[max(12px,0.8em)] text-cream-muted">
-                Общий для Юрия и Алисы: видно, кто и когда оформил договор. Любой старый договор можно скачать заново (Word или PDF). Нашли ошибку: «заполнить из этого», поправьте и сформируйте снова, сохранится новая версия.
+                {user.all ? "Общий для Юрия и Алисы: видно, кто и когда оформил договор." : "Здесь только твои договоры."} Любой старый договор можно скачать заново (Word или PDF). Нашли ошибку: «заполнить из этого», поправьте и сформируйте снова, сохранится новая версия.
               </p>
               {journal.length === 0 ? (
                 <p className="mt-3 text-[0.9em] text-cream-muted">Пока пусто.</p>
@@ -1383,7 +1415,7 @@ const Docs = () => {
                   {journal.slice(0, journalAll ? undefined : 8).map((j, i) => (
                     <li key={i} className="border-t border-cream/15 pt-3">
                       <b>№ {j.num}</b>
-                      {j.version && j.version > 1 ? <span className="text-brand"> · версия {j.version}</span> : null} · {j.client}
+                      {j.version && j.version > 1 ? <span className="font-medium text-amber-700"> · версия {j.version}</span> : null} · {j.client}
                       <span className="block text-cream-muted">
                         {j.points} {plural(j.points, "точка", "точки", "точек")}, {money(j.total)} ₽ в месяц
                         {j.executor ? ` · исполнитель ${j.executor.replace("ИП ", "")}` : ""}
