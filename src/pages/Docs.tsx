@@ -566,6 +566,27 @@ const Docs = () => {
   const [showMiss, setShowMiss] = useState(false);
   const [parsed, setParsed] = useState<Set<string>>(new Set());
   const [cardText, setCardText] = useState("");
+  const [fileBusy, setFileBusy] = useState("");
+  const [dragOver, setDragOver] = useState(false);
+  // Файл с реквизитами → текст → поля
+  const readFile = async (f: File | undefined) => {
+    if (!f) return;
+    setParseMsg("");
+    setFileBusy(`Читаю «${f.name}»…`);
+    try {
+      const { extractText } = await import("@/lib/docs-extract");
+      const { text, how } = await extractText(f, setFileBusy);
+      if (!text.trim()) throw new Error("В файле не нашлось текста. Попробуйте другой файл или скопируйте реквизиты вручную.");
+      setCardText(text.trim());
+      applyCard(text);
+      setFileBusy("");
+      setParseMsg((m) => `Файл «${f.name}» прочитан (${how}). ${m}`);
+    } catch (e) {
+      setFileBusy("");
+      const m = e instanceof Error ? e.message : String(e || "неизвестная ошибка");
+      setParseMsg(`Не получилось прочитать файл: ${m}`);
+    }
+  };
   const [parseMsg, setParseMsg] = useState("");
   const [helloOpen, setHelloOpen] = useState(() => LS.get("agd-hello") !== "0");
   const [askCopied, setAskCopied] = useState(false);
@@ -603,8 +624,8 @@ const Docs = () => {
   }, [draftJson, key, draftReady]);
 
   // Карточка организации одним текстом → поля; распознанное подсвечиваем зелёным
-  const applyCard = () => {
-    const c: CardData = parseCard(cardText);
+  const applyCard = (src = cardText) => {
+    const c: CardData = parseCard(src);
     const k = c.kind || kind;
     const L: Record<string, string> = {
       inn: "ИНН", kpp: "КПП", ogrn: k === "ooo" ? "ОГРН" : "ОГРНИП", name: "Название ООО (без кавычек)",
@@ -851,21 +872,51 @@ const Docs = () => {
 
             <div className="grid gap-4 xl:grid-cols-[1.25fr_1fr]">
               <section className="docs-card rounded-[24px] bg-surface p-5 text-cream md:p-7">
-                <h2 className="font-display text-[1.2em] font-semibold tracking-[-0.02em]">Вставь реквизиты ресторана одним текстом</h2>
+                <h2 className="font-display text-[1.2em] font-semibold tracking-[-0.02em]">Загрузи карточку или вставь реквизиты текстом</h2>
                 <p className="mt-1 text-[max(12px,0.85em)] text-cream-muted">
-                  Скопируй карточку организации из письма, Word или PDF. Кабинет сам разложит ИНН, КПП, ОГРН, адрес, директора, БИК и счета по полям.
+                  Кабинет сам разложит ИНН, КПП, ОГРН, адрес, директора, БИК и счета по полям. Файл читается прямо в браузере и никуда не отправляется.
                 </p>
+                <label
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setDragOver(true);
+                  }}
+                  onDragLeave={() => setDragOver(false)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setDragOver(false);
+                    readFile(e.dataTransfer.files?.[0]);
+                  }}
+                  className={`mt-3 flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed px-4 py-5 text-center transition ${
+                    dragOver ? "border-brand bg-pale/60" : "border-cream/25 bg-cream/5 hover:border-brand"
+                  }`}
+                >
+                  <Icon name={fileBusy ? "Loader2" : "FileDown"} size={22} className={fileBusy ? "animate-spin" : ""} />
+                  <span className="font-medium">{fileBusy || "Перетащи файл сюда или нажми, чтобы выбрать"}</span>
+                  <span className="text-[max(12px,0.8em)] text-cream-muted">Word (.docx), PDF, Excel (.xlsx), фото или скан карточки</span>
+                  <input
+                    type="file"
+                    className="sr-only"
+                    accept=".docx,.pdf,.xlsx,.txt,.csv,image/*"
+                    disabled={!!fileBusy}
+                    onChange={(e) => {
+                      readFile(e.target.files?.[0]);
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
+                <p className="mt-3 text-[max(12px,0.8em)] text-cream-muted">или вставь текст:</p>
                 <textarea
                   value={cardText}
                   onChange={(e) => setCardText(e.target.value)}
                   rows={6}
                   placeholder={"ООО «Вкусная точка»\nИНН/КПП 7801234564/780101001\nОГРН 1217800012341\nЮридический адрес: 191186, г. Санкт-Петербург, Невский пр., д. 28\nГенеральный директор: Петров Пётр Петрович\nБИК 044030653, р/с 40702810550000123455"}
-                  className="mt-3 w-full rounded-xl border border-cream/20 bg-cream/5 p-3 text-[max(13px,0.9em)] text-cream placeholder:text-cream-muted/50 focus:outline-none focus:ring-1 focus:ring-brand"
+                  className="mt-1 w-full rounded-xl border border-cream/20 bg-cream/5 p-3 text-[max(13px,0.9em)] text-cream placeholder:text-cream-muted/50 focus:outline-none focus:ring-1 focus:ring-brand"
                 />
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <button
                     type="button"
-                    onClick={applyCard}
+                    onClick={() => applyCard()}
                     disabled={!cardText.trim()}
                     className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 font-medium text-foreground disabled:opacity-50"
                   >
@@ -877,7 +928,15 @@ const Docs = () => {
                     </button>
                   )}
                 </div>
-                {parseMsg && <p className="mt-3 rounded-xl bg-green-50 p-3 text-[max(12px,0.86em)] text-green-800">{parseMsg}</p>}
+                {parseMsg && (
+                  <p
+                    className={`mt-3 rounded-xl p-3 text-[max(12px,0.86em)] ${
+                      /Не получилось|Ничего не распознал/.test(parseMsg) ? "bg-red-50 text-red-700" : "bg-green-50 text-green-800"
+                    }`}
+                  >
+                    {parseMsg}
+                  </p>
+                )}
               </section>
 
               <section className="docs-card rounded-[24px] bg-surface p-5 text-cream md:p-7">

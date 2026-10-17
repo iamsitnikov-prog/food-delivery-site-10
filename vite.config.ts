@@ -4,6 +4,7 @@ import path from "path";
 import {componentTagger} from "pp-tagger";
 import {spawnSync} from "node:child_process";
 import fs from "node:fs";
+import zlib from "node:zlib";
 
 // Пререндер статических страниц после сборки.
 // Работает внутри Vite (closeBundle), поэтому не зависит от того, какую
@@ -116,12 +117,31 @@ const hmrKeepalive = {
     },
 };
 
+// Распознавание сканов на /dokumenty (tesseract.js): движок и русский/английский словари
+// кладём на свой сайт, чтобы не зависеть от внешних CDN. Берём из node_modules при сборке.
+const ocrAssets = {
+    name: 'ocr-assets',
+    apply: 'build' as const,
+    writeBundle() {
+        const out = path.resolve(__dirname, 'dist/ocr');
+        fs.mkdirSync(path.join(out, 'lang'), {recursive: true});
+        const nm = (p: string) => path.resolve(__dirname, 'node_modules', p);
+        fs.copyFileSync(nm('tesseract.js/dist/worker.min.js'), path.join(out, 'worker.min.js'));
+        for (const f of ['tesseract-core-simd-lstm.wasm.js', 'tesseract-core-lstm.wasm.js'])
+            fs.copyFileSync(nm('tesseract.js-core/' + f), path.join(out, f));
+        for (const l of ['rus', 'eng'])
+            fs.writeFileSync(path.join(out, 'lang', l + '.traineddata'),
+                zlib.gunzipSync(fs.readFileSync(nm(`@tesseract.js-data/${l}/4.0.0_best_int/${l}.traineddata.gz`))));
+    },
+};
+
 // https://vitejs.dev/config/
 export default defineConfig(({mode}) => ({
     plugins: [
         react(),
         hmrKeepalive,
         prerenderPlugin,
+        ocrAssets,
         mode === 'development' &&
         componentTagger(),
     ].filter(Boolean),

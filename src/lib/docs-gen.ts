@@ -212,8 +212,24 @@ export const parseCard = (raw: string): CardData => {
     t.match(/\b(301\d{17})\b/)?.[1];
   const bank = t.match(/(?:^|\n)\s*(?:Банк(?:\s+получателя)?|Наименование\s+банка)\s*[:\-–]?\s*([^\n]{4,})/i)?.[1];
   if (bank && !/^\s*БИК/i.test(bank)) out.bank = bank.trim().replace(/[;,.]$/, "");
-  const addr = t.match(/(?:Юридический\s+адрес|Юр\.?\s*адрес|Адрес\s+регистрации|Адрес\s+места\s+нахождения|Местонахождение|Адрес)\s*[:\-–]?\s*([^\n]{8,})/i)?.[1];
-  if (addr) out.address = addr.trim().replace(/[;]$/, "");
+  const am = t.match(/(?:Юридический\s+адрес|Юр\.?\s*адрес|Адрес\s+регистрации|Адрес\s+места\s+нахождения|Местонахождение|Адрес)\s*[:\-–]?\s*([^\n]{8,})((?:\n[^\n]*){0,2})/i);
+  if (am) {
+    // адрес в таблице часто переносится на следующую строку: берём продолжение, пока не начался другой реквизит
+    let a = am[1];
+    const label = /^(ИНН|КПП|ОГРН|Генеральн|Директор|Руковод|Банк|БИК|Р\s*\/\s*с|Расч|Корр|К\s*\/\s*с|Тел|E-?mail|Эл\.|Почт|ОКПО|ОКВЭД|ОКТМО|ОКАТО|Адрес|Факт|Сайт|Наименование|Полное|Сокращ)/i;
+    for (const next of am[2].split("\n").slice(1)) {
+      const n = next.trim();
+      if (!n || label.test(n) || /:\s/.test(n.slice(0, 30))) break;
+      a += " " + n;
+    }
+    const lat2cyr: Record<string, string> = { A: "А", B: "В", C: "С", E: "Е", H: "Н", K: "К", M: "М", O: "О", P: "Р", T: "Т", X: "Х" };
+    out.address = a
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/[;]$/, "")
+      // после распознавания скана «3-H» бывает латиницей: меняем похожие буквы на русские
+      .replace(/(\d-?)([ABCEHKMOPTX])\b/g, (_, d, l) => d + lat2cyr[l]);
+  }
   const fio = "([А-ЯЁ][а-яё]+(?:-[А-ЯЁ][а-яё]+)?\\s+[А-ЯЁ][а-яё]+(?:\\s+[А-ЯЁ][а-яё]+)?)";
   const head = t.match(new RegExp(`(Генеральный\\s+директор|Директор|Руководитель)\\s*[:\\-–]?\\s*${fio}`, "i"));
   if (head) {
@@ -226,7 +242,7 @@ export const parseCard = (raw: string): CardData => {
     out.person = ip[1].trim();
   } else if (out.inn?.length === 10 || /ООО|Общество с ограниченной/i.test(t)) out.kind = "ooo";
   const name = t.match(/(?:ООО|Общество\s+с\s+ограниченной\s+ответственностью)\s*[«"“„']([^»"”“']+)[»"”“']/i)?.[1];
-  if (name) out.name = name.trim();
+  if (name) out.name = name.replace(/\s+/g, " ").trim();
   out.phone = t.match(/(?:\+7|(?<!\d)8)[\s(-]*\d{3}[\s)-]*\d{3}[\s-]*\d{2}[\s-]*\d{2}\b/)?.[0]?.trim();
   out.email = t.match(/[\w.+-]+@[\w-]+(?:\.[\w-]+)+/)?.[0];
   (Object.keys(out) as (keyof CardData)[]).forEach((k) => out[k] === undefined && delete out[k]);
