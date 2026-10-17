@@ -36,7 +36,7 @@ const KEY_STORE = "agd-key";
 
 type Kind = "ooo" | "ip";
 type Point = { title: string; address: string; city: string };
-type Journal = { id: number; num: string; version?: number; client: string; executor?: string; author?: string; inn: string; total: number; points: number; created: string; has_form?: boolean }[];
+type Journal = { id: number; num: string; version?: number; client: string; executor?: string; author?: string; doc?: string; inn: string; total: number; points: number; created: string; has_form?: boolean }[];
 
 const thisMonth = () => new Date().toISOString().slice(0, 7);
 const digits = (s: string) => s.replace(/\D/g, "");
@@ -104,6 +104,9 @@ const DRAFT_KEY = "agd-draft";
 // Кабинеты: Алиса (и Юрий) видят всех исполнителей и весь журнал, Лиля свои договоры
 type DocsUser = { id: string; name: string; all: boolean; tpl: string };
 const ALISA: DocsUser = { id: "alisa", name: "Алиса", all: true, tpl: "" };
+
+const CONSULT_CHAT =
+  "Коллеги, добрый день! Направляем договор на просмотр. В нём условия, стоимость и сроки проекта, а в Приложении 1 перечень услуг и что нужно с вашей стороны. После вашей проверки отправим договор вместе со счётом через ЭДО. Ждём от вас подтверждения или правок.";
 
 const EDO = ["СБИС", "Контур.Диадок", "Такском", "Калуга Астрал", "Другой оператор", "Нет ЭДО"];
 
@@ -267,6 +270,37 @@ const SAMPLE = {
   price: "25000",
 };
 
+// Договор Лили «консалтинговый проект»: тексты по умолчанию из её договора
+type DocType = "monthly" | "consult";
+const CONSULT_TOPIC =
+  "аудит текущей ситуации в направлении доставка, создание плана, нацеленного на кратное увеличение ТО доставки, курирование исполнения плана";
+const CONSULT_SERVICES = [
+  "Аудит деятельности направления",
+  "Аудит операционных процессов, задействованных в доставке",
+  "Аудит собственных площадок продаж (сайт, МП, телефон), цель найти точки роста и поднять конверсию",
+  "Аудит сотрудничества с агрегаторами",
+  "Проработка условий доставки, зоны, мин. сумма заказа, время и прочие условия",
+  "АВС анализ продукта и создание предложений для доставки (комбо, обеды, сеты и т.д.)",
+  "Разбор упаковки доставки и рекомендации к изменениям стандартов упаковки блюд и заказа",
+  "Логистика, работа с аутсорсингом и своими курьерами",
+  "Проработка локального маркетинга",
+  "Проработка акций, инструментов продаж на своих площадках и площадках агрегаторов",
+  "Проработка дополнительных маркетинговых инструментов на площадках и локально",
+  "Курирование исполнителя по задачам",
+  "Совместная реализация стратегии не более 2 часов в неделю, в течение 6 месяцев",
+  "Дополнительная поддержка по всем вопросам 6 часов в течение следующих 2 месяцев по окончании проекта",
+].join("\n");
+const CONSULT_NEEDS = [
+  "Доступ к аккаунтам на площадке ЯЕ и ДК",
+  "Доступ к Яндекс Метрике",
+  "Финансовый отчет по направлению (или общий включая доставку) за 1-2 месяца",
+  "Отчет по продажам, период 6 недель отдельно по каждому направлению, зал, своя доставка, ЯЕ и ДК",
+  "Подключение подписки «Бизнес» на период работ, дополнительный расход 1,44% к ТО и 1299 р ежемесячно",
+  "Сотрудник, вовлеченный в процессы доставки с базовыми менеджерскими навыками и опытом",
+  "Посещение точки при необходимости",
+].join("\n");
+const lines = (t: string) => t.split("\n").map((x) => x.replace(/^\s*(\d+[.)]|[•\-–])\s*/, "").trim()).filter(Boolean);
+
 // Пустая форма: для кнопки «сбросить»
 const EMPTY = {
   kind: "ooo" as const, num: "", date: "", inn: "", name: "", ogrn: "", kpp: "", address: "", person: "",
@@ -301,6 +335,7 @@ const Docs = () => {
       .then((d) => {
         setDadata(!!d.dadata);
         if (d.user) setUser(d.user);
+        if (d.user?.id === "lilia") setDocType("consult");
         setKey(k);
       })
       .catch(() => writeKey(""));
@@ -314,6 +349,7 @@ const Docs = () => {
       const d = await api(pw.trim(), "a=login", { method: "POST" });
       setDadata(!!d.dadata);
       if (d.user) setUser(d.user);
+      if (d.user?.id === "lilia") setDocType("consult");
       writeKey(pw.trim());
       setKey(pw.trim());
     } catch (err) {
@@ -353,6 +389,14 @@ const Docs = () => {
   const [contact, setContact] = useState("");
   const [points, setPoints] = useState<Point[]>([{ title: "", address: "", city: "" }]);
   const [price, setPrice] = useState("25000");
+  const [docType, setDocType] = useState<DocType>("monthly");
+  const [topic, setTopic] = useState(CONSULT_TOPIC);
+  const [projTotal, setProjTotal] = useState("");
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+  const [contractCity, setContractCity] = useState("");
+  const [services, setServices] = useState(CONSULT_SERVICES);
+  const [needs, setNeeds] = useState(CONSULT_NEEDS);
 
   const [bankMsg, setBankMsg] = useState("");
   const [lookupBusy, setLookupBusy] = useState(false);
@@ -446,7 +490,9 @@ const Docs = () => {
   const priceNum = Number(digits(price)) || 0;
   const filledPoints = points.filter((p) => p.title.trim() || p.address.trim());
   const pointsN = Math.max(filledPoints.length, 1);
-  const total = priceNum * pointsN;
+  const consult = docType === "consult";
+  const projNum = Number(digits(projTotal)) || 0;
+  const total = consult ? projNum : priceNum * pointsN;
   const fem = gender === "female";
   const posGen = position === "Генеральный директор" ? "генерального директора" : "директора";
   const basisText = basis === "Устав" ? "Устава" : `доверенности ${proxy.trim()}`.trim();
@@ -496,11 +542,14 @@ const Docs = () => {
   const snapshot = () => ({
     kind, executor, num, date, month, period, inn, name, ogrn, kpp, address, person, gender, position, basis, proxy, personGen,
     bank, rs, bik, ks, phone, email, edo, edoId, contact, points, price,
+    docType, topic, projTotal, start, end, contractCity, services, needs,
   });
   type Snap = ReturnType<typeof snapshot>;
   const restore = (f: Partial<Snap>) => {
     const set = <T,>(v: T | undefined, fn: (x: T) => void) => v !== undefined && fn(v);
     if (f.num !== undefined) setNumAuto(false);
+    set(f.docType, setDocType); set(f.topic, setTopic); set(f.projTotal, setProjTotal); set(f.start, setStart); set(f.end, setEnd);
+    set(f.contractCity, setContractCity); set(f.services, setServices); set(f.needs, setNeeds);
     set(f.kind, setKind); set(f.executor, setExecutor); set(f.num, setNum); set(f.date, setDate); set(f.month, setMonth); set(f.period, setPeriod);
     set(f.inn, setInn); set(f.name, setName); set(f.ogrn, setOgrn); set(f.kpp, setKpp); set(f.address, setAddress);
     set(f.person, setPerson); set(f.position, setPosition); set(f.basis, setBasis); set(f.proxy, setProxy);
@@ -572,7 +621,16 @@ const Docs = () => {
       card: 6, label: "", msg: "Точки: название, адрес и город у каждой",
       ok: filledPoints.length > 0 && !filledPoints.some((p) => !p.title.trim() || !p.address.trim() || !p.city.trim()),
     },
-    { card: 7, label: priceLabel, msg: "Стоимость за точку", ok: !!priceNum },
+    ...(consult
+      ? [
+          { card: 7, label: "Тема услуг (п. 1.1)", msg: "Тема услуг", ok: !!topic.trim() },
+          { card: 7, label: "Стоимость проекта, ₽", msg: "Стоимость проекта", ok: !!projNum },
+          { card: 7, label: "Срок услуг: с", msg: "Начало срока услуг", ok: !!start },
+          { card: 7, label: "по", msg: "Конец срока услуг", ok: !!end && (!start || end >= start) },
+          { card: 7, label: "Город договора", msg: "Город договора", ok: !!(contractCity.trim() || filledPoints[0]?.city.trim()) },
+          { card: 7, label: "Перечень услуг (Приложение 1), по одной в строке", msg: "Перечень услуг", ok: lines(services).length > 0 },
+        ]
+      : [{ card: 7, label: priceLabel, msg: "Стоимость за точку", ok: !!priceNum }]),
     { card: 7, label: "Номер договора", msg: dupe.startsWith("Такой номер уже занят") ? "Номер договора занят" : "Номер договора", ok: !!num.trim() && !dupe.startsWith("Такой номер уже занят") },
     { card: 7, label: "Дата договора", msg: "Дата договора (выберите в календаре)", ok: !!date },
   ];
@@ -691,6 +749,18 @@ const Docs = () => {
 
   const data = () => ({
     ...exec.data,
+    // договор Лили «консалтинговый проект»
+    isOoo: kind === "ooo",
+    isIp: kind === "ip",
+    city: contractCity.trim() || filledPoints[0]?.city.trim() || "Москва",
+    topic: topic.trim().replace(/[.\s]+$/, ""),
+    place: filledPoints.map((p) => [p.city.trim() && `г. ${p.city.trim()}`, p.address.trim(), p.title.trim() && `ресторан ${p.title.trim()}`].filter(Boolean).join(", ")).join("; "),
+    start: dateWords(start),
+    end: dateWords(end),
+    client_title: clientTitle,
+    services: lines(services).map((text, i) => ({ n: i + 1, text })),
+    needs: lines(needs).map((text) => ({ text })),
+    hasNeeds: lines(needs).length > 0,
     num: num.trim(),
     date: dateWords(date),
     month_year: firstPeriod(month, period),
@@ -735,7 +805,7 @@ const Docs = () => {
     if (!validate()) return;
     setBusy(true);
     try {
-      const enc = await fetch(`/api/docs/${user.tpl}${kind}.docx.enc`, { cache: "no-store" }).then((r) => {
+      const enc = await fetch(`/api/docs/${user.tpl}${consult ? "consult" : kind}.docx.enc`, { cache: "no-store" }).then((r) => {
         if (!r.ok) throw new Error("Шаблон не загрузился");
         return r.arrayBuffer();
       });
@@ -755,7 +825,7 @@ const Docs = () => {
         "meta",
         JSON.stringify({
           num: num.trim(), client: clientTitle, inn: digits(inn), total, points: pointsN, date: dateWords(date),
-          executor: exec.label, author, form: snapshot(),
+          executor: exec.label, author, form: snapshot(), doc: consult ? "проект" : "сопровождение",
         }),
       );
       const saved = await api(key, "a=save", { method: "POST", body: fd });
@@ -1038,6 +1108,32 @@ const Docs = () => {
               )}
             </div>
 
+            {user.id === "lilia" && (
+              <section className="docs-card rounded-[24px] bg-surface p-5 text-cream md:p-7">
+                <h2 className="font-display text-[1.2em] font-semibold tracking-[-0.02em]">Какой договор заполняем?</h2>
+                <div className="mt-4 flex flex-col gap-2 md:flex-row" role="radiogroup" aria-label="Шаблон договора">
+                  {(
+                    [
+                      ["consult", "Консалтинговый проект", "Твой договор: тема, срок, стоимость проекта и перечень услуг"],
+                      ["monthly", "Ежемесячное сопровождение", "Договор Юрия: плата за точку в месяц, образцы счёта, акта, УПД"],
+                    ] as [DocType, string, string][]
+                  ).map(([v, t, d]) => (
+                    <button
+                      key={v}
+                      type="button"
+                      role="radio"
+                      aria-checked={docType === v}
+                      onClick={() => setDocType(v)}
+                      className={`flex-1 rounded-xl px-4 py-3 text-left font-medium ${docType === v ? "bg-brand text-foreground" : "bg-cream/10 text-cream"}`}
+                    >
+                      {t}
+                      <span className={`block text-[0.8em] font-normal ${docType === v ? "text-foreground/70" : "text-cream-muted"}`}>{d}</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
+
             <Card n={1} t="Исполнитель">
               <div className="flex flex-col gap-2 md:col-span-2 md:flex-row" role="radiogroup" aria-label="Исполнитель">
                 {myExecutors.map((x) => (
@@ -1260,7 +1356,36 @@ const Docs = () => {
               </div>
             </Card>
 
-            <Card n={7} t="Стоимость и даты">
+            <Card n={7} t={consult ? "Проект: тема, стоимость, сроки, услуги" : "Стоимость и даты"}>
+              {consult && (
+                <>
+                  <Label t="Тема услуг (п. 1.1)" hint="Как в договоре: «…услуги по теме: …». Можно поправить под клиента" wide>
+                    <textarea rows={3} value={topic} onChange={(e) => setTopic(e.target.value)} className="mt-1 w-full rounded-xl border border-cream/20 bg-cream/5 p-3 text-[max(13px,0.9em)] text-cream focus:outline-none focus:ring-1 focus:ring-brand" />
+                  </Label>
+                  <Label t="Стоимость проекта, ₽" hint={projNum ? `${money(projNum)} ₽, ${numberWords(projNum)} рублей: за весь проект` : "Сумма за весь проект, например 360000"}>
+                    <Input className={field} inputMode="numeric" value={projTotal} onChange={(e) => setProjTotal(digits(e.target.value))} />
+                  </Label>
+                  <Label t="Город договора" hint={`В шапке договора «г. …». Пусто = город первой точки${filledPoints[0]?.city ? ` (${filledPoints[0].city})` : ""}`}>
+                    <Input className={field} value={contractCity} onChange={(e) => setContractCity(e.target.value)} />
+                  </Label>
+                  <Label t="Срок услуг: с" hint="Начало оказания услуг (п. 1.4)">
+                    <Input className={field} type="date" value={start} onChange={(e) => setStart(e.target.value)} />
+                  </Label>
+                  <Label t="по" hint={end && start && end < start ? "Конец раньше начала: проверьте даты" : "Окончание оказания услуг"}>
+                    <Input className={field} type="date" value={end} onChange={(e) => setEnd(e.target.value)} />
+                  </Label>
+                  <Label t="Перечень услуг (Приложение 1), по одной в строке" hint={`Сейчас ${lines(services).length} пунктов. Нумерация поставится сама`} wide>
+                    <textarea rows={8} value={services} onChange={(e) => setServices(e.target.value)} className="mt-1 w-full rounded-xl border border-cream/20 bg-cream/5 p-3 text-[max(13px,0.9em)] text-cream focus:outline-none focus:ring-1 focus:ring-brand" />
+                  </Label>
+                  <Label t="Что нужно от клиента (Приложение 1), по одному в строке" hint="Пусто = блок не попадёт в договор" wide>
+                    <textarea rows={5} value={needs} onChange={(e) => setNeeds(e.target.value)} className="mt-1 w-full rounded-xl border border-cream/20 bg-cream/5 p-3 text-[max(13px,0.9em)] text-cream focus:outline-none focus:ring-1 focus:ring-brand" />
+                  </Label>
+                  <p className="rounded-xl bg-pale/70 p-3 text-[max(12px,0.86em)] text-foreground md:col-span-2">
+                    Место оказания услуг (п. 1.3) берётся из блока «Точки ресторана»: город, адрес и название.
+                  </p>
+                </>
+              )}
+              {!consult && (
               <Label
                 t={priceLabel}
                 hint={
@@ -1271,6 +1396,7 @@ const Docs = () => {
               >
                 <Input className={field} inputMode="numeric" value={price} onChange={(e) => setPrice(digits(e.target.value))} />
               </Label>
+              )}
               <Label
                 t="Номер договора"
                 hint={numAuto ? "Ставится сам: три буквы названия первой точки и порядковый номер (Молодость → МОЛ01). Можно вписать свой." : "Номер вписан вручную. Сотрите его, и номер снова поставится сам."}
@@ -1288,6 +1414,8 @@ const Docs = () => {
               <Label t="Дата договора" hint="Выберите в календаре">
                 <Input className={field} type="date" value={date} onChange={(e) => setDate(e.target.value)} />
               </Label>
+              {!consult && (
+              <>
               <Label t="Отчётный период" hint="Попадает в п. 1.3 и 6.1 договора и в образцы счёта">
                 <select className={`${field} w-full border`} value={period} onChange={(e) => setPeriod(e.target.value as Period)}>
                   <option value="month">календарный месяц</option>
@@ -1300,6 +1428,8 @@ const Docs = () => {
               >
                 <Input className={field} type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
               </Label>
+              </>
+              )}
             </Card>
           </div>
 
@@ -1335,10 +1465,10 @@ const Docs = () => {
               </div>
               <p className="text-[0.9em] text-foreground/70">{clientTitle.trim().length > 6 ? clientTitle : "Заказчик не заполнен"}</p>
               <p className="mt-4 text-[0.9em] text-foreground/70">
-                {pointsN} {plural(pointsN, "точка", "точки", "точек")} × {money(priceNum)} ₽
+                {consult ? "Стоимость проекта" : <>{pointsN} {plural(pointsN, "точка", "точки", "точек")} × {money(priceNum)} ₽</>}
               </p>
               <p className="mt-1 font-display text-[2.2em] font-semibold leading-none tracking-[-0.03em]">{money(total)} ₽</p>
-              <p className="mt-2 text-[0.9em] text-foreground/70">в месяц, {numberWords(total)} рублей</p>
+              <p className="mt-2 text-[0.9em] text-foreground/70">{consult ? "за весь проект" : "в месяц"}, {numberWords(total)} рублей</p>
               {user.all ? (
               <label className="mt-5 flex items-center justify-between gap-3 text-[0.9em]">
                 <span className="text-foreground/70">Оформляет</span>
@@ -1387,11 +1517,11 @@ const Docs = () => {
                   </p>
                   <div className="mt-2 rounded-xl bg-[#23100B] p-4 text-[#FFFBF5]">
                     <p className="font-medium text-brand">Не забудьте: отправьте PDF в рабочий чат с клиентом</p>
-                    <p className="mt-2 text-[max(12px,0.86em)] leading-relaxed text-[#FFFBF5]/90">{chatText(pointsN)}</p>
+                    <p className="mt-2 text-[max(12px,0.86em)] leading-relaxed text-[#FFFBF5]/90">{consult ? CONSULT_CHAT : chatText(pointsN)}</p>
                     <button
                       type="button"
                       onClick={() => {
-                        navigator.clipboard?.writeText(chatText(pointsN)).then(() => setCopied(true)).catch(() => {});
+                        navigator.clipboard?.writeText(consult ? CONSULT_CHAT : chatText(pointsN)).then(() => setCopied(true)).catch(() => {});
                         setTimeout(() => setCopied(false), 2500);
                       }}
                       className="mt-3 inline-flex items-center gap-2 rounded-lg bg-brand px-3 py-2 text-[0.85em] font-medium text-foreground"
@@ -1417,7 +1547,7 @@ const Docs = () => {
                       <b>№ {j.num}</b>
                       {j.version && j.version > 1 ? <span className="font-medium text-amber-700"> · версия {j.version}</span> : null} · {j.client}
                       <span className="block text-cream-muted">
-                        {j.points} {plural(j.points, "точка", "точки", "точек")}, {money(j.total)} ₽ в месяц
+                        {j.doc === "проект" ? `проект, ${money(j.total)} ₽` : `${j.points} ${plural(j.points, "точка", "точки", "точек")}, ${money(j.total)} ₽ в месяц`}
                         {j.executor ? ` · исполнитель ${j.executor.replace("ИП ", "")}` : ""}
                       </span>
                       <span className="block text-[0.92em] text-cream-muted">

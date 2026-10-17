@@ -124,7 +124,7 @@ function keepTogether(doc: Document) {
 /** Строки «Дистанционно (онлайн) … дата»: в Word дата прижата табуляцией вправо, здесь то же через flex. */
 function rightTabs(doc: Document) {
   doc.querySelectorAll("p").forEach((p) => {
-    if (!/^\s*Дистанционно \(онлайн\)/.test(p.textContent || "")) return;
+    if (!/^\s*(Дистанционно \(онлайн\)|г\. [^,]{2,40}\s*\d{1,2} \S+ \d{4})/.test(p.textContent || "")) return;
     const tab = Array.from(p.querySelectorAll("span")).find((s) => s.children.length === 0 && s.textContent === "\u2003");
     if (!tab) return;
     let cell: Element = tab;
