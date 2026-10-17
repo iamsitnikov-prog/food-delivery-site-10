@@ -102,7 +102,7 @@ const LS = {
 const DRAFT_KEY = "agd-draft";
 
 // Кабинеты: Алиса (и Юрий) видят всех исполнителей и весь журнал, Лиля свои договоры
-type DocsUser = { id: string; name: string; all: boolean; tpl: string };
+type DocsUser = { id: string; name: string; all: boolean; tpl: string; admin?: boolean };
 const ALISA: DocsUser = { id: "alisa", name: "Алиса", all: true, tpl: "" };
 
 const CONSULT_CHAT =
@@ -327,19 +327,56 @@ const Docs = () => {
   const [authBusy, setAuthBusy] = useState(false);
   const [dadata, setDadata] = useState(false);
   const [user, setUser] = useState<DocsUser>(ALISA);
+  const [tk, setTk] = useState(""); // ключ шаблонов (выданный пин), сервер отдаёт его после входа
+  const [mustChange, setMustChange] = useState(false);
+  const [pinOpen, setPinOpen] = useState(false);
+  const [pin1, setPin1] = useState("");
+  const [pin2, setPin2] = useState("");
+  const [pinErr, setPinErr] = useState("");
+  const [pinBusy, setPinBusy] = useState(false);
+  type LoginResp = { dadata?: boolean; user?: DocsUser; tk?: string; must_change?: boolean };
+  const applyLogin = (d: LoginResp, k: string) => {
+    setDadata(!!d.dadata);
+    if (d.user) setUser(d.user);
+    if (d.user?.id === "lilia") setDocType("consult");
+    setTk(d.tk || k);
+    setMustChange(!!d.must_change);
+    writeKey(k);
+    setKey(k);
+  };
 
   useEffect(() => {
     const k = readKey();
     if (!k) return;
     api(k, "a=login", { method: "POST" })
-      .then((d) => {
-        setDadata(!!d.dadata);
-        if (d.user) setUser(d.user);
-        if (d.user?.id === "lilia") setDocType("consult");
-        setKey(k);
-      })
+      .then((d) => applyLogin(d, k))
       .catch(() => writeKey(""));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const savePin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPinErr("");
+    if (!/^\d{4,8}$/.test(pin1)) return setPinErr("Пин-код: от 4 до 8 цифр");
+    if (pin1 !== pin2) return setPinErr("Пин-коды не совпадают");
+    setPinBusy(true);
+    try {
+      const fd = new FormData();
+      fd.append("pin", pin1);
+      await api(key, "a=setpin", { method: "POST", body: fd });
+      writeKey(pin1);
+      setKey(pin1);
+      setMustChange(false);
+      setPinOpen(false);
+      setPin1("");
+      setPin2("");
+      setMsg("Пин-код изменён. Теперь вход только по новому пин-коду.");
+    } catch (err) {
+      setPinErr((err as Error).message);
+    } finally {
+      setPinBusy(false);
+    }
+  };
 
   const login = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -347,11 +384,7 @@ const Docs = () => {
     setAuthErr("");
     try {
       const d = await api(pw.trim(), "a=login", { method: "POST" });
-      setDadata(!!d.dadata);
-      if (d.user) setUser(d.user);
-      if (d.user?.id === "lilia") setDocType("consult");
-      writeKey(pw.trim());
-      setKey(pw.trim());
+      applyLogin(d, pw.trim());
     } catch (err) {
       setAuthErr((err as Error).message);
     } finally {
@@ -664,8 +697,7 @@ const Docs = () => {
   const [helloOpen, setHelloOpen] = useState(() => LS.get("agd-hello") !== "0");
   const [askCopied, setAskCopied] = useState(false);
   const [journalAll, setJournalAll] = useState(false);
-  const [authorPick, setAuthor] = useState(() => LS.get("agd-author") || "Алиса");
-  const author = user.all ? authorPick : user.name;
+  const author = user.name;
   const draftKey = `${DRAFT_KEY}-${user.id}`;
   const [draftReady, setDraftReady] = useState(false);
 
@@ -733,6 +765,13 @@ const Docs = () => {
   };
   const [copied, setCopied] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [pins, setPins] = useState<{ id: string; name: string; own: boolean; at: string }[]>([]);
+  const [pinsMsg, setPinsMsg] = useState("");
+  const loadPins = () => user.admin && key && api(key, "a=pins").then((d) => setPins(d.users || [])).catch(() => {});
+  useEffect(() => {
+    loadPins();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.admin, key]);
   const missing: Missing = {
     labels: new Set(left.map((c) => c.label).filter(Boolean)),
     perCard: left.reduce<Record<number, number>>((m, c) => ({ ...m, [c.card]: (m[c.card] || 0) + 1 }), {}),
@@ -809,7 +848,7 @@ const Docs = () => {
         if (!r.ok) throw new Error("Шаблон не загрузился");
         return r.arrayBuffer();
       });
-      const tpl = await decryptTemplate(enc, key);
+      const tpl = await decryptTemplate(enc, tk || key);
       const blob = await renderDocx(tpl, data());
       const file = `Договор ${num.trim()} ${clientTitle}`.replace(/[\\/:*?"<>|«»]+/g, " ").replace(/\s+/g, " ").trim();
       setResult({ blob, file });
@@ -896,6 +935,64 @@ const Docs = () => {
       </main>
     );
 
+  const pinForm = (first: boolean) => (
+    <form onSubmit={savePin} className="w-full max-w-[460px] rounded-[28px] bg-surface p-7 text-cream md:p-10">
+      <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand text-foreground">
+        <Icon name="Lock" size={22} />
+      </span>
+      <h1 className="mt-6 font-display text-[1.7em] font-semibold leading-tight tracking-[-0.02em]">
+        {first ? `${user.name}, придумай свой пин-код` : "Новый пин-код"}
+      </h1>
+      <p className="mt-3 text-cream-muted">
+        {first
+          ? "Выданный пин-код временный. Придумай свой: от 4 до 8 цифр. Дальше входить будешь только по нему, старый перестанет работать."
+          : "От 4 до 8 цифр. Старый пин-код сразу перестанет работать."}
+      </p>
+      <Input
+        type="password"
+        inputMode="numeric"
+        autoComplete="new-password"
+        className={`${field} mt-6 text-center text-[1.4em] tracking-[0.5em]`}
+        placeholder="новый пин"
+        maxLength={8}
+        value={pin1}
+        onChange={(e) => setPin1(e.target.value.replace(/\D/g, ""))}
+        aria-label="Новый пин-код"
+      />
+      <Input
+        type="password"
+        inputMode="numeric"
+        autoComplete="new-password"
+        className={`${field} mt-3 text-center text-[1.4em] tracking-[0.5em]`}
+        placeholder="ещё раз"
+        maxLength={8}
+        value={pin2}
+        onChange={(e) => setPin2(e.target.value.replace(/\D/g, ""))}
+        aria-label="Повторите пин-код"
+      />
+      {pinErr && <p className="mt-2 text-[max(12px,0.86em)] text-red-600">{pinErr}</p>}
+      <button
+        disabled={pinBusy || !pin1 || !pin2}
+        className="mt-5 flex h-12 w-full items-center justify-center rounded-xl bg-brand font-medium text-foreground disabled:opacity-60"
+      >
+        {pinBusy ? <Icon name="Loader2" size={18} className="animate-spin" /> : "сохранить пин-код"}
+      </button>
+      {!first && (
+        <button type="button" onClick={() => setPinOpen(false)} className="mt-3 w-full text-center text-[0.9em] text-cream-muted">
+          отмена
+        </button>
+      )}
+      <p className="mt-4 text-[max(12px,0.8em)] text-cream-muted">Забудешь пин-код: напиши Юрию, он сбросит его на выданный.</p>
+    </form>
+  );
+
+  if (mustChange || pinOpen)
+    return (
+      <main className="docs-light flex min-h-screen items-center justify-center bg-background px-5 py-16 text-foreground">
+        {pinForm(mustChange)}
+      </main>
+    );
+
   // --- Форма ------------------------------------------------------------------
   return (
     <MissCtx.Provider value={missing}>
@@ -907,19 +1004,32 @@ const Docs = () => {
               договор с рестораном
             </h1>
             <p className="mt-3 max-w-[640px] text-foreground/75">
-              Заполните данные, которые прислал ресторан. Договор с Приложениями 1–4 соберётся по шаблону Юрия, текст
-              шаблона не меняется. Word можно поправить вручную, PDF подходит для отправки клиенту.
+              {consult
+                ? "Заполните данные, которые прислал ресторан. Договор соберётся по шаблону Лили (консалтинговый проект), текст шаблона не меняется."
+                : "Заполните данные, которые прислал ресторан. Договор с Приложениями 1–4 соберётся по шаблону Юрия, текст шаблона не меняется."}{" "}
+              Word можно поправить вручную, PDF подходит для отправки клиенту.
             </p>
           </div>
-          <button
-            onClick={() => {
-              writeKey("");
-              setKey("");
-            }}
-            className="inline-flex items-center gap-2 rounded-xl bg-surface px-5 py-3 text-[0.95em] font-medium text-cream"
-          >
-            <Icon name="LogOut" size={16} /> выйти
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => {
+                setPinErr("");
+                setPinOpen(true);
+              }}
+              className="inline-flex items-center gap-2 rounded-xl bg-surface px-5 py-3 text-[0.95em] font-medium text-cream"
+            >
+              <Icon name="Lock" size={16} /> сменить пин
+            </button>
+            <button
+              onClick={() => {
+                writeKey("");
+                setKey("");
+              }}
+              className="inline-flex items-center gap-2 rounded-xl bg-surface px-5 py-3 text-[0.95em] font-medium text-cream"
+            >
+              <Icon name="LogOut" size={16} /> выйти
+            </button>
+          </div>
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_380px]">
@@ -946,7 +1056,11 @@ const Docs = () => {
                   <p className="font-medium">Как работать:</p>
                   <ol className="list-decimal space-y-1 pl-5">
                     <li>Ресторан прислал свои данные, ты переносишь их в поля.</li>
-                    <li>Кабинет сам соберёт договор и Приложения 1–4 по шаблону Юрия. Текст шаблона не меняется, поэтому юридически всё в порядке.</li>
+                    <li>
+                      {user.id === "lilia"
+                        ? "Выбираешь шаблон: твой «Консалтинговый проект» или ежемесячный договор Юрия. Кабинет сам соберёт договор с приложениями, текст шаблона не меняется."
+                        : "Кабинет сам соберёт договор и Приложения 1–4 по шаблону Юрия. Текст шаблона не меняется, поэтому юридически всё в порядке."}
+                    </li>
                     <li>Если нужна мелкая правка, скачай Word. Клиенту отправляй PDF.</li>
                   </ol>
                   <p className="rounded-xl bg-pale/70 p-3">
@@ -1111,11 +1225,14 @@ const Docs = () => {
             {user.id === "lilia" && (
               <section className="docs-card rounded-[24px] bg-surface p-5 text-cream md:p-7">
                 <h2 className="font-display text-[1.2em] font-semibold tracking-[-0.02em]">Какой договор заполняем?</h2>
+                <p className="mt-1 text-[max(12px,0.85em)] text-cream-muted">
+                  Реквизиты, точки и номер одинаковые для обоих. Разница в блоке 7 и в приложениях: в твоём шаблоне Приложение 1 с перечнем услуг, в шаблоне Юрия Приложения 1–4 с образцами счёта, акта и УПД.
+                </p>
                 <div className="mt-4 flex flex-col gap-2 md:flex-row" role="radiogroup" aria-label="Шаблон договора">
                   {(
                     [
-                      ["consult", "Консалтинговый проект", "Твой договор: тема, срок, стоимость проекта и перечень услуг"],
-                      ["monthly", "Ежемесячное сопровождение", "Договор Юрия: плата за точку в месяц, образцы счёта, акта, УПД"],
+                      ["consult", "Консалтинговый проект", "Разовый проект: тема, срок «с… по…», стоимость за весь проект, перечень услуг и что нужно от клиента"],
+                      ["monthly", "Ежемесячное сопровождение", "Плата за каждую точку в месяц, отчётный период, образцы счёта, акта и УПД в приложениях"],
                     ] as [DocType, string, string][]
                   ).map(([v, t, d]) => (
                     <button
@@ -1126,8 +1243,17 @@ const Docs = () => {
                       onClick={() => setDocType(v)}
                       className={`flex-1 rounded-xl px-4 py-3 text-left font-medium ${docType === v ? "bg-brand text-foreground" : "bg-cream/10 text-cream"}`}
                     >
-                      {t}
-                      <span className={`block text-[0.8em] font-normal ${docType === v ? "text-foreground/70" : "text-cream-muted"}`}>{d}</span>
+                      <span className="flex flex-wrap items-center gap-2">
+                        {t}
+                        <span
+                          className={`rounded-full px-2 py-0.5 text-[0.72em] font-semibold ${
+                            v === "consult" ? "bg-foreground text-brand" : "bg-white/70 text-foreground"
+                          }`}
+                        >
+                          {v === "consult" ? "твой шаблон" : "шаблон Юрия"}
+                        </span>
+                      </span>
+                      <span className={`mt-1 block text-[0.8em] font-normal ${docType === v ? "text-foreground/70" : "text-cream-muted"}`}>{d}</span>
                     </button>
                   ))}
                 </div>
@@ -1469,22 +1595,7 @@ const Docs = () => {
               </p>
               <p className="mt-1 font-display text-[2.2em] font-semibold leading-none tracking-[-0.03em]">{money(total)} ₽</p>
               <p className="mt-2 text-[0.9em] text-foreground/70">{consult ? "за весь проект" : "в месяц"}, {numberWords(total)} рублей</p>
-              {user.all ? (
-              <label className="mt-5 flex items-center justify-between gap-3 text-[0.9em]">
-                <span className="text-foreground/70">Оформляет</span>
-                <select
-                  value={author}
-                  onChange={(e) => {
-                    setAuthor(e.target.value);
-                    LS.set("agd-author", e.target.value);
-                  }}
-                  className="h-10 rounded-lg border border-foreground/20 bg-white/70 px-3"
-                >
-                  <option>Алиса</option>
-                  <option>Юрий</option>
-                </select>
-              </label>
-              ) : (
+              {(
                 <p className="mt-5 flex items-center justify-between text-[0.9em]">
                   <span className="text-foreground/70">Оформляет</span>
                   <b>{user.name}</b>
@@ -1587,6 +1698,45 @@ const Docs = () => {
                 </button>
               )}
             </div>
+            {user.admin && (
+              <div className="mt-4 rounded-[24px] bg-surface p-6 text-cream">
+                <h2 className="font-display text-[1.2em] font-semibold">пин-коды кабинетов</h2>
+                <p className="mt-1 text-[max(12px,0.8em)] text-cream-muted">
+                  Видно только вам. Если кто-то забыл свой пин, сбросьте: снова заработает выданный пин, и при входе его попросят придумать новый.
+                </p>
+                <ul className="mt-3 space-y-2 text-[0.9em]">
+                  {pins.map((u) => (
+                    <li key={u.id} className="flex items-center justify-between gap-2 border-t border-cream/15 pt-2">
+                      <span>
+                        <b>{u.name}</b>
+                        <span className="block text-[0.85em] text-cream-muted">
+                          {u.own ? `свой пин с ${new Date(u.at).toLocaleDateString("ru-RU")}` : "выданный пин, ещё не сменён"}
+                        </span>
+                      </span>
+                      {u.own && u.id !== user.id && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const fd = new FormData();
+                            fd.append("id", u.id);
+                            api(key, "a=resetpin", { method: "POST", body: fd })
+                              .then(() => {
+                                setPinsMsg(`${u.name}: пин сброшен на выданный`);
+                                loadPins();
+                              })
+                              .catch((e) => setPinsMsg((e as Error).message));
+                          }}
+                          className="rounded-lg border border-cream/30 px-3 py-1.5 text-[0.85em]"
+                        >
+                          сбросить
+                        </button>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+                {pinsMsg && <p className="mt-2 text-[max(12px,0.82em)] text-green-700">{pinsMsg}</p>}
+              </div>
+            )}
           </aside>
         </div>
       </div>
