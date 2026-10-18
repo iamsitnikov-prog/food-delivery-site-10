@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import Icon from "@/components/ui/icon";
 import useSeo from "@/hooks/use-seo";
+import { reachGoal, markStaff } from "@/lib/metrika";
 import {
   dateWords,
   decryptTemplate,
@@ -385,6 +386,8 @@ const Docs = () => {
     try {
       const d = await api(pw.trim(), "a=login", { method: "POST" });
       applyLogin(d, pw.trim());
+      markStaff();
+      reachGoal("docs_login");
     } catch (err) {
       setAuthErr((err as Error).message);
     } finally {
@@ -880,6 +883,7 @@ const Docs = () => {
 
   const downloadWord = (r = result) => {
     if (!r) return;
+    reachGoal("docs_word");
     const result = r;
     const a = document.createElement("a");
     a.href = URL.createObjectURL(result.blob);
@@ -891,6 +895,7 @@ const Docs = () => {
   // PDF: рисуем договор в скрытом окне шириной с текст страницы A4 и открываем печать → «Сохранить как PDF»
   const printPdf = async (r = result) => {
     if (!r) return;
+    reachGoal("docs_pdf");
     const frame = document.createElement("iframe");
     frame.style.cssText = "position:fixed;left:-10000px;top:0;width:624px;height:900px;border:0";
     document.body.appendChild(frame);

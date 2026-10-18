@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { reachGoal } from "@/lib/metrika";
+import { reachGoal, sendStaff } from "@/lib/metrika";
 
 const resolveGoal = (href: string): string | null => {
   if (href.startsWith("tel:")) return "click_phone";
@@ -12,6 +12,8 @@ const resolveGoal = (href: string): string | null => {
 
 const useContactGoals = () => {
   useEffect(() => {
+    sendStaff();
+    const t = window.setTimeout(sendStaff, 4000); // счётчик грузится с задержкой
     const onClick = (e: MouseEvent) => {
       const link = (e.target as HTMLElement)?.closest?.("a");
       if (!link) return;
@@ -20,7 +22,10 @@ const useContactGoals = () => {
       if (goal) reachGoal(goal);
     };
     document.addEventListener("click", onClick);
-    return () => document.removeEventListener("click", onClick);
+    return () => {
+      window.clearTimeout(t);
+      document.removeEventListener("click", onClick);
+    };
   }, []);
 };
 
