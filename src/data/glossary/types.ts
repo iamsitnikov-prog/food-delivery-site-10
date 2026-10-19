@@ -52,6 +52,10 @@ export type GlossaryTerm = {
   calculator?: string;
   /** Комментарий эксперта — свой у каждого термина. */
   expert?: { name: string; text: string };
+  /** Свой title для выдачи вместо шаблонного «— что это такое простыми словами». */
+  seoTitle?: string;
+  /** Свой description для выдачи вместо собранного из short. */
+  seoDescription?: string;
   /** Ссылки внутри основного текста: первое вхождение анкора. */
   inTextLinks?: { anchor: string; to: string }[];
 };

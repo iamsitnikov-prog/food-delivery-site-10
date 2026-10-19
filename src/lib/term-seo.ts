@@ -3,7 +3,8 @@ const MAX_TITLE = 65;
 const MAX_DESC = 158;
 
 /** Заголовок подстраивается под длину термина, чтобы уложиться в выдачу. */
-export const termTitle = (term: { term: string }) => {
+export const termTitle = (term: { term: string; seoTitle?: string }) => {
+  if (term.seoTitle) return term.seoTitle;
   const name = term.term;
   const full = `${name} — что это такое простыми словами${BRAND}`;
   if (full.length <= MAX_TITLE) return full;
@@ -31,7 +32,9 @@ export const termDescription = (term: {
   formula?: string;
   /** Есть ли на странице разбор с цифрами — блок «Пример». */
   hasExample?: boolean;
+  seoDescription?: string;
 }) => {
+  if (term.seoDescription) return term.seoDescription;
   const base = `${term.term}: ${term.short}`;
   const withFormula = term.formula ? `${base} Формула: ${term.formula}.` : base;
   if (withFormula.length <= MAX_DESC) {

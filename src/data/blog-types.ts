@@ -6,7 +6,9 @@ export type PostBlock =
   | { type: "numbered"; items: string[] }
   | { type: "quote"; text: string }
   | { type: "table"; head: string[]; rows: string[][] }
-  | { type: "partner"; name: string; url: string; text: string; cta?: string; promo?: string };
+  | { type: "partner"; name: string; url: string; text: string; cta?: string; promo?: string }
+  /** Предложение своей услуги внутри статьи: внутренняя ссылка, без «инструмента партнёра». */
+  | { type: "offer"; title: string; text: string; url: string; cta: string; telegram?: boolean };
 
 export type BlogPost = {
   slug: string;

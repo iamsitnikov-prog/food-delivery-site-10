@@ -142,6 +142,9 @@ const blocksToText = (blocks: any[]): string => {
         out.push(`<table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table>`);
         break;
       }
+      case "offer":
+        out.push(`<p><strong>${esc(clean(b.title))}</strong> ${esc(clean(b.text))} <a href="${esc(b.url.startsWith("/") ? SITE + b.url : b.url)}">${esc(clean(b.cta))}</a></p>`);
+        break;
       case "partner":
         out.push(`<p>${esc(clean(b.text))} <a href="${esc(b.url)}" rel="nofollow">${esc(clean(b.name))}</a></p>`);
         break;
@@ -151,6 +154,7 @@ const blocksToText = (blocks: any[]): string => {
   }
   return out.join("\n");
 };
+
 
 const faqToText = (faq: { q: string; a: string }[] = []) =>
   faq.length
@@ -698,8 +702,9 @@ for (const term of GLOSSARY) {
         ],
       },
     ],
-    title: termTitle({ term: clean(term.term) }),
+    title: termTitle({ term: clean(term.term), seoTitle: term.seoTitle }),
     description: termDescription({
+      seoDescription: term.seoDescription,
       term: clean(term.term),
       short: flat(term.short),
       formula: term.formula ? flat(term.formula) : undefined,

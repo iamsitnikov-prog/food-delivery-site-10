@@ -82,6 +82,36 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
           </blockquote>
         );
 
+      if (b.type === "offer")
+        return (
+          <aside key={i} className="mt-8 rounded-[24px] bg-surface p-4 text-cream md:p-7">
+            <p className="font-display text-[1.25em] font-semibold leading-snug tracking-[-0.02em] md:text-[1.45em]">
+              {b.title}
+            </p>
+            <p className="mt-3 leading-relaxed text-cream/80">{b.text}</p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link
+                to={b.url}
+                className="inline-flex items-center gap-2 rounded-xl bg-brand px-5 py-3 text-[0.95em] font-medium text-foreground transition-transform hover:-translate-y-0.5"
+              >
+                {b.cta}
+                <Icon name="ArrowRight" size={17} />
+              </Link>
+              {b.telegram && (
+                <a
+                  href="https://t.me/sitnikovy1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl border border-cream/30 px-5 py-3 text-[0.95em] font-medium text-cream transition-colors hover:border-cream/60"
+                >
+                  написать в Telegram
+                  <Icon name="Send" size={17} />
+                </a>
+              )}
+            </div>
+          </aside>
+        );
+
       if (b.type === "partner")
         return (
           <aside key={i} className="mt-8 rounded-[24px] border border-primary/25 bg-pale p-4 md:p-7">

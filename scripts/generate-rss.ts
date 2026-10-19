@@ -56,6 +56,9 @@ const blocksToHtml = (blocks: any[]): string => {
         out.push(`<ul>${rows.join("")}</ul>`);
         break;
       }
+      case "offer":
+        out.push(`<p><strong>${esc(clean(b.title))}</strong> ${esc(clean(b.text))} <a href="${esc(b.url.startsWith("/") ? SITE + b.url : b.url)}">${esc(clean(b.cta))}</a></p>`);
+        break;
       case "partner":
         out.push(
           `<p>${esc(clean(b.text))} <a href="${esc(b.url)}" rel="nofollow">${esc(clean(b.name))}</a>${
