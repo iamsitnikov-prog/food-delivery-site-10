@@ -27,6 +27,7 @@ import {
 } from "@/lib/docs-gen";
 import { EXECUTORS, getExecutor } from "@/data/executors";
 import { renderForPrint } from "@/lib/docs-pdf";
+import Crm, { type Lead } from "@/components/docs/Crm";
 
 // Закрытая страница для бухгалтера: договор с рестораном (ИП или ООО) по шаблонам Юрия.
 // Договор собирается здесь, в браузере; сервер (api/docs.php) проверяет пароль,
@@ -314,7 +315,21 @@ const EMPTY = {
 const numPrefix = (title: string) => title.replace(/[^A-Za-zА-Яа-яЁё]/g, "").slice(0, 3).toUpperCase();
 
 const Docs = () => {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
+  // Вкладки кабинета: договоры и заявки (CRM). ?tab=zayavki&id=N открывает заявку из уведомления
+  const params = new URLSearchParams(search);
+  const [tab, setTabState] = useState<"docs" | "leads">(params.get("tab") === "zayavki" ? "leads" : "docs");
+  const [openLeadId] = useState(() => Number(params.get("id")) || undefined);
+  const [fromLead, setFromLead] = useState<Lead | null>(null);
+  const setTab = (t: "docs" | "leads") => {
+    setTabState(t);
+    try {
+      window.history.replaceState(null, "", t === "leads" ? "/dokumenty?tab=zayavki" : "/dokumenty");
+    } catch {
+      /* без истории */
+    }
+    window.scrollTo(0, 0);
+  };
   useSeo({
     title: "Документы | agregatory.pro",
     description: "Служебная страница agregatory.pro для подготовки договоров с ресторанами. Доступ только у сотрудников по паролю.",
@@ -874,6 +889,15 @@ const Docs = () => {
       const v = saved.version > 1 ? ` (версия ${saved.version})` : "";
       setMsg(saved.telegram ? `Договор готов${v}. Сохранён в журнале, копия отправлена Юрию в Telegram.` : `Договор готов${v} и сохранён в журнале.`);
       loadJournal();
+      if (fromLead) {
+        // заявка, по которой оформляли, сама переходит в «Договор»
+        fetch(`/api/crm.php?a=update`, {
+          method: "POST",
+          headers: { "X-Docs-Key": encodeURIComponent(key), "Content-Type": "application/json" },
+          body: JSON.stringify({ id: fromLead.id, status: "contract", note: `Оформлен договор № ${num.trim()}${v}` }),
+        }).catch(() => undefined);
+        setFromLead(null);
+      }
     } catch (err) {
       setMsg(`Ошибка: ${(err as Error).message}`);
     } finally {
@@ -917,7 +941,7 @@ const Docs = () => {
             <Icon name="Lock" size={22} />
           </span>
           <h1 className="mt-6 font-display text-[1.9em] font-semibold leading-none tracking-[-0.02em]">документы</h1>
-          <p className="mt-3 text-cream-muted">Служебная страница для подготовки договоров. Введите пин-код.</p>
+          <p className="mt-3 text-cream-muted">Служебная страница для договоров и заявок. Введите пин-код.</p>
           <Input
             type="password"
             inputMode="numeric"
@@ -998,12 +1022,96 @@ const Docs = () => {
       </main>
     );
 
+  const tabs = (
+    <div className="inline-flex rounded-2xl bg-surface p-1 docs-card" role="tablist">
+      {([
+        ["docs", "договоры", "FileSignature"],
+        ["leads", "заявки", "Users"],
+      ] as const).map(([id, t, ic]) => (
+        <button
+          key={id}
+          role="tab"
+          aria-selected={tab === id}
+          onClick={() => setTab(id)}
+          className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-[0.95em] font-medium ${
+            tab === id ? "bg-brand text-foreground" : "text-cream"
+          }`}
+        >
+          <Icon name={ic} size={16} /> {t}
+        </button>
+      ))}
+    </div>
+  );
+  const accountButtons = (
+    <div className="flex flex-wrap gap-2">
+      <button
+        onClick={() => {
+          setPinErr("");
+          setPinOpen(true);
+        }}
+        className="inline-flex items-center gap-2 rounded-xl bg-surface px-5 py-3 text-[0.95em] font-medium text-cream"
+      >
+        <Icon name="Lock" size={16} /> сменить пин
+      </button>
+      <button
+        onClick={() => {
+          writeKey("");
+          setKey("");
+        }}
+        className="inline-flex items-center gap-2 rounded-xl bg-surface px-5 py-3 text-[0.95em] font-medium text-cream"
+      >
+        <Icon name="LogOut" size={16} /> выйти
+      </button>
+    </div>
+  );
+
+  // Заявка → договор: переносим, что известно из заявки, остальное бухгалтер дописывает по карточке
+  const contractFromLead = (l: Lead) => {
+    if ((name.trim() || inn.trim()) && !window.confirm("В форме договора уже есть данные. Заменить их данными из заявки?")) return;
+    restore({
+      ...EMPTY,
+      phone: l.phone,
+      email: l.email,
+      contact: l.name,
+      points: [{ title: l.place, address: "", city: "" }],
+    } as Partial<Snap>);
+    setFromLead(l);
+    setTab("docs");
+    setTimeout(
+      () =>
+        setMsg(
+          `Из заявки № ${l.id} подставлены телефон, почта, контакт и название точки. Реквизиты заполните по карточке организации. Когда договор будет готов, заявка сама перейдёт в «Договор».`,
+        ),
+      350,
+    );
+  };
+
+  if (tab === "leads")
+    return (
+      <main className="docs-light min-h-screen bg-background text-foreground">
+        <div className="px-5 py-8 md:px-14 md:py-12">
+          {tabs}
+          <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h1 className="font-display text-[28px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[56px]">заявки</h1>
+              <p className="mt-3 max-w-[640px] text-foreground/75">
+                Все заявки с сайта: формы, чек-листы и оплаты. Выбирайте ответственную и двигайте заявку по статусам, комментарии и история сохраняются.
+              </p>
+            </div>
+            {accountButtons}
+          </div>
+          <Crm docsKey={key} openId={openLeadId} onContract={contractFromLead} />
+        </div>
+      </main>
+    );
+
   // --- Форма ------------------------------------------------------------------
   return (
     <MissCtx.Provider value={missing}>
     <main className="docs-light min-h-screen bg-background text-foreground">
       <div className="px-5 py-8 md:px-14 md:py-12">
-        <div className="flex flex-wrap items-end justify-between gap-4">
+        {tabs}
+        <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="font-display text-[28px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[56px]">
               договор с рестораном
@@ -1015,26 +1123,7 @@ const Docs = () => {
               Word можно поправить вручную, PDF подходит для отправки клиенту.
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => {
-                setPinErr("");
-                setPinOpen(true);
-              }}
-              className="inline-flex items-center gap-2 rounded-xl bg-surface px-5 py-3 text-[0.95em] font-medium text-cream"
-            >
-              <Icon name="Lock" size={16} /> сменить пин
-            </button>
-            <button
-              onClick={() => {
-                writeKey("");
-                setKey("");
-              }}
-              className="inline-flex items-center gap-2 rounded-xl bg-surface px-5 py-3 text-[0.95em] font-medium text-cream"
-            >
-              <Icon name="LogOut" size={16} /> выйти
-            </button>
-          </div>
+          {accountButtons}
         </div>
 
         <div className="mt-8 grid gap-4 lg:grid-cols-[1fr_380px]">
