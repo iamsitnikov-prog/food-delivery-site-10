@@ -24,6 +24,7 @@ export type Lead = {
   amount: number;
   status: string;
   owner: string;
+  reason?: string;
   updated: string;
   notes: { at: string; who: string; text: string }[];
   history: { at: string; who: string; text: string }[];
@@ -47,6 +48,9 @@ const DOT: Record<string, string> = {
 // Цвета для этапов, которые добавили сами
 const EXTRA = ["#EC4899", "#14B8A6", "#F97316", "#84CC16", "#6366F1", "#EAB308", "#06B6D4", "#A855F7"];
 const dotOf = (id: string, i: number) => DOT[id] || EXTRA[i % EXTRA.length];
+
+// Частые причины отказа: выбираются в одно касание, «другое» пишется словами
+const REASONS = ["Дорого", "Выбрали другого подрядчика", "Делают сами", "Не сейчас, вернутся позже", "Нет на Яндекс Еде", "Пропали, не отвечают"];
 
 const field =
   "h-11 rounded-xl border-cream/20 bg-cream/5 px-4 text-[1em] text-cream placeholder:text-cream-muted/60 focus-visible:ring-1 focus-visible:ring-brand focus-visible:ring-offset-0";
@@ -101,6 +105,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
   const [system, setSystem] = useState<string[]>(["new", "contract", "paid"]);
   const [stagesOpen, setStagesOpen] = useState(false);
   const [addAfter, setAddAfter] = useState<string | null>(null); // этап, после которого вставить новый
+  const [askReason, setAskReason] = useState<Lead | null>(null); // перевод в «Отказ»: сначала причина
 
   const load = useCallback(
     async (quiet = false) => {
@@ -168,13 +173,18 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
     return m;
   }, [visible, statuses]);
 
-  const update = async (id: number, patch: { status?: string; owner?: string; note?: string }) => {
+  const update = async (id: number, patch: { status?: string; owner?: string; note?: string; reason?: string }) => {
     const before = items;
     // сразу показываем изменение, сервер подтверждает
     setItems((xs) =>
       xs.map((l) =>
         l.id === id
-          ? { ...l, ...(patch.status ? { status: patch.status } : {}), ...(patch.owner !== undefined ? { owner: patch.owner } : {}) }
+          ? {
+              ...l,
+              ...(patch.status ? { status: patch.status } : {}),
+              ...(patch.owner !== undefined ? { owner: patch.owner } : {}),
+              ...(patch.reason !== undefined ? { reason: patch.reason } : {}),
+            }
           : l,
       ),
     );
@@ -193,6 +203,18 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
       return false;
     }
   };
+
+  // В «Отказ» только с причиной: сначала спрашиваем её
+  const moveTo = (l: Lead, status: string) => {
+    if (status === l.status) return;
+    if (status === "refused") setAskReason(l);
+    else update(l.id, { status });
+  };
+  const refusedReasons = useMemo(() => {
+    const m: Record<string, number> = {};
+    for (const l of byStatus.refused || []) if (l.reason) m[l.reason] = (m[l.reason] || 0) + 1;
+    return Object.entries(m).sort((a, b) => b[1] - a[1]);
+  }, [byStatus]);
 
   const lead = items.find((l) => l.id === openLead) || null;
   const myTg = users.find((u) => u.id === me?.id)?.tg;
@@ -284,6 +306,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
             </button>
           ))}
         </div>
+        {mobileStatus === "refused" && refusedReasons.length > 0 && <ReasonSummary list={refusedReasons} />}
         <div className="mt-3 space-y-3">
           {(byStatus[mobileStatus] || []).map((l) => (
             <LeadCard key={l.id} l={l} owner={nameOf(l.owner)} onOpen={() => setOpenLead(l.id)} />
@@ -308,7 +331,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
               const id = dragId;
               setDragId(null);
               const l = items.find((x) => x.id === id);
-              if (l && l.status !== s.id) update(l.id, { status: s.id });
+              if (l) moveTo(l, s.id);
             }}
             className={`flex w-[256px] shrink-0 flex-col rounded-[20px] p-2 transition-colors ${
               overCol === s.id ? "bg-brand/30" : "bg-cream/[0.04]"
@@ -327,6 +350,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
                 <Icon name="Plus" size={15} />
               </button>
             </header>
+            {s.id === "refused" && refusedReasons.length > 0 && <ReasonSummary list={refusedReasons} />}
             <div className="flex max-h-[calc(100vh-280px)] min-h-[120px] flex-col gap-2 overflow-y-auto p-0.5">
               {(byStatus[s.id] || []).map((l) => (
                 <LeadCard
@@ -354,7 +378,19 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
           dot={dot}
           onClose={() => setOpenLead(null)}
           onUpdate={(p) => update(lead.id, p)}
+          onStatus={(st) => moveTo(lead, st)}
+          onReason={() => setAskReason(lead)}
           onContract={() => onContract(lead)}
+        />
+      )}
+      {askReason && (
+        <ReasonPrompt
+          l={askReason}
+          onClose={() => setAskReason(null)}
+          onSave={async (reason) => {
+            const ok = await update(askReason.id, askReason.status === "refused" ? { reason } : { status: "refused", reason });
+            if (ok) setAskReason(null);
+          }}
         />
       )}
       {(stagesOpen || addAfter !== null) && (
@@ -428,6 +464,11 @@ const LeadCard = ({
     </div>
     {l.place && <p className="mt-1 text-[0.92em] leading-snug">{l.place}</p>}
     {l.service && <p className="mt-1 text-[max(12px,0.85em)] leading-snug text-cream-muted">{l.service}</p>}
+    {l.status === "refused" && l.reason && (
+      <p className="mt-2 rounded-lg bg-red-50 px-2.5 py-1.5 text-[max(12px,0.85em)] leading-snug text-red-800">
+        <span className="font-medium">отказ:</span> {l.reason}
+      </p>
+    )}
     <div className="mt-3 flex flex-wrap items-center gap-1.5 text-[max(12px,0.78em)]">
       <span className="text-cream-muted">{when(l.created)}</span>
       {l.source !== "форма" && <span className="rounded-full bg-cream/[0.07] px-2 py-0.5">{l.source}</span>}
@@ -455,6 +496,8 @@ const LeadPanel = ({
   dot,
   onClose,
   onUpdate,
+  onStatus,
+  onReason,
   onContract,
 }: {
   l: Lead;
@@ -465,6 +508,8 @@ const LeadPanel = ({
   dot: (id: string) => string;
   onClose: () => void;
   onUpdate: (p: { status?: string; owner?: string; note?: string }) => Promise<boolean>;
+  onStatus: (status: string) => void;
+  onReason: () => void;
   onContract: () => void;
 }) => {
   const [note, setNote] = useState("");
@@ -584,7 +629,7 @@ const LeadPanel = ({
               {statuses.map((s) => (
                 <button
                   key={s.id}
-                  onClick={() => s.id !== l.status && onUpdate({ status: s.id })}
+                  onClick={() => onStatus(s.id)}
                   className={`inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[0.92em] ${
                     l.status === s.id ? "bg-foreground text-background" : "bg-cream/[0.06]"
                   }`}
@@ -594,6 +639,16 @@ const LeadPanel = ({
                 </button>
               ))}
             </div>
+            {l.status === "refused" && (
+              <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl bg-red-50 px-4 py-3 text-red-800">
+                <span>
+                  <span className="font-medium">Причина отказа:</span> {l.reason || "не указана"}
+                </span>
+                <button onClick={onReason} className="ml-auto text-[0.92em] underline">
+                  {l.reason ? "изменить" : "указать"}
+                </button>
+              </div>
+            )}
             <h3 className="mt-5 font-medium">кто ведёт</h3>
             <div className="mt-3 flex flex-wrap gap-2">
               {users.map((u) => (
@@ -727,6 +782,68 @@ const AddLead = ({
         {err && <p className="mt-3 text-red-600">{err}</p>}
         <button disabled={busy} className="mt-5 flex h-12 w-full items-center justify-center rounded-xl bg-brand font-medium text-foreground disabled:opacity-60">
           {busy ? <Icon name="Loader2" size={18} className="animate-spin" /> : "добавить заявку"}
+        </button>
+      </form>
+    </div>
+  );
+};
+
+// --- Причины отказа ---------------------------------------------------------
+const ReasonSummary = ({ list }: { list: [string, number][] }) => (
+  <div className="mx-1 mb-2 mt-1 flex flex-wrap gap-1.5 text-[max(12px,0.78em)]" aria-label="Причины отказов">
+    {list.slice(0, 5).map(([r, n]) => (
+      <span key={r} className="rounded-full bg-red-50 px-2 py-0.5 text-red-800">
+        {r} · {n}
+      </span>
+    ))}
+  </div>
+);
+
+const ReasonPrompt = ({ l, onClose, onSave }: { l: Lead; onClose: () => void; onSave: (r: string) => Promise<void> }) => {
+  const preset = REASONS.includes(l.reason || "") ? l.reason || "" : "";
+  const [pick, setPick] = useState(preset || (l.reason ? "другое" : ""));
+  const [other, setOther] = useState(preset ? "" : l.reason || "");
+  const [busy, setBusy] = useState(false);
+  const reason = pick === "другое" ? other.trim() : pick;
+  return (
+    <div className="fixed inset-0 z-[55] flex items-end justify-center bg-black/30 md:items-center" onClick={onClose} role="dialog" aria-modal="true">
+      <form
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          if (!reason) return;
+          setBusy(true);
+          await onSave(reason);
+          setBusy(false);
+        }}
+        className="docs-light docs-card w-full max-w-[480px] rounded-t-[24px] bg-surface p-6 text-cream md:rounded-[24px]"
+      >
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em]">почему отказ?</h2>
+          <button type="button" onClick={onClose} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cream/[0.06]" aria-label="Закрыть">
+            <Icon name="X" size={18} />
+          </button>
+        </div>
+        <p className="mt-1 text-[0.92em] text-cream-muted">
+          {l.name || "Заявка"} № {l.id}. Причина будет видна на карточке, без открытия.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {[...REASONS, "другое"].map((r) => (
+            <button
+              key={r}
+              type="button"
+              onClick={() => setPick(r)}
+              className={`rounded-full px-3.5 py-2 text-[0.92em] ${pick === r ? "bg-foreground text-background" : "bg-cream/[0.06]"}`}
+            >
+              {r}
+            </button>
+          ))}
+        </div>
+        {pick === "другое" && (
+          <Input className={`${field} mt-3 w-full`} placeholder="своими словами" value={other} maxLength={200} onChange={(e) => setOther(e.target.value)} autoFocus aria-label="Причина отказа" />
+        )}
+        <button disabled={busy || !reason} className="mt-5 flex h-12 w-full items-center justify-center rounded-xl bg-brand font-medium text-foreground disabled:opacity-50">
+          {busy ? <Icon name="Loader2" size={18} className="animate-spin" /> : "сохранить"}
         </button>
       </form>
     </div>
@@ -892,7 +1009,7 @@ const StagesEditor = ({
         )}
         {!quick && (
           <p className="mt-4 text-[max(12px,0.82em)] text-cream-muted">
-            Этапы общие для всех. Замочек у этапов, в которые заявки попадают сами: новые с сайта, договоры из кабинета и оплаты. Их можно переименовать и переставить, но не удалить.
+            Этапы общие для всех. Замочек у этапов, к которым привязан сайт: новые заявки, договоры из кабинета, оплаты и «Отказ» с причинами. Их можно переименовать и переставить, но не удалить.
           </p>
         )}
       </div>
