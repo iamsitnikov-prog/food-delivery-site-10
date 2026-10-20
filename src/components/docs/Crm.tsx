@@ -321,6 +321,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
           statuses={statuses}
           users={users}
           statusTitle={statusTitle}
+          meId={me?.id || ""}
           onClose={() => setOpenLead(null)}
           onUpdate={(p) => update(lead.id, p)}
           onContract={() => onContract(lead)}
@@ -406,6 +407,7 @@ const LeadPanel = ({
   statuses,
   users,
   statusTitle,
+  meId,
   onClose,
   onUpdate,
   onContract,
@@ -414,6 +416,7 @@ const LeadPanel = ({
   statuses: Status[];
   users: User[];
   statusTitle: (id: string) => string;
+  meId: string;
   onClose: () => void;
   onUpdate: (p: { status?: string; owner?: string; note?: string }) => Promise<boolean>;
   onContract: () => void;
@@ -521,6 +524,14 @@ const LeadPanel = ({
             </dl>
           </section>
 
+          {!l.owner && meId && (
+            <button
+              onClick={() => onUpdate({ owner: meId, ...(l.status === "new" ? { status: "work" } : {}) })}
+              className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-brand font-medium text-foreground"
+            >
+              <Icon name="UserCheck" size={18} /> взять себе
+            </button>
+          )}
           <section className="docs-card rounded-[24px] bg-surface p-5 text-cream">
             <h3 className="font-medium">статус</h3>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -537,7 +548,7 @@ const LeadPanel = ({
                 </button>
               ))}
             </div>
-            <h3 className="mt-5 font-medium">ответственная</h3>
+            <h3 className="mt-5 font-medium">кто ведёт</h3>
             <div className="mt-3 flex flex-wrap gap-2">
               {users.map((u) => (
                 <button
@@ -719,7 +730,7 @@ const TgConnect = ({ docsKey, name, onDone }: { docsKey: string; name: string; o
     <div className="docs-card mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-pale/70 px-5 py-4 text-cream">
       <Icon name="Send" size={18} />
       <p className="min-w-0 flex-1 basis-[240px] text-[0.95em]">
-        {name}, подключи уведомления: когда тебе передают заявку, бот сразу пришлёт её в Telegram.
+        {name}, подключи уведомления: если кто-то передаст заявку именно тебе, бот сразу пришлёт её в Telegram.
         {url && " Открой бота, нажми «Старт», потом «проверить»."}
       </p>
       {!url ? (
