@@ -44,6 +44,10 @@ const DOT: Record<string, string> = {
   refused: "#6B7280",
 };
 
+// Цвета для этапов, которые добавили сами
+const EXTRA = ["#EC4899", "#14B8A6", "#F97316", "#84CC16", "#6366F1", "#EAB308", "#06B6D4", "#A855F7"];
+const dotOf = (id: string, i: number) => DOT[id] || EXTRA[i % EXTRA.length];
+
 const field =
   "h-11 rounded-xl border-cream/20 bg-cream/5 px-4 text-[1em] text-cream placeholder:text-cream-muted/60 focus-visible:ring-1 focus-visible:ring-brand focus-visible:ring-offset-0";
 
@@ -94,6 +98,9 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
   const [dragId, setDragId] = useState<number | null>(null);
   const [overCol, setOverCol] = useState("");
   const [toast, setToast] = useState("");
+  const [system, setSystem] = useState<string[]>(["new", "contract", "paid"]);
+  const [stagesOpen, setStagesOpen] = useState(false);
+  const [addAfter, setAddAfter] = useState<string | null>(null); // этап, после которого вставить новый
 
   const load = useCallback(
     async (quiet = false) => {
@@ -102,6 +109,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
         const d = await call(docsKey, "a=list");
         setItems(d.items || []);
         setStatuses(d.statuses || []);
+        if (d.system) setSystem(d.system);
         setUsers(d.users || []);
         setMe(d.me || null);
         setTgReady(!!d.tg_ready);
@@ -130,6 +138,13 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
     return () => clearTimeout(t);
   }, [toast]);
 
+  const dot = (id: string) => dotOf(id, Math.max(0, statuses.findIndex((s) => s.id === id)));
+  const stageOp = async (body: Record<string, unknown>) => {
+    const d = await call(docsKey, "a=stages", body);
+    setStatuses(d.statuses);
+    load(true);
+    return d;
+  };
   const nameOf = (id: string) => users.find((u) => u.id === id)?.name || "";
   const statusTitle = (id: string) => statuses.find((s) => s.id === id)?.title || id;
 
@@ -235,6 +250,12 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
           <Icon name="Plus" size={16} /> заявка
         </button>
         <button
+          onClick={() => setStagesOpen(true)}
+          className="inline-flex h-11 items-center gap-2 rounded-xl bg-surface px-4 font-medium text-cream docs-card"
+        >
+          <Icon name="ListChecks" size={16} /> этапы
+        </button>
+        <button
           onClick={() => load()}
           className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-surface text-cream docs-card"
           aria-label="Обновить"
@@ -257,7 +278,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
                 mobileStatus === s.id ? "bg-foreground text-background" : "bg-surface text-cream docs-card"
               }`}
             >
-              <span className="h-2 w-2 rounded-full" style={{ background: DOT[s.id] }} />
+              <span className="h-2 w-2 rounded-full" style={{ background: dot(s.id) }} />
               {s.title}
               <span className="opacity-60">{counts(s.id)}</span>
             </button>
@@ -294,9 +315,17 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
             }`}
           >
             <header className="flex items-center gap-2 px-2 py-2">
-              <span className="h-2.5 w-2.5 rounded-full" style={{ background: DOT[s.id] }} />
+              <span className="h-2.5 w-2.5 rounded-full" style={{ background: dot(s.id) }} />
               <h2 className="font-medium">{s.title}</h2>
               <span className="ml-auto text-[0.9em] text-cream-muted">{counts(s.id)}</span>
+              <button
+                onClick={() => setAddAfter(s.id)}
+                className="flex h-7 w-7 items-center justify-center rounded-lg text-cream-muted hover:bg-cream/10 hover:text-cream"
+                title={`Добавить этап после «${s.title}»`}
+                aria-label={`Добавить этап после «${s.title}»`}
+              >
+                <Icon name="Plus" size={15} />
+              </button>
             </header>
             <div className="flex max-h-[calc(100vh-280px)] min-h-[120px] flex-col gap-2 overflow-y-auto p-0.5">
               {(byStatus[s.id] || []).map((l) => (
@@ -322,9 +351,24 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
           users={users}
           statusTitle={statusTitle}
           meId={me?.id || ""}
+          dot={dot}
           onClose={() => setOpenLead(null)}
           onUpdate={(p) => update(lead.id, p)}
           onContract={() => onContract(lead)}
+        />
+      )}
+      {(stagesOpen || addAfter !== null) && (
+        <StagesEditor
+          statuses={statuses}
+          system={system}
+          counts={counts}
+          dot={dot}
+          addAfter={addAfter}
+          onOp={stageOp}
+          onClose={() => {
+            setStagesOpen(false);
+            setAddAfter(null);
+          }}
         />
       )}
       {adding && (
@@ -408,6 +452,7 @@ const LeadPanel = ({
   users,
   statusTitle,
   meId,
+  dot,
   onClose,
   onUpdate,
   onContract,
@@ -417,6 +462,7 @@ const LeadPanel = ({
   users: User[];
   statusTitle: (id: string) => string;
   meId: string;
+  dot: (id: string) => string;
   onClose: () => void;
   onUpdate: (p: { status?: string; owner?: string; note?: string }) => Promise<boolean>;
   onContract: () => void;
@@ -543,7 +589,7 @@ const LeadPanel = ({
                     l.status === s.id ? "bg-foreground text-background" : "bg-cream/[0.06]"
                   }`}
                 >
-                  <span className="h-2 w-2 rounded-full" style={{ background: DOT[s.id] }} />
+                  <span className="h-2 w-2 rounded-full" style={{ background: dot(s.id) }} />
                   {s.title}
                 </button>
               ))}
@@ -683,6 +729,173 @@ const AddLead = ({
           {busy ? <Icon name="Loader2" size={18} className="animate-spin" /> : "добавить заявку"}
         </button>
       </form>
+    </div>
+  );
+};
+
+// --- Этапы: добавить в любое место, переименовать, переставить, удалить -----
+const StagesEditor = ({
+  statuses,
+  system,
+  counts,
+  dot,
+  addAfter,
+  onOp,
+  onClose,
+}: {
+  statuses: Status[];
+  system: string[];
+  counts: (id: string) => number;
+  dot: (id: string) => string;
+  addAfter: string | null;
+  onOp: (b: Record<string, unknown>) => Promise<unknown>;
+  onClose: () => void;
+}) => {
+  // по умолчанию вставляем перед закрытыми этапами («Не дозвонились», «Отказ»)
+  const before = statuses.findIndex((x) => x.id === "noanswer" || x.id === "refused");
+  const [after, setAfter] = useState(addAfter ?? (statuses[(before > 0 ? before : statuses.length) - 1]?.id || ""));
+  const [title, setTitle] = useState("");
+  const [edit, setEdit] = useState<Record<string, string>>({});
+  const [del, setDel] = useState<{ id: string; to: string } | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+  const run = async (b: Record<string, unknown>, after?: () => void) => {
+    setBusy(true);
+    setErr("");
+    try {
+      await onOp(b);
+      after?.();
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  };
+  const quick = addAfter !== null; // открыли плюсиком у колонки: только добавить
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/30 md:items-center" onClick={onClose} role="dialog" aria-modal="true">
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="docs-light docs-card max-h-[92vh] w-full max-w-[520px] overflow-y-auto rounded-t-[24px] bg-surface p-6 text-cream md:rounded-[24px]"
+      >
+        <div className="flex items-center justify-between">
+          <h2 className="font-display text-[1.4em] font-semibold tracking-[-0.02em]">{quick ? "новый этап" : "этапы"}</h2>
+          <button onClick={onClose} className="flex h-10 w-10 items-center justify-center rounded-xl bg-cream/[0.06]" aria-label="Закрыть">
+            <Icon name="X" size={18} />
+          </button>
+        </div>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!title.trim()) return setErr("Напиши название этапа");
+            run({ op: "add", title: title.trim(), after }, () => {
+              setTitle("");
+              if (quick) onClose();
+            });
+          }}
+          className="mt-4 rounded-2xl bg-pale/60 p-4"
+        >
+          <Input className={`${field} w-full`} placeholder="название, например «Ждём реквизиты»" value={title} maxLength={40} onChange={(e) => setTitle(e.target.value)} autoFocus aria-label="Название этапа" />
+          <div className="mt-2 flex flex-wrap gap-2">
+            <select value={after} onChange={(e) => setAfter(e.target.value)} className="h-11 min-w-0 flex-1 rounded-xl border border-cream/20 px-3 text-cream" aria-label="Куда вставить">
+              <option value="">в самое начало</option>
+              {statuses.map((s) => (
+                <option key={s.id} value={s.id}>
+                  после «{s.title}»
+                </option>
+              ))}
+            </select>
+            <button disabled={busy} className="inline-flex h-11 items-center gap-2 rounded-xl bg-brand px-4 font-medium text-foreground disabled:opacity-60">
+              <Icon name="Plus" size={16} /> добавить
+            </button>
+          </div>
+        </form>
+        {err && <p className="mt-3 text-red-700">{err}</p>}
+
+        {!quick && (
+          <ul className="mt-4 space-y-2">
+            {statuses.map((s, i) => {
+              const val = edit[s.id] ?? s.title;
+              const changed = val.trim() !== s.title;
+              return (
+                <li key={s.id} className="rounded-2xl bg-cream/[0.04] p-2">
+                  <div className="flex items-center gap-1.5">
+                    <span className="ml-1 h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: dot(s.id) }} />
+                    <Input
+                      className="h-10 min-w-0 flex-1 rounded-lg border-transparent bg-transparent px-2 text-cream focus-visible:ring-1 focus-visible:ring-brand focus-visible:ring-offset-0"
+                      value={val}
+                      maxLength={40}
+                      onChange={(e) => setEdit((x) => ({ ...x, [s.id]: e.target.value }))}
+                      aria-label={`Название этапа ${s.title}`}
+                    />
+                    {changed && (
+                      <button
+                        disabled={busy}
+                        onClick={() => run({ op: "rename", id: s.id, title: val.trim() }, () => setEdit((x) => ({ ...x, [s.id]: undefined as unknown as string })))}
+                        className="h-9 rounded-lg bg-brand px-3 text-[0.9em] font-medium text-foreground"
+                      >
+                        сохранить
+                      </button>
+                    )}
+                    <span className="w-6 shrink-0 text-center text-[0.85em] text-cream-muted">{counts(s.id)}</span>
+                    <button disabled={busy || i === 0} onClick={() => run({ op: "move", id: s.id, dir: -1 })} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg hover:bg-cream/10 disabled:opacity-25" aria-label="Выше">
+                      <Icon name="ChevronUp" size={16} />
+                    </button>
+                    <button disabled={busy || i === statuses.length - 1} onClick={() => run({ op: "move", id: s.id, dir: 1 })} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg hover:bg-cream/10 disabled:opacity-25" aria-label="Ниже">
+                      <Icon name="ChevronDown" size={16} />
+                    </button>
+                    {system.includes(s.id) ? (
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center text-cream-muted" title="В этот этап сайт сам кладёт заявки, его нельзя удалить">
+                        <Icon name="Lock" size={14} />
+                      </span>
+                    ) : (
+                      <button
+                        disabled={busy}
+                        onClick={() => (counts(s.id) ? setDel({ id: s.id, to: "" }) : run({ op: "delete", id: s.id }))}
+                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-cream-muted hover:bg-red-50 hover:text-red-700"
+                        aria-label={`Удалить этап ${s.title}`}
+                      >
+                        <Icon name="Trash2" size={15} />
+                      </button>
+                    )}
+                  </div>
+                  {del?.id === s.id && (
+                    <div className="mt-2 flex flex-wrap items-center gap-2 px-2 pb-1 text-[0.92em]">
+                      <span>Заявок здесь: {counts(s.id)}. Перенести в</span>
+                      <select value={del.to} onChange={(e) => setDel({ id: s.id, to: e.target.value })} className="h-9 rounded-lg border border-cream/20 px-2 text-cream" aria-label="Куда перенести заявки">
+                        <option value="">выбери этап</option>
+                        {statuses
+                          .filter((x) => x.id !== s.id)
+                          .map((x) => (
+                            <option key={x.id} value={x.id}>
+                              {x.title}
+                            </option>
+                          ))}
+                      </select>
+                      <button
+                        disabled={busy || !del.to}
+                        onClick={() => run({ op: "delete", id: s.id, to: del.to }, () => setDel(null))}
+                        className="h-9 rounded-lg bg-foreground px-3 font-medium text-background disabled:opacity-40"
+                      >
+                        удалить этап
+                      </button>
+                      <button onClick={() => setDel(null)} className="text-cream-muted underline">
+                        отмена
+                      </button>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+        {!quick && (
+          <p className="mt-4 text-[max(12px,0.82em)] text-cream-muted">
+            Этапы общие для всех. Замочек у этапов, в которые заявки попадают сами: новые с сайта, договоры из кабинета и оплаты. Их можно переименовать и переставить, но не удалить.
+          </p>
+        )}
+      </div>
     </div>
   );
 };
