@@ -49,6 +49,32 @@ const DOT: Record<string, string> = {
 const EXTRA = ["#EC4899", "#14B8A6", "#F97316", "#84CC16", "#6366F1", "#EAB308", "#06B6D4", "#A855F7"];
 const dotOf = (id: string, i: number) => DOT[id] || EXTRA[i % EXTRA.length];
 
+// Тип связи: как с клиентом договорились общаться. Старые и ручные заявки
+// пишут его по-разному («Звонок», «телеграм»), поэтому приводим к четырём видам.
+const CHANNELS = ["Телефон", "Telegram", "MAX", "WhatsApp"] as const;
+type Channel = (typeof CHANNELS)[number];
+const channelOf = (c: string): Channel => {
+  const t = (c || "").toLowerCase();
+  if (/tele|телег|тг|tg/.test(t)) return "Telegram";
+  if (/max|макс/.test(t)) return "MAX";
+  if (/whats|ватс|вотс/.test(t)) return "WhatsApp";
+  return "Телефон";
+};
+const CH_STYLE: Record<Channel, { cls: string; icon: string }> = {
+  Телефон: { cls: "bg-stone-200 text-stone-800", icon: "Phone" },
+  Telegram: { cls: "bg-sky-100 text-sky-800", icon: "Send" },
+  MAX: { cls: "bg-violet-100 text-violet-800", icon: "MessageCircle" },
+  WhatsApp: { cls: "bg-green-100 text-green-800", icon: "MessageCircle" },
+};
+// В «Нет ответа» показываем, что именно не получилось: позвонить или написать
+const noAnswerText = (c: Channel) => (c === "Телефон" ? "не дозвонились" : `не дописались в ${c}`);
+const ChannelBadge = ({ c }: { c: Channel }) => (
+  <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 ${CH_STYLE[c].cls}`}>
+    <Icon name={CH_STYLE[c].icon} size={11} />
+    {c}
+  </span>
+);
+
 // Частые причины отказа: выбираются в одно касание, «другое» пишется словами
 const REASONS = ["Дорого", "Выбрали другого подрядчика", "Делают сами", "Не сейчас, вернутся позже", "Нет на Яндекс Еде", "Пропали, не отвечают"];
 
@@ -96,6 +122,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
   const [err, setErr] = useState("");
   const [q, setQ] = useState("");
   const [who, setWho] = useState("all"); // all | mine | none | <id>
+  const [chan, setChan] = useState<"" | Channel>(""); // фильтр по типу связи
   const [mobileStatus, setMobileStatus] = useState("new");
   const [openLead, setOpenLead] = useState<number | null>(openId ?? null);
   const [adding, setAdding] = useState(false);
@@ -160,11 +187,13 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
       if (who === "mine" && l.owner !== me?.id) return false;
       if (who === "none" && l.owner !== "") return false;
       if (!["all", "mine", "none"].includes(who) && l.owner !== who) return false;
+      if (chan && channelOf(l.channel) !== chan) return false;
       if (!s) return true;
       const hay = `${l.name} ${l.place} ${l.service} ${l.comment} ${l.email} № ${l.id}`.toLowerCase();
       return hay.includes(s) || (sd.length >= 3 && l.phone.replace(/\D/g, "").includes(sd));
     });
-  }, [items, q, who, me]);
+  }, [items, q, who, me, chan]);
+  const chanCount = (c: Channel) => items.filter((l) => channelOf(l.channel) === c).length;
 
   const byStatus = useMemo(() => {
     const m: Record<string, Lead[]> = {};
@@ -173,7 +202,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
     return m;
   }, [visible, statuses]);
 
-  const update = async (id: number, patch: { status?: string; owner?: string; note?: string; reason?: string }) => {
+  const update = async (id: number, patch: { status?: string; owner?: string; note?: string; reason?: string; channel?: string }) => {
     const before = items;
     // сразу показываем изменение, сервер подтверждает
     setItems((xs) =>
@@ -184,6 +213,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
               ...(patch.status ? { status: patch.status } : {}),
               ...(patch.owner !== undefined ? { owner: patch.owner } : {}),
               ...(patch.reason !== undefined ? { reason: patch.reason } : {}),
+              ...(patch.channel !== undefined ? { channel: patch.channel } : {}),
             }
           : l,
       ),
@@ -285,6 +315,22 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
         >
           <Icon name="RotateCcw" size={16} />
         </button>
+      </div>
+
+      <div className="-mx-5 mt-3 flex gap-2 overflow-x-auto px-5 pb-1 md:mx-0 md:flex-wrap md:px-0" aria-label="Тип связи">
+        {(["", ...CHANNELS] as ("" | Channel)[]).map((c) => (
+          <button
+            key={c || "all"}
+            onClick={() => setChan(c)}
+            className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[0.9em] ${
+              chan === c ? "bg-foreground text-background" : "bg-surface text-cream docs-card"
+            }`}
+          >
+            {c && <Icon name={CH_STYLE[c].icon} size={13} />}
+            {c || "любая связь"}
+            <span className="opacity-60">{c ? chanCount(c) : items.length}</span>
+          </button>
+        ))}
       </div>
 
       {tgReady && me && !myTg && <TgConnect docsKey={docsKey} name={me.name} onDone={() => load(true)} />}
@@ -464,12 +510,18 @@ const LeadCard = ({
     </div>
     {l.place && <p className="mt-1 text-[0.92em] leading-snug">{l.place}</p>}
     {l.service && <p className="mt-1 text-[max(12px,0.85em)] leading-snug text-cream-muted">{l.service}</p>}
+    {l.status === "noanswer" && (
+      <p className="mt-2 rounded-lg bg-amber-50 px-2.5 py-1.5 text-[max(12px,0.85em)] font-medium leading-snug text-amber-900">
+        {noAnswerText(channelOf(l.channel))}
+      </p>
+    )}
     {l.status === "refused" && l.reason && (
       <p className="mt-2 rounded-lg bg-red-50 px-2.5 py-1.5 text-[max(12px,0.85em)] leading-snug text-red-800">
         <span className="font-medium">отказ:</span> {l.reason}
       </p>
     )}
     <div className="mt-3 flex flex-wrap items-center gap-1.5 text-[max(12px,0.78em)]">
+      <ChannelBadge c={channelOf(l.channel)} />
       <span className="text-cream-muted">{when(l.created)}</span>
       {l.source !== "форма" && <span className="rounded-full bg-cream/[0.07] px-2 py-0.5">{l.source}</span>}
       {l.amount > 0 && <span className="rounded-full bg-green-100 px-2 py-0.5 text-green-800">{l.amount.toLocaleString("ru-RU")} ₽</span>}
@@ -507,7 +559,7 @@ const LeadPanel = ({
   meId: string;
   dot: (id: string) => string;
   onClose: () => void;
-  onUpdate: (p: { status?: string; owner?: string; note?: string }) => Promise<boolean>;
+  onUpdate: (p: { status?: string; owner?: string; note?: string; channel?: string }) => Promise<boolean>;
   onStatus: (status: string) => void;
   onReason: () => void;
   onContract: () => void;
@@ -528,6 +580,11 @@ const LeadPanel = ({
     setBusy(false);
   };
   const tel = telHref(l.phone);
+  const ch = channelOf(l.channel);
+  const digitsOnly = (() => {
+    const d = l.phone.replace(/\D/g, "");
+    return d.length === 11 && d[0] === "8" ? `7${d.slice(1)}` : d;
+  })();
   const feed = [
     ...l.notes.map((n) => ({ ...n, kind: "note" as const })),
     ...l.history.map((h) => ({ ...h, kind: "log" as const })),
@@ -569,6 +626,33 @@ const LeadPanel = ({
                 </button>
               )}
             </div>
+            <div className="mt-4">
+              <div className="text-[0.9em] text-cream-muted">связь с клиентом</div>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {CHANNELS.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => c !== ch && onUpdate({ channel: c })}
+                    className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[0.92em] ${ch === c ? "bg-foreground text-background" : "bg-cream/[0.06]"}`}
+                  >
+                    <Icon name={CH_STYLE[c].icon} size={14} /> {c}
+                  </button>
+                ))}
+              </div>
+              {digitsOnly.length >= 10 && ch !== "Телефон" && ch !== "MAX" && (
+                <a
+                  href={ch === "Telegram" ? `https://t.me/+${digitsOnly}` : `https://wa.me/${digitsOnly}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-2 inline-flex items-center gap-1.5 text-[0.92em] underline"
+                >
+                  открыть чат в {ch} <Icon name="ArrowUpRight" size={14} />
+                </a>
+              )}
+              {l.status === "noanswer" && (
+                <p className="mt-2 rounded-lg bg-amber-50 px-3 py-2 text-[0.92em] font-medium text-amber-900">Сейчас: {noAnswerText(ch)}</p>
+              )}
+            </div>
             <dl className="mt-4 grid grid-cols-[110px_1fr] gap-x-3 gap-y-2 text-[0.95em]">
               {l.service && (
                 <>
@@ -576,12 +660,7 @@ const LeadPanel = ({
                   <dd>{l.service}</dd>
                 </>
               )}
-              {l.channel && (
-                <>
-                  <dt className="text-cream-muted">связь</dt>
-                  <dd>{l.channel}</dd>
-                </>
-              )}
+
               {l.email && (
                 <>
                   <dt className="text-cream-muted">почта</dt>
@@ -762,7 +841,14 @@ const AddLead = ({
           <Input className={`${field} w-full`} placeholder="телефон" inputMode="tel" value={f.phone} onChange={set("phone")} aria-label="Телефон" />
           <Input className={`${field} w-full`} placeholder="заведение и город" value={f.place} onChange={set("place")} aria-label="Заведение" />
           <Input className={`${field} w-full`} placeholder="что нужно: сопровождение, аудит, консультация" value={f.service} onChange={set("service")} aria-label="Услуга" />
-          <Input className={`${field} w-full`} placeholder="откуда: звонок, Telegram, рекомендация" value={f.channel} onChange={set("channel")} aria-label="Откуда" />
+          <select value={f.channel} onChange={set("channel")} className="h-11 w-full rounded-xl border border-cream/20 px-3 text-cream" aria-label="Связь с клиентом">
+            <option value="">связь: телефон</option>
+            {CHANNELS.filter((c) => c !== "Телефон").map((c) => (
+              <option key={c} value={c}>
+                связь: {c}
+              </option>
+            ))}
+          </select>
           <textarea
             value={f.comment}
             onChange={set("comment")}
