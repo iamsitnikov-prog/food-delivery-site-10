@@ -1110,6 +1110,8 @@ export const BASE_TERMS: GlossaryEntry[] = [
   },
   {
     slug: "kombo",
+    seoTitle: "Комбо: что это такое простыми словами | agregatory.pro",
+    seoDescription: "Комбо это несколько блюд в одном наборе по общей цене. Что значит комбо в меню доставки, как собрать комбо в Яндекс Еде и поднять средний чек без потери маржи.",
     see: ["srednij-chek", "doprodazhi", "menyu-inzhiniring", "podarok-k-zakazu"],
     term: "Комбо-набор",
     short: "Несколько позиций, объединённых в один набор по общей цене.",

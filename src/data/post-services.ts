@@ -46,6 +46,7 @@ const BY_SLUG: Record<string, PostService> = {
   "dark-kitchen-kak-otkryt": PODKL,
   "pretenziya-k-yandex-ede": SHTRAFY,
   "yandex-eda-ne-rabotaet-chto-delat-restoranu": SHTRAFY,
+  "yandex-vendor-vhod-v-lichnyy-kabinet": VENDOR,
   "kak-otkryt-dostavku-edy": PODKL,
   "chibbis-dlya-restorana": KONSULT,
   "upakovka-dlya-dostavki-edy": REYTING,

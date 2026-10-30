@@ -50,6 +50,8 @@ export const INTERLINKS: Interlink[] = [
   post("дарк китчен", "dark-kitchen-kak-otkryt", "2026-10-15"),
   post("кухня без зала", "dark-kitchen-kak-otkryt", "2026-10-15"),
   post("претензи", "pretenziya-k-yandex-ede", "2026-10-15"),
+  post("вход в Вендор", "yandex-vendor-vhod-v-lichnyy-kabinet", "2026-10-31"),
+  post("вход в личный кабинет", "yandex-vendor-vhod-v-lichnyy-kabinet", "2026-10-31"),
   post("сбой Яндекс Еды", "yandex-eda-ne-rabotaet-chto-delat-restoranu", "2026-10-12"),
   post("форс-мажор", "yandex-eda-ne-rabotaet-chto-delat-restoranu", "2026-10-12"),
   post("Яндекс Еда не работает", "yandex-eda-ne-rabotaet-chto-delat-restoranu", "2026-10-12"),
