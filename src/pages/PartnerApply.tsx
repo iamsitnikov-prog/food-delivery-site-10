@@ -284,7 +284,7 @@ const PartnerApply = () => {
                     label="Telegram для связи"
                     required
                     error={errors.contact}
-                    hint="Только ник в Telegram или телефон, к которому привязан Telegram. Напишем сюда, когда ваша карточка появится на сайте."
+                    hint="Нам удобнее связываться с вами только в Telegram. Напишите ник или телефон, к которому привязан Telegram. Сюда же напишем, когда ваша карточка появится на сайте."
                   >
                     <input name="contact_tg" maxLength={80} className={field} placeholder="@username или +7 900 000-00-00" />
                   </Field>
