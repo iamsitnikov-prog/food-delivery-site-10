@@ -158,8 +158,8 @@ const PartnerApply = () => {
                 </Field>
               </div>
               <div data-err="site">
-                <Field label="Сайт, портфолио или соцсети" required error={errors.site} hint="Если сайта нет, подойдёт ссылка на портфолио, Telegram или VK.">
-                  <input name="site" maxLength={300} className={field} placeholder="https://" inputMode="url" />
+                <Field label="Сайт, портфолио или соцсети" required error={errors.site} hint="Сюда рестораны перейдут с кнопки на вашей карточке. Если сайта нет, подойдёт портфолио, страница VK, Telegram канал или просто ваш ник в Telegram: тогда на карточке будет кнопка «написать в Telegram».">
+                  <input name="site" maxLength={300} className={field} placeholder="https://… или @ник в Telegram" />
                 </Field>
               </div>
               <div data-err="section">
@@ -267,7 +267,9 @@ const PartnerApply = () => {
             </Block>
 
             <Block n={3} title="Контакт для связи">
-              <p className="-mt-2 text-[max(12px,0.9em)] text-foreground/60">На сайте не показываем, нужно только нам.</p>
+              <p className="-mt-2 text-[max(12px,0.9em)] leading-snug text-foreground/60">
+                Эти контакты на&nbsp;сайте не&nbsp;показываем, они нужны только нам для связи. Рестораны будут переходить к&nbsp;вам по&nbsp;ссылке из&nbsp;первого блока: на&nbsp;ваш сайт, портфолио или в&nbsp;соцсети, и&nbsp;там увидят ваши контакты.
+              </p>
               <div className="grid gap-5 md:grid-cols-2">
                 <div data-err="contact_name">
                   <Field label="Имя" required error={errors.contact_name}>

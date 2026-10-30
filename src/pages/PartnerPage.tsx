@@ -104,7 +104,11 @@ const PartnerPage = () => {
             rel="sponsored noopener"
             className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-6 py-4 text-[1.05em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
           >
-            перейти на сайт {p.name}
+            {/^https?:\/\/(t\.me|telegram\.me)\//.test(p.url)
+              ? "написать в Telegram"
+              : /^https?:\/\/(www\.)?(vk\.com|instagram\.com|behance\.net)\//.test(p.url)
+                ? "смотреть работы"
+                : `перейти на сайт ${p.name}`}
             <Icon name="ArrowUpRight" size={19} />
           </a>
         </div>
