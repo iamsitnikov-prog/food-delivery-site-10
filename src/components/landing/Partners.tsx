@@ -24,7 +24,6 @@ const Partners = () => {
             to={`/partnery/${p.slug}`}
             className="reveal group relative flex flex-col overflow-hidden rounded-[24px] border border-foreground/10 bg-white p-5 pt-6 transition-transform duration-500 hover:-translate-y-1 md:p-7 md:pt-8"
           >
-            <span className="absolute inset-x-0 top-0 h-1.5" style={{ background: getSection(p.section).color }} />
             <div className="flex items-center gap-3">
               <img
                 src={p.logo}
@@ -38,7 +37,7 @@ const Partners = () => {
               <div className="min-w-0">
                 <span className="block font-display text-[1.4em] font-semibold leading-tight tracking-[-0.03em]">{p.name}</span>
                 <span className="mt-0.5 inline-flex items-center gap-1.5 text-[max(12px,0.8em)] text-foreground/60">
-                  <Icon name={getSection(p.section).icon} size={14} style={{ color: getSection(p.section).color }} />
+                  <Icon name={getSection(p.section).icon} size={14} />
                   {getSection(p.section).title}
                 </span>
               </div>

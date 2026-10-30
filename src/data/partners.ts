@@ -1,23 +1,23 @@
 /** Разделы партнёров. Показываются только те, в которых есть партнёры. */
-export type PartnerSection = { id: string; title: string; icon: string; color: string };
+export type PartnerSection = { id: string; title: string; icon: string };
 
 export const PARTNER_SECTIONS: PartnerSection[] = [
-  { id: "foto", title: "Фото и видео еды", icon: "Camera", color: "#E0457B" },
-  { id: "dostavka", title: "Своя доставка и приложения", icon: "Truck", color: "#2563EB" },
-  { id: "avtomatizaciya", title: "Автоматизация ресторана", icon: "LayoutDashboard", color: "#7C3AED" },
-  { id: "analitika", title: "Аналитика", icon: "FileBarChart", color: "#0EA5A4" },
-  { id: "marketing", title: "Маркетинг и CRM", icon: "TrendingUp", color: "#C026D3" },
-  { id: "geo", title: "Геомаркетинг и карты", icon: "MapPin", color: "#16A34A" },
-  { id: "reklama", title: "Реклама: контекст и таргет", icon: "Megaphone", color: "#1E3A8A" },
-  { id: "smm", title: "SMM и копирайт", icon: "MessagesSquare", color: "#D97706" },
-  { id: "dizain", title: "Дизайн и брендинг", icon: "Palette", color: "#65A30D" },
-  { id: "upakovka", title: "Упаковка", icon: "Package", color: "#B45309" },
-  { id: "posuda", title: "Посуда и инвентарь", icon: "UtensilsCrossed", color: "#78716C" },
-  { id: "kassy", title: "Кассы, учёт и интеграции", icon: "Receipt", color: "#475569" },
-  { id: "kurery", title: "Курьеры и логистика", icon: "Bike", color: "#EA580C" },
-  { id: "yuristy", title: "Юристы и бухгалтерия", icon: "Scale", color: "#334155" },
-  { id: "personal", title: "Найм персонала", icon: "Users", color: "#0891B2" },
-  { id: "obuchenie", title: "Обучение", icon: "GraduationCap", color: "#DC2626" },
+  { id: "foto", title: "Фото и видео еды", icon: "Camera" },
+  { id: "dostavka", title: "Своя доставка и приложения", icon: "Truck" },
+  { id: "avtomatizaciya", title: "Автоматизация ресторана", icon: "LayoutDashboard" },
+  { id: "analitika", title: "Аналитика", icon: "FileBarChart" },
+  { id: "marketing", title: "Маркетинг и CRM", icon: "TrendingUp" },
+  { id: "geo", title: "Геомаркетинг и карты", icon: "MapPin" },
+  { id: "reklama", title: "Реклама: контекст и таргет", icon: "Megaphone" },
+  { id: "smm", title: "SMM и копирайт", icon: "MessagesSquare" },
+  { id: "dizain", title: "Дизайн и брендинг", icon: "Palette" },
+  { id: "upakovka", title: "Упаковка", icon: "Package" },
+  { id: "posuda", title: "Посуда и инвентарь", icon: "UtensilsCrossed" },
+  { id: "kassy", title: "Кассы, учёт и интеграции", icon: "Receipt" },
+  { id: "kurery", title: "Курьеры и логистика", icon: "Bike" },
+  { id: "yuristy", title: "Юристы и бухгалтерия", icon: "Scale" },
+  { id: "personal", title: "Найм персонала", icon: "Users" },
+  { id: "obuchenie", title: "Обучение", icon: "GraduationCap" },
 ];
 
 export const getSection = (id: string) => PARTNER_SECTIONS.find((s) => s.id === id)!;

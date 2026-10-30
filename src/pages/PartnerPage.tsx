@@ -53,7 +53,7 @@ const PartnerPage = () => {
             className="h-16 w-16 shrink-0 rounded-2xl border border-foreground/10 bg-white object-contain p-2 md:h-20 md:w-20"
           />
           <div className="flex flex-col items-start gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[max(12px,0.85em)] font-medium text-white" style={{ background: sec.color }}>
+            <span className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-3 py-1.5 text-[max(12px,0.85em)] font-medium text-background">
               <Icon name={sec.icon} size={15} />
               {sec.title}
             </span>
@@ -69,7 +69,6 @@ const PartnerPage = () => {
 
       <section className="grid gap-4 px-5 pb-11 md:grid-cols-[1.4fr_1fr] md:px-14 md:pb-20">
         <div className="relative overflow-hidden rounded-[24px] border border-foreground/10 bg-white p-5 md:rounded-[32px] md:p-10">
-          <span className="absolute inset-x-0 top-0 h-1.5" style={{ background: sec.color }} />
           <h2 className="font-display text-[1.4em] font-semibold tracking-[-0.02em]">Что это за сервис</h2>
           <p className="mt-3 leading-relaxed text-foreground/75">{p.description}</p>
 
@@ -77,7 +76,7 @@ const PartnerPage = () => {
           <ul className="mt-4 space-y-3">
             {p.points.map((point) => (
               <li key={point} className="flex gap-3 leading-snug text-foreground/80">
-                <Icon name="Check" size={18} className="mt-0.5 shrink-0" style={{ color: sec.color }} />
+                <Icon name="Check" size={18} className="mt-0.5 shrink-0 text-foreground" />
                 {point}
               </li>
             ))}

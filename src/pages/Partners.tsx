@@ -76,7 +76,7 @@ const PartnersPage = () => {
                     active ? "border-foreground bg-foreground text-background" : "border-foreground/15 bg-white/70 text-foreground/80 hover:border-foreground/40"
                   }`}
                 >
-                  {sec && <Icon name={sec.icon} size={15} style={{ color: active ? undefined : sec.color }} />}
+                  {sec && <Icon name={sec.icon} size={15} />}
                   {sec ? sec.title : f}
                 </button>
               );
@@ -108,7 +108,7 @@ const PartnersPage = () => {
 
         {single && (
           <h2 className="mt-8 flex items-center gap-2.5 font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em] md:mt-10 md:text-[1.7em]">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl text-white" style={{ background: single.color }}>
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-foreground text-brand">
               <Icon name={single.icon} size={19} />
             </span>
             {single.title}
@@ -122,7 +122,6 @@ const PartnersPage = () => {
                   to={`/partnery/${p.slug}`}
                   className="group relative flex min-w-0 flex-col overflow-hidden rounded-[22px] border border-foreground/10 bg-white p-5 pt-6 transition-transform duration-300 hover:-translate-y-1 md:p-6 md:pt-7"
                 >
-                  <span className="absolute inset-x-0 top-0 h-1.5" style={{ background: section.color }} />
                   <div className="flex items-center gap-3">
                     <img
                       src={p.logo}
@@ -135,7 +134,7 @@ const PartnersPage = () => {
                     />
                     <div className="min-w-0">
                       <div className="font-display text-[1.3em] font-semibold leading-tight tracking-[-0.02em]">{p.name}</div>
-                      <div className="mt-1 inline-flex items-center gap-1.5 text-[max(12px,0.8em)] font-medium" style={{ color: section.color }}>
+                      <div className="mt-1 inline-flex items-center gap-1.5 text-[max(12px,0.8em)] font-medium text-foreground/60">
                         <Icon name={section.icon} size={14} />
                         {section.title}
                       </div>
