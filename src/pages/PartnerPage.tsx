@@ -14,7 +14,7 @@ const PartnerPage = () => {
   const p = getPartner(slug);
 
   useSeo({
-    title: p ? `${p.name}: ${p.tagline.toLowerCase()} | agregatory.pro` : "Партнёр не найден | agregatory.pro",
+    title: p ? `${p.name}: ${getSection(p.section).title.toLowerCase()} | agregatory.pro` : "Партнёр не найден | agregatory.pro",
     description: p ? `${p.description.slice(0, 150)}` : "",
     path: pathname,
     noindex: !p,

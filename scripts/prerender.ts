@@ -1052,7 +1052,7 @@ ${READ_CHANNELS.map((c) => `<p><a href="${c.href}" rel="noopener">${esc(clean(c.
 
 pages.push({
   route: "/partnery",
-  title: "Партнёры и полезные сайты для ресторанов на агрегаторах | agregatory.pro",
+  title: "Партнёры и полезные сайты для ресторанов | agregatory.pro",
   description:
     "Сервисы, которые мы рекомендуем ресторанам: своя доставка, аналитика прибыли, продвижение на картах. И полезные официальные сайты для партнёров Яндекс Еды.",
   body: `<h1>Партнёры и полезные сайты</h1>
@@ -1073,7 +1073,7 @@ for (const p of PARTNERS) {
   const others = PARTNERS.filter((x) => x.slug !== p.slug);
   pages.push({
     route: `/partnery/${p.slug}`,
-    title: `${p.name}: ${p.tagline.toLowerCase()} | agregatory.pro`,
+    title: `${p.name}: ${PARTNER_SECTIONS.find((x) => x.id === p.section)!.title.toLowerCase()} | agregatory.pro`,
     description: clean(p.description).slice(0, 155),
     body: `<h1>${esc(clean(p.name))}</h1>
 <p>${esc(clean(p.tagline))}</p>
@@ -1090,7 +1090,7 @@ ${p.promo ? `<h2>${p.promo.code ? "Промокод" : "Спецпредложе
 
 pages.push({
   route: "/partneram",
-  title: "Стать партнёром agregatory.pro: анкета для сервисов и подрядчиков ресторанов",
+  title: "Анкета партнёра: сервисы и подрядчики для ресторанов | agregatory.pro",
   description:
     "Заполните анкету, и мы добавим ваш сервис в раздел партнёров agregatory.pro: фото, упаковка, автоматизация, курьеры, маркетинг и другие услуги для ресторанов.",
   body: `<h1>Станьте партнёром agregatory.pro</h1>

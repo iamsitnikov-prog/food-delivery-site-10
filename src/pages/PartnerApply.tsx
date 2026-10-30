@@ -37,7 +37,7 @@ const Block = ({ n, title, children }: { n: number; title: string; children: Rea
 const PartnerApply = () => {
   const { pathname, search } = useLocation();
   useSeo({
-    title: "Стать партнёром agregatory.pro: анкета для сервисов и подрядчиков ресторанов",
+    title: "Анкета партнёра: сервисы и подрядчики для ресторанов | agregatory.pro",
     description:
       "Заполните анкету, и мы добавим ваш сервис в раздел партнёров agregatory.pro: фото, упаковка, автоматизация, курьеры, маркетинг и другие услуги для ресторанов.",
     path: pathname,

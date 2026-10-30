@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import useContactGoals from "@/hooks/use-contact-goals";
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
@@ -87,7 +87,7 @@ export const AppShell = ({ Router }: { Router: (p: { children: ReactNode }) => J
           <Route path="/razbor-otchetov" element={<ReportsDecoder />} />
           <Route
             path="/kalkulyatory/konstruktory-dostavki"
-            element={<Navigate to="/sravnenie-agregatorov" replace />}
+            element={<PlayersCompare initialTab="konstruktory" />}
           />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

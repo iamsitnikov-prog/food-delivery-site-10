@@ -57,14 +57,18 @@ const FAQ = [
   },
 ];
 
-const PlayersCompare = () => {
+const PlayersCompare = ({ initialTab = "agregatory" }: { initialTab?: Tab }) => {
   const { pathname } = useLocation();
-  const [tab, setTab] = useState<Tab>("agregatory");
+  const [tab, setTab] = useState<Tab>(initialTab);
+  const builders = initialTab === "konstruktory";
 
   useSeo({
-    title: "Сравнение игроков рынка доставки: агрегаторы и конструкторы | agregatory.pro",
-    description:
-      "Яндекс Еда, Купер, Чиббис и конструкторы доставки STARTER, Sellkit, Смартомато, ФудПикассо. Комиссии, возможности и окупаемость — с расчётом на ваших цифрах.",
+    title: builders
+      ? "Сравнение конструкторов доставки для ресторана | agregatory.pro"
+      : "Сравнение игроков рынка доставки: агрегаторы и конструкторы | agregatory.pro",
+    description: builders
+      ? "Sellkit, STARTER, Смартомато и ФудПикассо: стоимость, возможности и окупаемость. Сколько сэкономите со своим приложением."
+      : "Яндекс Еда, Купер, Чиббис и конструкторы доставки STARTER, Sellkit, Смартомато, ФудПикассо. Комиссии, возможности и окупаемость — с расчётом на ваших цифрах.",
     path: pathname,
     jsonLd: [
       {
