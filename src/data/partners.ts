@@ -48,6 +48,11 @@ export type Partner = {
   isNew?: boolean;
   /** Промокод или спецпредложение. code нет — значит предложение без кода. */
   promo?: { code?: string; title?: string; text: string };
+  /** Страница‑визитка для тех, у кого нет своего сайта: работы (до 10 фото), цены и Telegram для кнопки. */
+  works?: string[];
+  prices?: string;
+  /** Ник или ссылка Telegram для кнопки «написать в Telegram», если нет сайта. */
+  telegram?: string;
 };
 
 export const PARTNERS: Partner[] = [

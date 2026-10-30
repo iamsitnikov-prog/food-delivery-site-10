@@ -1070,7 +1070,8 @@ pages.push({
 });
 
 for (const p of PARTNERS) {
-  const others = PARTNERS.filter((x) => x.slug !== p.slug);
+  // Конкурентов из того же раздела на странице партнёра не показываем.
+  const others = PARTNERS.filter((x) => x.slug !== p.slug && x.section !== p.section);
   pages.push({
     route: `/partnery/${p.slug}`,
     title: `${p.name}: ${PARTNER_SECTIONS.find((x) => x.id === p.section)!.title.toLowerCase()} | agregatory.pro`,
@@ -1083,7 +1084,7 @@ for (const p of PARTNERS) {
 <h2>Кому подойдёт</h2><p>${esc(clean(p.forWhom))}</p>
 ${p.promo ? `<h2>${p.promo.code ? "Промокод" : "Спецпредложение"}</h2><p>${esc(clean(p.promo.code || p.promo.title || ""))}. ${esc(clean(p.promo.text))}</p>` : ""}
 <p><a href="/go/${p.slug}" rel="sponsored noopener">Перейти на сайт ${esc(clean(p.name))}</a></p>
-<h2>Другие партнёры</h2><ul>${others.map((o) => `<li><a href="/partnery/${o.slug}">${esc(clean(o.name))}</a>: ${esc(clean(o.tagline))}</li>`).join("")}</ul>
+${others.length ? `<h2>Другие партнёры</h2><ul>${others.map((o) => `<li><a href="/partnery/${o.slug}">${esc(clean(o.name))}</a>: ${esc(clean(o.tagline))}</li>`).join("")}</ul>` : ""}
 <p><a href="/partnery">Все партнёры и полезные сайты</a></p>`,
   });
 }

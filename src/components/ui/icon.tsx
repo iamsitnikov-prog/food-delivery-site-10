@@ -8,6 +8,7 @@ import {
   Trash2,
 
   ArrowLeft,
+  ChevronLeft,
   ArrowRight,
   ArrowUpRight,
   Bike,
@@ -166,6 +167,7 @@ const ICONS: Record<string, React.FC<LucideProps>> = {
   Wrench,
   X,
   Zap,
+  ChevronLeft,
 };
 
 interface IconProps extends LucideProps {

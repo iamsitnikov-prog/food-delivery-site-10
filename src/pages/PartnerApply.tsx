@@ -1,10 +1,14 @@
-import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
-import { PARTNER_SECTIONS, PARTNER_CITIES } from "@/data/partners";
+import { PARTNER_SECTIONS, PARTNER_CITIES, ALL_RUSSIA, type Partner } from "@/data/partners";
+import PartnerProfile from "@/components/PartnerProfile";
+
+const MAX_WORKS = 10;
+const MAX_SIZE = 5 * 1024 * 1024;
 
 const COUNTRIES = ["Казахстан", "Беларусь", "Узбекистан", "Армения"];
 const OTHER = "другое";
@@ -59,6 +63,56 @@ const PartnerApply = () => {
   const [otherCities, setOtherCities] = useState("");
   const [countries, setCountries] = useState<string[]>([]);
   const [logo, setLogo] = useState<File | null>(null);
+  const [vizitka, setVizitka] = useState(false);
+  const [works, setWorks] = useState<File[]>([]);
+  const [preview, setPreview] = useState<Partner | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  // Ссылки на выбранные картинки для предпросмотра и миниатюр.
+  const workUrls = useMemo(() => works.map((f) => URL.createObjectURL(f)), [works]);
+  const logoUrl = useMemo(() => (logo ? URL.createObjectURL(logo) : ""), [logo]);
+  useEffect(() => () => workUrls.forEach((u) => URL.revokeObjectURL(u)), [workUrls]);
+  useEffect(() => () => { if (logoUrl) URL.revokeObjectURL(logoUrl); }, [logoUrl]);
+  useEffect(() => {
+    document.body.style.overflow = preview ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [preview]);
+
+  const addWorks = (files: FileList | null) => {
+    if (!files) return;
+    const ok = Array.from(files).filter((f) => /^image\/(png|jpeg|webp)$/.test(f.type) && f.size <= MAX_SIZE);
+    setWorks((w) => [...w, ...ok].slice(0, MAX_WORKS));
+    setErrors((e) => ({ ...e, works: ok.length < files.length ? "Часть файлов не подошла: нужны JPG, PNG или WEBP до 5 МБ" : "" }));
+  };
+
+  // Собираем страницу из того, что уже заполнено, чтобы показать, как она будет выглядеть.
+  const openPreview = () => {
+    const form = formRef.current;
+    if (!form) return;
+    const fd = new FormData(form);
+    const get = (k: string) => String(fd.get(k) || "").trim();
+    const site = get("site");
+    const sec = PARTNER_SECTIONS.find((s) => s.title === section) || PARTNER_SECTIONS.find((s) => s.id === "drugoe")!;
+    const promo = get("promo");
+    const publicTg = get("public_tg") || (site.startsWith("@") ? site : "");
+    setPreview({
+      slug: "preview",
+      section: sec.id,
+      cities: allRussia ? [ALL_RUSSIA] : [...cities, ...otherCities.split(",").map((s) => s.trim()).filter(Boolean), ...countries],
+      name: get("name") || "Ваше название",
+      logo: logoUrl || undefined,
+      tagline: get("tagline") || "Одна строка о том, чем вы полезны ресторану",
+      url: /^https?:\/\//.test(site) ? site : "",
+      telegram: publicTg || undefined,
+      category: sec.title,
+      description: get("description"),
+      points: get("points").split("\n").map((s) => s.trim()).filter(Boolean),
+      forWhom: get("for_whom"),
+      icon: sec.icon,
+      promo: promo ? { title: "Предложение для клиентов agregatory.pro", text: promo } : undefined,
+      works: vizitka ? workUrls : undefined,
+      prices: vizitka ? get("prices") || undefined : undefined,
+    });
+  };
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [state, setState] = useState<"idle" | "sending" | "done" | "error">("idle");
 
@@ -72,7 +126,8 @@ const PartnerApply = () => {
     const get = (k: string) => String(fd.get(k) || "").trim();
     const err: Record<string, string> = {};
     if (!get("name")) err.name = "Напишите название";
-    if (!get("site")) err.site = "Нужна ссылка на сайт, портфолио или соцсети";
+    if (!get("site") && !(vizitka && get("public_tg"))) err.site = "Нужна ссылка на сайт, портфолио или соцсети";
+    if (vizitka && !get("site") && !get("public_tg")) err.public_tg = "Укажите Telegram для кнопки на странице";
     if (!section) err.section = "Выберите раздел";
     if (section === OTHER && !get("section_other")) err.section = "Напишите, чем вы занимаетесь";
     if (!allRussia && cities.length === 0 && !otherCities.trim() && countries.length === 0) err.geo = "Отметьте города или «вся Россия»";
@@ -97,6 +152,9 @@ const PartnerApply = () => {
     fd.set("consent", fd.get("consent") ? "1" : "");
     if (logo) fd.set("logo", logo);
     else fd.delete("logo");
+    fd.delete("works[]");
+    fd.set("vizitka", vizitka ? "1" : "");
+    if (vizitka) works.forEach((w) => fd.append("works[]", w));
     setState("sending");
     try {
       const r = await fetch("/api/partner.php", { method: "POST", body: fd });
@@ -148,7 +206,7 @@ const PartnerApply = () => {
             </Link>
           </div>
         ) : (
-          <form onSubmit={onSubmit} noValidate className="max-w-[860px] space-y-4">
+          <form ref={formRef} onSubmit={onSubmit} noValidate className="max-w-[860px] space-y-4">
             <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute left-[-9999px] h-0 w-0 opacity-0" />
 
             <Block n={1} title="О компании">
@@ -158,7 +216,7 @@ const PartnerApply = () => {
                 </Field>
               </div>
               <div data-err="site">
-                <Field label="Сайт, портфолио или соцсети" required error={errors.site} hint="Сюда рестораны перейдут с кнопки на вашей карточке. Если сайта нет, подойдёт портфолио, страница VK, Telegram канал или просто ваш ник в Telegram: тогда на карточке будет кнопка «написать в Telegram».">
+                <Field label="Сайт, портфолио или соцсети" required={!vizitka} error={errors.site} hint="Сюда рестораны перейдут с кнопки на вашей карточке. Если сайта нет, подойдёт портфолио, страница VK, Telegram канал или просто ваш ник в Telegram: тогда на карточке будет кнопка «написать в Telegram».">
                   <input name="site" maxLength={300} className={field} placeholder="https://… или @ник в Telegram" />
                 </Field>
               </div>
@@ -305,6 +363,64 @@ const PartnerApply = () => {
               </Field>
             </Block>
 
+            <Block n={4} title="Нет своего сайта? Страница‑визитка">
+              <p className="-mt-2 leading-snug text-foreground/70">
+                Если у&nbsp;вас нет сайта, ваша страница на&nbsp;agregatory.pro может стать визиткой: работы, описание, цены и&nbsp;кнопка «написать в&nbsp;Telegram». Мы дадим отдельную ссылку на&nbsp;неё, без других партнёров и&nbsp;нашей рекламы. Её можно отправлять клиентам и&nbsp;поставить в&nbsp;шапку профиля. Это по&nbsp;желанию и&nbsp;бесплатно.
+              </p>
+              <label className="flex items-start gap-3">
+                <input type="checkbox" checked={vizitka} onChange={(e) => setVizitka(e.target.checked)} className="mt-0.5 h-5 w-5 shrink-0 accent-[hsl(var(--foreground))]" />
+                <span className="font-medium leading-snug">Хочу страницу‑визитку на&nbsp;agregatory.pro</span>
+              </label>
+              {vizitka && (
+                <>
+                  <div data-err="works">
+                    <span className="mb-1.5 block font-medium">Ваши работы</span>
+                    <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+                      {workUrls.map((u, i) => (
+                        <div key={u} className="relative aspect-square overflow-hidden rounded-xl bg-cream">
+                          <img src={u} alt={`Работа ${i + 1}`} className="h-full w-full object-cover" />
+                          <button
+                            type="button"
+                            aria-label="Убрать"
+                            onClick={() => setWorks((w) => w.filter((_, j) => j !== i))}
+                            className="absolute right-1 top-1 flex h-7 w-7 items-center justify-center rounded-lg bg-foreground text-background"
+                          >
+                            <Icon name="X" size={15} />
+                          </button>
+                        </div>
+                      ))}
+                      {works.length < MAX_WORKS && (
+                        <label className="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-foreground/25 text-center text-[max(12px,0.82em)] text-foreground/60 transition-colors hover:border-foreground/50">
+                          <Icon name="Plus" size={20} />
+                          добавить
+                          <input type="file" multiple accept="image/png,image/jpeg,image/webp" onChange={(e) => { addWorks(e.target.files); e.target.value = ""; }} className="sr-only" />
+                        </label>
+                      )}
+                    </div>
+                    <span className={`mt-1.5 block text-[max(12px,0.85em)] ${errors.works ? "text-destructive" : "text-foreground/55"}`}>
+                      {errors.works || `До ${MAX_WORKS} фото, JPG, PNG или WEBP до 5 МБ каждое. Выберите лучшие работы для ресторанов: блюда, упаковку, интерьер.`}
+                    </span>
+                  </div>
+                  <Field label="Цены" hint="По желанию. Например: съёмка одного блюда от 1 500 ₽, выезд по городу бесплатно.">
+                    <textarea name="prices" maxLength={1000} rows={3} className={field} />
+                  </Field>
+                  <div data-err="public_tg">
+                    <Field label="Telegram для кнопки на странице" error={errors.public_tg} hint="Этот контакт увидят рестораны. Можно тот же, что для связи с нами.">
+                      <input name="public_tg" maxLength={80} className={field} placeholder="@username" />
+                    </Field>
+                  </div>
+                </>
+              )}
+              <button
+                type="button"
+                onClick={openPreview}
+                className="inline-flex items-center gap-2 rounded-xl border border-foreground/30 bg-cream px-5 py-3 font-medium transition-colors hover:border-foreground"
+              >
+                <Icon name="Eye" size={18} />
+                посмотреть, как будет выглядеть страница
+              </button>
+            </Block>
+
             <div className="rounded-[24px] bg-pale p-5 md:rounded-[32px] md:p-8" data-err="consent">
               <label className="flex items-start gap-3">
                 <input type="checkbox" name="consent" value="1" className="mt-0.5 h-5 w-5 shrink-0 accent-[hsl(var(--foreground))]" />
@@ -341,6 +457,18 @@ const PartnerApply = () => {
           </form>
         )}
       </section>
+      {preview && (
+        <div role="dialog" aria-modal="true" aria-label="Предпросмотр страницы" className="fixed inset-0 z-50 overflow-y-auto bg-background">
+          <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-foreground/10 bg-background/95 px-5 py-3 backdrop-blur md:px-14">
+            <span className="text-[max(12px,0.9em)] font-medium">Так ваша страница будет выглядеть на&nbsp;сайте</span>
+            <button type="button" onClick={() => setPreview(null)} className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-foreground px-4 py-2.5 font-medium text-background">
+              вернуться к&nbsp;анкете
+              <Icon name="X" size={16} />
+            </button>
+          </div>
+          <PartnerProfile p={preview} clean preview />
+        </div>
+      )}
       <Contacts />
     </main>
   );

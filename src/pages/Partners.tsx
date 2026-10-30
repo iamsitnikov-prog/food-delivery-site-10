@@ -28,10 +28,19 @@ const CITIES = Array.from(
   ]),
 );
 
+// Порядок карточек внутри раздела меняется раз в день, чтобы никто не стоял первым всегда.
+const rank = (slug: string, day: number) => {
+  let h = day;
+  for (const ch of slug) h = (h * 31 + ch.charCodeAt(0)) % 1000003;
+  return h;
+};
+
 const PartnersPage = () => {
   const { pathname } = useLocation();
   const [filter, setFilter] = useState(ALL);
   const [city, setCity] = useState("");
+  const [day, setDay] = useState(0);
+  useEffect(() => setDay(Math.floor(Date.now() / 86400000)), []);
   const results = useRef<HTMLDivElement>(null);
   // На телефоне после выбора раздела плавно переходим к карточкам.
   const pick = (f: string) => {
@@ -48,7 +57,7 @@ const PartnersPage = () => {
   }, []);
   const inCity = (cities: string[]) => !city || cities.includes(ALL_RUSSIA) || cities.includes(city);
   const groups = USED.filter((s) => filter === ALL || filter === s.id)
-    .map((section) => ({ section, items: PARTNERS.filter((p) => p.section === section.id && inCity(p.cities)) }))
+    .map((section) => ({ section, items: PARTNERS.filter((p) => p.section === section.id && inCity(p.cities)).sort((a, b) => (day ? rank(a.slug, day) - rank(b.slug, day) : 0)) }))
     .filter((g) => g.items.length > 0);
   const cards = groups.flatMap(({ section, items }) => items.map((p) => ({ p, section })));
   const single = filter !== ALL && filter !== SITES ? USED.find((x) => x.id === filter) : undefined;
