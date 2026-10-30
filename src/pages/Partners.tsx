@@ -10,6 +10,12 @@ import type React from "react";
 import { useState } from "react";
 import { PARTNERS, PARTNER_SECTIONS, USEFUL_SITES, ALL_RUSSIA, PARTNER_CITIES } from "@/data/partners";
 
+const TRUST = [
+  { icon: "Eye", title: "Смотрим каждую анкету сами", text: "Изучаем сайт, примеры работ и отзывы. На сайт попадают не все, кто подал заявку." },
+  { icon: "ShieldCheck", title: "Следим за качеством", text: "Если клиенты жалуются на партнёра, разбираемся и, если нужно, убираем его с сайта." },
+  { icon: "Gift", title: "Условия для вас", text: "У многих партнёров есть промокоды и спецпредложения для клиентов agregatory.pro, они отмечены на карточках." },
+];
+
 // Кнопки разделов сверху: все разделы по порядку и полезные сайты.
 const NAV = [
   ...PARTNER_SECTIONS.map((s) => ({ id: s.id, title: s.title, icon: s.icon, count: PARTNERS.filter((p) => p.section === s.id).length })),
@@ -57,12 +63,34 @@ const PartnersPage = () => {
             Партнёры и полезные сайты
           </h1>
           <p className="mt-6 max-w-[620px] text-[1.1em] leading-snug text-muted-foreground">
-            Мы&nbsp;не&nbsp;занимаемся всем сразу. Там, где нужен отдельный инструмент, советуем тех, кем пользуемся сами в&nbsp;работе с&nbsp;проектами.
+            Сервисы и&nbsp;подрядчики для ресторанов, которым мы доверяем. Мы собрали их в&nbsp;одном месте, чтобы вам не&nbsp;приходилось искать фотографа, упаковку или курьеров наугад.
           </p>
         </section>
       </div>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
+        <div className="mb-8 md:mb-10">
+          <h2 className="font-display text-[1.3em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.6em]">Как мы отбираем партнёров</h2>
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            {TRUST.map((t) => (
+              <div key={t.title} className="rounded-[20px] bg-pale p-4 md:p-5">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-foreground text-brand">
+                  <Icon name={t.icon} size={19} />
+                </span>
+                <div className="mt-3 font-display text-[1.1em] font-semibold leading-tight">{t.title}</div>
+                <p className="mt-2 leading-snug text-foreground/70">{t.text}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-[max(12px,0.9em)] text-foreground/65">
+            Если с&nbsp;партнёром что-то пошло не&nbsp;так, напишите нам в&nbsp;Telegram{" "}
+            <a href="https://t.me/sitnikovy1" className="font-medium underline underline-offset-4">
+              @sitnikovy1
+            </a>
+            .
+          </p>
+        </div>
+
         <label className="flex w-fit items-center gap-2 text-[max(12px,0.88em)] text-foreground/70">
           <Icon name="MapPin" size={16} />
           город
