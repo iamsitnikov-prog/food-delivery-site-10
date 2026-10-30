@@ -33,7 +33,8 @@ export type Partner = {
   section: string;
   cities: string[];
   name: string;
-  logo: string;
+  /** Необязательно: без логотипа покажем знак с первой буквой. */
+  logo?: string;
   tagline: string;
   url: string;
   category: string;

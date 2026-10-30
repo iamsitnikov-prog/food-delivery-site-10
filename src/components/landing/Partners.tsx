@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
+import PartnerLogo from "@/components/PartnerLogo";
 import { useReveal } from "@/hooks/use-reveal";
 import { PARTNERS, getSection } from "@/data/partners";
 
@@ -25,15 +26,7 @@ const Partners = () => {
             className="reveal group relative flex flex-col overflow-hidden rounded-[24px] border border-foreground/10 bg-white p-5 pt-6 transition-transform duration-500 hover:-translate-y-1 md:p-7 md:pt-8"
           >
             <div className="flex items-center gap-3">
-              <img
-                src={p.logo}
-                alt={`Логотип ${p.name}`}
-                width={96}
-                height={96}
-                loading="lazy"
-                decoding="async"
-                className="h-12 w-12 shrink-0 rounded-xl border border-foreground/10 bg-white object-contain p-1.5"
-              />
+              <PartnerLogo p={p} className="h-12 w-12 shrink-0 rounded-xl p-1.5 text-[1.4em]" />
               <div className="min-w-0">
                 <span className="block font-display text-[1.4em] font-semibold leading-tight tracking-[-0.03em]">{p.name}</span>
                 <span className="mt-0.5 inline-flex items-center gap-1.5 text-[max(12px,0.8em)] text-foreground/60">

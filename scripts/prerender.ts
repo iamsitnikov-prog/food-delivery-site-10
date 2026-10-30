@@ -4,7 +4,7 @@ import { pathToFileURL } from "url";
 import { BLOG_POSTS as ALL_POSTS } from "../src/data/blog-posts";
 
 import { SERVICE_PAGES, CITY_PAGES } from "../src/data/seo-pages";
-import { PARTNERS, USEFUL_SITES } from "../src/data/partners";
+import { PARTNERS, USEFUL_SITES, PARTNER_SECTIONS } from "../src/data/partners";
 import { QUIZ_QUESTIONS } from "../src/data/quiz";
 import { CALC_PAGES, VISIBLE_CALC_PAGES } from "../src/data/calculators";
 import { CHECKLIST_PAGES } from "../src/data/checklists";
@@ -1085,6 +1085,17 @@ ${p.promo ? `<h2>${p.promo.code ? "Промокод" : "Спецпредложе
   });
 }
 
+pages.push({
+  route: "/partneram",
+  title: "Стать партнёром agregatory.pro: анкета для сервисов и подрядчиков ресторанов",
+  description:
+    "Заполните анкету, и мы добавим ваш сервис в раздел партнёров agregatory.pro: фото, упаковка, автоматизация, курьеры, маркетинг и другие услуги для ресторанов.",
+  body: `<h1>Станьте партнёром agregatory.pro</h1>
+<p>Заполните анкету, и мы добавим ваш сервис в раздел партнёров. Его увидят рестораны со всей России, которые работают с доставкой.</p>
+<h2>Разделы</h2><ul>${PARTNER_SECTIONS.map((s) => `<li>${esc(s.title)}</li>`).join("")}</ul>
+<p><a href="/partnery">Все партнёры</a></p>`,
+});
+
 // Куда ведут адреса /go/<партнёр>: читает api/go.php, считает клики и перенаправляет.
 fs.writeFileSync(
   path.join(OUT, "partners-links.json"),
@@ -1212,6 +1223,7 @@ const ROUTE_CHUNKS: [RegExp, string][] = [
   [/^\/blog\/.+/, "BlogPost"],
   [/^\/partnery$/, "Partners"],
   [/^\/partnery\/.+/, "PartnerPage"],
+  [/^\/partneram$/, "PartnerApply"],
   [/^\/testy$/, "Quizzes"],
   [/^\/testy\/mini\/.+$/, "MiniQuiz"],
   [/^\/(test|testy\/.+)$/, "Quiz"],
@@ -1504,6 +1516,7 @@ const PRIORITY: Record<string, number> = {
   "/testy": 0.8,
   "/pochitat": 0.8,
   "/partnery": 0.7,
+  "/partneram": 0.5,
 };
 
 const priorityOf = (route: string) => {

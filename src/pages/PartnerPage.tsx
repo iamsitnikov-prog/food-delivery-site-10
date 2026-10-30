@@ -1,5 +1,6 @@
 import { Link, useParams, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
+import PartnerLogo from "@/components/PartnerLogo";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import Contacts from "@/components/landing/Contacts";
@@ -45,13 +46,7 @@ const PartnerPage = () => {
         </nav>
 
         <div className="flex items-center gap-4">
-          <img
-            src={p.logo}
-            alt={`Логотип ${p.name}`}
-            width={96}
-            height={96}
-            className="h-16 w-16 shrink-0 rounded-2xl bg-cream object-contain p-2 md:h-20 md:w-20"
-          />
+          <PartnerLogo p={p} className="h-16 w-16 shrink-0 rounded-2xl p-2 text-[2em] md:h-20 md:w-20" />
           <div className="flex flex-col items-start gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-3 py-1.5 text-[max(12px,0.85em)] font-medium text-background">
               <Icon name={sec.icon} size={15} />
@@ -125,7 +120,7 @@ const PartnerPage = () => {
                 to={`/partnery/${o.slug}`}
                 className="group flex min-w-0 items-center gap-3 rounded-[20px] bg-pale p-4 transition-transform hover:-translate-y-0.5"
               >
-                <img src={o.logo} alt="" width={96} height={96} loading="lazy" className="h-11 w-11 shrink-0 rounded-xl bg-cream object-contain p-1.5" />
+                <PartnerLogo p={o} className="h-11 w-11 shrink-0 rounded-xl p-1.5 text-[1.3em]" />
                 <span className="min-w-0 flex-1">
                   <span className="block font-semibold">{o.name}</span>
                   <span className="block truncate text-[max(12px,0.85em)] text-foreground/60">{o.tagline}</span>

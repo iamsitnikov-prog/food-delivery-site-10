@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
+import PartnerLogo from "@/components/PartnerLogo";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
@@ -12,6 +13,7 @@ const ALL = "все";
 const SITES = "полезные сайты";
 // Разделы показываем только непустые, в порядке PARTNER_SECTIONS.
 const USED = PARTNER_SECTIONS.filter((s) => PARTNERS.some((p) => p.section === s.id));
+const EMPTY = PARTNER_SECTIONS.filter((s) => !PARTNERS.some((p) => p.section === s.id));
 const FILTERS = [ALL, ...USED.map((s) => s.id), SITES];
 const CITIES = Array.from(
   new Set([
@@ -123,15 +125,7 @@ const PartnersPage = () => {
                   className="group relative flex min-w-0 flex-col overflow-hidden rounded-[20px] bg-pale p-4 transition-transform duration-300 hover:-translate-y-1 md:p-5"
                 >
                   <div className="flex items-center gap-3">
-                    <img
-                      src={p.logo}
-                      alt={`Логотип ${p.name}`}
-                      width={96}
-                      height={96}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-11 w-11 shrink-0 rounded-xl bg-cream object-contain p-1.5"
-                    />
+                    <PartnerLogo p={p} className="h-11 w-11 shrink-0 rounded-xl p-1.5 text-[1.3em]" />
                     <div className="min-w-0">
                       <div className="font-display text-[1.3em] font-semibold leading-tight tracking-[-0.02em]">{p.name}</div>
                       <div className="mt-1 inline-flex items-center gap-1.5 text-[max(12px,0.8em)] font-medium text-foreground/60">
@@ -161,6 +155,33 @@ const PartnersPage = () => {
                   </div>
                 </Link>
               ))}
+          </div>
+        )}
+
+        {(filter === ALL || EMPTY.some((x) => x.id === filter)) && (
+          <div className="mt-12 md:mt-16">
+            <h2 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.1em]">Ищем партнёров</h2>
+            <p className="mt-2 max-w-[620px] text-muted-foreground">
+              Эти разделы пока пустые. Если вы делаете это для ресторанов, заполните анкету, и&nbsp;мы расскажем о&nbsp;вас.
+            </p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {EMPTY.filter((x) => filter === ALL || x.id === filter).map((x) => (
+                <Link
+                  key={x.id}
+                  to={`/partneram?razdel=${x.id}`}
+                  className="group flex items-center gap-3 rounded-[20px] border-2 border-dashed border-foreground/20 p-4 transition-colors hover:border-foreground/50"
+                >
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-pale">
+                    <Icon name={x.icon} size={19} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-medium leading-tight">{x.title}</span>
+                    <span className="mt-0.5 block text-[max(12px,0.82em)] text-foreground/55">место свободно</span>
+                  </span>
+                  <Icon name="Plus" size={18} className="shrink-0 transition-transform group-hover:rotate-90" />
+                </Link>
+              ))}
+            </div>
           </div>
         )}
 
@@ -204,16 +225,16 @@ const PartnersPage = () => {
               Хотите стать партнёром?
             </h2>
             <p className="mt-3 max-w-[560px] leading-relaxed text-foreground/75">
-              Если ваш сервис полезен ресторанам на&nbsp;агрегаторах и&nbsp;не&nbsp;дублирует то, что делаем мы,&nbsp;— напишите, обсудим.
+              Если ваш сервис полезен ресторанам, заполните анкету: займёт 5&nbsp;минут, и&nbsp;мы добавим вас в&nbsp;нужный раздел.
             </p>
           </div>
-          <a
-            href="#lead"
+          <Link
+            to="/partneram"
             className="inline-flex w-fit shrink-0 items-center gap-2 rounded-xl bg-primary px-7 py-4 font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
           >
-            написать нам
+            заполнить анкету
             <Icon name="ArrowRight" size={18} />
-          </a>
+          </Link>
         </div>
       </section>
 
