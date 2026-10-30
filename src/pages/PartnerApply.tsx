@@ -51,7 +51,7 @@ const PartnerApply = () => {
   const [section, setSection] = useState(presetSection);
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get("razdel");
-    const t = PARTNER_SECTIONS.find((s) => s.id === id)?.title || presetSection;
+    const t = id === "drugoe" ? OTHER : PARTNER_SECTIONS.find((s) => s.id === id)?.title || presetSection;
     if (t) setSection(t);
   }, [presetSection]);
   const [allRussia, setAllRussia] = useState(true);

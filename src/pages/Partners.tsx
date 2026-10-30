@@ -181,6 +181,21 @@ const PartnersPage = () => {
                   <Icon name="Plus" size={18} className="shrink-0 transition-transform group-hover:rotate-90" />
                 </Link>
               ))}
+              {filter === ALL && (
+                <Link
+                  to="/partneram?razdel=drugoe"
+                  className="group flex items-center gap-3 rounded-[20px] border-2 border-dashed border-foreground/20 p-4 transition-colors hover:border-foreground/50"
+                >
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-pale">
+                    <Icon name="MoreHorizontal" size={19} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-medium leading-tight">Другое</span>
+                    <span className="mt-0.5 block text-[max(12px,0.82em)] text-foreground/55">делаете что-то ещё для ресторанов</span>
+                  </span>
+                  <Icon name="Plus" size={18} className="shrink-0 transition-transform group-hover:rotate-90" />
+                </Link>
+              )}
             </div>
           </div>
         )}
