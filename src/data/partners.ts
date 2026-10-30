@@ -159,7 +159,7 @@ export const PARTNERS: Partner[] = [
     cities: [ALL_RUSSIA],
     icon: "TrendingUp",
     name: "ЦИФРÁ",
-    logo: "/partners/cifra.webp",
+    logo: "/partners/cifra-mark.webp",
     tagline: "Лаборатория маркетинга: маркетинг и лояльность на основе данных",
     url: "https://www.cifralaboratory.com/?utm_source=agregatorypro&utm_medium=partner&utm_campaign=1cosult",
     category: "Маркетинг и CRM",
