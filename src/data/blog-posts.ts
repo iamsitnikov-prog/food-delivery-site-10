@@ -14,10 +14,16 @@ import { OFERTA_POSTS } from "./posts/oferta";
 import { PLANNED_POSTS } from "./posts/planned";
 import { OCTOBER_POSTS } from "./posts/october";
 import { SEMCORE_POSTS } from "./posts/semcore";
+import { WS_ECONOMY_POSTS } from "./posts/ws-economy";
+import { WS_LAUNCH_POSTS } from "./posts/ws-launch";
+import { WS_OPS_POSTS } from "./posts/ws-ops";
 
 export type { PostBlock, BlogPost } from "./blog-types";
 
 export const BLOG_POSTS: BlogPost[] = [
+  ...WS_ECONOMY_POSTS,
+  ...WS_LAUNCH_POSTS,
+  ...WS_OPS_POSTS,
   ...SEMCORE_POSTS,
   ...OCTOBER_POSTS,
   ...PLANNED_POSTS,
