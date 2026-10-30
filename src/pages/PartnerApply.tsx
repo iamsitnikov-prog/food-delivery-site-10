@@ -296,7 +296,7 @@ const PartnerApply = () => {
                   <input name="contact_email" maxLength={160} className={field} inputMode="email" autoComplete="email" />
                 </Field>
               </div>
-              <Field label="Готовы приводить к нам клиентов за вознаграждение?">
+              <Field label="Готовы приводить к нам клиентов за вознаграждение?" hint="Это ни на что не влияет: ответ «нет» никак не скажется на том, разместим ли мы вашу карточку и как она будет показана.">
                 <select name="referral" defaultValue="discuss" className={field}>
                   <option value="yes">да</option>
                   <option value="discuss">обсудить</option>
