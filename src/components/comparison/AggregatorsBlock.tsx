@@ -61,15 +61,32 @@ const AggregatorsBlock = () => {
             {FILTERS.find((f) => f.key === filter)?.note}
           </span>
         </div>
-        <div className="overflow-x-auto rounded-[28px] bg-surface p-2 md:p-4">
+        {/* На телефоне таблица не помещается: показываем каждый сервис карточкой. */}
+        <div className="grid gap-3 md:hidden">
+          {shown.map((a) => (
+            <article key={a.slug} className="rounded-[24px] bg-surface p-5 text-cream">
+              <h3 className="font-display text-[1.3em] font-semibold leading-tight">{a.name}</h3>
+              <p className="mt-1 text-[max(12px,0.85em)] leading-snug text-brand">{a.tagline}</p>
+              <dl className="mt-4 space-y-3">
+                {COMPARISON_ROWS.map((row) => (
+                  <div key={row.key} className="border-t border-cream/12 pt-3">
+                    <dt className="text-[max(12px,0.82em)] text-cream-muted">{row.label}</dt>
+                    <dd className="mt-1 text-[0.95em] leading-snug">{a[row.key] as string}</dd>
+                  </div>
+                ))}
+              </dl>
+            </article>
+          ))}
+        </div>
+        <div className="hidden overflow-x-auto rounded-[28px] bg-surface p-2 md:block md:p-4">
           <table className="w-full min-w-[720px] border-collapse text-cream">
             <thead>
               <tr>
-                <th className="w-[210px] p-4 text-left align-bottom text-[max(12px,0.85em)] font-normal text-cream-muted">
+                <th className="w-[210px] p-4 text-left align-top text-[max(12px,0.85em)] font-normal text-cream-muted">
                   Параметр
                 </th>
                 {shown.map((a) => (
-                  <th key={a.slug} className="p-4 text-left align-bottom">
+                  <th key={a.slug} className="p-4 text-left align-top">
                     <span className="block font-display text-[1.2em] font-semibold leading-tight">
                       {a.name}
                     </span>

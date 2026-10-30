@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { nbsp } from "@/lib/typo";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import Icon from "@/components/ui/icon";
@@ -13,6 +14,8 @@ import PostAuthor from "@/components/blog/PostAuthor";
 import PostFeedback from "@/components/blog/PostFeedback";
 import ChannelsBlock from "@/components/shared/ChannelsBlock";
 import { serviceForPost } from "@/data/post-services";
+import RelatedPartners from "@/components/RelatedPartners";
+import { partnerSectionsForPost } from "@/data/partner-crosslinks";
 import useSeo from "@/hooks/use-seo";
 import PageNotFound from "@/pages/PageNotFound";
 import { isPreviewMode, isScheduled, visiblePosts, formatDate, exitPreview } from "@/lib/schedule";
@@ -195,7 +198,7 @@ const BlogPost = () => {
           </div>
 
           <h1 className="mt-6 max-w-[20ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[60px]">
-            {post.h1}
+            {nbsp(post.h1)}
           </h1>
           <p className="mt-6 max-w-[760px] text-[1.15em] leading-snug text-muted-foreground">{post.lead}</p>
 
@@ -219,7 +222,7 @@ const BlogPost = () => {
             </span>
           </div>
 
-          <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,1fr)_260px] lg:gap-20 lg:items-start">
+          <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-16 lg:items-start">
             <div className="min-w-0">
               <PostBody blocks={post.blocks} slug={post.slug} />
               {(() => {
@@ -240,6 +243,7 @@ const BlogPost = () => {
                   </Link>
                 );
               })()}
+              <RelatedPartners sections={partnerSectionsForPost(post.slug, post.tag)} className="mt-10" narrow />
               <div className="mt-8">
                 <ChannelsBlock source={`blog:${post.slug}`} />
               </div>
@@ -267,28 +271,28 @@ const BlogPost = () => {
               </a>
               <Link
                 to="/test"
-                className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-foreground/20 px-5 py-3.5 text-[0.92em] font-medium transition-colors hover:bg-foreground hover:text-brand"
+                className="mt-3 inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-foreground/20 px-3 py-3.5 text-[0.92em] font-medium transition-colors hover:bg-foreground hover:text-brand"
               >
                 <Icon name="ClipboardCheck" size={16} />
                 тест за 3 минуты
               </Link>
               <Link
                 to="/kalkulyatory"
-                className="mt-2.5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-foreground/20 px-5 py-3.5 text-[0.92em] font-medium transition-colors hover:bg-foreground hover:text-brand"
+                className="mt-2.5 inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-foreground/20 px-3 py-3.5 text-[0.92em] font-medium transition-colors hover:bg-foreground hover:text-brand"
               >
                 <Icon name="Calculator" size={16} />
                 калькуляторы
               </Link>
               <Link
                 to="/slovar"
-                className="mt-2.5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-foreground/20 px-5 py-3.5 text-[0.92em] font-medium transition-colors hover:bg-foreground hover:text-brand"
+                className="mt-2.5 inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-foreground/20 px-3 py-3.5 text-[0.92em] font-medium transition-colors hover:bg-foreground hover:text-brand"
               >
                 <Icon name="BookA" size={16} />
                 глоссарий доставки
               </Link>
               <Link
                 to="/sravnenie-agregatorov"
-                className="mt-2.5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-foreground/20 px-5 py-3.5 text-[0.92em] font-medium transition-colors hover:bg-foreground hover:text-brand"
+                className="mt-2.5 inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-xl border border-foreground/20 px-3 py-3.5 text-[0.92em] font-medium transition-colors hover:bg-foreground hover:text-brand"
               >
                 <Icon name="GitCompare" size={16} />
                 сравнение агрегаторов

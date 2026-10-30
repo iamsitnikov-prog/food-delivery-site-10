@@ -13,15 +13,50 @@ const rub = (n: number) => new Intl.NumberFormat("ru-RU").format(n);
 const BuildersBlock = () => (
   <>
     <section className="px-5 pb-10 md:px-14 md:pb-20">
-      <div className="overflow-x-auto rounded-[28px] bg-surface p-2 md:p-4">
+      {/* На телефоне таблица не помещается: показываем каждый конструктор карточкой. */}
+      <div className="grid gap-3 md:hidden">
+        {BUILDERS.map((b) => (
+          <article key={b.slug} className="rounded-[24px] bg-surface p-5 text-cream">
+            <h3 className="font-display text-[1.3em] font-semibold leading-tight">{b.name}</h3>
+            <p className="mt-1 text-[max(12px,0.85em)] leading-snug text-brand">{b.tagline}</p>
+            <dl className="mt-4 space-y-3">
+              <div className="border-t border-cream/12 pt-3">
+                <dt className="text-[max(12px,0.82em)] text-cream-muted">Ориентир по цене</dt>
+                <dd className="mt-1 text-[0.95em] leading-snug">
+                  от {rub(b.fee)} ₽ / мес
+                  <span className="mt-1 block text-[max(12px,0.85em)] text-cream-muted">{b.feeNote}</span>
+                </dd>
+              </div>
+              <div className="border-t border-cream/12 pt-3">
+                <dt className="text-[max(12px,0.82em)] text-cream-muted">Комиссия с заказа</dt>
+                <dd className="mt-1 text-[0.95em] leading-snug">нет — заказы ваши</dd>
+              </div>
+              {FEATURES.map((f) => (
+                <div key={f.key} className="flex items-center justify-between gap-3 border-t border-cream/12 pt-3">
+                  <dt className="text-[max(12px,0.9em)]">{f.label}</dt>
+                  <dd className={`inline-flex shrink-0 items-center gap-1.5 text-[max(12px,0.85em)] ${b[f.key] ? "text-brand" : "text-cream-muted"}`}>
+                    <Icon name={b[f.key] ? "Check" : "Minus"} size={16} />
+                    {b[f.key] ? "есть" : "нет"}
+                  </dd>
+                </div>
+              ))}
+              <div className="border-t border-cream/12 pt-3">
+                <dt className="text-[max(12px,0.82em)] text-cream-muted">Кому подходит</dt>
+                <dd className="mt-1 text-[0.95em] leading-snug">{b.bestFor}</dd>
+              </div>
+            </dl>
+          </article>
+        ))}
+      </div>
+      <div className="hidden overflow-x-auto rounded-[28px] bg-surface p-2 md:block md:p-4">
         <table className="w-full min-w-[760px] border-collapse text-cream">
           <thead>
             <tr>
-              <th className="w-[210px] p-4 text-left align-bottom text-[max(12px,0.85em)] font-normal text-cream-muted">
+              <th className="w-[210px] p-4 text-left align-top text-[max(12px,0.85em)] font-normal text-cream-muted">
                 Возможность
               </th>
               {BUILDERS.map((b) => (
-                <th key={b.slug} className="p-4 text-left align-bottom">
+                <th key={b.slug} className="p-4 text-left align-top">
                   <span className="block font-display text-[1.2em] font-semibold leading-tight">
                     {b.name}
                   </span>

@@ -6,15 +6,8 @@ import { NAV, USEFUL_LINKS } from "./nav-links";
 
 export { NAV, USEFUL_LINKS } from "./nav-links";
 
-const MOBILE_NAV = [
-  { href: "/uslugi", label: "услуги" },
-  { href: "/goroda", label: "города" },
-  { href: "/blog", label: "блог" },
-  { href: "#results", label: "кейсы" },
-  { href: "#free-audit", label: "бесплатный анализ" },
-  { href: "#pricing", label: "стоимость" },
-  { href: "#contacts", label: "контакты" },
-];
+// В мобильном меню те же пункты, что в шапке на компьютере.
+const MOBILE_NAV = NAV;
 
 const MESSENGERS = [
   { icon: "Send", label: "telegram", href: "https://t.me/sitnikovy1" },
@@ -150,7 +143,7 @@ const Header = () => {
                   key={n.href}
                   href={to(n.href)}
                   onClick={() => setOpen(false)}
-                  className="flex min-h-[40px] items-center justify-center rounded-xl border border-foreground/15 px-2.5 py-2 text-center font-display text-[14px] font-semibold leading-tight tracking-tight last:odd:col-span-2 max-[360px]:min-h-[36px] max-[360px]:py-1.5"
+                  className="flex min-h-[40px] items-center rounded-xl border border-foreground/15 px-2.5 py-2 text-left font-display text-[14px] font-semibold leading-tight tracking-tight last:odd:col-span-2 max-[360px]:min-h-[36px] max-[360px]:py-1.5"
                 >
                   {n.label}
                 </a>

@@ -23,7 +23,7 @@ const StickyCta = () => {
       }`}
     >
       <div className="flex items-center gap-2 rounded-2xl bg-surface p-2 pl-5 text-cream shadow-[0_10px_40px_rgba(0,0,0,.25)]">
-        <span className="hidden text-[0.92em] leading-tight sm:block">
+        <span className="hidden whitespace-nowrap text-[0.92em] leading-tight sm:block">
           бесплатно разберём ваш проект
         </span>
         <a

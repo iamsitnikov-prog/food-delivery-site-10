@@ -17,6 +17,8 @@ import { termDescription, termTitle } from "@/lib/term-seo";
 import { richText, plainText } from "@/lib/rich-text";
 import TermSectionBlock from "@/components/glossary/TermSectionBlock";
 import TermAside from "@/components/glossary/TermAside";
+import RelatedPartners from "@/components/RelatedPartners";
+import { partnerSectionsForTerm } from "@/data/partner-crosslinks";
 import { PEOPLE } from "@/data/team";
 
 const SITE = "https://agregatory.pro";
@@ -369,6 +371,8 @@ const GlossaryTermPage = () => {
           )}
         </div>
       </section>
+
+      <RelatedPartners sections={partnerSectionsForTerm(term.group)} className="px-5 pb-11 md:px-14 md:pb-20" />
 
       <CrossLinks
         items={["audit", "reports", "calc"]}

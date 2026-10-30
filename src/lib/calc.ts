@@ -151,7 +151,8 @@ export type SubscriptionPlan = "none" | "standard" | "business";
 export const SUBSCRIPTION_RATE_NET = 1.64;
 export const SUBSCRIPTION_VAT_RATE = 22;
 export const SUBSCRIPTION_RATE =
-  Math.round(SUBSCRIPTION_RATE_NET * (1 + SUBSCRIPTION_VAT_RATE / 100) * 10000) / 10000;
+  // Округляем до сотых: 1,64% × 1,22 = 2,0008%, в поле показываем 2 (разница меньше 10 ₽ в месяц).
+  Math.round(SUBSCRIPTION_RATE_NET * (1 + SUBSCRIPTION_VAT_RATE / 100) * 100) / 100;
 // Фиксированная часть тарифа «Бизнес» — тоже плюс НДС.
 const withVat = (net: number) =>
   Math.round(net * (1 + SUBSCRIPTION_VAT_RATE / 100));

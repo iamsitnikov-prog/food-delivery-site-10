@@ -40,7 +40,8 @@ const Results = () => {
         height={765}
         loading="lazy"
         decoding="async"
-        className="pointer-events-none absolute -right-10 -top-12 hidden w-[140px] animate-float opacity-90 sm:block lg:right-auto lg:-left-16 lg:-top-10 lg:w-[420px]"
+        style={{ maskImage: "linear-gradient(to bottom, #000 82%, transparent)", WebkitMaskImage: "linear-gradient(to bottom, #000 82%, transparent)" }}
+        className="pointer-events-none absolute right-4 top-4 hidden w-[120px] animate-float opacity-90 sm:block lg:right-auto lg:left-6 lg:top-6 lg:w-[260px]"
       />
       <div className="relative">
         <div className="reveal mb-6 md:mb-14 flex flex-col justify-between gap-6 lg:flex-row lg:items-end lg:pl-[34%]">

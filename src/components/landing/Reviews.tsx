@@ -41,7 +41,7 @@ const Reviews = () => {
       ref={ref}
       className="scroll-mt-4 rounded-[28px] md:rounded-[40px] bg-surface px-5 py-10 text-cream md:mx-3 md:px-14 md:py-28"
     >
-      <div className="reveal mb-6 md:mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+      <div className="reveal mb-6 md:mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
         <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
           отзывы
           <span className="block pl-[1.2em] text-brand">говорят за&nbsp;нас</span>

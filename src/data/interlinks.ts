@@ -1,3 +1,5 @@
+import { PARTNERS } from "./partners";
+
 export type Interlink = { phrase: string; slug: string; to?: string; from?: string };
 
 // from — дата выхода статьи: до неё ссылка не ставится.
@@ -164,3 +166,23 @@ export const INTERLINKS: Interlink[] = [
   page("выбрать агрегатор", "/sravnenie-agregatorov", "compare-choice"),
   page("нескольких агрегатор", "/sravnenie-agregatorov", "compare-multi"),
 ];
+
+// Ссылки на разделы партнёров: только на те разделы, где уже есть партнёры,
+// чтобы читатель не попадал в пустой раздел. Новый партнёр включает ссылки сам.
+const PARTNER_PHRASES: Record<string, string[]> = {
+  foto: ["фуд фотограф", "фотографа"],
+  upakovka: ["поставщик упаковки", "поставщика упаковки"],
+  kurery: ["курьерская служба", "курьерской службы", "курьерскую службу"],
+  dostavka: ["свое приложение", "своё приложение", "мобильное приложение"],
+  avtomatizaciya: ["автоматизаци"],
+  analitika: ["сервис аналитики", "сервисы аналитики"],
+  geo: ["геомаркетинг"],
+  marketing: ["маркетинговое агентство", "CRM-маркетинг"],
+  dizain: ["дизайнера"],
+  yuristy: ["юриста"],
+};
+INTERLINKS.push(
+  ...Object.entries(PARTNER_PHRASES)
+    .filter(([sec]) => PARTNERS.some((p) => p.section === sec))
+    .flatMap(([sec, phrases]) => phrases.map((phrase) => page(phrase, `/partnery#${sec}`, `partners-${sec}`))),
+);

@@ -37,7 +37,7 @@ const Hero = () => {
             height={592}
             {...{ fetchpriority: "high" }}
             decoding="async"
-            className="pointer-events-none absolute -right-20 bottom-[-14px] top-auto z-0 hidden w-[300px] animate-float sm:block object-contain object-bottom mask-fade-left sm:w-[400px] md:-right-16 md:w-[440px] lg:-right-10 lg:h-[620px] lg:w-[620px]"
+            className="pointer-events-none absolute -right-20 bottom-2 top-auto z-0 hidden w-[300px] animate-float sm:block object-contain object-bottom mask-fade-left sm:w-[400px] md:-right-16 md:w-[440px] lg:-right-10 lg:h-[620px] lg:w-[620px]"
           />
         </picture>
         <div className="relative z-10 px-5 pb-6 pt-8 sm:pb-10 sm:pt-9 md:px-14 md:pt-11 lg:h-full lg:pb-28">
@@ -49,7 +49,7 @@ const Hero = () => {
             <p className="max-w-[430px] leading-[1.25] text-[1.02em] md:text-[1.3em] text-left">
               Заказы и&nbsp;выручка на&nbsp;Яндекс Еде уже&nbsp;с&nbsp;первой недели. Настраиваем вендор, акции, продвижение и&nbsp;лояльность, обучаем персонал.
             </p>
-            <div className="flex flex-col items-start gap-2.5 lg:mx-auto lg:items-center lg:text-center">
+            <div className="flex flex-col items-start gap-2.5">
               <a
                 href="#lead"
                 className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary px-[26px] py-[15px] text-[1em] md:px-[30px] md:py-[18px] md:text-[1.06em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"

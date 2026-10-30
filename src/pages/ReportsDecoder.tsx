@@ -233,7 +233,7 @@ const ReportsDecoder = () => {
         <div className="rounded-[24px] md:rounded-[32px] bg-surface p-4 text-cream md:p-12">
           <Icon name="ShieldCheck" size={34} className="text-brand" />
           <h2 className="mt-5 max-w-[20ch] font-display text-[24px] font-semibold leading-[1.05] tracking-[-0.02em] md:text-[40px]">
-            Ваши файлы остаются у вас
+            Ваши файлы остаются у&nbsp;вас
           </h2>
           <div className="mt-7 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
             <div>

@@ -23,8 +23,8 @@ const Guarantees = () => {
   const ref = useReveal<HTMLElement>();
 
   return (
-    <section id="guarantees" ref={ref} className="scroll-mt-4 px-5 pb-10 md:px-14 md:pb-28">
-      <div className="reveal mb-6 md:mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+    <section id="guarantees" ref={ref} className="scroll-mt-4 px-5 pb-10 pt-10 md:px-14 md:pb-28 md:pt-24">
+      <div className="reveal mb-6 md:mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
         <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
           наши
           <span className="block pl-[1.2em] text-muted-foreground">гарантии</span>

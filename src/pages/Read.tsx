@@ -49,7 +49,7 @@ const ReadPage = () => {
             <span className="text-foreground">почитать</span>
           </nav>
           <h1 className="max-w-[16ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[62px]">
-            Почитать о доставке
+            Почитать о&nbsp;доставке
           </h1>
           <p className="mt-6 max-w-[640px] text-[1.08em] leading-snug text-muted-foreground">
             Пишем о том, как устроены агрегаторы изнутри: обновления сервисов, механики акций,

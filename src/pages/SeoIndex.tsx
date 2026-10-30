@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { nbsp } from "@/lib/typo";
 import Icon from "@/components/ui/icon";
 import { CASE_SLUGS } from "@/data/case-slugs";
 import Header from "@/components/landing/Header";
@@ -51,7 +52,7 @@ const SeoIndex = ({ kind }: Props) => {
             <span className="text-foreground">{kind === "service" ? "услуги" : "города"}</span>
           </nav>
           <h1 className="max-w-[18ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
-            {copy.h1}
+            {nbsp(copy.h1)}
           </h1>
           <p className="mt-6 max-w-[560px] text-[1.1em] leading-snug text-muted-foreground">{copy.lead}</p>
         </section>

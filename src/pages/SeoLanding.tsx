@@ -1,9 +1,12 @@
 import { useMemo } from "react";
+import { nbsp } from "@/lib/typo";
 import { Link, useParams, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
+import RelatedPartners from "@/components/RelatedPartners";
+import { partnerSectionsForService } from "@/data/partner-crosslinks";
 import Contacts from "@/components/landing/Contacts";
 import ChannelsBlock from "@/components/shared/ChannelsBlock";
 import CityCaseBlock from "@/components/seo/CityCaseBlock";
@@ -108,7 +111,7 @@ const SeoLanding = () => {
           <div className={svc ? "lg:grid lg:grid-cols-[1fr_400px] lg:items-center lg:gap-12" : undefined}>
           <div>
           <h1 className="max-w-[16ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
-            {page.h1}
+            {nbsp(page.h1)}
           </h1>
           <p className="mt-6 max-w-[560px] text-[1.1em] leading-snug text-muted-foreground">{page.lead}</p>
 
@@ -328,6 +331,10 @@ const SeoLanding = () => {
       <FaqSection items={page.faq} title={["вопросы", "и ответы"]} />
 
       <ResourceLinks slug={page.slug} kind={page.kind} />
+
+      {page.kind === "service" && (
+        <RelatedPartners sections={partnerSectionsForService(page.slug)} className="px-5 pb-11 md:px-14 md:pb-20" />
+      )}
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
         <div className="grid gap-6 md:gap-10 md:grid-cols-2">
