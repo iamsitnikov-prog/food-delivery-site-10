@@ -166,7 +166,7 @@ const PartnerApply = () => {
                 <Field label="Раздел" required error={errors.section}>
                   <select value={section} onChange={(e) => setSection(e.target.value)} className={field}>
                     <option value="">выберите раздел</option>
-                    {PARTNER_SECTIONS.map((s) => (
+                    {PARTNER_SECTIONS.filter((s) => s.id !== "drugoe").map((s) => (
                       <option key={s.id} value={s.title}>
                         {s.title}
                       </option>

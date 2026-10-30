@@ -5,6 +5,7 @@ export const PARTNER_SECTIONS: PartnerSection[] = [
   { id: "foto", title: "Фото и видео еды", icon: "Camera" },
   { id: "dostavka", title: "Своя доставка и приложения", icon: "Truck" },
   { id: "avtomatizaciya", title: "Автоматизация ресторана", icon: "LayoutDashboard" },
+  { id: "ii", title: "ИИ для ресторана", icon: "Sparkles" },
   { id: "analitika", title: "Аналитика", icon: "FileBarChart" },
   { id: "marketing", title: "Маркетинг и CRM", icon: "TrendingUp" },
   { id: "geo", title: "Геомаркетинг и карты", icon: "MapPin" },
@@ -17,7 +18,8 @@ export const PARTNER_SECTIONS: PartnerSection[] = [
   { id: "kurery", title: "Курьеры и логистика", icon: "Bike" },
   { id: "yuristy", title: "Юристы и бухгалтерия", icon: "Scale" },
   { id: "personal", title: "Найм персонала", icon: "Users" },
-  { id: "obuchenie", title: "Обучение", icon: "GraduationCap" },
+  { id: "obuchenie", title: "Обучение команды и курсы по ИИ", icon: "GraduationCap" },
+  { id: "drugoe", title: "Другое", icon: "MoreHorizontal" },
 ];
 
 export const getSection = (id: string) => PARTNER_SECTIONS.find((s) => s.id === id)!;
