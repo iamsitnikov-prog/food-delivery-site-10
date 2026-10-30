@@ -7,7 +7,7 @@ export type Person = {
   link?: { label: string; href: string };
 };
 
-export const COURSE = "Бесплатная школа доставки Яндекс Еды";
+export const COURSE = "Бизнес школа Яндекс Еды (бывшая бесплатная Школа доставки)";
 
 export const PEOPLE: Person[] = [
   {
