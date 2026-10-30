@@ -78,7 +78,7 @@ const PartnerApply = () => {
     if (!allRussia && cities.length === 0 && !otherCities.trim() && countries.length === 0) err.geo = "Отметьте города или «вся Россия»";
     if (!get("tagline")) err.tagline = "Одна строка о том, чем вы полезны ресторану";
     if (!get("contact_name")) err.contact_name = "Как к вам обращаться";
-    if (!get("contact_phone") && !get("contact_tg") && !get("contact_email")) err.contact = "Оставьте телефон, Telegram или почту";
+    if (!get("contact_tg")) err.contact = "Напишите ник в Telegram или телефон, к которому привязан Telegram";
     if (!fd.get("consent")) err.consent = "Нужно согласие";
     if (logo && logo.size > 5 * 1024 * 1024) err.logo = "Файл больше 5 МБ";
     setErrors(err);
@@ -126,7 +126,7 @@ const PartnerApply = () => {
           Станьте партнёром agregatory.pro
         </h1>
         <p className="mt-5 max-w-[680px] text-[1.1em] leading-snug text-muted-foreground">
-          Заполните анкету, и&nbsp;мы добавим ваш сервис в&nbsp;раздел партнёров. Его увидят рестораны со&nbsp;всей России, которые работают с&nbsp;доставкой. Обычно добавляем за&nbsp;пару рабочих дней.
+          Заполните анкету, и&nbsp;мы добавим ваш сервис в&nbsp;раздел партнёров. Его увидят рестораны со&nbsp;всей России, которые работают с&nbsp;доставкой. Обычно добавляем за&nbsp;пару рабочих дней и&nbsp;пишем вам в&nbsp;Telegram, когда карточка появится.
         </p>
       </section>
 
@@ -277,13 +277,18 @@ const PartnerApply = () => {
                 <Field label="Должность">
                   <input name="contact_role" maxLength={120} className={field} />
                 </Field>
-                <div data-err="contact">
-                  <Field label="Телефон" error={errors.contact}>
-                    <input name="contact_phone" maxLength={60} className={field} inputMode="tel" autoComplete="tel" />
+                <div data-err="contact" className="md:col-span-2">
+                  <Field
+                    label="Telegram для связи"
+                    required
+                    error={errors.contact}
+                    hint="Только ник в Telegram или телефон, к которому привязан Telegram. Напишем сюда, когда ваша карточка появится на сайте."
+                  >
+                    <input name="contact_tg" maxLength={80} className={field} placeholder="@username или +7 900 000-00-00" />
                   </Field>
                 </div>
-                <Field label="Telegram">
-                  <input name="contact_tg" maxLength={80} className={field} placeholder="@username" />
+                <Field label="Телефон для звонков">
+                  <input name="contact_phone" maxLength={60} className={field} inputMode="tel" autoComplete="tel" />
                 </Field>
                 <Field label="Почта">
                   <input name="contact_email" maxLength={160} className={field} inputMode="email" autoComplete="email" />
@@ -310,6 +315,9 @@ const PartnerApply = () => {
                 </span>
               </label>
               {errors.consent && <span className="mt-1.5 block text-[max(12px,0.85em)] text-destructive">{errors.consent}</span>}
+              <p className="mt-4 text-[max(12px,0.88em)] leading-snug text-foreground/60">
+                Мы смотрим каждую анкету и&nbsp;оставляем за&nbsp;собой право не&nbsp;размещать её без объяснения причин. Например, если сервис не&nbsp;подходит ресторанам, дублирует наши услуги или данные в&nbsp;анкете вызывают сомнения. Тексты можем сократить и&nbsp;поправить, перед публикацией пришлём на&nbsp;согласование.
+              </p>
               <button
                 type="submit"
                 disabled={state === "sending"}
