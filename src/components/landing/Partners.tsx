@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { useReveal } from "@/hooks/use-reveal";
-import { PARTNERS } from "@/data/partners";
+import { PARTNERS, getSection } from "@/data/partners";
 
 const Partners = () => {
   const ref = useReveal<HTMLElement>();
@@ -18,13 +18,14 @@ const Partners = () => {
       </div>
 
       <div className="grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {PARTNERS.map((p) => (
+        {PARTNERS.slice(0, 5).map((p) => (
           <Link
             key={p.slug}
             to={`/partnery/${p.slug}`}
-            className="reveal group flex flex-col rounded-[28px] bg-surface p-4 text-cream transition-transform duration-500 hover:-translate-y-1 md:p-8"
+            className="reveal group relative flex flex-col overflow-hidden rounded-[24px] border border-foreground/10 bg-white p-5 pt-6 transition-transform duration-500 hover:-translate-y-1 md:p-7 md:pt-8"
           >
-            <div className="flex items-start gap-3 md:gap-4">
+            <span className="absolute inset-x-0 top-0 h-1.5" style={{ background: getSection(p.section).color }} />
+            <div className="flex items-center gap-3">
               <img
                 src={p.logo}
                 alt={`Логотип ${p.name}`}
@@ -32,38 +33,18 @@ const Partners = () => {
                 height={96}
                 loading="lazy"
                 decoding="async"
-                className="h-12 w-12 shrink-0 rounded-xl bg-cream/[0.07] object-contain p-2"
+                className="h-12 w-12 shrink-0 rounded-xl border border-foreground/10 bg-white object-contain p-1.5"
               />
-              <div className="min-w-0 flex-1">
-                <span className="font-display text-[1.5em] font-semibold leading-tight tracking-[-0.03em]">
-                  {p.name}
+              <div className="min-w-0">
+                <span className="block font-display text-[1.4em] font-semibold leading-tight tracking-[-0.03em]">{p.name}</span>
+                <span className="mt-0.5 inline-flex items-center gap-1.5 text-[max(12px,0.8em)] text-foreground/60">
+                  <Icon name={getSection(p.section).icon} size={14} style={{ color: getSection(p.section).color }} />
+                  {getSection(p.section).title}
                 </span>
-                <div className="mt-2 flex flex-wrap items-center gap-2">
-                  <span className="rounded-lg bg-brand px-3 py-1.5 text-[max(12px,0.78em)] font-medium text-foreground">
-                    {p.category}
-                  </span>
-                  {p.isNew && (
-                    <span className="rounded-lg border border-brand px-3 py-1.5 text-[max(12px,0.78em)] font-medium uppercase tracking-wide text-brand">
-                      новое
-                    </span>
-                  )}
-                </div>
               </div>
             </div>
-
-            <p className="mt-4 text-[1.05em] leading-snug">{p.tagline}</p>
-            <p className="mt-4 flex-1 text-[0.95em] leading-relaxed text-cream-muted">{p.description}</p>
-
-            {p.promo && (
-              <div className="mt-6 inline-flex w-fit items-center gap-3 rounded-xl border border-brand/40 px-4 py-3">
-                <span className="text-[max(12px,0.8em)] uppercase tracking-wide text-cream-muted">промокод</span>
-                <span className="font-display text-[1.15em] font-semibold tracking-[-0.01em] text-brand">
-                  {p.promo.code}
-                </span>
-              </div>
-            )}
-
-            <span className="mt-7 inline-flex items-center gap-2 font-medium text-brand">
+            <p className="mt-4 flex-1 leading-snug text-foreground/75">{p.tagline}</p>
+            <span className="mt-6 inline-flex items-center gap-2 font-medium">
               подробнее
               <Icon name="ArrowRight" size={18} className="transition-transform group-hover:translate-x-0.5" />
             </span>
@@ -73,10 +54,10 @@ const Partners = () => {
         <div className="reveal flex flex-col justify-between rounded-[28px] bg-pale p-4 md:p-8">
           <div>
             <h3 className="font-display text-[1.5em] font-semibold leading-tight tracking-[-0.025em] md:text-[1.9em]">
-              Подробнее о партнёрах
+              Все партнёры и&nbsp;полезные сайты
             </h3>
             <p className="mt-4 leading-relaxed text-foreground/75">
-              Рассказываем, чем полезен каждый сервис и&nbsp;кому он&nbsp;подойдёт.
+              {PARTNERS.length} сервисов по&nbsp;разделам: доставка, автоматизация, курьеры, маркетинг и&nbsp;другие. С&nbsp;фильтром по&nbsp;городам.
             </p>
           </div>
           <Link

@@ -6,16 +6,30 @@ import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
 import { useState } from "react";
-import { PARTNERS, USEFUL_SITES } from "@/data/partners";
+import { PARTNERS, PARTNER_SECTIONS, USEFUL_SITES, ALL_RUSSIA, PARTNER_CITIES } from "@/data/partners";
 
 const ALL = "все";
 const SITES = "полезные сайты";
-const FILTERS = [ALL, ...Array.from(new Set(PARTNERS.map((p) => p.category))), SITES];
+// Разделы показываем только непустые, в порядке PARTNER_SECTIONS.
+const USED = PARTNER_SECTIONS.filter((s) => PARTNERS.some((p) => p.section === s.id));
+const FILTERS = [ALL, ...USED.map((s) => s.id), SITES];
+const CITIES = Array.from(
+  new Set([
+    ...PARTNER_CITIES,
+    ...PARTNERS.flatMap((p) => p.cities).filter((c) => c !== ALL_RUSSIA),
+  ]),
+);
 
 const PartnersPage = () => {
   const { pathname } = useLocation();
   const [filter, setFilter] = useState(ALL);
-  const partners = filter === ALL ? PARTNERS : PARTNERS.filter((p) => p.category === filter);
+  const [city, setCity] = useState("");
+  const inCity = (cities: string[]) => !city || cities.includes(ALL_RUSSIA) || cities.includes(city);
+  const groups = USED.filter((s) => filter === ALL || filter === s.id)
+    .map((section) => ({ section, items: PARTNERS.filter((p) => p.section === section.id && inCity(p.cities)) }))
+    .filter((g) => g.items.length > 0);
+  const cards = groups.flatMap(({ section, items }) => items.map((p) => ({ p, section })));
+  const single = filter !== ALL && filter !== SITES ? USED.find((x) => x.id === filter) : undefined;
   const sites = filter === ALL || filter === SITES ? USEFUL_SITES : [];
 
   useSeo({
@@ -47,38 +61,68 @@ const PartnersPage = () => {
       </div>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <div className="mb-6 flex flex-wrap gap-2 md:mb-8" role="tablist" aria-label="Фильтр по категориям">
-          {FILTERS.map((f) => (
-            <button
-              key={f}
-              type="button"
-              role="tab"
-              aria-selected={filter === f}
-              onClick={() => setFilter(f)}
-              className={`rounded-xl px-4 py-2 text-[max(12px,0.9em)] font-medium transition-colors ${
-                filter === f ? "bg-primary text-primary-foreground" : "bg-pale text-foreground/75 hover:text-foreground"
-              }`}
+        <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+          <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 md:mx-0 md:flex-wrap md:overflow-visible md:px-0" aria-label="Разделы">
+            {FILTERS.map((f) => {
+              const sec = PARTNER_SECTIONS.find((x) => x.id === f);
+              const active = filter === f;
+              return (
+                <button
+                  key={f}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => setFilter(f)}
+                  className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl border px-3.5 py-2 text-[max(12px,0.88em)] font-medium transition-colors ${
+                    active ? "border-foreground bg-foreground text-background" : "border-foreground/15 bg-white/70 text-foreground/80 hover:border-foreground/40"
+                  }`}
+                >
+                  {sec && <Icon name={sec.icon} size={15} style={{ color: active ? undefined : sec.color }} />}
+                  {sec ? sec.title : f}
+                </button>
+              );
+            })}
+          </div>
+          <label className="flex shrink-0 items-center gap-2 text-[max(12px,0.88em)] text-foreground/70">
+            <Icon name="MapPin" size={16} />
+            <span className="sr-only md:not-sr-only">город</span>
+            <select
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              className="rounded-xl border border-foreground/15 bg-white/70 px-3 py-2 font-medium text-foreground outline-none focus:border-foreground/50"
             >
-              {f}
-            </button>
-          ))}
+              <option value="">все города</option>
+              {CITIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
 
-        {partners.length > 0 && (
-          <>
-            <h2 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.1em]">
-              Сервисы, которые мы рекомендуем
-            </h2>
-            <p className="mt-2 max-w-[620px] text-muted-foreground">
-              Нажмите на&nbsp;сервис: расскажем, что он&nbsp;умеет и&nbsp;кому подойдёт.
-            </p>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 md:gap-4">
-              {partners.map((p) => (
+        {groups.length === 0 && filter !== SITES && (
+          <p className="mt-8 rounded-[20px] bg-white/60 p-5 text-foreground/75">
+            В этом городе пока нет партнёров из этого раздела. Посмотрите все города или напишите нам: подскажем, к кому обратиться.
+          </p>
+        )}
+
+        {single && (
+          <h2 className="mt-8 flex items-center gap-2.5 font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em] md:mt-10 md:text-[1.7em]">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl text-white" style={{ background: single.color }}>
+              <Icon name={single.icon} size={19} />
+            </span>
+            {single.title}
+          </h2>
+        )}
+        {cards.length > 0 && (
+          <div className={`${single ? "mt-4" : "mt-8 md:mt-10"} grid gap-3 sm:grid-cols-2 lg:grid-cols-3 md:gap-4`}>
+              {cards.map(({ p, section }) => (
                 <Link
                   key={p.slug}
                   to={`/partnery/${p.slug}`}
-                  className="group flex flex-col rounded-[24px] bg-surface p-5 text-cream transition-transform duration-300 hover:-translate-y-1 md:p-6"
+                  className="group relative flex min-w-0 flex-col overflow-hidden rounded-[22px] border border-foreground/10 bg-white p-5 pt-6 transition-transform duration-300 hover:-translate-y-1 md:p-6 md:pt-7"
                 >
+                  <span className="absolute inset-x-0 top-0 h-1.5" style={{ background: section.color }} />
                   <div className="flex items-center gap-3">
                     <img
                       src={p.logo}
@@ -87,39 +131,42 @@ const PartnersPage = () => {
                       height={96}
                       loading="lazy"
                       decoding="async"
-                      className="h-12 w-12 shrink-0 rounded-xl bg-cream/[0.07] object-contain p-2"
+                      className="h-12 w-12 shrink-0 rounded-xl border border-foreground/10 bg-white object-contain p-1.5"
                     />
                     <div className="min-w-0">
-                      <div className="font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em]">{p.name}</div>
-                      <div className="mt-1 inline-flex items-center gap-1.5 text-[max(12px,0.8em)] text-brand">
-                        <Icon name={p.icon} size={14} />
-                        {p.category}
+                      <div className="font-display text-[1.3em] font-semibold leading-tight tracking-[-0.02em]">{p.name}</div>
+                      <div className="mt-1 inline-flex items-center gap-1.5 text-[max(12px,0.8em)] font-medium" style={{ color: section.color }}>
+                        <Icon name={section.icon} size={14} />
+                        {section.title}
                       </div>
                     </div>
                   </div>
-                  <p className="mt-4 flex-1 leading-snug text-cream-muted">{p.tagline}</p>
+                  <p className="mt-4 flex-1 leading-snug text-foreground/75">{p.tagline}</p>
+                  <p className="mt-3 inline-flex items-center gap-1.5 text-[max(12px,0.8em)] text-foreground/55">
+                    <Icon name="MapPin" size={13} />
+                    {p.cities.includes(ALL_RUSSIA) ? "вся Россия" : p.cities.join(", ")}
+                  </p>
                   <div className="mt-5 flex items-center justify-between gap-3">
                     {p.promo ? (
-                      <span className="inline-flex items-center gap-1.5 rounded-lg border border-brand/40 px-2.5 py-1 text-[max(12px,0.78em)] text-brand">
-                        <Icon name="Gift" size={14} />
-                        есть промокод
+                      <span className="inline-flex min-w-0 items-center gap-1.5 rounded-lg bg-brand px-2.5 py-1 text-[max(12px,0.78em)] font-medium text-foreground">
+                        <Icon name="Gift" size={14} className="shrink-0" />
+                        <span className="truncate">{p.promo.code ? "есть промокод" : "спецпредложение"}</span>
                       </span>
                     ) : (
                       <span />
                     )}
-                    <span className="inline-flex items-center gap-1.5 font-medium text-brand">
+                    <span className="inline-flex shrink-0 items-center gap-1.5 font-medium">
                       подробнее
                       <Icon name="ArrowRight" size={17} className="transition-transform group-hover:translate-x-0.5" />
                     </span>
                   </div>
                 </Link>
               ))}
-            </div>
-          </>
+          </div>
         )}
 
         {sites.length > 0 && (
-          <div className={partners.length > 0 ? "mt-12 md:mt-16" : ""}>
+          <div className={groups.length > 0 ? "mt-12 md:mt-16" : "mt-8"}>
             <h2 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.1em]">
               Полезные сайты
             </h2>
@@ -133,9 +180,9 @@ const PartnersPage = () => {
                   href={u.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex gap-4 rounded-[24px] bg-pale p-5 transition-transform duration-300 hover:-translate-y-1 md:p-6"
+                  className="group flex min-w-0 gap-4 rounded-[22px] border border-foreground/10 bg-white p-5 transition-transform duration-300 hover:-translate-y-1 md:p-6"
                 >
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand text-foreground">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-foreground/[0.06] text-foreground">
                     <Icon name={u.icon} size={22} />
                   </span>
                   <span className="min-w-0 flex-1">

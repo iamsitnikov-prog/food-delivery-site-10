@@ -1074,10 +1074,11 @@ for (const p of PARTNERS) {
     description: clean(p.description).slice(0, 155),
     body: `<h1>${esc(clean(p.name))}</h1>
 <p>${esc(clean(p.tagline))}</p>
+<p>Раздел: ${esc(clean(p.category))}. География: ${esc(p.cities.join(", "))}.</p>
 <h2>Что это за сервис</h2><p>${esc(clean(p.description))}</p>
 <h2>Что входит</h2><ul>${p.points.map((x) => `<li>${esc(clean(x))}</li>`).join("")}</ul>
 <h2>Кому подойдёт</h2><p>${esc(clean(p.forWhom))}</p>
-${p.promo ? `<h2>Промокод</h2><p>${esc(p.promo.code)}. ${esc(clean(p.promo.text))}</p>` : ""}
+${p.promo ? `<h2>${p.promo.code ? "Промокод" : "Спецпредложение"}</h2><p>${esc(clean(p.promo.code || p.promo.title || ""))}. ${esc(clean(p.promo.text))}</p>` : ""}
 <p><a href="/go/${p.slug}" rel="sponsored noopener">Перейти на сайт ${esc(clean(p.name))}</a></p>
 <h2>Другие партнёры</h2><ul>${others.map((o) => `<li><a href="/partnery/${o.slug}">${esc(clean(o.name))}</a>: ${esc(clean(o.tagline))}</li>`).join("")}</ul>
 <p><a href="/partnery">Все партнёры и полезные сайты</a></p>`,

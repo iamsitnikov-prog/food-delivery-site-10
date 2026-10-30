@@ -14,6 +14,9 @@ import {
   BookA,
   BookOpen,
   Building2,
+  Camera,
+  Package,
+  Palette,
   Calculator,
   Check,
   ChefHat,
@@ -81,6 +84,9 @@ import {
 } from 'lucide-react';
 
 const ICONS: Record<string, React.FC<LucideProps>> = {
+  Camera,
+  Package,
+  Palette,
   FileDown,
   Lock,
   LogOut,

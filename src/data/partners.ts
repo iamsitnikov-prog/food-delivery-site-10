@@ -1,5 +1,37 @@
+/** Разделы партнёров. Показываются только те, в которых есть партнёры. */
+export type PartnerSection = { id: string; title: string; icon: string; color: string };
+
+export const PARTNER_SECTIONS: PartnerSection[] = [
+  { id: "foto", title: "Фото и видео еды", icon: "Camera", color: "#E0457B" },
+  { id: "dostavka", title: "Своя доставка и приложения", icon: "Truck", color: "#2563EB" },
+  { id: "avtomatizaciya", title: "Автоматизация ресторана", icon: "LayoutDashboard", color: "#7C3AED" },
+  { id: "analitika", title: "Аналитика", icon: "FileBarChart", color: "#0EA5A4" },
+  { id: "marketing", title: "Маркетинг и CRM", icon: "TrendingUp", color: "#C026D3" },
+  { id: "geo", title: "Геомаркетинг и карты", icon: "MapPin", color: "#16A34A" },
+  { id: "reklama", title: "Реклама: контекст и таргет", icon: "Megaphone", color: "#1E3A8A" },
+  { id: "smm", title: "SMM и копирайт", icon: "MessagesSquare", color: "#D97706" },
+  { id: "dizain", title: "Дизайн и брендинг", icon: "Palette", color: "#65A30D" },
+  { id: "upakovka", title: "Упаковка", icon: "Package", color: "#B45309" },
+  { id: "posuda", title: "Посуда и инвентарь", icon: "UtensilsCrossed", color: "#78716C" },
+  { id: "kassy", title: "Кассы, учёт и интеграции", icon: "Receipt", color: "#475569" },
+  { id: "kurery", title: "Курьеры и логистика", icon: "Bike", color: "#EA580C" },
+  { id: "yuristy", title: "Юристы и бухгалтерия", icon: "Scale", color: "#334155" },
+  { id: "personal", title: "Найм персонала", icon: "Users", color: "#0891B2" },
+  { id: "obuchenie", title: "Обучение", icon: "GraduationCap", color: "#DC2626" },
+];
+
+export const getSection = (id: string) => PARTNER_SECTIONS.find((s) => s.id === id)!;
+
+/** Города: ALL_RUSSIA значит «работает по всей России» (онлайн или в любом городе). */
+export const ALL_RUSSIA = "вся Россия";
+
+/** Города для фильтра (как на страницах /goroda). */
+export const PARTNER_CITIES = ["Москва", "Санкт-Петербург", "Самара", "Череповец", "Новосибирск", "Екатеринбург", "Казань", "Нижний Новгород", "Краснодар", "Ростов-на-Дону", "Челябинск", "Уфа", "Красноярск", "Воронеж", "Сургут", "Нефтеюганск", "Пермь", "Тюмень", "Сочи"];
+
 export type Partner = {
   slug: string;
+  section: string;
+  cities: string[];
   name: string;
   logo: string;
   tagline: string;
@@ -11,18 +43,21 @@ export type Partner = {
   /** Иконка категории для плитки (имя из components/ui/icon). */
   icon: string;
   isNew?: boolean;
-  promo?: { code: string; text: string };
+  /** Промокод или спецпредложение. code нет — значит предложение без кода. */
+  promo?: { code?: string; title?: string; text: string };
 };
 
 export const PARTNERS: Partner[] = [
   {
     slug: "starter",
+    section: "dostavka",
+    cities: [ALL_RUSSIA],
     icon: "Truck",
     name: "STARTER",
     logo: "/partners/starter.png",
     tagline: "Приложение, сайт и программа лояльности для ресторана",
     url: "https://www.starterapp.ru/?utm_source=partners&utm_medium=sitnikov",
-    category: "своя доставка",
+    category: "Своя доставка и приложения",
     isNew: true,
     promo: {
       code: "AGREGATORYPRO",
@@ -43,12 +78,14 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "prolens",
+    section: "analitika",
+    cities: [ALL_RUSSIA],
     icon: "FileBarChart",
     name: "ProLens",
     logo: "/partners/prolens.svg",
     tagline: "Аналитика прибыли для партнёров Яндекс Еды",
     url: "https://prolens.pro/",
-    category: "аналитика",
+    category: "Аналитика",
     isNew: true,
     description:
       "Расширение для браузера, которое показывает честную экономику заведения прямо в кабинете Яндекс Еды: комиссии, акции, продвижение и штрафы уже вычтены — остаётся чистый доход по каждому ресторану.",
@@ -64,12 +101,14 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "outline",
+    section: "geo",
+    cities: [ALL_RUSSIA],
     icon: "MapPin",
     name: "Outline",
     logo: "/partners/outline.png",
     tagline: "Продвижение ресторана на Яндекс Картах и 2ГИС",
     url: "https://outlineagency.ru/",
-    category: "геомаркетинг",
+    category: "Геомаркетинг и карты",
     isNew: true,
     description:
       "Агентство геомаркетинга: выводит карточку заведения в топ Яндекс Карт и 2ГИС, оформляет её и работает с рейтингом. Канал, который приводит гостей в зал и на самовывоз — там, где агрегатор не помогает.",
@@ -84,8 +123,92 @@ export const PARTNERS: Partner[] = [
     forWhom:
       "Заведениям с залом и самовывозом, которым важен поток гостей поблизости: большинство людей ищут, где поесть рядом, именно на картах.",
   },
+  {
+    slug: "inno-clouds",
+    section: "avtomatizaciya",
+    cities: [ALL_RUSSIA],
+    icon: "LayoutDashboard",
+    name: "INNO Cloud",
+    logo: "/partners/inno.webp",
+    tagline: "Цифровая система продаж для ресторанов, кафе и сетей",
+    url: "https://inno-clouds.ru/",
+    category: "Автоматизация ресторана",
+    isNew: true,
+    promo: {
+      title: "Демо для гостей agregatory.pro",
+      text: "Оставьте заявку на демо: покажут, какие инструменты помогут увеличить продажи именно в вашем заведении.",
+    },
+    description:
+      "Платформа для автоматизации обслуживания и роста выручки: QR меню, киоски самообслуживания, планшеты, онлайн бронирование, доставка, мобильное приложение и оплата в одной системе. Работает с iiko и r_keeper, ускоряет обслуживание, снимает часть нагрузки с персонала и поднимает средний чек за счёт допродаж на основе ИИ.",
+    points: [
+      "QR меню с заказом и оплатой без ожидания официанта",
+      "Киоски и планшеты самообслуживания с предложением комбо и дополнительных блюд",
+      "Интеграции с iiko и r_keeper без замены системы учёта",
+      "Онлайн бронирование, электронная очередь и уведомления о заказах",
+      "Доставка, сайт и мобильное приложение",
+      "Конструктор дизайна под стиль бренда",
+      "Аналитика продаж и управление цифровым меню",
+      "Настройка интерфейса под бренд и сопровождение внедрения",
+    ],
+    forWhom:
+      "Ресторанам, кофейням, фастфуду и сетям, которые хотят обслуживать больше гостей без очередей, снизить нагрузку на команду и зарабатывать больше с каждого заказа.",
+  },
+  {
+    slug: "cifra",
+    section: "marketing",
+    cities: [ALL_RUSSIA],
+    icon: "TrendingUp",
+    name: "ЦИФРÁ",
+    logo: "/partners/cifra.webp",
+    tagline: "Лаборатория маркетинга: маркетинг и лояльность на основе данных",
+    url: "https://www.cifralaboratory.com/?utm_source=agregatorypro&utm_medium=partner&utm_campaign=1cosult",
+    category: "Маркетинг и CRM",
+    isNew: true,
+    promo: {
+      code: "АГРЕГАТОРЫ",
+      text: "Промокод на первичную консультацию: назовите его при обращении.",
+    },
+    description:
+      "Помогают находить и удерживать гостей: выясняют, откуда приходят гости, почему не возвращаются и какие действия на самом деле влияют на выручку. Выстраивают маркетинг как систему: от привлечения и развития доставки до CRM и повторных продаж.",
+    points: [
+      "Аудит: находят слабые места и точки роста",
+      "Стратегия: план привлечения и удержания гостей",
+      "Аналитика: настраивают учёт и считают эффективность каналов",
+      "Порядок в рекламе, контенте и коммуникациях",
+      "CRM маркетинг и программы лояльности",
+      "Результат в понятных цифрах: ROMI, ROAS, CAC",
+    ],
+    forWhom:
+      "Ресторанам, сетям и компаниям, которые хотят системно управлять маркетингом, понимать окупаемость каналов и расти не за счёт случайных акций, а за счёт работающей системы.",
+  },
+  {
+    slug: "pryamikom",
+    section: "kurery",
+    cities: [ALL_RUSSIA],
+    icon: "Bike",
+    name: "Прямиком",
+    logo: "/partners/pryamikom.svg",
+    tagline: "Мастер Деливери: курьеры для бизнеса тогда, когда они нужны",
+    url: "https://pryamikom.ru/?utm_source=agregatorypro&utm_medium=partner",
+    category: "Курьеры и логистика",
+    isNew: true,
+    promo: {
+      title: "10 первых доставок за 1 ₽",
+      text: "Попробуйте сервис в работе. Предложение действует на условиях акции сервиса и не является публичной офертой.",
+    },
+    description:
+      "Помогают ресторанам, кафе, сетям и интернет магазинам доставлять заказы гостям, справляться с пиковой нагрузкой и управлять своей курьерской службой. Работают в 260 городах России, больше 40 000 заказов в день, своя технологическая платформа управления доставкой.",
+    points: [
+      "Курьеры «Прямиком»: доставка заказов вашим гостям",
+      "Курьеры на подхвате: в часы пик, выходные и при нехватке своих курьеров",
+      "Агрегатор курьерских парков: заказ уходит партнёру, оптимальному по цене и времени",
+      "Управление своими курьерами: заказы, маршруты, смены и контроль в одной системе",
+      "Быстрый старт без интеграции: курьера можно вызвать через сайт",
+    ],
+    forWhom:
+      "Ресторанам, кафе, dark kitchen, продуктовым магазинам и сетям, которым важно доставлять свои заказы и не зависеть от одного логистического партнёра. Чтобы начать, зарегистрируйте компанию на сайте, пройдите проверку, пополните баланс и вызывайте курьера.",
+  },
 ];
-
 /** Переход на сайт партнёра через наш адрес: так считаем клики (api/go.php). */
 export const partnerGoUrl = (slug: string) => `/go/${slug}`;
 
