@@ -1,3 +1,4 @@
+import { plainText } from "@/lib/rich-text";
 import Icon from "@/components/ui/icon";
 import { Link } from "react-router-dom";
 import type { TermCard as TermCardData } from "@/data/term-index";
@@ -27,8 +28,8 @@ const TermCard = ({
       </span>
     </div>
 
-    <p className="mt-3 text-[1em] leading-snug text-brand">{term.short}</p>
-    <p className="mt-3 leading-relaxed text-cream-muted">{term.full}</p>
+    <p className="mt-3 text-[1em] leading-snug text-brand">{plainText(term.short)}</p>
+    <p className="mt-3 leading-relaxed text-cream-muted">{plainText(term.full)}</p>
 
     {term.formula && (
       <p className="mt-4 rounded-2xl border border-cream/15 bg-cream/[0.04] px-4 py-3 font-mono text-[max(12px,0.88em)] leading-snug text-cream">
@@ -53,7 +54,7 @@ const TermCard = ({
             <Link
               key={r.slug}
               to={`/slovar/${r.slug}`}
-              title={r.short}
+              title={plainText(r.short)}
               className="inline-flex items-center gap-1.5 rounded-lg bg-cream/[0.08] px-3 py-1.5 text-[max(12px,0.84em)] text-cream transition-colors hover:bg-brand hover:text-foreground"
             >
               {r.term}

@@ -29,7 +29,7 @@ const GlossaryPage = () => {
   const [letter, setLetter] = useState<string | null>(null);
 
   useSeo({
-    title: "Глоссарий доставки: 146 терминов простыми словами",
+    title: "Глоссарий доставки: 147 терминов простыми словами",
     description: `ДРР, ROMI, GMV, юнит-экономика, фудкост, SLA — ${TERM_INDEX.length} термин доставки простым языком с формулами, примерами и навигацией по буквам.`,
     path: pathname,
     jsonLd: [

@@ -1,3 +1,4 @@
+import { plainText } from "@/lib/rich-text";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
@@ -173,7 +174,7 @@ const TermSearch = ({
                     <Highlight text={t.term} query={value} />
                   </span>
                   <span className="mt-0.5 line-clamp-2 block text-[max(12px,0.85em)] leading-snug text-cream-muted">
-                    {t.short}
+                    {plainText(t.short)}
                   </span>
                 </span>
                 <span className="shrink-0 rounded-md bg-cream/10 px-2 py-1 text-[max(12px,0.7em)] text-cream-muted">

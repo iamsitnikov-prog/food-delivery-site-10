@@ -1,3 +1,4 @@
+import { plainText } from "@/lib/rich-text";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
@@ -129,7 +130,7 @@ const TermAside = ({ term }: { term: GlossaryTerm }) => {
               <Link
                 key={l.slug}
                 to={`/slovar/${l.slug}`}
-                title={l.short}
+                title={plainText(l.short)}
                 className="rounded-xl border border-foreground/15 bg-cream/70 px-3.5 py-2 text-[max(12px,0.88em)] leading-none transition-colors hover:border-foreground/40 hover:bg-cream"
               >
                 {l.term}

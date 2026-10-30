@@ -14,7 +14,7 @@ import {
   type GlossaryTerm,
 } from "@/data/term-index";
 import { termDescription, termTitle } from "@/lib/term-seo";
-import { richText } from "@/lib/rich-text";
+import { richText, plainText } from "@/lib/rich-text";
 import TermSectionBlock from "@/components/glossary/TermSectionBlock";
 import TermAside from "@/components/glossary/TermAside";
 import { PEOPLE } from "@/data/team";
@@ -107,7 +107,7 @@ const GlossaryTermPage = () => {
                 name: `Что такое ${term.term}?`,
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: `${term.short} ${term.full}`,
+                  text: plainText(`${term.short} ${term.full}`),
                 },
               },
               ...(term.formula
@@ -146,7 +146,7 @@ const GlossaryTermPage = () => {
             {brief.term}
           </h1>
           <p className="mt-5 max-w-[680px] text-[1.08em] leading-snug text-muted-foreground">
-            {brief.short}
+            {plainText(brief.short)}
           </p>
         </section>
       </main>
@@ -186,7 +186,7 @@ const GlossaryTermPage = () => {
           {term.term}
         </h1>
         <p className="mt-6 max-w-[680px] text-[1.15em] leading-snug text-muted-foreground">
-          {term.short}
+          {richText(term.short)}
         </p>
       </section>
 
@@ -325,7 +325,7 @@ const GlossaryTermPage = () => {
                   {f.q}
                 </h3>
                 <p className="mt-2.5 leading-snug text-muted-foreground">
-                  {f.a}
+                  {richText(f.a)}
                 </p>
               </div>
             ))}

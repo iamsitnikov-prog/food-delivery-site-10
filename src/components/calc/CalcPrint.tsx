@@ -318,7 +318,7 @@ const CalcPrint = ({ input, r, title, full = true }: Props) => {
           <span style={{ color: BRAND, fontWeight: 700 }}>Бесплатный разбор вашего проекта</span>
           <br />
           <span style={{ fontSize: 10.5 }}>
-            +7 931 002-82-22 · Telegram @sitnikovy · agregatory.pro
+            +7 931 002-82-22 · Telegram @sitnikovy1 · agregatory.pro
           </span>
         </div>
 

@@ -1,3 +1,4 @@
+import { plainText } from "@/lib/rich-text";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { GLOSSARY } from "@/data/term-index";
@@ -48,7 +49,7 @@ const TermsStrip = ({
                 />
               </span>
               <span className="mt-1.5 block text-[max(12px,0.88em)] leading-snug text-cream-muted">
-                {t.short}
+                {plainText(t.short)}
               </span>
             </Link>
           ))}

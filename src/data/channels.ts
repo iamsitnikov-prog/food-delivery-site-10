@@ -14,7 +14,7 @@ export type ReadChannel = {
 export const READ_CHANNELS: ReadChannel[] = [
   {
     id: "vnutri-edy",
-    label: "Внутри еды",
+    label: "Внутри Еды",
     handle: "@vnutri_edy_channel",
     href: "https://t.me/vnutri_edy_channel",
     icon: "Send",
@@ -41,7 +41,7 @@ export const READ_CHANNELS: ReadChannel[] = [
   {
     id: "dzen",
     label: "Дзен",
-    handle: "Внутри еды на Дзене",
+    handle: "Внутри Еды на Дзене",
     href: "https://dzen.ru/id/669050347cf47c302ba6bd98?share_to=link",
     icon: "BookOpen",
     author: "Юрий Ситников",

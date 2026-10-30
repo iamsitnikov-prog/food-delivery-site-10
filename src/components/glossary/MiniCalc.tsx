@@ -39,7 +39,7 @@ const FIELDS: Record<MiniCalcMeta["kind"], Field[]> = {
 const rub = (n: number) =>
   `${Math.round(n).toLocaleString("ru-RU")} ₽`;
 
-const NDS_LIMIT = 60_000_000;
+const NDS_LIMIT = 20_000_000; // порог освобождения от НДС на УСН в 2026 году
 
 type Result = { label: string; value: string; note: string; warn?: boolean };
 
@@ -127,8 +127,8 @@ const compute = (kind: MiniCalcMeta["kind"], v: Record<string, number>): Result 
     note:
       year >= NDS_LIMIT
         ? monthsLeft > 0
-          ? `порог 60 млн будет пройден примерно через ${Math.max(0, Math.floor(monthsLeft))} мес`
-          : "порог 60 млн уже пройден"
+          ? `порог 20 млн будет пройден примерно через ${Math.max(0, Math.floor(monthsLeft))} мес`
+          : "порог 20 млн уже пройден"
         : "в пределах порога 60 млн",
     warn: year >= NDS_LIMIT,
   };
