@@ -4,7 +4,7 @@ import { pathToFileURL } from "url";
 import { BLOG_POSTS as ALL_POSTS } from "../src/data/blog-posts";
 
 import { SERVICE_PAGES, CITY_PAGES } from "../src/data/seo-pages";
-import { PARTNERS } from "../src/data/partners";
+import { PARTNERS, USEFUL_SITES } from "../src/data/partners";
 import { QUIZ_QUESTIONS } from "../src/data/quiz";
 import { CALC_PAGES, VISIBLE_CALC_PAGES } from "../src/data/calculators";
 import { CHECKLIST_PAGES } from "../src/data/checklists";
@@ -1052,15 +1052,44 @@ ${READ_CHANNELS.map((c) => `<p><a href="${c.href}" rel="noopener">${esc(clean(c.
 
 pages.push({
   route: "/partnery",
-  title: "Партнёры agregatory.pro — сервисы для ресторанов",
-  description: "Сервисы, которые мы советуем клиентам и используем сами в работе с проектами.",
-  body: `<h1>С кем работаем</h1>
-${PARTNERS.map(
-    (p) =>
-      `<h2>${esc(clean(p.name))}</h2><p>${esc(clean(p.tagline))}</p><p>${esc(clean(p.description))}</p>` +
-      (p.points?.length ? `<ul>${p.points.map((x) => `<li>${esc(clean(x))}</li>`).join("")}</ul>` : ""),
-  ).join("")}`,
+  title: "Партнёры и полезные сайты для ресторанов на агрегаторах | agregatory.pro",
+  description:
+    "Сервисы, которые мы рекомендуем ресторанам: своя доставка, аналитика прибыли, продвижение на картах. И полезные официальные сайты для партнёров Яндекс Еды.",
+  body: `<h1>Партнёры и полезные сайты</h1>
+<h2>Сервисы, которые мы рекомендуем</h2>
+<ul>${PARTNERS.map(
+    (p) => `<li><a href="/partnery/${p.slug}">${esc(clean(p.name))}</a> (${esc(clean(p.category))}): ${esc(clean(p.tagline))}</li>`,
+  ).join("")}</ul>
+<h2>Полезные сайты</h2>
+<ul>${USEFUL_SITES.map(
+    (u) => `<li><a href="${u.url}" rel="noopener">${esc(clean(u.name))}</a>: ${esc(clean(u.text))}</li>`,
+  ).join("")}</ul>`,
 });
+
+for (const p of PARTNERS) {
+  const others = PARTNERS.filter((x) => x.slug !== p.slug);
+  pages.push({
+    route: `/partnery/${p.slug}`,
+    title: `${p.name}: ${p.tagline.toLowerCase()} | agregatory.pro`,
+    description: clean(p.description).slice(0, 155),
+    body: `<h1>${esc(clean(p.name))}</h1>
+<p>${esc(clean(p.tagline))}</p>
+<h2>Что это за сервис</h2><p>${esc(clean(p.description))}</p>
+<h2>Что входит</h2><ul>${p.points.map((x) => `<li>${esc(clean(x))}</li>`).join("")}</ul>
+<h2>Кому подойдёт</h2><p>${esc(clean(p.forWhom))}</p>
+${p.promo ? `<h2>Промокод</h2><p>${esc(p.promo.code)}. ${esc(clean(p.promo.text))}</p>` : ""}
+<p><a href="/go/${p.slug}" rel="sponsored noopener">Перейти на сайт ${esc(clean(p.name))}</a></p>
+<h2>Другие партнёры</h2><ul>${others.map((o) => `<li><a href="/partnery/${o.slug}">${esc(clean(o.name))}</a>: ${esc(clean(o.tagline))}</li>`).join("")}</ul>
+<p><a href="/partnery">Все партнёры и полезные сайты</a></p>`,
+  });
+}
+
+// Куда ведут адреса /go/<партнёр>: читает api/go.php, считает клики и перенаправляет.
+fs.writeFileSync(
+  path.join(OUT, "partners-links.json"),
+  JSON.stringify(Object.fromEntries(PARTNERS.map((p) => [p.slug, p.url]))),
+  "utf-8",
+);
 
 
 const OG = `${SITE}/og-preview.jpg?v=3`;
@@ -1181,6 +1210,7 @@ const ROUTE_CHUNKS: [RegExp, string][] = [
   [/^\/blog$/, "Blog"],
   [/^\/blog\/.+/, "BlogPost"],
   [/^\/partnery$/, "Partners"],
+  [/^\/partnery\/.+/, "PartnerPage"],
   [/^\/testy$/, "Quizzes"],
   [/^\/testy\/mini\/.+$/, "MiniQuiz"],
   [/^\/(test|testy\/.+)$/, "Quiz"],
@@ -1478,6 +1508,7 @@ const PRIORITY: Record<string, number> = {
 const priorityOf = (route: string) => {
   if (PRIORITY[route]) return PRIORITY[route];
   if (route.startsWith("/slovar/")) return 0.6;
+  if (route.startsWith("/partnery/")) return 0.6;
   if (route.startsWith("/blog/")) return 0.7;
   if (route.startsWith("/kalkulyatory/")) return 0.8;
   if (route.startsWith("/uslugi/") || route.startsWith("/goroda/")) return 0.8;

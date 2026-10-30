@@ -14,6 +14,7 @@ const SeoIndex = lazy(() => import("./pages/SeoIndex"));
 const SeoLanding = lazy(() => import("./pages/SeoLanding"));
 const Blog = lazy(() => import("./pages/Blog"));
 const PartnersPage = lazy(() => import("./pages/Partners"));
+const PartnerPage = lazy(() => import("./pages/PartnerPage"));
 const BlogPost = lazy(() => import("./pages/BlogPost"));
 const Quiz = lazy(() => import("./pages/Quiz"));
 const Quizzes = lazy(() => import("./pages/Quizzes"));
@@ -66,6 +67,7 @@ export const AppShell = ({ Router }: { Router: (p: { children: ReactNode }) => J
           <Route path="/goroda/:slug" element={<SeoLanding />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/partnery" element={<PartnersPage />} />
+          <Route path="/partnery/:slug" element={<PartnerPage />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/test" element={<Quiz />} />
           <Route path="/testy" element={<Quizzes />} />

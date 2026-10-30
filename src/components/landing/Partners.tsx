@@ -19,11 +19,9 @@ const Partners = () => {
 
       <div className="grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
         {PARTNERS.map((p) => (
-          <a
+          <Link
             key={p.slug}
-            href={p.url}
-            target="_blank"
-            rel="noopener noreferrer"
+            to={`/partnery/${p.slug}`}
             className="reveal group flex flex-col rounded-[28px] bg-surface p-4 text-cream transition-transform duration-500 hover:-translate-y-1 md:p-8"
           >
             <div className="flex items-start gap-3 md:gap-4">
@@ -66,10 +64,10 @@ const Partners = () => {
             )}
 
             <span className="mt-7 inline-flex items-center gap-2 font-medium text-brand">
-              перейти на сайт
-              <Icon name="ArrowUpRight" size={18} className="transition-transform group-hover:translate-x-0.5" />
+              подробнее
+              <Icon name="ArrowRight" size={18} className="transition-transform group-hover:translate-x-0.5" />
             </span>
-          </a>
+          </Link>
         ))}
 
         <div className="reveal flex flex-col justify-between rounded-[28px] bg-pale p-4 md:p-8">

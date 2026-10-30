@@ -5,15 +5,23 @@ import LeadForm from "@/components/landing/LeadForm";
 import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
-import { PARTNERS } from "@/data/partners";
+import { useState } from "react";
+import { PARTNERS, USEFUL_SITES } from "@/data/partners";
+
+const ALL = "все";
+const SITES = "полезные сайты";
+const FILTERS = [ALL, ...Array.from(new Set(PARTNERS.map((p) => p.category))), SITES];
 
 const PartnersPage = () => {
   const { pathname } = useLocation();
+  const [filter, setFilter] = useState(ALL);
+  const partners = filter === ALL ? PARTNERS : PARTNERS.filter((p) => p.category === filter);
+  const sites = filter === ALL || filter === SITES ? USEFUL_SITES : [];
 
   useSeo({
-    title: "Партнёры — сервисы для ресторанов на агрегаторах | agregatory.pro",
+    title: "Партнёры и полезные сайты для ресторанов на агрегаторах | agregatory.pro",
     description:
-      "Сервисы, которые мы рекомендуем клиентам и используем в работе с проектами: аналитика прибыли, инструменты для партнёров Яндекс Еды и Деливери.",
+      "Сервисы, которые мы рекомендуем ресторанам: своя доставка, аналитика прибыли, продвижение на картах. И полезные официальные сайты для партнёров Яндекс Еды.",
     path: pathname,
   });
 
@@ -30,7 +38,7 @@ const PartnersPage = () => {
             <span className="text-foreground">партнёры</span>
           </nav>
           <h1 className="max-w-[17ch] font-display text-[23px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[68px]">
-            Сервисы, которые мы рекомендуем
+            Партнёры и полезные сайты
           </h1>
           <p className="mt-6 max-w-[620px] text-[1.1em] leading-snug text-muted-foreground">
             Мы&nbsp;не&nbsp;занимаемся всем сразу. Там, где нужен отдельный инструмент, советуем тех, кем пользуемся сами в&nbsp;работе с&nbsp;проектами.
@@ -39,93 +47,110 @@ const PartnersPage = () => {
       </div>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <div className="grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {PARTNERS.map((p) => (
-            <article
-              key={p.slug}
-              className="flex flex-col rounded-[28px] bg-surface p-4 text-cream md:p-8"
+        <div className="mb-6 flex flex-wrap gap-2 md:mb-8" role="tablist" aria-label="Фильтр по категориям">
+          {FILTERS.map((f) => (
+            <button
+              key={f}
+              type="button"
+              role="tab"
+              aria-selected={filter === f}
+              onClick={() => setFilter(f)}
+              className={`rounded-xl px-4 py-2 text-[max(12px,0.9em)] font-medium transition-colors ${
+                filter === f ? "bg-primary text-primary-foreground" : "bg-pale text-foreground/75 hover:text-foreground"
+              }`}
             >
-              <div className="flex items-start gap-3 md:gap-4">
-                <img
-                  src={p.logo}
-                  alt={`Логотип ${p.name}`}
-                  width={96}
-                  height={96}
-                  loading="lazy"
-                  decoding="async"
-                  className="h-12 w-12 shrink-0 rounded-xl bg-cream/[0.07] object-contain p-2"
-                />
-                <div className="min-w-0 flex-1">
-                  <h2 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.03em]">
-                    {p.name}
-                  </h2>
-                  <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <span className="rounded-lg bg-brand px-2.5 py-1 text-[max(12px,0.75em)] font-medium text-foreground">
-                      {p.category}
-                    </span>
-                    {p.isNew && (
-                      <span className="rounded-lg border border-brand px-2.5 py-1 text-[max(12px,0.75em)] font-medium uppercase tracking-wide text-brand">
-                        новое
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              <p className="mt-4 min-h-[2.6em] text-[1.02em] leading-snug">{p.tagline}</p>
-
-              <p className="mt-4 flex-1 text-[0.92em] leading-relaxed text-cream-muted">{p.description}</p>
-
-              {p.promo && (
-                <div className="mt-5 inline-flex w-fit max-w-full flex-wrap items-center gap-x-2.5 gap-y-1 rounded-xl border border-brand/40 px-3.5 py-2.5">
-                  <span className="text-[max(12px,0.75em)] uppercase tracking-wide text-cream-muted">промокод</span>
-                  <span className="min-w-0 break-all font-display text-[1.05em] font-semibold tracking-[-0.01em] text-brand">
-                    {p.promo.code}
-                  </span>
-                </div>
-              )}
-
-              <details className="group mt-6 border-t border-cream/15 pt-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-[max(12px,0.9em)] font-medium text-cream-muted transition-colors hover:text-cream [&::-webkit-details-marker]:hidden">
-                  что входит
-                  <Icon
-                    name="ChevronDown"
-                    size={17}
-                    className="shrink-0 transition-transform duration-300 group-open:rotate-180"
-                  />
-                </summary>
-
-                <ul className="mt-5 space-y-2.5">
-                  {p.points.map((point) => (
-                    <li key={point} className="flex gap-2.5 text-[max(12px,0.9em)] leading-snug text-cream-muted">
-                      <Icon name="Check" size={16} className="mt-0.5 shrink-0 text-brand" />
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="mt-5 rounded-[18px] bg-cream/[0.06] p-4">
-                  <div className="text-[max(12px,0.78em)] uppercase tracking-wide text-cream-muted">кому подойдёт</div>
-                  <p className="mt-2 text-[max(12px,0.9em)] leading-relaxed text-cream-muted">{p.forWhom}</p>
-                </div>
-
-                {p.promo && (
-                  <p className="mt-4 text-[max(12px,0.85em)] leading-snug text-cream-muted">{p.promo.text}</p>
-                )}
-              </details>
-
-              <a
-                href={p.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-flex items-center justify-center gap-2 rounded-xl bg-brand px-5 py-3 font-medium text-foreground transition-transform hover:-translate-y-0.5"
-              >
-                перейти на сайт
-                <Icon name="ArrowUpRight" size={18} />
-              </a>
-            </article>
+              {f}
+            </button>
           ))}
         </div>
+
+        {partners.length > 0 && (
+          <>
+            <h2 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.1em]">
+              Сервисы, которые мы рекомендуем
+            </h2>
+            <p className="mt-2 max-w-[620px] text-muted-foreground">
+              Нажмите на&nbsp;сервис: расскажем, что он&nbsp;умеет и&nbsp;кому подойдёт.
+            </p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 md:gap-4">
+              {partners.map((p) => (
+                <Link
+                  key={p.slug}
+                  to={`/partnery/${p.slug}`}
+                  className="group flex flex-col rounded-[24px] bg-surface p-5 text-cream transition-transform duration-300 hover:-translate-y-1 md:p-6"
+                >
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={p.logo}
+                      alt={`Логотип ${p.name}`}
+                      width={96}
+                      height={96}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-12 w-12 shrink-0 rounded-xl bg-cream/[0.07] object-contain p-2"
+                    />
+                    <div className="min-w-0">
+                      <div className="font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em]">{p.name}</div>
+                      <div className="mt-1 inline-flex items-center gap-1.5 text-[max(12px,0.8em)] text-brand">
+                        <Icon name={p.icon} size={14} />
+                        {p.category}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="mt-4 flex-1 leading-snug text-cream-muted">{p.tagline}</p>
+                  <div className="mt-5 flex items-center justify-between gap-3">
+                    {p.promo ? (
+                      <span className="inline-flex items-center gap-1.5 rounded-lg border border-brand/40 px-2.5 py-1 text-[max(12px,0.78em)] text-brand">
+                        <Icon name="Gift" size={14} />
+                        есть промокод
+                      </span>
+                    ) : (
+                      <span />
+                    )}
+                    <span className="inline-flex items-center gap-1.5 font-medium text-brand">
+                      подробнее
+                      <Icon name="ArrowRight" size={17} className="transition-transform group-hover:translate-x-0.5" />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
+
+        {sites.length > 0 && (
+          <div className={partners.length > 0 ? "mt-12 md:mt-16" : ""}>
+            <h2 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.025em] md:text-[2.1em]">
+              Полезные сайты
+            </h2>
+            <p className="mt-2 max-w-[620px] text-muted-foreground">
+              Официальные ресурсы, которые стоит держать в&nbsp;закладках каждому, кто работает с&nbsp;Яндекс Едой.
+            </p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2 md:gap-4">
+              {sites.map((u) => (
+                <a
+                  key={u.url}
+                  href={u.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex gap-4 rounded-[24px] bg-pale p-5 transition-transform duration-300 hover:-translate-y-1 md:p-6"
+                >
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand text-foreground">
+                    <Icon name={u.icon} size={22} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-start justify-between gap-3">
+                      <span className="font-display text-[1.2em] font-semibold leading-tight tracking-[-0.02em]">{u.name}</span>
+                      <Icon name="ArrowUpRight" size={18} className="mt-1 shrink-0 text-foreground/60 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                    </span>
+                    <span className="mt-1 block text-[max(12px,0.8em)] text-foreground/55">{u.category}</span>
+                    <span className="mt-2 block leading-snug text-foreground/75">{u.text}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="mt-4 flex flex-col justify-between gap-6 rounded-[24px] md:rounded-[32px] bg-pale p-4 md:flex-row md:items-center md:p-11">
           <div>

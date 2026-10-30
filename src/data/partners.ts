@@ -8,6 +8,8 @@ export type Partner = {
   description: string;
   points: string[];
   forWhom: string;
+  /** Иконка категории для плитки (имя из components/ui/icon). */
+  icon: string;
   isNew?: boolean;
   promo?: { code: string; text: string };
 };
@@ -15,6 +17,7 @@ export type Partner = {
 export const PARTNERS: Partner[] = [
   {
     slug: "starter",
+    icon: "Truck",
     name: "STARTER",
     logo: "/partners/starter.png",
     tagline: "Приложение, сайт и программа лояльности для ресторана",
@@ -40,6 +43,7 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "prolens",
+    icon: "FileBarChart",
     name: "ProLens",
     logo: "/partners/prolens.svg",
     tagline: "Аналитика прибыли для партнёров Яндекс Еды",
@@ -60,6 +64,7 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "outline",
+    icon: "MapPin",
     name: "Outline",
     logo: "/partners/outline.png",
     tagline: "Продвижение ресторана на Яндекс Картах и 2ГИС",
@@ -78,5 +83,50 @@ export const PARTNERS: Partner[] = [
     ],
     forWhom:
       "Заведениям с залом и самовывозом, которым важен поток гостей поблизости: большинство людей ищут, где поесть рядом, именно на картах.",
+  },
+];
+
+/** Переход на сайт партнёра через наш адрес: так считаем клики (api/go.php). */
+export const partnerGoUrl = (slug: string) => `/go/${slug}`;
+
+export const getPartner = (slug: string) => PARTNERS.find((p) => p.slug === slug);
+
+/** Полезные сайты: официальные ресурсы, которые советуем ресторанам. Ведут сразу наружу. */
+export type UsefulSite = {
+  name: string;
+  url: string;
+  icon: string;
+  category: string;
+  text: string;
+};
+
+export const USEFUL_SITES: UsefulSite[] = [
+  {
+    name: "Справка для партнёров Яндекс Еды",
+    url: "https://yandex.com/support/eda-vendor-ru/ru/",
+    icon: "BookOpen",
+    category: "правила",
+    text: "Официальные ответы по заказам, меню, рейтингу, финансам и штрафам. Сверяйтесь с ней перед любым спором с поддержкой.",
+  },
+  {
+    name: "Единые условия Яндекса",
+    url: "https://yandex.ru/legal/multioffer",
+    icon: "Scale",
+    category: "правила",
+    text: "Оферта, по которой работает ресторан: ответственность сторон, удержания, сроки на оспаривание.",
+  },
+  {
+    name: "Бизнес школа Яндекс Еды",
+    url: "https://yandex.ru/project/eda/businessschool",
+    icon: "GraduationCap",
+    category: "обучение",
+    text: "Бесплатные курсы и вебинары сервиса для ресторанов: продвижение, меню, операционная работа.",
+  },
+  {
+    name: "Курс по Яндекс Еде на Яндекс Ярде",
+    url: "https://yard.yandex.ru/courses/yandex-eda",
+    icon: "GraduationCap",
+    category: "обучение",
+    text: "Курс, который Юрий Ситников делал вместе с командой Яндекса: как устроена работа партнёра от подключения до роста.",
   },
 ];
