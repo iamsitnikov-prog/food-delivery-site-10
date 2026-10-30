@@ -73,7 +73,7 @@ const PartnersPage = () => {
                   aria-pressed={active}
                   onClick={() => setFilter(f)}
                   className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl border px-3.5 py-2 text-[max(12px,0.88em)] font-medium transition-colors ${
-                    active ? "border-foreground bg-foreground text-background" : "border-foreground/15 bg-white/70 text-foreground/80 hover:border-foreground/40"
+                    active ? "border-foreground bg-foreground text-background" : "border-transparent bg-pale text-foreground/80 hover:border-foreground/30"
                   }`}
                 >
                   {sec && <Icon name={sec.icon} size={15} />}
@@ -88,7 +88,7 @@ const PartnersPage = () => {
             <select
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              className="rounded-xl border border-foreground/15 bg-white/70 px-3 py-2 font-medium text-foreground outline-none focus:border-foreground/50"
+              className="rounded-xl border border-transparent bg-pale px-3 py-2 font-medium text-foreground outline-none focus:border-foreground/50"
             >
               <option value="">все города</option>
               {CITIES.map((c) => (
@@ -101,7 +101,7 @@ const PartnersPage = () => {
         </div>
 
         {groups.length === 0 && filter !== SITES && (
-          <p className="mt-8 rounded-[20px] bg-white/60 p-5 text-foreground/75">
+          <p className="mt-8 rounded-[20px] bg-pale p-5 text-foreground/75">
             В этом городе пока нет партнёров из этого раздела. Посмотрите все города или напишите нам: подскажем, к кому обратиться.
           </p>
         )}
@@ -120,7 +120,7 @@ const PartnersPage = () => {
                 <Link
                   key={p.slug}
                   to={`/partnery/${p.slug}`}
-                  className="group relative flex min-w-0 flex-col overflow-hidden rounded-[22px] border border-foreground/10 bg-white p-5 pt-6 transition-transform duration-300 hover:-translate-y-1 md:p-6 md:pt-7"
+                  className="group relative flex min-w-0 flex-col overflow-hidden rounded-[20px] bg-pale p-4 transition-transform duration-300 hover:-translate-y-1 md:p-5"
                 >
                   <div className="flex items-center gap-3">
                     <img
@@ -130,7 +130,7 @@ const PartnersPage = () => {
                       height={96}
                       loading="lazy"
                       decoding="async"
-                      className="h-12 w-12 shrink-0 rounded-xl border border-foreground/10 bg-white object-contain p-1.5"
+                      className="h-11 w-11 shrink-0 rounded-xl bg-cream object-contain p-1.5"
                     />
                     <div className="min-w-0">
                       <div className="font-display text-[1.3em] font-semibold leading-tight tracking-[-0.02em]">{p.name}</div>
@@ -140,14 +140,14 @@ const PartnersPage = () => {
                       </div>
                     </div>
                   </div>
-                  <p className="mt-4 flex-1 leading-snug text-foreground/75">{p.tagline}</p>
-                  <p className="mt-3 inline-flex items-center gap-1.5 text-[max(12px,0.8em)] text-foreground/55">
+                  <p className="mt-3 flex-1 leading-snug text-foreground/75">{p.tagline}</p>
+                  <p className="mt-2 inline-flex items-center gap-1.5 text-[max(12px,0.8em)] text-foreground/55">
                     <Icon name="MapPin" size={13} />
                     {p.cities.includes(ALL_RUSSIA) ? "вся Россия" : p.cities.join(", ")}
                   </p>
-                  <div className="mt-5 flex items-center justify-between gap-3">
+                  <div className="mt-3 flex items-center justify-between gap-3">
                     {p.promo ? (
-                      <span className="inline-flex min-w-0 items-center gap-1.5 rounded-lg bg-brand px-2.5 py-1 text-[max(12px,0.78em)] font-medium text-foreground">
+                      <span className="inline-flex min-w-0 items-center gap-1.5 rounded-lg bg-foreground px-2.5 py-1 text-brand text-[max(12px,0.78em)] font-medium">
                         <Icon name="Gift" size={14} className="shrink-0" />
                         <span className="truncate">{p.promo.code ? "есть промокод" : "спецпредложение"}</span>
                       </span>
@@ -179,9 +179,9 @@ const PartnersPage = () => {
                   href={u.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex min-w-0 gap-4 rounded-[22px] border border-foreground/10 bg-white p-5 transition-transform duration-300 hover:-translate-y-1 md:p-6"
+                  className="group flex min-w-0 gap-4 rounded-[20px] bg-pale p-4 md:p-5 transition-transform duration-300 hover:-translate-y-1 md:p-6"
                 >
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-foreground/[0.06] text-foreground">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-cream text-foreground">
                     <Icon name={u.icon} size={22} />
                   </span>
                   <span className="min-w-0 flex-1">
