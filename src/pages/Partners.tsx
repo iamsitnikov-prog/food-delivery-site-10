@@ -82,13 +82,6 @@ const PartnersPage = () => {
               </div>
             ))}
           </div>
-          <p className="mt-3 text-[max(12px,0.9em)] text-foreground/65">
-            Если с&nbsp;партнёром что-то пошло не&nbsp;так, напишите нам в&nbsp;Telegram{" "}
-            <a href="https://t.me/sitnikovy1" className="font-medium underline underline-offset-4">
-              @sitnikovy1
-            </a>
-            .
-          </p>
         </div>
 
         <label className="flex w-fit items-center gap-2 text-[max(12px,0.88em)] text-foreground/70">
