@@ -4,7 +4,7 @@ import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
-import { PARTNER_SECTIONS, PARTNER_CITIES, ALL_RUSSIA, type Partner } from "@/data/partners";
+import { PARTNER_SECTIONS, PARTNER_CITIES, ALL_RUSSIA, SECTION_SERVICES, type Partner } from "@/data/partners";
 import PartnerProfile from "@/components/PartnerProfile";
 
 const MAX_WORKS = 10;
@@ -64,6 +64,12 @@ const PartnerApply = () => {
   const [countries, setCountries] = useState<string[]>([]);
   const [logo, setLogo] = useState<File | null>(null);
   const [vizitka, setVizitka] = useState(false);
+  const [services, setServices] = useState<string[]>([]);
+  const [servicesOther, setServicesOther] = useState("");
+  const sectionId = PARTNER_SECTIONS.find((s) => s.title === section)?.id || "";
+  const serviceGroups = SECTION_SERVICES[sectionId];
+  const serviceOptions = serviceGroups ? [...serviceGroups.main, ...serviceGroups.other] : [];
+  const allServices = () => [...services, ...servicesOther.split(",").map((s) => s.trim()).filter(Boolean)];
   const [works, setWorks] = useState<File[]>([]);
   const [preview, setPreview] = useState<Partner | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -109,6 +115,7 @@ const PartnerApply = () => {
       forWhom: get("for_whom"),
       icon: sec.icon,
       promo: promo ? { title: "Предложение для клиентов agregatory.pro", text: promo } : undefined,
+      services: allServices(),
       works: vizitka ? workUrls : undefined,
       prices: vizitka ? get("prices") || undefined : undefined,
     });
@@ -154,6 +161,7 @@ const PartnerApply = () => {
     else fd.delete("logo");
     fd.delete("works[]");
     fd.set("vizitka", vizitka ? "1" : "");
+    fd.set("services", allServices().join(", "));
     if (vizitka) works.forEach((w) => fd.append("works[]", w));
     setState("sending");
     try {
@@ -222,7 +230,7 @@ const PartnerApply = () => {
               </div>
               <div data-err="section">
                 <Field label="Раздел" required error={errors.section}>
-                  <select value={section} onChange={(e) => setSection(e.target.value)} className={field}>
+                  <select value={section} onChange={(e) => { setSection(e.target.value); setServices([]); }} className={field}>
                     <option value="">выберите раздел</option>
                     {PARTNER_SECTIONS.filter((s) => s.id !== "drugoe").map((s) => (
                       <option key={s.id} value={s.title}>
@@ -236,6 +244,43 @@ const PartnerApply = () => {
                   <input name="section_other" maxLength={120} className={`${field} mt-3`} placeholder="Чем вы занимаетесь" />
                 )}
               </div>
+              {section && (
+                <div>
+                  <span className="mb-1.5 block font-medium">Какие услуги оказываете</span>
+                  {serviceGroups &&
+                    ([
+                      ["Для доставки и агрегаторов", serviceGroups.main],
+                      ["Другие услуги", serviceGroups.other],
+                    ] as const).map(([title, list]) => (
+                      <div key={title} className="mb-3">
+                        <span className="mb-2 block text-[max(12px,0.85em)] font-medium uppercase tracking-wide text-foreground/55">{title}</span>
+                        <div className="flex flex-wrap gap-2">
+                          {list.map((s) => (
+                            <button
+                              key={s}
+                              type="button"
+                              aria-pressed={services.includes(s)}
+                              onClick={() => toggle(services, setServices, s)}
+                              className={`rounded-lg border px-3 py-1.5 text-[max(12px,0.88em)] ${
+                                services.includes(s) ? "border-foreground bg-foreground text-background" : "border-foreground/15 bg-cream"
+                              }`}
+                            >
+                              {s}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  <input
+                    value={servicesOther}
+                    onChange={(e) => setServicesOther(e.target.value)}
+                    maxLength={300}
+                    className={field}
+                    placeholder={serviceOptions.length ? "Другие услуги через запятую" : "Ваши услуги через запятую"}
+                  />
+                  <span className="mt-1.5 block text-[max(12px,0.85em)] text-foreground/55">Отметьте всё, что делаете. Услуги для доставки на вашей странице будут выделены и стоять первыми.</span>
+                </div>
+              )}
               <div data-err="geo">
                 <span className="mb-1.5 block font-medium">
                   Где работаете<span className="text-foreground/50"> *</span>

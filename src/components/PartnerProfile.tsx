@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import PartnerLogo from "@/components/PartnerLogo";
-import { PARTNERS, getSection, partnerGoUrl, ALL_RUSSIA, type Partner } from "@/data/partners";
+import { PARTNERS, SECTION_SERVICES, getSection, partnerGoUrl, ALL_RUSSIA, type Partner } from "@/data/partners";
 
 /** Ссылка Telegram из ника, телефона или ссылки. */
 export const tgHref = (v: string) => {
@@ -66,6 +66,8 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
           </nav>
         )}
 
+        <div className={works.length ? "grid items-center gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-14" : ""}>
+        <div className="min-w-0">
         <div className="flex items-center gap-4">
           <PartnerLogo p={p} className="h-16 w-16 shrink-0 rounded-2xl p-2 text-[2em] md:h-20 md:w-20" />
           <div className="flex flex-col items-start gap-2">
@@ -81,6 +83,41 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
         </div>
         <h1 className="mt-6 break-words font-display text-[28px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[64px]">{p.name}</h1>
         {p.tagline && <p className="mt-4 max-w-[680px] text-[1.15em] leading-snug md:text-[1.35em]">{p.tagline}</p>}
+        {p.services && p.services.length > 0 && (() => {
+          const mainList = SECTION_SERVICES[p.section]?.main || [];
+          const main = p.services.filter((s) => mainList.includes(s));
+          const other = p.services.filter((s) => !mainList.includes(s));
+          return (
+            <div className="mt-6 max-w-[920px] space-y-3">
+              {main.length > 0 && (
+                <ul aria-label="Услуги для доставки" className="flex flex-wrap gap-2">
+                  {main.map((s) => (
+                    <li key={s} className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-3.5 py-1.5 text-[max(12px,0.88em)] font-medium text-brand">
+                      <Icon name="Check" size={14} />
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {other.length > 0 && (
+                <ul aria-label="Другие услуги" className="flex flex-wrap gap-2">
+                  {other.map((s) => (
+                    <li key={s} className="rounded-full bg-pale px-3.5 py-1.5 text-[max(12px,0.88em)] font-medium">
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          );
+        })()}
+        </div>
+        {works.length > 0 && (
+          <button type="button" onClick={() => setOpen(0)} className="group relative hidden aspect-[4/3] overflow-hidden rounded-[32px] bg-pale lg:block" aria-label="Открыть работу 1">
+            <img src={works[0]} alt={`${p.name}: работа 1`} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
+          </button>
+        )}
+        </div>
       </section>
 
       {works.length > 0 && (
