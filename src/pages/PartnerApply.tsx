@@ -249,8 +249,8 @@ const PartnerApply = () => {
                   <span className="mb-1.5 block font-medium">Какие услуги оказываете</span>
                   {serviceGroups &&
                     ([
-                      ["Для доставки и агрегаторов", serviceGroups.main],
-                      ["Другие услуги", serviceGroups.other],
+                      ["Для доставки и агрегаторов, если делаете", serviceGroups.main],
+                      ["Ваши услуги", serviceGroups.other],
                     ] as const).map(([title, list]) => (
                       <div key={title} className="mb-3">
                         <span className="mb-2 block text-[max(12px,0.85em)] font-medium uppercase tracking-wide text-foreground/55">{title}</span>
@@ -278,7 +278,7 @@ const PartnerApply = () => {
                     className={field}
                     placeholder={serviceOptions.length ? "Другие услуги через запятую" : "Ваши услуги через запятую"}
                   />
-                  <span className="mt-1.5 block text-[max(12px,0.85em)] text-foreground/55">Отметьте всё, что делаете. Услуги для доставки на вашей странице будут выделены и стоять первыми.</span>
+                  <span className="mt-1.5 block text-[max(12px,0.85em)] text-foreground/55">Отметьте всё, что делаете. Услуги для доставки, если они есть, будут выделены и стоять первыми. Если с доставкой вы не работаете, отметьте только свои услуги: страница будет такой же полной.</span>
                 </div>
               )}
               <div data-err="geo">
