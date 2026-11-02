@@ -92,7 +92,7 @@ const PartnersPage = () => {
       </div>
 
       <section className="px-5 pb-11 md:px-14 md:pb-24">
-        <div className="mb-8 md:mb-10">
+        <div className="hidden md:block mb-8 md:mb-10">
           <h2 className="font-display text-[1.3em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.6em]">Как мы отбираем партнёров</h2>
           <div className="mt-4 grid gap-3 md:grid-cols-3">
             {TRUST.map((t) => (
