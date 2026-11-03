@@ -12,12 +12,12 @@ export const tgHref = (v: string) => {
   return `https://t.me/${s.replace(/^@/, "").replace(/^t\.me\//, "")}`;
 };
 
-const ctaLabel = (url: string, name: string) =>
+const ctaLabel = (url: string) =>
   /^https?:\/\/(t\.me|telegram\.me)\//.test(url)
     ? "написать в Telegram"
     : /^https?:\/\/(www\.)?(vk\.com|instagram\.com|behance\.net)\//.test(url)
       ? "смотреть работы"
-      : `перейти на сайт ${name}`;
+      : "перейти на сайт";
 
 type Props = {
   p: Partner;
@@ -47,7 +47,7 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
   // Конкурентов из того же раздела не показываем: только тех, кто дополняет услугу.
   const others = clean ? [] : PARTNERS.filter((x) => x.slug !== p.slug && x.section !== p.section).slice(0, 6);
   const href = p.url ? (preview ? undefined : partnerGoUrl(p.slug)) : p.telegram ? tgHref(p.telegram) : undefined;
-  const label = p.url ? ctaLabel(p.url, p.name) : "написать в Telegram";
+  const label = p.url ? ctaLabel(p.url) : "написать в Telegram";
 
   const mainList = SECTION_SERVICES[p.section]?.main || [];
   const svc = p.services || [];
@@ -95,7 +95,7 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
         <Icon name="ArrowUpRight" size={19} />
       </a>
     ) : null;
-  const person = !p.url;
+  const aboutTitle = p.profileType === "specialist" ? "О специалисте" : p.profileType === "company" ? "О компании" : "О партнёре";
 
   return (
     <div className="mx-auto w-full max-w-[1280px]">
@@ -167,13 +167,13 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
         <div className="min-w-0 overflow-hidden rounded-[24px] bg-pale p-5 md:rounded-[32px] md:p-8">
           {p.description && (
             <>
-              <h2 className="font-display text-[1.4em] font-semibold tracking-[-0.02em]">{person ? "Обо мне" : "О компании"}</h2>
+              <h2 className="font-display text-[1.4em] font-semibold tracking-[-0.02em]">{aboutTitle}</h2>
               <p className="mt-3 whitespace-pre-line leading-relaxed text-foreground/75">{p.description}</p>
             </>
           )}
           {p.points.length > 0 && (
             <>
-              <h2 className={`${p.description ? "mt-8" : ""} font-display text-[1.4em] font-semibold tracking-[-0.02em]`}>{person ? "Как работаю" : "Что входит"}</h2>
+              <h2 className={`${p.description ? "mt-8" : ""} font-display text-[1.4em] font-semibold tracking-[-0.02em]`}>Что входит</h2>
               <ul className="mt-4 space-y-3">
                 {p.points.map((point) => (
                   <li key={point} className="flex gap-3 leading-snug text-foreground/80">
