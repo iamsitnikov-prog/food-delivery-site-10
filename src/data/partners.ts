@@ -2,6 +2,7 @@
 export type PartnerSection = { id: string; title: string; icon: string };
 
 export const PARTNER_SECTIONS: PartnerSection[] = [
+  { id: "konsultanty", title: "Консультанты", icon: "UserRound" },
   { id: "foto", title: "Фото и видео еды", icon: "Camera" },
   { id: "dostavka", title: "Своя доставка и приложения", icon: "Truck" },
   { id: "avtomatizaciya", title: "Автоматизация ресторана", icon: "LayoutDashboard" },
@@ -21,6 +22,9 @@ export const PARTNER_SECTIONS: PartnerSection[] = [
   { id: "obuchenie", title: "Обучение команды и курсы по ИИ", icon: "GraduationCap" },
   { id: "drugoe", title: "Другое", icon: "MoreHorizontal" },
 ];
+
+export const isInPartnerSection = (p: { section: string; additionalSections?: string[] }, id: string) =>
+  p.section === id || !!p.additionalSections?.includes(id);
 
 export const getSection = (id: string) => PARTNER_SECTIONS.find((s) => s.id === id)!;
 
@@ -110,6 +114,8 @@ export type Partner = {
   profileType?: "specialist" | "company";
   slug: string;
   section: string;
+  /** Дополнительные разделы: одна карточка может подходить нескольким задачам. */
+  additionalSections?: string[];
   cities: string[];
   name: string;
   /** Необязательно: без логотипа покажем знак с первой буквой. */
@@ -329,7 +335,8 @@ export const PARTNERS: Partner[] = [
     slug: "blin-kak-vkusno",
     profileType: "specialist",
     badges: ["Выпускница Бизнес-школы Яндекс Еды"],
-    section: "kassy",
+    section: "konsultanty",
+    additionalSections: ["kassy"],
     cities: [ALL_RUSSIA],
     icon: "Receipt",
     name: "Блин, как вкусно",
@@ -379,7 +386,8 @@ export const PARTNERS: Partner[] = [
     slug: "lutcenkova-evgenia",
     badges: ["Выпускница Бизнес-школы Яндекс Еды"],
     profileType: "specialist",
-    section: "drugoe",
+    section: "konsultanty",
+    additionalSections: ["dostavka"],
     cities: [ALL_RUSSIA],
     icon: "TrendingUp",
     name: "Евгения Лутченкова",
