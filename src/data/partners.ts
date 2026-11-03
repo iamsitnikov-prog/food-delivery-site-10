@@ -104,6 +104,8 @@ export const ALL_RUSSIA = "вся Россия";
 export const PARTNER_CITIES = ["Москва", "Санкт-Петербург", "Самара", "Череповец", "Новосибирск", "Екатеринбург", "Казань", "Нижний Новгород", "Краснодар", "Ростов-на-Дону", "Челябинск", "Уфа", "Красноярск", "Воронеж", "Сургут", "Нефтеюганск", "Пермь", "Тюмень", "Сочи"];
 
 export type Partner = {
+  /** Подтверждённые образовательные отметки для публичного профиля. */
+  badges?: string[];
   /** Тип публичного профиля, независимо от наличия сайта. */
   profileType?: "specialist" | "company";
   slug: string;
@@ -325,6 +327,8 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "blin-kak-vkusno",
+    profileType: "specialist",
+    badges: ["Выпускница Бизнес-школы Яндекс Еды"],
     section: "kassy",
     cities: [ALL_RUSSIA],
     icon: "Receipt",
@@ -373,6 +377,7 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "lutcenkova-evgenia",
+    badges: ["Выпускница Бизнес-школы Яндекс Еды"],
     profileType: "specialist",
     section: "drugoe",
     cities: [ALL_RUSSIA],
