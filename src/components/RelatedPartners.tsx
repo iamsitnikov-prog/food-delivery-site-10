@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import PartnerLogo from "@/components/PartnerLogo";
-import { PARTNERS } from "@/data/partners";
+import { PARTNERS, isInPartnerSection } from "@/data/partners";
 
 /** Блок «подрядчики по теме»: партнёры из подходящих разделов. Если таких нет, ничего не показываем. */
 const RelatedPartners = ({ sections, className = "", narrow = false }: { sections: string[]; className?: string; narrow?: boolean }) => {
-  const items = sections.flatMap((s) => PARTNERS.filter((p) => p.section === s)).slice(0, 3);
+  const items = Array.from(
+    new Map(sections.flatMap((s) => PARTNERS.filter((p) => isInPartnerSection(p, s))).map((p) => [p.slug, p])).values(),
+  );
   if (!items.length) return null;
-  const anchor = sections.find((s) => PARTNERS.some((p) => p.section === s)) || "";
+  const anchor = sections.find((s) => PARTNERS.some((p) => isInPartnerSection(p, s))) || "";
 
   return (
     <div className={className}>
