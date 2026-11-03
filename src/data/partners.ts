@@ -104,6 +104,8 @@ export const ALL_RUSSIA = "вся Россия";
 export const PARTNER_CITIES = ["Москва", "Санкт-Петербург", "Самара", "Череповец", "Новосибирск", "Екатеринбург", "Казань", "Нижний Новгород", "Краснодар", "Ростов-на-Дону", "Челябинск", "Уфа", "Красноярск", "Воронеж", "Сургут", "Нефтеюганск", "Пермь", "Тюмень", "Сочи"];
 
 export type Partner = {
+  /** Тип публичного профиля, независимо от наличия сайта. */
+  profileType?: "specialist" | "company";
   slug: string;
   section: string;
   cities: string[];
@@ -133,6 +135,7 @@ export type Partner = {
 export const PARTNERS: Partner[] = [
   {
     slug: "starter",
+    profileType: "company",
     section: "dostavka",
     cities: [ALL_RUSSIA],
     icon: "Truck",
@@ -161,6 +164,7 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "prolens",
+    profileType: "company",
     section: "analitika",
     cities: [ALL_RUSSIA],
     icon: "FileBarChart",
@@ -184,6 +188,7 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "outline",
+    profileType: "company",
     section: "geo",
     cities: [ALL_RUSSIA],
     icon: "MapPin",
@@ -208,6 +213,7 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "inno-clouds",
+    profileType: "company",
     section: "avtomatizaciya",
     cities: [ALL_RUSSIA],
     icon: "LayoutDashboard",
@@ -238,6 +244,7 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "cifra",
+    profileType: "company",
     section: "marketing",
     cities: [ALL_RUSSIA],
     icon: "TrendingUp",
@@ -266,6 +273,7 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "pryamikom",
+    profileType: "company",
     section: "kurery",
     cities: [ALL_RUSSIA],
     icon: "Bike",
@@ -293,6 +301,7 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "magnit-restorany",
+    profileType: "company",
     section: "drugoe",
     cities: [ALL_RUSSIA],
     icon: "UtensilsCrossed",
@@ -341,6 +350,7 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "magnit-dostavka",
+    profileType: "company",
     section: "kurery",
     cities: [ALL_RUSSIA],
     icon: "Bike",
@@ -363,6 +373,7 @@ export const PARTNERS: Partner[] = [
   },
   {
     slug: "lutcenkova-evgenia",
+    profileType: "specialist",
     section: "drugoe",
     cities: [ALL_RUSSIA],
     icon: "TrendingUp",
