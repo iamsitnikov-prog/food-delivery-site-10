@@ -2,7 +2,7 @@
 export type PartnerSection = { id: string; title: string; icon: string };
 
 export const PARTNER_SECTIONS: PartnerSection[] = [
-  { id: "konsultanty", title: "Консультанты", icon: "UserRound" },
+  { id: "konsultanty", title: "Консультанты", icon: "Users" },
   { id: "foto", title: "Фото и видео еды", icon: "Camera" },
   { id: "dostavka", title: "Своя доставка и приложения", icon: "Truck" },
   { id: "avtomatizaciya", title: "Автоматизация ресторана", icon: "LayoutDashboard" },
