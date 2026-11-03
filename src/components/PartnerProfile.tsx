@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import PartnerLogo from "@/components/PartnerLogo";
-import { PARTNERS, SECTION_SERVICES, getSection, partnerGoUrl, ALL_RUSSIA, type Partner } from "@/data/partners";
+import { PARTNERS, SECTION_SERVICES, getSection, isInPartnerSection, partnerGoUrl, ALL_RUSSIA, type Partner } from "@/data/partners";
 
 /** Ссылка Telegram из ника, телефона или ссылки. */
 export const tgHref = (v: string) => {
@@ -30,6 +30,7 @@ type Props = {
 /** Содержимое страницы партнёра. Используется на сайте и в предпросмотре анкеты. */
 const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
   const sec = getSection(p.section);
+  const profileSections = [sec, ...(p.additionalSections || []).map(getSection)].filter(Boolean);
   const [open, setOpen] = useState<number | null>(null);
   const works = p.works || [];
 
@@ -45,11 +46,11 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
   }, [open, works.length]);
 
   // Конкурентов из того же раздела не показываем: только тех, кто дополняет услугу.
-  const others = clean ? [] : PARTNERS.filter((x) => x.slug !== p.slug && x.section !== p.section).slice(0, 6);
+  const others = clean ? [] : PARTNERS.filter((x) => x.slug !== p.slug && !isInPartnerSection(x, p.section)).slice(0, 6);
   const href = p.url ? (preview ? undefined : partnerGoUrl(p.slug)) : p.telegram ? tgHref(p.telegram) : undefined;
   const label = p.url ? ctaLabel(p.url) : "написать в Telegram";
 
-  const mainList = SECTION_SERVICES[p.section]?.main || [];
+  const mainList = [p.section, ...(p.additionalSections || [])].flatMap((id) => SECTION_SERVICES[id]?.main || []);
   const svc = p.services || [];
   const mainSvc = svc.filter((s) => mainList.includes(s));
   const otherSvc = svc.filter((s) => !mainList.includes(s));
@@ -95,7 +96,7 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
         <Icon name="ArrowUpRight" size={19} />
       </a>
     ) : null;
-  const aboutTitle = p.profileType === "specialist" ? "О специалисте" : p.profileType === "company" ? "О компании" : "О партнёре";
+  const aboutTitle = p.section === "konsultanty" ? "О консультанте" : p.profileType === "specialist" ? "О специалисте" : p.profileType === "company" ? "О компании" : "О партнёре";
 
   return (
     <div className="mx-auto w-full max-w-[1280px]">
@@ -118,11 +119,15 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
           <div className="min-w-0">
             <div className="flex items-center gap-4">
               <PartnerLogo p={p} className="h-16 w-16 shrink-0 rounded-2xl p-2 text-[2em] md:h-20 md:w-20" />
-              <div className="flex flex-col items-start gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-3 py-1.5 text-[max(12px,0.85em)] font-medium text-background">
-                  <Icon name={sec.icon} size={15} />
-                  {sec.title}
-                </span>
+              <div className="flex min-w-0 flex-col items-start gap-2">
+                <div className="flex flex-wrap gap-2">
+                  {profileSections.map((section) => (
+                    <span key={section.id} className="inline-flex items-center gap-1.5 rounded-lg bg-foreground px-3 py-1.5 text-[max(12px,0.85em)] font-medium text-background">
+                      <Icon name={section.icon} size={15} className="shrink-0" />
+                      {section.title}
+                    </span>
+                  ))}
+                </div>
                 <span className="inline-flex items-center gap-1.5 text-[max(12px,0.85em)] text-foreground/65">
                   <Icon name="MapPin" size={14} />
                   {p.cities.includes(ALL_RUSSIA) ? "работает по всей России" : p.cities.join(", ")}
