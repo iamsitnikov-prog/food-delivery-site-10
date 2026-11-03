@@ -297,7 +297,7 @@ export const PARTNERS: Partner[] = [
     cities: [ALL_RUSSIA],
     icon: "UtensilsCrossed",
     name: "Магнит Рестораны",
-    logo: "/partners/magnit-restorany-20261103-103145.png",
+    logo: "/partners/magnit-restorany-logo.png",
     tagline: "Дополнительный канал продаж внутри приложения «Магнит»",
     url: "https://eda.magnit.ru?utm_source=agregatory.pro",
     category: "Агрегатор доставки еды",
@@ -338,7 +338,6 @@ export const PARTNERS: Partner[] = [
       "Помощь в упаковке франшизы",
     ],
     forWhom: "Владельцам небольших заведений, растущих сетей и управляющим, которые хотят наладить процессы, разгрузить себя от ежедневной рутины и внедрить понятную систему управления.",
-    works: ["/partners/blin-kak-vkusno-20261103-112149-1.jpg"],
   },
 ];
 /** Переход на сайт партнёра через наш адрес: так считаем клики (api/go.php). */
