@@ -5,9 +5,8 @@ import { PARTNERS, isInPartnerSection } from "@/data/partners";
 
 /** Блок «подрядчики по теме»: партнёры из подходящих разделов. Если таких нет, ничего не показываем. */
 const RelatedPartners = ({ sections, className = "", narrow = false }: { sections: string[]; className?: string; narrow?: boolean }) => {
-  const items = Array.from(
-    new Map(sections.flatMap((s) => PARTNERS.filter((p) => isInPartnerSection(p, s))).map((p) => [p.slug, p])).values(),
-  );
+  // Сохраняем общий порядок добавления; каждый партнёр появляется один раз.
+  const items = PARTNERS.filter((p) => sections.some((s) => isInPartnerSection(p, s)));
   if (!items.length) return null;
   const anchor = sections.find((s) => PARTNERS.some((p) => isInPartnerSection(p, s))) || "";
 
