@@ -131,6 +131,16 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
             </div>
             <h1 className="mt-6 break-words font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[64px]">{p.name}</h1>
             {p.tagline && <p className="mt-4 max-w-[620px] text-[1.15em] leading-snug md:text-[1.35em]">{p.tagline}</p>}
+            {p.badges && p.badges.length > 0 && (
+              <ul aria-label="Образование" className="mt-5 flex flex-wrap gap-2">
+                {p.badges.map((badge) => (
+                  <li key={badge} className="inline-flex max-w-full items-center gap-2 rounded-xl border border-foreground/20 bg-pale px-3 py-2 text-[13px] font-medium leading-snug md:text-[14px]">
+                    <Icon name="GraduationCap" size={18} className="shrink-0" />
+                    <span className="min-w-0 break-words">{badge}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
             <div className="mt-7 flex flex-wrap items-center gap-3">
               {cta}
               {p.promo && (
