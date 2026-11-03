@@ -61,7 +61,7 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
   const servicesCard = servicesBlock ? (
     <div className="rounded-[24px] bg-pale p-5 md:rounded-[32px] md:p-8">
       <h2 className="font-display text-[1.4em] font-semibold tracking-[-0.02em]">Услуги</h2>
-      <div className={`mt-5 grid gap-6 ${groups.length > 1 && works.length ? "md:grid-cols-2" : ""}`}>
+      <div className="mt-5 grid gap-6">
         {groups.map((g) => (
           <div key={g.title}>
             {groups.length > 1 && (
@@ -98,7 +98,7 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
   const person = !p.url;
 
   return (
-    <>
+    <div className="mx-auto w-full max-w-[1280px]">
       <section className="px-5 pb-8 pt-8 md:px-14 md:pb-14 md:pt-16">
         {!clean && (
           <nav aria-label="Хлебные крошки" className="mb-6 flex flex-wrap items-center gap-2 text-[max(12px,0.85em)] text-muted-foreground md:mb-8">
@@ -114,7 +114,7 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
           </nav>
         )}
 
-        <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-14">
+        <div className="max-w-[900px]">
           <div className="min-w-0">
             <div className="flex items-center gap-4">
               <PartnerLogo p={p} className="h-16 w-16 shrink-0 rounded-2xl p-2 text-[2em] md:h-20 md:w-20" />
@@ -141,17 +141,8 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
               )}
             </div>
           </div>
-          {works.length > 0 ? (
-            <button type="button" onClick={() => setOpen(0)} className="group relative hidden aspect-[4/3] overflow-hidden rounded-[32px] bg-pale lg:block" aria-label="Открыть работу 1">
-              <img src={works[0]} alt={`${p.name}: работа 1`} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
-            </button>
-          ) : (
-            servicesCard
-          )}
         </div>
       </section>
-
-      {works.length > 0 && servicesBlock && <section className="px-5 pb-8 md:px-14 md:pb-14">{servicesCard}</section>}
 
       {works.length > 0 && (
         <section className="px-5 pb-8 md:px-14 md:pb-14">
@@ -172,8 +163,8 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
         </section>
       )}
 
-      <section className="grid gap-4 px-5 pb-11 md:grid-cols-[1.4fr_1fr] md:items-start md:px-14 md:pb-20">
-        <div className="relative overflow-hidden rounded-[24px] bg-pale p-5 md:rounded-[32px] md:p-10">
+      <section className="grid items-start gap-4 px-5 pb-11 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] md:px-14 md:pb-20">
+        <div className="min-w-0 overflow-hidden rounded-[24px] bg-pale p-5 md:rounded-[32px] md:p-8">
           {p.description && (
             <>
               <h2 className="font-display text-[1.4em] font-semibold tracking-[-0.02em]">{person ? "Обо мне" : "О компании"}</h2>
@@ -195,7 +186,8 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
           )}
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex min-w-0 flex-col gap-4">
+          {servicesCard}
           {p.prices && (
             <div className="rounded-[24px] bg-pale p-5 md:rounded-[32px] md:p-8">
               <div className="flex items-center gap-2 font-display text-[1.2em] font-semibold">
@@ -268,7 +260,7 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 };
 
