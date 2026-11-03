@@ -7,7 +7,7 @@ import CrossLinks from "@/components/landing/CrossLinks";
 import Contacts from "@/components/landing/Contacts";
 import useSeo from "@/hooks/use-seo";
 import { useEffect, useRef, useState } from "react";
-import { PARTNERS, PARTNER_SECTIONS, USEFUL_SITES, ALL_RUSSIA, PARTNER_CITIES } from "@/data/partners";
+import { PARTNERS, PARTNER_SECTIONS, USEFUL_SITES, ALL_RUSSIA, PARTNER_CITIES, isInPartnerSection } from "@/data/partners";
 
 const TRUST = [
   { icon: "Eye", title: "Смотрим каждую анкету сами", text: "Изучаем сайт, примеры работ и отзывы. На сайт попадают не все, кто подал заявку." },
@@ -18,8 +18,8 @@ const TRUST = [
 const ALL = "все";
 const SITES = "полезные сайты";
 // Разделы показываем только непустые, в порядке PARTNER_SECTIONS.
-const USED = PARTNER_SECTIONS.filter((s) => PARTNERS.some((p) => p.section === s.id));
-const EMPTY = PARTNER_SECTIONS.filter((s) => s.id !== "drugoe" && !PARTNERS.some((p) => p.section === s.id));
+const USED = PARTNER_SECTIONS.filter((s) => PARTNERS.some((p) => isInPartnerSection(p, s.id)));
+const EMPTY = PARTNER_SECTIONS.filter((s) => s.id !== "drugoe" && !PARTNERS.some((p) => isInPartnerSection(p, s.id)));
 const FILTERS = [ALL, ...USED.map((s) => s.id), SITES];
 const CITIES = Array.from(
   new Set([
@@ -57,7 +57,7 @@ const PartnersPage = () => {
   }, []);
   const inCity = (cities: string[]) => !city || cities.includes(ALL_RUSSIA) || cities.includes(city);
   const groups = USED.filter((s) => filter === ALL || filter === s.id)
-    .map((section) => ({ section, items: PARTNERS.filter((p) => p.section === section.id && inCity(p.cities)).sort((a, b) => (day ? rank(a.slug, day) - rank(b.slug, day) : 0)) }))
+    .map((section) => ({ section, items: PARTNERS.filter((p) => (filter === ALL ? p.section === section.id : isInPartnerSection(p, section.id)) && inCity(p.cities)).sort((a, b) => (day ? rank(a.slug, day) - rank(b.slug, day) : 0)) }))
     .filter((g) => g.items.length > 0);
   const cards = groups.flatMap(({ section, items }) => items.map((p) => ({ p, section })));
   const single = filter !== ALL && filter !== SITES ? USED.find((x) => x.id === filter) : undefined;
