@@ -155,6 +155,22 @@ const PartnerProfile = ({ p, clean = false, preview = false }: Props) => {
                 </span>
               )}
             </div>
+            {(p.publicContacts?.phone || p.publicContacts?.email) && (
+              <div aria-label="Контакты" className="mt-4 flex min-w-0 flex-wrap gap-3">
+                {p.publicContacts.phone && (
+                  <a href={preview ? undefined : `tel:${p.publicContacts.phone.replace(/[^+\d]/g, "")}`} onClick={preview ? (e) => e.preventDefault() : undefined} className="inline-flex min-w-0 max-w-full items-center gap-2 rounded-xl border border-foreground/20 px-4 py-3 font-medium transition-colors hover:bg-pale">
+                    <Icon name="Phone" size={18} className="shrink-0" />
+                    <span>{p.publicContacts.phone}</span>
+                  </a>
+                )}
+                {p.publicContacts.email && (
+                  <a href={preview ? undefined : `mailto:${p.publicContacts.email}`} onClick={preview ? (e) => e.preventDefault() : undefined} className="inline-flex min-w-0 max-w-full items-center gap-2 rounded-xl border border-foreground/20 px-4 py-3 font-medium transition-colors hover:bg-pale">
+                    <Icon name="Mail" size={18} className="shrink-0" />
+                    <span className="min-w-0 break-all">{p.publicContacts.email}</span>
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>

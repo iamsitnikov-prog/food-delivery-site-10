@@ -136,6 +136,8 @@ export type Partner = {
   prices?: string;
   /** Ник или ссылка Telegram для кнопки «написать в Telegram», если нет сайта. */
   telegram?: string;
+  /** Контакты, отдельно разрешённые к публикации. */
+  publicContacts?: { phone?: string; email?: string };
   /** Какие услуги оказывает (из SECTION_SERVICES и свои). */
   services?: string[];
 };
@@ -426,6 +428,7 @@ export const PARTNERS: Partner[] = [
       ],
       "icon": "Scale",
       "name": "Светлана Андреева",
+      "publicContacts": { "phone": "+7 911 922-77-15", "email": "2902027@mail.ru" },
       "logo": "/partners/andreeva-svetlana.jpg",
       "tagline": "Бухгалтерское и налоговое сопровождение ресторанов, кафе и служб доставки",
       "url": "",
