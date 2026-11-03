@@ -103,18 +103,20 @@ const PartnersPage = () => {
             {FILTERS.map((f) => {
               const sec = PARTNER_SECTIONS.find((x) => x.id === f);
               const active = filter === f;
+              const count = f === SITES ? USEFUL_SITES.length : PARTNERS.filter((p) => inCity(p.cities) && (f === ALL || isInPartnerSection(p, f))).length;
               return (
                 <button
                   key={f}
                   type="button"
                   aria-pressed={active}
                   onClick={() => pick(f)}
-                  className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl border px-3.5 py-2 text-[max(12px,0.88em)] font-medium transition-colors ${
+                  className={`inline-flex max-w-full shrink-0 items-center gap-1.5 rounded-xl border px-3.5 py-2 text-left leading-snug text-[max(12px,0.88em)] font-medium transition-colors ${
                     active ? "border-foreground bg-foreground text-background" : "border-transparent bg-pale text-foreground/80 hover:border-foreground/30"
                   }`}
                 >
-                  {sec && <Icon name={sec.icon} size={15} />}
-                  {sec ? sec.title : f}
+                  {sec && <Icon name={sec.icon} size={15} className="shrink-0" />}
+                  <span className="min-w-0">{sec ? sec.title : f}</span>
+                  <span className={`shrink-0 rounded-md px-1.5 py-0.5 text-[0.8em] tabular-nums ${active ? "bg-background/15" : "bg-foreground/10"}`}>{count}</span>
                 </button>
               );
             })}
