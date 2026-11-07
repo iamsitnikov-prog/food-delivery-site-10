@@ -20,9 +20,12 @@ const STATUSES = [
 
 const CHANNELS = ["Телефон", "Telegram", "WhatsApp", "MAX"];
 
+const ON_YANDEX = ["уже работаем", "ещё нет", "были раньше"];
+const POINTS = ["1 точка", "2–5 точек", "6 и больше"];
+
 const LEAD_URL = "/api/lead.php";
 
-type Errors = Partial<Record<"name" | "phone" | "agree", string>>;
+type Errors = Partial<Record<"name" | "phone" | "place" | "agree", string>>;
 
 const formatPhone = (raw: string) => {
   let d = raw.replace(/\D/g, "");
@@ -39,6 +42,39 @@ const formatPhone = (raw: string) => {
   return out;
 };
 
+const ChipGroup = ({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  options: string[];
+  value: string;
+  onChange: (v: string) => void;
+}) => (
+  <div>
+    <p className="mb-2 text-[max(12px,0.86em)] text-cream-muted">{label}</p>
+    <div className="flex flex-wrap gap-2">
+      {options.map((o) => (
+        <button
+          type="button"
+          key={o}
+          aria-pressed={value === o}
+          onClick={() => onChange(value === o ? "" : o)}
+          className={`rounded-full border px-4 py-2 text-[max(12px,0.88em)] transition-colors ${
+            value === o
+              ? "border-brand bg-brand text-foreground"
+              : "border-cream/20 text-cream-muted hover:border-brand hover:text-cream"
+          }`}
+        >
+          {o}
+        </button>
+      ))}
+    </div>
+  </div>
+);
+
 const LeadForm = () => {
   const ref = useReveal<HTMLElement>();
   const [name, setName] = useState("");
@@ -46,6 +82,8 @@ const LeadForm = () => {
   const [place, setPlace] = useState("");
   const [status, setStatus] = useState(STATUSES[0]);
   const [channel, setChannel] = useState(CHANNELS[0]);
+  const [onYandex, setOnYandex] = useState("");
+  const [points, setPoints] = useState("");
   const [comment, setComment] = useState("");
   const [agree, setAgree] = useState(true);
   const [errors, setErrors] = useState<Errors>({});
@@ -57,6 +95,7 @@ const LeadForm = () => {
     const e: Errors = {};
     if (name.trim().length < 2) e.name = "Как к вам обращаться?";
     if (phone.replace(/\D/g, "").length !== 11) e.phone = "Введите номер полностью";
+    if (place.trim().length < 3) e.place = "Напишите название и город или ссылку на ресторан";
     if (!agree) e.agree = "Нужно согласие на обработку данных";
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -77,7 +116,15 @@ const LeadForm = () => {
           place,
           status,
           channel,
-          comment,
+          onYandex,
+          points,
+          comment: [
+            onYandex && `На Яндекс Еде: ${onYandex}`,
+            points && `Точек: ${points}`,
+            comment.trim(),
+          ]
+            .filter(Boolean)
+            .join(". "),
           page: window.location.href,
         }),
       });
@@ -104,6 +151,8 @@ const LeadForm = () => {
     setComment("");
     setStatus(STATUSES[0]);
     setChannel(CHANNELS[0]);
+    setOnYandex("");
+    setPoints("");
     setErrors({});
     setSent(false);
   };
@@ -194,12 +243,19 @@ const LeadForm = () => {
                 />
                 {errors.phone && <p className="mt-1.5 text-[max(12px,0.82em)] text-destructive">{errors.phone}</p>}
               </div>
-              <Input
-                className={field}
-                placeholder="Название заведения и город"
-                value={place}
-                onChange={(e) => setPlace(e.target.value)}
-              />
+              <div>
+                <Input
+                  className={`${field} ${errors.place ? "border-destructive" : ""}`}
+                  placeholder="Название заведения и город или ссылка"
+                  value={place}
+                  onChange={(e) => setPlace(e.target.value)}
+                  aria-invalid={!!errors.place}
+                />
+                {errors.place && <p className="mt-1.5 text-[max(12px,0.82em)] text-destructive">{errors.place}</p>}
+              </div>
+
+              <ChipGroup label="Вы уже на Яндекс Еде?" options={ON_YANDEX} value={onYandex} onChange={setOnYandex} />
+              <ChipGroup label="Сколько точек?" options={POINTS} value={points} onChange={setPoints} />
 
               <div>
                 <p className="mb-2 text-[max(12px,0.86em)] text-cream-muted">Выберите услугу</p>
@@ -296,6 +352,9 @@ const LeadForm = () => {
               >
                 {loading ? <Icon name="Loader2" size={20} className="animate-spin" /> : "оставить заявку"}
               </button>
+              <p className="text-center text-[max(12px,0.8em)] leading-snug text-cream-muted">
+                Мы не служба поддержки Яндекс Еды. Номер поддержки для партнёров есть в&nbsp;кабинете Вендор.
+              </p>
             </form>
           )}
         </div>

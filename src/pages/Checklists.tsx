@@ -1,3 +1,4 @@
+import { plural } from "@/lib/docs-gen";
 import { Link, useLocation } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import Header from "@/components/landing/Header";
@@ -68,7 +69,7 @@ const ChecklistsPage = () => {
               <div className="flex items-center justify-between gap-3 md:gap-4">
                 <Icon name={p.icon} size={26} className="text-brand" />
                 <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[max(12px,0.78em)] font-medium text-cream-muted">
-                  {p.count} пунктов
+                  {p.count} {plural(p.count, "пункт", "пункта", "пунктов")}
                 </span>
               </div>
               <h2 className="mt-4 font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em]">

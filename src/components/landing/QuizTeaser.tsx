@@ -1,3 +1,4 @@
+import { plural } from "@/lib/docs-gen";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { useReveal } from "@/hooks/use-reveal";
@@ -30,7 +31,7 @@ const QuizTeaser = () => {
           </h2>
 
           <p className="mt-5 max-w-[500px] leading-relaxed text-cream-muted">
-            {AUDIT.count}&nbsp;вопросов о&nbsp;работе вашего заведения на&nbsp;агрегаторе: рейтинг, экономика, контент, отчётность и&nbsp;команда. В&nbsp;конце&nbsp;— оценка проекта и&nbsp;точки роста, с&nbsp;которых стоит начать.
+            {AUDIT.count}&nbsp;{plural(AUDIT.count, "вопрос", "вопроса", "вопросов")} о&nbsp;работе вашего заведения на&nbsp;агрегаторе: рейтинг, экономика, контент, отчётность и&nbsp;команда. В&nbsp;конце&nbsp;— оценка проекта и&nbsp;точки роста, с&nbsp;которых стоит начать.
           </p>
 
           <Link
@@ -55,7 +56,7 @@ const QuizTeaser = () => {
             ))}
             <li className="flex gap-3 leading-snug text-cream-muted">
               <Icon name="MoreHorizontal" size={18} className="mt-0.5 shrink-0 text-brand" />и ещё{" "}
-              {AUDIT.count - PREVIEW.length} вопросов
+              {AUDIT.count - PREVIEW.length} {plural(AUDIT.count - PREVIEW.length, "вопрос", "вопроса", "вопросов")}
             </li>
           </ul>
         </div>

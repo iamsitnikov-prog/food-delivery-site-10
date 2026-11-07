@@ -1,3 +1,4 @@
+import { plural } from "@/lib/docs-gen";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import type { CityCase } from "@/data/city-cases";
@@ -96,7 +97,7 @@ const CityCaseBlock = ({
               Чек-лист «{checklist.navLabel}»
             </span>
             <span className="mt-1 block text-[max(12px,0.88em)] leading-snug text-cream-muted">
-              {countItems(checklist)} пунктов · отметки сохраняются
+              {countItems(checklist)} {plural(countItems(checklist), "пункт", "пункта", "пунктов")} · отметки сохраняются
             </span>
           </span>
         </span>

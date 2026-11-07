@@ -1,3 +1,4 @@
+import { plural } from "@/lib/docs-gen";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import { useReveal } from "@/hooks/use-reveal";
@@ -39,7 +40,7 @@ const ChecklistTeaser = () => {
               <div className="flex items-center justify-between gap-3">
                 <Icon name={p.icon} size={24} className="text-brand" />
                 <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[max(12px,0.74em)] font-medium text-cream-muted">
-                  {p.count} пунктов
+                  {p.count} {plural(p.count, "пункт", "пункта", "пунктов")}
                 </span>
               </div>
               <h3 className="mt-4 font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em]">
