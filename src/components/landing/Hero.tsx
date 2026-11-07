@@ -67,12 +67,12 @@ const Hero = () => {
         <figure className="relative mx-auto w-full max-w-[560px] self-end px-5 lg:mx-0 lg:max-w-none lg:px-10 xl:pr-14">
           <div aria-hidden className="absolute bottom-[-12%] left-1/2 aspect-square w-[92%] -translate-x-1/2 rounded-full bg-pale" />
           <img
-            src="/team-pair.webp?v=2"
-            srcSet="/team-pair-720.webp?v=2 720w, /team-pair.webp?v=2 1208w"
+            src="/team-pair.webp?v=3"
+            srcSet="/team-pair-720.webp?v=3 720w, /team-pair.webp?v=3 1125w"
             sizes="(max-width: 1023px) 92vw, 46vw"
             alt="Лилия Ковальчук и Юрий Ситников, agregatory.pro"
-            width={1208}
-            height={830}
+            width={1125}
+            height={820}
             {...{ fetchpriority: "high" }}
             decoding="async"
             className="relative block h-auto w-full"
