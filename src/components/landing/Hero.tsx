@@ -42,14 +42,13 @@ const Hero = () => {
               бесплатный разбор карточки
             </a>
           </div>
-          <p className="mt-3 text-[max(12px,0.82em)] text-muted-foreground">первый заказ — максимум через 7 дней</p>
 
           <div className="mt-7 flex max-w-[520px] items-start gap-3 rounded-2xl bg-pale/80 p-4 md:mt-9 lg:mt-6">
             <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-foreground text-brand">
               <Icon name="ShieldCheck" size={18} />
             </span>
             <p className="text-[max(13px,0.92em)] leading-snug">
-              <b className="font-semibold">Мы не Яндекс.</b> Работаем на&nbsp;стороне ресторана. Авторы Бизнес школы Яндекс Еды, ведём доставку ресторанов под&nbsp;знаком качества Ginza&nbsp;Project.
+              <b className="font-semibold">Мы не Яндекс</b>, работаем на&nbsp;стороне ресторана. Авторы Бизнес школы Яндекс Еды, эксперты и&nbsp;спикеры проектов Яндекс Еды.
             </p>
           </div>
 
@@ -67,11 +66,11 @@ const Hero = () => {
         <figure className="relative mx-auto w-full max-w-[560px] self-end px-5 lg:mx-0 lg:max-w-none lg:px-10 xl:pr-14">
           <div aria-hidden className="absolute bottom-[-12%] left-1/2 aspect-square w-[92%] -translate-x-1/2 rounded-full bg-pale" />
           <img
-            src="/team-pair.webp?v=3"
-            srcSet="/team-pair-720.webp?v=3 720w, /team-pair.webp?v=3 1125w"
+            src="/team-pair.webp?v=4"
+            srcSet="/team-pair-720.webp?v=4 720w, /team-pair.webp?v=4 1124w"
             sizes="(max-width: 1023px) 92vw, 46vw"
             alt="Лилия Ковальчук и Юрий Ситников, agregatory.pro"
-            width={1125}
+            width={1124}
             height={820}
             {...{ fetchpriority: "high" }}
             decoding="async"
