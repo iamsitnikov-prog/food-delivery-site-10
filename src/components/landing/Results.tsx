@@ -1,3 +1,4 @@
+import { SWIPE, SWIPE_ITEM } from "./swipe";
 import { HOME_CASES as CASES } from "@/data/home";
 import { HOME_STATS as STATS } from "@/data/home";
 import { useState } from "react";
@@ -77,14 +78,14 @@ const Results = () => {
           ))}
         </div>
 
-        <div className="mt-16 grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className={`mt-10 md:mt-16 ${SWIPE} md:gap-4 md:grid-cols-2 lg:grid-cols-3`}>
           {visible.map((c, i) => {
             const light = i % 2 === 1;
             return (
               <article
                 key={c.name}
                 style={{ transitionDelay: `${i * 120}ms` }}
-                className={`group animate-fade-in rounded-[24px] p-6 transition-all duration-500 hover:-translate-y-1.5 ${
+                className={`${SWIPE_ITEM} group animate-fade-in rounded-[24px] p-6 transition-all duration-500 hover:-translate-y-1.5 ${
                   light ? "bg-pale text-foreground" : "border border-cream/20"
                 }`}
               >

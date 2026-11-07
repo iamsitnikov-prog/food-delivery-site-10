@@ -1,3 +1,4 @@
+import { SWIPE, SWIPE_ITEM } from "./swipe";
 import Icon from "@/components/ui/icon";
 import { Link } from "react-router-dom";
 import useReveal from "@/hooks/use-reveal";
@@ -70,14 +71,14 @@ const Extra = () => {
         </p>
       </div>
 
-      <div className="grid gap-3 md:gap-4 md:grid-cols-2">
+      <div className={`${SWIPE} md:gap-4 md:grid-cols-2`}>
         {ITEMS.map((item, i) => {
           const light = i === 1;
           return (
             <article
               key={item.title}
               style={{ transitionDelay: `${i * 110}ms` }}
-              className={`reveal group flex flex-col overflow-hidden rounded-[28px] p-6 md:p-10 ${
+              className={`${SWIPE_ITEM} reveal group flex flex-col overflow-hidden rounded-[28px] p-6 md:p-10 ${
                 light ? "bg-pale text-foreground" : "bg-surface text-cream"
               }`}
             >

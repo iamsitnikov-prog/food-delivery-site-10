@@ -1,6 +1,5 @@
 import Hero from "@/components/landing/Hero";
 import Services from "@/components/landing/Services";
-import Advantages from "@/components/landing/Advantages";
 import Results from "@/components/landing/Results";
 import Pricing from "@/components/landing/Pricing";
 import Extra from "@/components/landing/Extra";
@@ -24,7 +23,6 @@ const Index = () => {
       <Extra />
       <Team />
       <Reviews />
-      <Advantages />
       <Guarantees />
       <FreeAudit />
       <LeadForm />

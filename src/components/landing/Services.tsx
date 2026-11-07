@@ -1,3 +1,4 @@
+import { SWIPE, SWIPE_ITEM } from "./swipe";
 import { HOME_SERVICES as SERVICES } from "@/data/home";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
@@ -19,14 +20,14 @@ const Services = () => {
         </p>
       </div>
 
-      <div className="grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className={`${SWIPE} md:gap-4 md:grid-cols-2 lg:grid-cols-3`}>
         {SERVICES.map((item, i) => {
           const light = i % 2 === 1;
           return (
             <article
               key={item.title}
               style={{ transitionDelay: `${i * 90}ms` }}
-              className={`reveal group flex flex-col rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 md:p-8 ${
+              className={`${SWIPE_ITEM} reveal group flex flex-col rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 md:p-8 ${
                 light ? "bg-pale text-foreground" : "bg-surface text-cream"
               }`}
             >

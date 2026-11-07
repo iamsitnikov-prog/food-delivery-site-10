@@ -1,3 +1,4 @@
+import { SWIPE, SWIPE_ITEM } from "./swipe";
 import Icon from "@/components/ui/icon";
 import useReveal from "@/hooks/use-reveal";
 
@@ -51,12 +52,12 @@ const Reviews = () => {
         </p>
       </div>
 
-      <div className="grid gap-3 md:gap-4 md:grid-cols-2">
+      <div className={`${SWIPE} md:gap-4 md:grid-cols-2`}>
         {REVIEWS.map((r, i) => (
           <article
             key={r.author}
             style={{ transitionDelay: `${i * 110}ms` }}
-            className="reveal tilt group flex flex-col rounded-xl border border-cream/20 p-4 hover:border-brand hover:bg-brand/5 md:p-8"
+            className={`${SWIPE_ITEM} reveal tilt group flex flex-col rounded-xl border border-cream/20 p-4 hover:border-brand hover:bg-brand/5 md:p-8`}
           >
             <Icon name="Quote" size={28} className="mb-5 text-brand transition-transform duration-500 group-hover:scale-125" />
             <h3 className="font-display text-[1.35em] font-semibold tracking-[-0.02em] text-brand">{r.title}</h3>

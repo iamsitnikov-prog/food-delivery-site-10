@@ -1,3 +1,4 @@
+import { SWIPE, SWIPE_ITEM } from "./swipe";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import useReveal from "@/hooks/use-reveal";
@@ -54,12 +55,12 @@ const ToolsHub = () => {
           Посчитайте, проверьте и&nbsp;разберитесь сами. Если&nbsp;что-то не&nbsp;сходится, разберём вместе бесплатно.
         </p>
 
-        <div className="mt-8 grid gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-5">
+        <div className={`mt-8 ${SWIPE} md:gap-4 md:grid-cols-2 lg:grid-cols-5`}>
           {TOOLS.map((tool) => (
             <Link
               key={tool.to}
               to={tool.to}
-              className="group flex min-w-0 flex-col rounded-[24px] bg-surface p-4 text-cream transition-transform hover:-translate-y-1 md:p-6"
+              className={`${SWIPE_ITEM} group flex min-w-0 flex-col rounded-[24px] bg-surface p-4 text-cream transition-transform hover:-translate-y-1 md:p-6`}
             >
               <Icon name={tool.icon} size={24} className="text-brand" />
               <h3 className="mt-4 font-display text-[1.1em] font-semibold leading-tight tracking-[-0.02em]">

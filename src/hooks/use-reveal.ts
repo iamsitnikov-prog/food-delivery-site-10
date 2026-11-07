@@ -16,7 +16,9 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>() {
           }
         });
       },
-      { threshold: 0, rootMargin: "0px 0px -8% 0px" }
+      // Справа и слева запас в несколько экранов: карточки в ленте, которую листают
+      // пальцем, стоят за краем экрана и иначе оставались бы невидимыми.
+      { threshold: 0, rootMargin: "0px 400% -8% 400%" }
     );
     items.forEach((el) => io.observe(el));
     return () => io.disconnect();
