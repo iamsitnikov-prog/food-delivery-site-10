@@ -1,3 +1,4 @@
+import Icon from "@/components/ui/icon";
 import Header from "./Header";
 
 export const ROBOT = "/robot.webp?v=2";
@@ -18,81 +19,75 @@ const STATS = [
 
 const Hero = () => {
   return (
-    <div id="top" className="relative grid lg:min-h-[680px] grid-rows-[auto_1fr_auto] overflow-hidden bg-background">
+    <div id="top" className="relative grid grid-rows-[auto_1fr_auto] overflow-hidden bg-background">
       <Header />
 
-      <section className="relative min-h-0 overflow-hidden">
-        {/* Юрий и Лилия на первом экране вместо робота: живые люди и сразу видно,
-            что это не сайт Яндекса. Вырезка без фона, стоит прямо на жёлтом. */}
-        <figure className="pointer-events-none absolute bottom-0 right-10 z-0 hidden h-[92%] max-h-[600px] lg:block xl:right-14">
+      <section className="relative min-h-0 overflow-hidden lg:grid lg:grid-cols-[1.05fr_1fr]">
+        <div className="relative z-10 px-5 pb-8 pt-8 sm:pt-9 md:px-14 md:pt-11 lg:self-center lg:pb-10 lg:pt-6 lg:pr-0">
+          <h1 className="max-w-[860px] animate-rise font-display text-[34px] font-semibold leading-[.95] tracking-[-0.035em] sm:text-[64px] lg:text-[62px] xl:text-[80px] text-left">
+            Продвижение ресторана{" "}
+            <span className="block px-0">в Яндекс Еде</span>
+          </h1>
+          <p className="mt-5 max-w-[470px] animate-rise-delay text-[1.02em] leading-[1.3] md:mt-7 md:text-[1.2em] lg:mt-4 lg:text-[1.1em]">
+            Заказы и&nbsp;выручка на&nbsp;Яндекс Еде уже&nbsp;с&nbsp;первой недели. Настраиваем вендор, акции, продвижение и&nbsp;лояльность, обучаем персонал.
+          </p>
+          <div className="mt-6 flex animate-rise-delay flex-wrap items-center gap-x-5 gap-y-3 md:mt-8 lg:mt-5">
+            <a
+              href="#lead"
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary px-[26px] py-[15px] text-[1em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5 md:px-[30px] md:py-[18px] md:text-[1.06em]"
+            >
+              начать сотрудничать
+            </a>
+            <a href="#free-audit" className="text-[0.95em] font-medium underline decoration-foreground/30 underline-offset-4 hover:decoration-foreground">
+              бесплатный разбор карточки
+            </a>
+          </div>
+          <p className="mt-3 text-[max(12px,0.82em)] text-muted-foreground">первый заказ — максимум через 7 дней</p>
+
+          <div className="mt-7 flex max-w-[520px] items-start gap-3 rounded-2xl bg-pale/80 p-4 md:mt-9 lg:mt-6">
+            <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-foreground text-brand">
+              <Icon name="ShieldCheck" size={18} />
+            </span>
+            <p className="text-[max(13px,0.92em)] leading-snug">
+              <b className="font-semibold">Мы не Яндекс.</b> Работаем на&nbsp;стороне ресторана. Авторы Бизнес школы Яндекс Еды, ведём доставку ресторанов под&nbsp;знаком качества Ginza&nbsp;Project.
+            </p>
+          </div>
+
+          <ul aria-label="Цифры" className="mt-7 grid max-w-[520px] grid-cols-3 divide-x divide-foreground/15 md:mt-9 lg:mt-6">
+            {STATS.map((st) => (
+              <li key={st.l} className="px-3 first:pl-0">
+                <b className="block whitespace-nowrap font-display text-[1.35em] font-semibold leading-none tracking-[-0.02em] md:text-[1.9em] lg:text-[1.45em] xl:text-[1.9em]">{st.v}</b>
+                <span className="mt-1.5 block text-[12px] leading-tight text-foreground/70 md:text-[max(12px,0.82em)]">{st.l}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Юрий и Лилия: стоят на тёмной полосе «как мы работаем», за ними светлый круг */}
+        <figure className="relative mx-auto w-full max-w-[560px] self-end px-5 lg:mx-0 lg:max-w-none lg:px-10 xl:pr-14">
+          <div aria-hidden className="absolute bottom-[-12%] left-1/2 aspect-square w-[92%] -translate-x-1/2 rounded-full bg-pale" />
           <img
-            src="/team-duo.webp?v=1"
-            srcSet="/team-duo-600.webp?v=1 459w, /team-duo.webp?v=1 765w"
-            sizes="(max-width: 1024px) 360px, 500px"
+            src="/team-pair.webp?v=2"
+            srcSet="/team-pair-720.webp?v=2 720w, /team-pair.webp?v=2 1208w"
+            sizes="(max-width: 1023px) 92vw, 46vw"
             alt="Лилия Ковальчук и Юрий Ситников, agregatory.pro"
-            width={765}
-            height={1000}
+            width={1208}
+            height={830}
             {...{ fetchpriority: "high" }}
             decoding="async"
-            className="h-full w-auto object-contain object-bottom"
+            className="relative block h-auto w-full"
           />
-          <figcaption className="absolute bottom-6 left-0 right-0 flex justify-between px-[4%] text-[max(12px,0.78em)] font-medium">
-            <span className="rounded-full bg-pale/95 px-3 py-1.5 shadow-sm">Лилия Ковальчук</span>
-            <span className="rounded-full bg-pale/95 px-3 py-1.5 shadow-sm">Юрий Ситников</span>
+          <figcaption className="pointer-events-none absolute inset-x-5 bottom-4 flex items-end justify-between gap-2 lg:inset-x-10 xl:right-14">
+            <span className="rounded-xl bg-surface/95 px-3 py-2 text-cream shadow-lg md:px-4 md:py-2.5">
+              <b className="block text-[13px] font-semibold leading-tight md:text-[15px]">Лилия Ковальчук</b>
+              <span className="block text-[11px] leading-tight text-cream-muted md:text-[12px]">15 лет в доставке</span>
+            </span>
+            <span className="rounded-xl bg-surface/95 px-3 py-2 text-right text-cream shadow-lg md:px-4 md:py-2.5">
+              <b className="block text-[13px] font-semibold leading-tight md:text-[15px]">Юрий Ситников</b>
+              <span className="block text-[11px] leading-tight text-cream-muted md:text-[12px]">эксперт Яндекс Еды и Forbes</span>
+            </span>
           </figcaption>
         </figure>
-        <div className="relative z-10 px-5 pb-6 pt-8 sm:pb-10 sm:pt-9 md:px-14 md:pt-11 lg:max-w-[60%] lg:pb-12">
-          <h1 className="max-w-[860px] animate-rise font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] sm:text-[64px] lg:text-[72px] xl:text-[88px] text-left">
-            Продвижение ресторана{" "}
-            <span className="block px-0">в Яндекс Еде</span>
-          </h1>
-          <div className="mt-5 flex animate-rise-delay md:mt-[34px] flex-col items-start gap-5 sm:gap-6 xl:flex-row xl:items-end xl:gap-10">
-            <p className="max-w-[430px] leading-[1.25] text-[1.02em] md:text-[1.3em] text-left">
-              Заказы и&nbsp;выручка на&nbsp;Яндекс Еде уже&nbsp;с&nbsp;первой недели. Настраиваем вендор, акции, продвижение и&nbsp;лояльность, обучаем персонал.
-            </p>
-            <div className="flex flex-col items-start gap-2.5">
-              <a
-                href="#lead"
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary px-[26px] py-[15px] text-[1em] md:px-[30px] md:py-[18px] md:text-[1.06em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
-              >
-                начать сотрудничать
-              </a>
-              <span className="text-[max(12px,0.82em)] text-muted-foreground">первый заказ — максимум через 7 дней</span>
-            </div>
-          </div>
-          <p className="mt-6 max-w-[560px] text-[max(12px,0.9em)] leading-snug md:mt-8 md:text-[1em]">
-            <b className="font-semibold">Юрий Ситников и&nbsp;Лилия Ковальчук</b>, авторы Бизнес школы Яндекс Еды.
-            Мы&nbsp;не&nbsp;Яндекс: работаем на&nbsp;стороне ресторана.
-          </p>
-          {/* На телефоне фото идёт под текстом, а не сбоку */}
-          <figure className="relative mx-auto mt-6 w-[260px] sm:w-[340px] lg:hidden">
-            <img
-              src="/team-duo-600.webp?v=1"
-              srcSet="/team-duo-600.webp?v=1 459w, /team-duo.webp?v=1 765w"
-              sizes="(max-width: 639px) 260px, 340px"
-              alt="Лилия Ковальчук и Юрий Ситников, agregatory.pro"
-              width={459}
-              height={600}
-              decoding="async"
-              className="w-full"
-            />
-            <figcaption className="absolute bottom-3 left-0 right-0 flex justify-between px-1 text-[12px] font-medium">
-              <span className="rounded-full bg-pale/95 px-2.5 py-1">Лилия Ковальчук</span>
-              <span className="rounded-full bg-pale/95 px-2.5 py-1">Юрий Ситников</span>
-            </figcaption>
-          </figure>
-        </div>
-        <ul
-          aria-label="Цифры"
-          className="relative z-10 grid grid-cols-3 gap-3 px-5 pb-7 sm:flex sm:flex-wrap sm:gap-x-7 sm:gap-y-3 md:px-14 lg:max-w-[62%] lg:gap-x-6 lg:pb-10"
-        >
-          {STATS.map((s) => (
-            <li key={s.l} className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-2">
-              <b className="whitespace-nowrap font-display text-[1.2em] font-semibold tracking-[-0.02em] sm:text-[1.35em] md:text-[1.6em]">{s.v}</b>
-              <span className="text-[12px] leading-tight text-foreground/75 sm:text-[max(12px,0.82em)]">{s.l}</span>
-            </li>
-          ))}
-        </ul>
       </section>
 
       <section
