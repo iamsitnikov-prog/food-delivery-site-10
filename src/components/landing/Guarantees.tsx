@@ -34,7 +34,7 @@ const Guarantees = () => {
         </p>
       </div>
 
-      <div className="grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3 md:max-lg:[&>*:last-child:nth-child(odd)]:col-span-2">
         {ITEMS.map((item, i) => {
           const light = i % 2 === 1;
           return (

@@ -63,7 +63,7 @@ const Results = () => {
           <p className="max-w-[420px] text-[1em] leading-snug text-cream-muted md:text-[1.15em]">{HERO_STAT.l}</p>
         </div>
 
-        <div className="reveal mt-8 md:mt-14 grid gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="reveal mt-8 grid grid-cols-2 gap-x-4 gap-y-7 md:mt-14 md:gap-x-8 md:gap-y-9 lg:grid-cols-3">
           {STATS.map((s) => (
             <div
               key={s.l}
@@ -78,7 +78,7 @@ const Results = () => {
           ))}
         </div>
 
-        <div className={`mt-10 md:mt-16 ${SWIPE} md:gap-4 md:grid-cols-2 lg:grid-cols-3`}>
+        <div className={`mt-10 md:mt-16 ${SWIPE} md:gap-4 md:grid-cols-2 lg:grid-cols-3 md:max-lg:[&>*:last-child:nth-child(odd)]:col-span-2`}>
           {visible.map((c, i) => {
             const light = i % 2 === 1;
             return (

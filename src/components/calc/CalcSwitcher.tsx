@@ -48,7 +48,7 @@ const CalcSwitcher = ({
           isActive
             ? "border-foreground bg-foreground text-brand"
             : p.accent
-              ? "border-transparent bg-[#C7161B] text-white hover:bg-[#A51216]"
+              ? "border-foreground bg-pale text-foreground hover:bg-foreground hover:text-brand"
               : "border-foreground/20 hover:bg-foreground hover:text-brand"
         }`;
 

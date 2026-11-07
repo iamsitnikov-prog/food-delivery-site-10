@@ -80,30 +80,30 @@ const CalcPreview = () => {
                   type="button"
                   onClick={() => setActive(p.slug)}
                   className={`group relative rounded-[28px] p-7 text-left transition-transform hover:-translate-y-1 md:p-8 ${
-                    p.accent ? "bg-[#C7161B] text-white" : "bg-surface text-cream"
+                    p.accent ? "bg-pale text-foreground" : "bg-surface text-cream"
                   }`}
                 >
                   {p.accent && (
-                    <span className="absolute right-6 top-6 rounded-lg bg-white/15 px-2.5 py-1 text-[max(12px,0.72em)] font-bold uppercase tracking-wide">
+                    <span className="absolute right-6 top-6 rounded-lg bg-foreground px-2.5 text-brand py-1 text-[max(12px,0.72em)] font-bold uppercase tracking-wide">
                       новое
                     </span>
                   )}
                   <Icon
                     name={p.icon}
                     size={26}
-                    className={p.accent ? "text-white" : "text-brand"}
+                    className={p.accent ? "text-foreground" : "text-brand"}
                   />
                   <h3 className="mt-4 font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em]">
                     {p.navLabel}
                   </h3>
                   <p
-                    className={`mt-3 leading-relaxed ${p.accent ? "text-white/90" : "text-cream-muted"}`}
+                    className={`mt-3 leading-relaxed ${p.accent ? "text-foreground/80" : "text-cream-muted"}`}
                   >
                     {p.lead}
                   </p>
                   <span
                     className={`mt-5 inline-flex items-center gap-2 text-[0.92em] font-medium ${
-                      p.accent ? "text-white" : "text-brand"
+                      p.accent ? "text-foreground" : "text-brand"
                     }`}
                   >
                     открыть

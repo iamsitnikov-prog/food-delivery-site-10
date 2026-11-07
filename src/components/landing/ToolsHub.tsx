@@ -48,14 +48,15 @@ const ToolsHub = () => {
           <Icon name="Gift" size={16} />
           бесплатно и без регистрации
         </span>
-        <h2 className="mt-5 font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
-          полезные инструменты
+        <h2 className="mt-5 font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
+          полезные
+          <span className="block pl-[1.2em] text-muted-foreground">инструменты</span>
         </h2>
         <p className="mt-4 max-w-[540px] leading-snug text-muted-foreground">
           Посчитайте, проверьте и&nbsp;разберитесь сами. Если&nbsp;что-то не&nbsp;сходится, разберём вместе бесплатно.
         </p>
 
-        <div className={`mt-8 ${SWIPE} md:gap-4 md:grid-cols-2 lg:grid-cols-5`}>
+        <div className={`mt-8 ${SWIPE} md:gap-4 md:grid-cols-2 lg:grid-cols-5 md:max-lg:[&>*:last-child:nth-child(odd)]:col-span-2`}>
           {TOOLS.map((tool) => (
             <Link
               key={tool.to}

@@ -96,27 +96,27 @@ const CrossLinks = ({
             key={c.to}
             to={c.to}
             className={`group flex flex-col rounded-[28px] p-7 transition-transform hover:-translate-y-1 md:p-8 ${
-              c.accent ? "bg-[#C7161B] text-white" : "bg-surface text-cream"
+              c.accent ? "bg-pale text-foreground" : "bg-surface text-cream"
             }`}
           >
             <Icon
               name={c.icon}
               size={26}
-              className={c.accent ? "text-white" : "text-brand"}
+              className={c.accent ? "text-foreground" : "text-brand"}
             />
             <h3 className="mt-4 font-display text-[1.3em] font-semibold leading-tight tracking-[-0.02em]">
               {c.title}
             </h3>
             <p
               className={`mt-3 flex-1 leading-relaxed ${
-                c.accent ? "text-white/90" : "text-cream-muted"
+                c.accent ? "text-foreground/80" : "text-cream-muted"
               }`}
             >
               {c.text}
             </p>
             <span
               className={`mt-5 inline-flex items-center gap-2 text-[0.92em] font-medium ${
-                c.accent ? "text-white" : "text-brand"
+                c.accent ? "text-foreground" : "text-brand"
               }`}
             >
               {c.cta}

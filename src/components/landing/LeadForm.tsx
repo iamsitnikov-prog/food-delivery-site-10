@@ -162,7 +162,7 @@ const LeadForm = () => {
 
   return (
     <section id="lead" ref={ref} className="relative scroll-mt-4 overflow-hidden px-5 py-10 md:py-20 md:px-14 md:pb-0 md:pt-28">
-      <div className="grid items-end gap-12 lg:grid-cols-[1fr_1.05fr]">
+      <div className="grid items-end gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-center">
         <div className="reveal relative pb-10 md:pb-0">
           <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[80px]">
             оставьте
@@ -246,7 +246,7 @@ const LeadForm = () => {
               <div>
                 <Input
                   className={`${field} ${errors.place ? "border-destructive" : ""}`}
-                  placeholder="Название заведения и город или ссылка"
+                  placeholder="Заведение и город или ссылка"
                   value={place}
                   onChange={(e) => setPlace(e.target.value)}
                   aria-invalid={!!errors.place}
