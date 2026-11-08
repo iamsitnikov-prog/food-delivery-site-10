@@ -1,10 +1,12 @@
 import { HOME_FAQ as FAQ } from "@/data/home";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import useReveal from "@/hooks/use-reveal";
+import { useState } from "react";
 
 
 const Faq = () => {
   const ref = useReveal<HTMLElement>();
+  const [all, setAll] = useState(false);
 
   return (
     <section id="faq" ref={ref} className="scroll-mt-4 px-5 py-10 md:px-14 md:py-28">
@@ -20,7 +22,7 @@ const Faq = () => {
         </div>
         <Accordion type="single" collapsible defaultValue="item-0" className="reveal border-t border-primary/25">
           {FAQ.map((f, i) => (
-            <AccordionItem key={f.q} value={`item-${i}`} className="border-b border-primary/25">
+            <AccordionItem key={f.q} value={`item-${i}`} className={`border-b border-primary/25 ${i >= 4 && !all ? "max-md:hidden" : ""}`}>
               <AccordionTrigger className="py-6 text-left font-display text-[1.2em] font-semibold tracking-[-0.01em] hover:no-underline md:text-[1.45em]">
                 {f.q}
               </AccordionTrigger>
@@ -30,6 +32,15 @@ const Faq = () => {
             </AccordionItem>
           ))}
         </Accordion>
+        {FAQ.length > 4 && !all && (
+          <button
+            type="button"
+            onClick={() => setAll(true)}
+            className="-mt-2 inline-flex w-fit items-center gap-2 rounded-xl border border-primary/30 px-6 py-3.5 font-medium md:hidden"
+          >
+            все вопросы ({FAQ.length})
+          </button>
+        )}
       </div>
     </section>
   );

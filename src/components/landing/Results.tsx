@@ -27,7 +27,7 @@ const highlight = (text: string, light: boolean) =>
 const Results = () => {
   const ref = useReveal<HTMLElement>();
   const [showAll, setShowAll] = useState(false);
-  const visible = showAll ? CASES : CASES.slice(0, 6);
+  const visible = CASES; // на телефоне все кейсы в ленте, на компьютере сверх шести по кнопке
 
   return (
     <section id="results" ref={ref} className="relative mt-5 scroll-mt-4 overflow-hidden rounded-[28px] md:rounded-[40px] bg-surface px-5 py-10 text-cream md:mx-3 md:mt-7 md:px-14 md:py-28">
@@ -55,7 +55,7 @@ const Results = () => {
           </p>
         </div>
 
-        <div className="reveal flex flex-col items-center gap-3 border-y border-cream/25 py-10 text-center md:py-14">
+        <div className="reveal flex flex-col items-center gap-3 border-y border-cream/25 py-6 text-center md:py-14">
           <span className="flex items-baseline gap-3 font-display font-semibold leading-[.85] tracking-[-0.045em] text-brand">
             <CountUp value={HERO_STAT.v} className="text-[28px] md:text-[130px]" />
             <span className="text-[23px] md:text-[44px]">{HERO_STAT.unit}</span>
@@ -63,7 +63,7 @@ const Results = () => {
           <p className="max-w-[420px] text-[1em] leading-snug text-cream-muted md:text-[1.15em]">{HERO_STAT.l}</p>
         </div>
 
-        <div className="reveal mt-8 grid grid-cols-2 gap-x-4 gap-y-7 md:mt-14 md:gap-x-8 md:gap-y-9 lg:grid-cols-3">
+        <div className="reveal mt-6 grid grid-cols-2 gap-x-4 gap-y-5 md:mt-14 md:gap-x-8 md:gap-y-9 lg:grid-cols-3">
           {STATS.map((s) => (
             <div
               key={s.l}
@@ -78,14 +78,14 @@ const Results = () => {
           ))}
         </div>
 
-        <div className={`mt-10 md:mt-16 ${SWIPE} md:gap-4 md:grid-cols-2 lg:grid-cols-3 md:max-lg:[&>*:last-child:nth-child(odd)]:col-span-2`}>
+        <div className={`mt-8 md:mt-16 ${SWIPE} md:gap-4 md:grid-cols-2 lg:grid-cols-3 md:max-lg:[&>*:last-child:nth-child(odd)]:col-span-2`}>
           {visible.map((c, i) => {
             const light = i % 2 === 1;
             return (
               <article
                 key={c.name}
                 style={{ transitionDelay: `${i * 120}ms` }}
-                className={`${SWIPE_ITEM} group animate-fade-in rounded-[24px] p-6 transition-all duration-500 hover:-translate-y-1.5 ${
+                className={`${SWIPE_ITEM} ${!showAll && i >= 6 ? "md:hidden" : ""} group animate-fade-in rounded-[24px] p-6 transition-all duration-500 hover:-translate-y-1.5 ${
                   light ? "bg-pale text-foreground" : "border border-cream/20"
                 }`}
               >
@@ -125,7 +125,7 @@ const Results = () => {
         </div>
 
         {CASES.length > 6 && (
-          <div className="reveal mt-8 flex justify-center">
+          <div className="reveal mt-8 hidden justify-center md:flex">
             <button
               onClick={() => setShowAll((v) => !v)}
               className="inline-flex items-center gap-2 rounded-xl border border-cream/30 px-7 py-4 font-medium transition-colors hover:bg-brand hover:text-foreground"

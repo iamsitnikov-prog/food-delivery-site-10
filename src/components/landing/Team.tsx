@@ -1,4 +1,5 @@
 import Icon from "@/components/ui/icon";
+import { SWIPE, SWIPE_ITEM } from "./swipe";
 import { useReveal } from "@/hooks/use-reveal";
 import { PEOPLE, COURSE } from "@/data/team";
 
@@ -19,12 +20,12 @@ const Team = () => {
         </p>
       </div>
 
-      <div className="grid gap-3 md:gap-4 lg:grid-cols-2">
+      <div className={`${SWIPE} md:gap-4 lg:grid-cols-2`}>
         {PEOPLE.map((p, i) => (
           <article
             key={p.name}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className={`reveal group flex flex-col rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 lg:p-10 ${
+            className={`${SWIPE_ITEM} reveal group flex flex-col rounded-[28px] p-6 md:p-7 transition-transform duration-500 hover:-translate-y-1 lg:p-10 ${
               i % 2 === 1 ? "bg-pale text-foreground" : "bg-surface text-cream"
             }`}
           >

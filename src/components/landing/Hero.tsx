@@ -21,10 +21,10 @@ const Hero = () => {
     <div id="top" className="relative grid lg:h-[100svh] lg:min-h-[680px] lg:max-h-[900px] grid-rows-[auto_1fr_auto] overflow-hidden bg-background">
       <Header />
 
-      <section className="relative min-h-0 overflow-hidden">
+      {/* На телефоне жёлтый экран занимает всю высоту, снизу выглядывает тёмная полоса «как мы работаем» */}
+      <section className="relative min-h-0 overflow-hidden max-lg:flex max-lg:min-h-[calc(100svh-136px)] max-lg:flex-col">
         {/* На телефоне робота нет: пустой source не даёт браузеру скачивать картинку */}
         <picture>
-          <source media="(max-width: 639px)" srcSet="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
           <img
             src={ROBOT}
             // Робот — главный элемент первого экрана (LCP). На телефоне он
@@ -37,7 +37,7 @@ const Hero = () => {
             height={592}
             {...{ fetchpriority: "high" }}
             decoding="async"
-            className="pointer-events-none absolute -right-20 bottom-2 top-auto z-0 hidden w-[300px] animate-float sm:block object-contain object-bottom mask-fade-left sm:w-[400px] md:-right-16 md:w-[440px] lg:-right-10 lg:h-[620px] lg:w-[620px]"
+            className="pointer-events-none absolute -right-14 bottom-20 top-auto z-0 w-[300px] animate-float object-contain sm:bottom-2 sm:-right-20 object-bottom mask-fade-left sm:w-[400px] md:-right-16 md:w-[440px] lg:-right-10 lg:h-[620px] lg:w-[620px]"
           />
         </picture>
         <div className="relative z-10 px-5 pb-6 pt-8 sm:pb-10 sm:pt-9 md:px-14 md:pt-11 lg:h-full lg:pb-28">
@@ -56,13 +56,12 @@ const Hero = () => {
               >
                 начать сотрудничать
               </a>
-              <span className="text-[max(12px,0.82em)] text-muted-foreground">первый заказ — максимум через 7 дней</span>
             </div>
           </div>
         </div>
         <ul
           aria-label="Для кого"
-          className="relative z-10 mt-4 flex flex-wrap gap-1.5 px-5 pb-7 sm:mt-6 sm:gap-2 sm:pb-6 md:px-14 lg:absolute lg:bottom-[22px] lg:left-14 lg:mt-0 lg:px-0 lg:pb-0 lg:pr-5"
+          className="relative z-10 mt-auto flex flex-wrap gap-1.5 px-5 pb-7 sm:mt-6 sm:gap-2 sm:pb-6 md:px-14 lg:absolute lg:bottom-[22px] lg:left-14 lg:mt-0 lg:px-0 lg:pb-0 lg:pr-5"
         >
           {TAGS.map((t) => (
             <li key={t} className="rounded-full bg-pale px-3 py-[5px] text-[max(12px,0.75em)] md:px-3.5 md:py-[7px] md:text-[max(12px,0.82em)] text-foreground">
@@ -80,13 +79,16 @@ const Hero = () => {
         <h2 className="font-display text-[1.75em] font-semibold leading-none tracking-[-0.02em] sm:col-span-2 lg:col-span-1">
           как мы <em className="not-italic text-brand">работаем</em>
         </h2>
+        {/* На телефоне шаги листаются вбок, на планшете и компьютере сетка как раньше */}
+        <div className="-mx-5 -mt-2 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:contents">
         {STEPS.map((s) => (
-          <div key={s.n} className="border-t border-cream/25 pt-3.5">
+          <div key={s.n} className="w-[62%] shrink-0 snap-start border-t border-cream/25 pt-3.5 sm:w-auto sm:shrink">
             <b className="mb-2.5 block text-[max(12px,0.82em)] font-semibold text-brand">{s.n}</b>
             <h3 className="mb-1.5 text-[1.12em] font-medium leading-[1.15]">{s.t}</h3>
             <p className="text-[max(12px,0.86em)] leading-[1.3] text-cream-muted">{s.d}</p>
           </div>
         ))}
+        </div>
       </section>
     </div>
   );

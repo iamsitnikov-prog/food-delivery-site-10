@@ -1,4 +1,5 @@
 import Icon from "@/components/ui/icon";
+import { SWIPE, SWIPE_ITEM } from "./swipe";
 import useReveal from "@/hooks/use-reveal";
 
 const ITEMS = [
@@ -34,14 +35,14 @@ const Guarantees = () => {
         </p>
       </div>
 
-      <div className="grid gap-3 md:gap-4 md:grid-cols-2 lg:grid-cols-3 md:max-lg:[&>*:last-child:nth-child(odd)]:col-span-2">
+      <div className={`${SWIPE} md:gap-4 md:grid-cols-2 lg:grid-cols-3 md:max-lg:[&>*:last-child:nth-child(odd)]:col-span-2`}>
         {ITEMS.map((item, i) => {
           const light = i % 2 === 1;
           return (
             <article
               key={item.t}
               style={{ transitionDelay: `${i * 100}ms` }}
-              className={`reveal group flex flex-col rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 md:p-9 ${
+              className={`${SWIPE_ITEM} reveal group flex flex-col rounded-[28px] p-6 md:p-7 transition-transform duration-500 hover:-translate-y-1 md:p-9 ${
                 light ? "bg-pale text-foreground" : "bg-surface text-cream"
               }`}
             >

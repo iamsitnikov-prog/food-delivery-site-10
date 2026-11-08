@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import useReveal from "@/hooks/use-reveal";
 import usePayEnabled from "@/hooks/use-pay-enabled";
 import { PAY_PRODUCTS, formatRub } from "@/data/payments";
+import { useState } from "react";
 
 const priceOf = (code: string) => PAY_PRODUCTS.find((p) => p.code === code)!.price;
 
@@ -58,6 +59,7 @@ const PROGRAM = [
 const Extra = () => {
   const ref = useReveal<HTMLElement>();
   const payEnabled = usePayEnabled();
+  const [prog, setProg] = useState(false);
 
   return (
     <section id="extra" ref={ref} className="scroll-mt-4 px-5 pb-10 md:px-14 md:pb-28">
@@ -159,8 +161,12 @@ const Extra = () => {
               <span className="text-cream-muted">до 6 человек</span>
             </div>
             <p className="mt-4 text-cream-muted">Без воды. 5 недель. 5 уроков по 45 минут.</p>
+            <button type="button" onClick={() => setProg((v) => !v)} className="mt-4 inline-flex items-center gap-1.5 font-medium text-brand md:hidden">
+              {prog ? "свернуть" : "что входит и программа"}
+              <Icon name={prog ? "ChevronUp" : "ChevronDown"} size={18} />
+            </button>
 
-            <ul className="mt-8 space-y-3 border-t border-cream/20 pt-6 text-[0.95em] leading-snug text-cream-muted">
+            <ul className={`mt-6 md:mt-8 space-y-3 border-t border-cream/20 pt-6 text-[0.95em] leading-snug text-cream-muted ${prog ? "" : "max-md:hidden"}`}>
               {COURSE_POINTS.map((p) => (
                 <li key={p} className="flex gap-3">
                   <Icon name="Check" size={18} className="mt-0.5 shrink-0 text-brand" />
@@ -188,11 +194,20 @@ const Extra = () => {
             </div>
           </div>
 
-          <div className="rounded-xl border border-cream/20 p-4 md:p-7">
-            <h4 className="font-display text-[1.3em] font-semibold tracking-[-0.02em] md:text-[1.6em]">
-              программа курса
-            </h4>
-            <ol className="mt-6 space-y-5">
+          <div className={`rounded-xl border border-cream/20 p-4 md:p-7 ${prog ? "" : "max-md:hidden"}`}>
+            {/* На телефоне программа свёрнута, раскрывается нажатием */}
+            <button
+              type="button"
+              onClick={() => setProg((v) => !v)}
+              className="flex w-full items-center justify-between text-left md:pointer-events-none"
+              aria-expanded={prog}
+            >
+              <h4 className="font-display text-[1.3em] font-semibold tracking-[-0.02em] md:text-[1.6em]">
+                программа курса
+              </h4>
+              <Icon name={prog ? "ChevronUp" : "ChevronDown"} size={22} className="text-brand md:hidden" />
+            </button>
+            <ol className={`mt-6 space-y-5 ${prog ? "" : "max-md:hidden"}`}>
               {PROGRAM.map((p, i) => (
                 <li key={p.t} className="flex gap-3 md:gap-4 border-t border-cream/20 pt-5">
                   <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand font-display text-[0.95em] font-semibold text-foreground">

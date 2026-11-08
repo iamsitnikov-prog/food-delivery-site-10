@@ -1,4 +1,5 @@
 import { HOME_PLANS as PLANS } from "@/data/home";
+import { SWIPE, SWIPE_ITEM } from "./swipe";
 import Icon from "@/components/ui/icon";
 import useReveal from "@/hooks/use-reveal";
 
@@ -18,12 +19,12 @@ const Pricing = () => {
         </p>
       </div>
 
-      <div className="grid gap-3 md:gap-4 md:grid-cols-2">
+      <div className={`${SWIPE} md:gap-4 md:grid-cols-2`}>
         {PLANS.map((p, i) => (
           <article
             key={p.name}
             style={{ transitionDelay: `${i * 120}ms` }}
-            className={`reveal flex flex-col rounded-[28px] p-7 transition-transform duration-500 hover:-translate-y-1 lg:p-10 ${
+            className={`${SWIPE_ITEM} reveal flex flex-col rounded-[28px] p-6 md:p-7 transition-transform duration-500 hover:-translate-y-1 lg:p-10 ${
               p.accent ? "bg-pale text-foreground" : "bg-surface text-cream"
             }`}
           >

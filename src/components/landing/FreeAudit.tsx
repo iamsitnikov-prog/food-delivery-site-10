@@ -19,17 +19,17 @@ const FreeAudit = () => {
               <Icon name="Gift" size={16} />
               бесплатно
             </span>
-            <h2 className="mt-6 font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[56px]">
+            <h2 className="mt-5 md:mt-6 font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[56px]">
               бесплатный анализ
               <span className="block text-brand">вашей точки</span>
             </h2>
-            <p className="mt-6 max-w-[420px] leading-snug text-cream-muted">
+            <p className="mt-4 max-w-[420px] leading-snug text-cream-muted md:mt-6">
               Перед началом работы бесплатно разбираем ваш ресторан на&nbsp;агрегаторе и&nbsp;показываем, где вы&nbsp;теряете заказы. Без обязательств и&nbsp;навязывания услуг.
             </p>
 
             <a
               href="#lead"
-              className="mt-8 inline-flex items-center gap-2 rounded-xl bg-brand px-7 py-4 font-medium text-foreground transition-transform hover:-translate-y-0.5"
+              className="mt-6 inline-flex items-center gap-2 rounded-xl bg-brand md:mt-8 px-7 py-4 font-medium text-foreground transition-transform hover:-translate-y-0.5"
             >
               получить бесплатный анализ
               <Icon name="ArrowRight" size={18} />
@@ -37,7 +37,7 @@ const FreeAudit = () => {
             <p className="mt-4 text-[max(12px,0.86em)] text-cream-muted">результат пришлём в течение 2 рабочих дней</p>
           </div>
 
-          <div>
+          <div className="hidden md:block">
             {/* Одна колонка: три карточки в ряд на планшете сжимались до 176 px и резали текст */}
             <div className="grid grid-cols-1 gap-3 md:gap-4">
               {POINTS.map((p) => (
