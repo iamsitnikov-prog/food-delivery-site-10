@@ -22,7 +22,7 @@ const Hero = () => {
       <Header />
 
       {/* На телефоне жёлтый экран занимает всю высоту, снизу выглядывает тёмная полоса «как мы работаем» */}
-      <section className="relative min-h-0 overflow-hidden max-lg:flex max-lg:min-h-[calc(100svh-136px)] max-lg:flex-col">
+      <section className="relative min-h-0 overflow-hidden max-lg:flex max-lg:min-h-[calc(100svh-176px)] max-lg:flex-col">
         {/* На телефоне робота нет: пустой source не даёт браузеру скачивать картинку */}
         <picture>
           <img
@@ -37,10 +37,10 @@ const Hero = () => {
             height={592}
             {...{ fetchpriority: "high" }}
             decoding="async"
-            className="pointer-events-none absolute -right-14 bottom-20 top-auto z-0 w-[300px] animate-float object-contain sm:bottom-2 sm:-right-20 object-bottom mask-fade-left sm:w-[400px] md:-right-16 md:w-[440px] lg:-right-10 lg:h-[620px] lg:w-[620px]"
+            className="pointer-events-none absolute -right-14 bottom-[72px] top-auto z-0 w-[min(280px,30svh)] animate-float object-contain sm:bottom-2 sm:-right-20 object-bottom mask-fade-left sm:w-[400px] md:-right-16 md:w-[440px] lg:-right-10 lg:h-[620px] lg:w-[620px]"
           />
         </picture>
-        <div className="relative z-10 px-5 pb-6 pt-8 sm:pb-10 sm:pt-9 md:px-14 md:pt-11 lg:h-full lg:pb-28">
+        <div className="relative z-10 px-5 pb-6 pt-[72px] sm:pb-10 sm:pt-9 md:px-14 md:pt-11 lg:h-full lg:pb-28">
           <h1 className="max-w-[860px] animate-rise font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] sm:text-[64px] lg:text-[88px] text-left">
             Продвижение ресторана{" "}
             <span className="block px-0">в Яндекс Еде</span>
