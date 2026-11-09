@@ -12,7 +12,7 @@ const ChecklistTeaser = () => {
       <div className="reveal">
         <div className="flex flex-col justify-between gap-3 md:gap-4 md:flex-row md:items-end">
           <div className="min-w-0">
-            <h2 className="font-display text-[23px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
+            <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
               чек-листы
             </h2>
             <p className="mt-4 max-w-[540px] leading-snug text-muted-foreground">
@@ -39,14 +39,14 @@ const ChecklistTeaser = () => {
             >
               <div className="flex items-center justify-between gap-3">
                 <Icon name={p.icon} size={24} className="text-brand" />
-                <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[max(12px,0.74em)] font-medium text-cream-muted">
+                <span className="rounded-lg bg-cream/10 px-2.5 py-1 text-[max(12px,0.82em)] font-medium text-cream-muted">
                   {p.count} {plural(p.count, "пункт", "пункта", "пунктов")}
                 </span>
               </div>
-              <h3 className="mt-4 font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em]">
+              <h3 className="mt-4 font-display text-[1.1em] font-semibold leading-tight tracking-[-0.02em]">
                 {p.navLabel}
               </h3>
-              <p className="mt-2.5 text-[0.92em] leading-snug text-cream-muted">{p.lead}</p>
+              <p className="mt-2.5 text-[0.94em] leading-snug text-cream-muted">{p.lead}</p>
             </Link>
           ))}
         </div>

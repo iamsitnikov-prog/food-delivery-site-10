@@ -15,7 +15,7 @@ const Services = () => {
           наши
           <span className="block pl-[1.2em] text-muted-foreground">услуги</span>
         </h2>
-        <p className="max-w-[360px] text-[1.05em] leading-snug">
+        <p className="max-w-[360px] text-[1.1em] leading-snug">
           Обеспечиваем полный цикл запуска и&nbsp;продвижения вашего ресторана в&nbsp;доставке: от&nbsp;регистрации до&nbsp;лояльности гостей.
         </p>
       </div>
@@ -46,18 +46,18 @@ const Services = () => {
                 </span>
               </div>
 
-              <h3 className="mt-5 font-display text-[1.28em] font-semibold leading-[1.05] tracking-[-0.025em] md:mt-7 md:text-[1.5em]">
+              <h3 className="mt-5 font-display text-[1.3em] font-semibold leading-[1.05] tracking-[-0.025em] md:mt-7 md:text-[1.5em]">
                 {item.title}
               </h3>
-              <p className={`mt-2 text-[0.92em] ${light ? "text-foreground/70" : "text-brand"}`}>{item.short}</p>
+              <p className={`mt-2 text-[0.94em] ${light ? "text-foreground/70" : "text-brand"}`}>{item.short}</p>
               <p
-                className={`mt-4 text-[0.95em] leading-relaxed ${light ? "text-foreground/80" : "text-cream-muted"}`}
+                className={`mt-4 text-[0.94em] leading-relaxed ${light ? "text-foreground/80" : "text-cream-muted"}`}
               >
                 {item.text}
               </p>
 
               <ul
-                className={`mt-5 flex-1 space-y-2.5 border-t pt-4 text-[max(12px,0.9em)] leading-snug md:mt-7 md:space-y-3 md:pt-6 md:text-[0.93em] ${
+                className={`mt-5 flex-1 space-y-2.5 border-t pt-4 text-[max(12px,0.94em)] leading-snug md:mt-7 md:space-y-3 md:pt-6 md:text-[0.94em] ${
                   light ? "border-foreground/20" : "border-cream/20"
                 }`}
               >
@@ -90,7 +90,7 @@ const Services = () => {
         >
           все услуги <Icon name="ArrowRight" size={18} />
         </Link>
-        <span className="text-[0.92em] text-muted-foreground">подберём услуги под ваш ресторан</span>
+        <span className="text-[0.94em] text-muted-foreground">подберём услуги под ваш ресторан</span>
       </div>
     </section>
   );

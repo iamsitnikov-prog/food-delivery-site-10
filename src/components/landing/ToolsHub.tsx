@@ -67,8 +67,8 @@ const ToolsHub = () => {
               <h3 className="mt-4 font-display text-[1.1em] font-semibold leading-tight tracking-[-0.02em]">
                 {tool.t}
               </h3>
-              <p className="mt-2.5 flex-1 text-[0.9em] leading-snug text-cream-muted">{tool.d}</p>
-              <span className="mt-4 inline-flex items-center gap-1.5 text-[max(12px,0.86em)] font-medium text-brand">
+              <p className="mt-2.5 flex-1 text-[0.94em] leading-snug text-cream-muted">{tool.d}</p>
+              <span className="mt-4 inline-flex items-center gap-1.5 text-[max(12px,0.94em)] font-medium text-brand">
                 открыть
                 <Icon name="ArrowRight" size={15} className="transition-transform group-hover:translate-x-0.5" />
               </span>

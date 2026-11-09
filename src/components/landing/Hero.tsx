@@ -41,18 +41,18 @@ const Hero = () => {
           />
         </picture>
         <div className="relative z-10 px-5 pb-6 pt-[clamp(56px,14svh,124px)] sm:pb-10 sm:pt-9 md:px-14 md:pt-11 lg:h-full lg:pb-28">
-          <h1 className="max-w-[860px] animate-rise font-display text-[30px] font-semibold leading-[.95] tracking-[-0.035em] sm:text-[64px] lg:text-[88px] text-left">
+          <h1 className="max-w-[860px] animate-rise font-display text-[28px] font-semibold leading-[.95] tracking-[-0.035em] sm:text-[64px] lg:text-[88px] text-left">
             Продвижение ресторана{" "}
             <span className="block px-0">в Яндекс Еде</span>
           </h1>
           <div className="mt-5 flex animate-rise-delay md:mt-[34px] flex-col items-start gap-5 sm:gap-6 lg:flex-row lg:items-end lg:gap-10">
-            <p className="max-w-[430px] leading-[1.25] text-[1.02em] md:text-[1.3em] text-left">
+            <p className="max-w-[430px] leading-[1.25] text-[1em] md:text-[1.3em] text-left">
               Заказы и&nbsp;выручка на&nbsp;Яндекс Еде уже&nbsp;с&nbsp;первой недели. Настраиваем вендор, акции, продвижение и&nbsp;лояльность, обучаем персонал.
             </p>
             <div className="flex flex-col items-start gap-2.5">
               <a
                 href="#lead"
-                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary px-[26px] py-[15px] text-[1em] md:px-[30px] md:py-[18px] md:text-[1.06em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-primary px-[26px] py-[15px] text-[1em] md:px-[30px] md:py-[18px] md:text-[1.1em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
               >
                 начать сотрудничать
               </a>
@@ -64,7 +64,7 @@ const Hero = () => {
           className="relative z-10 mt-auto flex flex-wrap gap-1.5 px-5 pb-7 sm:mt-6 sm:gap-2 sm:pb-6 md:px-14 lg:absolute lg:bottom-[22px] lg:left-14 lg:mt-0 lg:px-0 lg:pb-0 lg:pr-5"
         >
           {TAGS.map((t) => (
-            <li key={t} className="rounded-full bg-pale px-3 py-[5px] text-[max(12px,0.75em)] md:px-3.5 md:py-[7px] md:text-[max(12px,0.82em)] text-foreground">
+            <li key={t} className="rounded-full bg-pale px-3 py-[5px] text-[max(12px,0.82em)] md:px-3.5 md:py-[7px] md:text-[max(12px,0.82em)] text-foreground">
               {t}
             </li>
           ))}
@@ -76,7 +76,7 @@ const Hero = () => {
         aria-label="Этапы работы"
         className="grid animate-up scroll-mt-4 grid-cols-1 gap-7 rounded-t-[28px] md:rounded-t-[40px] bg-surface px-5 pb-[34px] pt-[30px] text-cream sm:grid-cols-2 md:px-14 lg:grid-cols-[200px_repeat(5,1fr)]"
       >
-        <h2 className="font-display text-[1.75em] font-semibold leading-none tracking-[-0.02em] sm:col-span-2 lg:col-span-1">
+        <h2 className="font-display text-[1.8em] font-semibold leading-none tracking-[-0.02em] sm:col-span-2 lg:col-span-1">
           как мы <em className="not-italic text-brand">работаем</em>
         </h2>
         {/* На телефоне шаги листаются вбок, на планшете и компьютере сетка как раньше */}
@@ -84,8 +84,8 @@ const Hero = () => {
         {STEPS.map((s) => (
           <div key={s.n} className="w-[62%] shrink-0 snap-start border-t border-cream/25 pt-3.5 sm:w-auto sm:shrink">
             <b className="mb-2.5 block text-[max(12px,0.82em)] font-semibold text-brand">{s.n}</b>
-            <h3 className="mb-1.5 text-[1.12em] font-medium leading-[1.15]">{s.t}</h3>
-            <p className="text-[max(12px,0.86em)] leading-[1.3] text-cream-muted">{s.d}</p>
+            <h3 className="mb-1.5 text-[1.1em] font-medium leading-[1.15]">{s.t}</h3>
+            <p className="text-[max(12px,0.94em)] leading-[1.3] text-cream-muted">{s.d}</p>
           </div>
         ))}
         </div>

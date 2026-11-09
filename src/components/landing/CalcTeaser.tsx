@@ -11,7 +11,7 @@ const CalcTeaser = () => {
       <div className="reveal">
         <div className="flex flex-col justify-between gap-3 md:gap-4 md:flex-row md:items-end">
           <div className="min-w-0">
-            <h2 className="font-display text-[23px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
+            <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[56px]">
               калькуляторы
             </h2>
             <p className="mt-4 max-w-[540px] leading-snug text-muted-foreground">
@@ -35,10 +35,10 @@ const CalcTeaser = () => {
               className="group rounded-[24px] bg-surface p-4 md:p-6 text-cream transition-transform hover:-translate-y-1"
             >
               <Icon name={p.icon} size={24} className="text-brand" />
-              <h3 className="mt-4 font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em]">
+              <h3 className="mt-4 font-display text-[1.1em] font-semibold leading-tight tracking-[-0.02em]">
                 {p.navLabel}
               </h3>
-              <p className="mt-2.5 text-[0.92em] leading-snug text-cream-muted">{p.lead}</p>
+              <p className="mt-2.5 text-[0.94em] leading-snug text-cream-muted">{p.lead}</p>
             </Link>
           ))}
         </div>

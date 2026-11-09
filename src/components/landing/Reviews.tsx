@@ -47,7 +47,7 @@ const Reviews = () => {
           отзывы
           <span className="block pl-[1.2em] text-brand">говорят за&nbsp;нас</span>
         </h2>
-        <p className="max-w-[360px] text-[1.05em] leading-snug text-cream-muted">
+        <p className="max-w-[360px] text-[1.1em] leading-snug text-cream-muted">
           Рестораны и&nbsp;кафе по&nbsp;всей России — от&nbsp;Самары до&nbsp;Санкт-Петербурга.
         </p>
       </div>
@@ -60,19 +60,19 @@ const Reviews = () => {
             className={`${SWIPE_ITEM} reveal tilt group flex flex-col rounded-xl border border-cream/20 p-4 hover:border-brand hover:bg-brand/5 md:p-8`}
           >
             <Icon name="Quote" size={28} className="mb-5 text-brand transition-transform duration-500 group-hover:scale-125" />
-            <h3 className="font-display text-[1.35em] font-semibold tracking-[-0.02em] text-brand">{r.title}</h3>
-            <p className="mt-4 flex-1 text-[0.95em] leading-relaxed text-cream-muted">{r.text}</p>
+            <h3 className="font-display text-[1.3em] font-semibold tracking-[-0.02em] text-brand">{r.title}</h3>
+            <p className="mt-4 flex-1 text-[0.94em] leading-relaxed text-cream-muted">{r.text}</p>
             <div className="mt-6 flex flex-wrap items-end justify-between gap-3 md:gap-4 border-t border-cream/20 pt-5">
               <div>
-                <div className="font-display text-[1.15em] font-semibold">{r.author}</div>
-                <div className="text-[max(12px,0.88em)] text-cream-muted">{r.place}</div>
+                <div className="font-display text-[1.1em] font-semibold">{r.author}</div>
+                <div className="text-[max(12px,0.94em)] text-cream-muted">{r.place}</div>
               </div>
               {r.link && r.link !== "#" && (
                 <a
                   href={r.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[max(12px,0.88em)] font-medium text-foreground transition-transform hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-[max(12px,0.94em)] font-medium text-foreground transition-transform hover:-translate-y-0.5"
                 >
                   открыть оригинал
                   <Icon name="ArrowUpRight" size={16} />

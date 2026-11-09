@@ -14,7 +14,7 @@ const Pricing = () => {
           стоимость
           <span className="block pl-[1.2em] text-muted-foreground">услуг</span>
         </h2>
-        <p className="max-w-[380px] text-[1.05em] leading-snug">
+        <p className="max-w-[380px] text-[1.1em] leading-snug">
           Предлагаем тарифы для старта доставки с&nbsp;нуля или усиления текущих позиций ресторана на&nbsp;агрегаторе.
         </p>
       </div>
@@ -37,14 +37,14 @@ const Pricing = () => {
               {p.tag}
             </span>
 
-            <h3 className="mt-6 font-display text-[1.9em] font-semibold leading-[.95] tracking-[-0.03em] hyphens-auto break-words lg:text-[2.4em]">
+            <h3 className="mt-6 font-display text-[1.8em] font-semibold leading-[.95] tracking-[-0.03em] hyphens-auto break-words lg:text-[2.2em]">
               {p.name}
             </h3>
             <div className="mt-5 flex flex-wrap items-baseline gap-x-2 gap-y-1">
-              <span className="whitespace-nowrap font-display text-[2.2em] font-semibold leading-none tracking-[-0.03em] md:text-[2.8em]">
+              <span className="whitespace-nowrap font-display text-[2.2em] font-semibold leading-none tracking-[-0.03em] md:text-[3em]">
                 {p.price}
               </span>
-              <span className={`text-[max(12px,0.9em)] ${p.accent ? "text-foreground/70" : "text-cream-muted"}`}>
+              <span className={`text-[max(12px,0.94em)] ${p.accent ? "text-foreground/70" : "text-cream-muted"}`}>
                 {p.period}
               </span>
             </div>

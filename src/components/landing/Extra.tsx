@@ -68,7 +68,7 @@ const Extra = () => {
           дополнительно
           <span className="block pl-[1.2em] text-muted-foreground">консультации и&nbsp;обучение</span>
         </h2>
-        <p className="max-w-[380px] text-[1.05em] leading-snug">
+        <p className="max-w-[380px] text-[1.1em] leading-snug">
           Повышаем эффективность вашей доставки: консультации, аудит и&nbsp;обучение сотрудников ресторана на&nbsp;агрегаторе.
         </p>
       </div>
@@ -92,7 +92,7 @@ const Extra = () => {
                 <Icon name={item.icon} size={16} />
                 {item.tag}
               </span>
-              <h3 className="mt-6 font-display text-[1.7em] font-semibold leading-[.95] tracking-[-0.03em] md:text-[2.2em]">
+              <h3 className="mt-6 font-display text-[1.8em] font-semibold leading-[.95] tracking-[-0.03em] md:text-[2.2em]">
                 {item.title}
               </h3>
               <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -102,7 +102,7 @@ const Extra = () => {
                 <span className={light ? "text-foreground/70" : "text-cream-muted"}>{item.note}</span>
               </div>
               <ul
-                className={`mt-8 flex-1 space-y-3 border-t pt-6 text-[0.95em] leading-snug ${
+                className={`mt-8 flex-1 space-y-3 border-t pt-6 text-[0.94em] leading-snug ${
                   light ? "border-foreground/20 text-foreground/80" : "border-cream/20 text-cream-muted"
                 }`}
               >
@@ -150,12 +150,12 @@ const Extra = () => {
               <Icon name="GraduationCap" size={16} />
               обучение команды
             </span>
-            <h3 className="mt-6 font-display text-[2em] font-semibold leading-[.95] tracking-[-0.03em] md:text-[3em]">
+            <h3 className="mt-6 font-display text-[2.2em] font-semibold leading-[.95] tracking-[-0.03em] md:text-[3em]">
               курс: работа
               <span className="block text-brand">с&nbsp;агрегатором</span>
             </h3>
             <div className="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="font-display text-[1.8em] font-semibold leading-none tracking-[-0.03em] md:text-[2.4em]">
+              <span className="font-display text-[1.8em] font-semibold leading-none tracking-[-0.03em] md:text-[2.2em]">
                 {formatRub(priceOf("kurs-komandy"))}
               </span>
               <span className="text-cream-muted">до 6 человек</span>
@@ -166,7 +166,7 @@ const Extra = () => {
               <Icon name={prog ? "ChevronUp" : "ChevronDown"} size={18} />
             </button>
 
-            <ul className={`mt-6 md:mt-8 space-y-3 border-t border-cream/20 pt-6 text-[0.95em] leading-snug text-cream-muted ${prog ? "" : "max-md:hidden"}`}>
+            <ul className={`mt-6 md:mt-8 space-y-3 border-t border-cream/20 pt-6 text-[0.94em] leading-snug text-cream-muted ${prog ? "" : "max-md:hidden"}`}>
               {COURSE_POINTS.map((p) => (
                 <li key={p} className="flex gap-3">
                   <Icon name="Check" size={18} className="mt-0.5 shrink-0 text-brand" />
@@ -202,7 +202,7 @@ const Extra = () => {
               className="flex w-full items-center justify-between text-left md:pointer-events-none"
               aria-expanded={prog}
             >
-              <h4 className="font-display text-[1.3em] font-semibold tracking-[-0.02em] md:text-[1.6em]">
+              <h4 className="font-display text-[1.3em] font-semibold tracking-[-0.02em] md:text-[1.5em]">
                 программа курса
               </h4>
               <Icon name={prog ? "ChevronUp" : "ChevronDown"} size={22} className="text-brand md:hidden" />
@@ -210,12 +210,12 @@ const Extra = () => {
             <ol className={`mt-6 space-y-5 ${prog ? "" : "max-md:hidden"}`}>
               {PROGRAM.map((p, i) => (
                 <li key={p.t} className="flex gap-3 md:gap-4 border-t border-cream/20 pt-5">
-                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand font-display text-[0.95em] font-semibold text-foreground">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-brand font-display text-[0.94em] font-semibold text-foreground">
                     {i + 1}
                   </span>
                   <span>
-                    <b className="block text-[1.08em] font-medium leading-tight">{p.t}</b>
-                    <span className="mt-1 block text-[max(12px,0.9em)] leading-snug text-cream-muted">{p.d}</span>
+                    <b className="block text-[1.1em] font-medium leading-tight">{p.t}</b>
+                    <span className="mt-1 block text-[max(12px,0.94em)] leading-snug text-cream-muted">{p.d}</span>
                   </span>
                 </li>
               ))}

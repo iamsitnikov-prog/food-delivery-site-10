@@ -12,7 +12,7 @@ const Team = () => {
         <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[72px]">
           кто мы?
         </h2>
-        <p className="max-w-[380px] text-[1.05em] leading-snug">
+        <p className="max-w-[380px] text-[1.1em] leading-snug">
           Два опытных специалиста-практика в&nbsp;сфере доставки. За&nbsp;нами стоит целая команда специалистов поддержки и&nbsp;контента.
           <span className="mt-3 block font-semibold">
             Мы не&nbsp;сотрудники Яндекса, работаем на&nbsp;стороне ресторана.
@@ -42,11 +42,11 @@ const Team = () => {
                 }`}
               />
               <div className="min-w-0">
-                <h3 className="font-display text-[1.6em] font-semibold leading-tight tracking-[-0.03em] hyphens-auto break-words lg:text-[2.1em]">
+                <h3 className="font-display text-[1.5em] font-semibold leading-tight tracking-[-0.03em] hyphens-auto break-words lg:text-[2.2em]">
                   {p.name}
                 </h3>
                 <div
-                  className={`mt-2 inline-flex rounded-full px-4 py-2 text-[max(12px,0.85em)] font-medium ${
+                  className={`mt-2 inline-flex rounded-full px-4 py-2 text-[max(12px,0.94em)] font-medium ${
                     i % 2 === 1 ? "bg-foreground text-brand" : "bg-brand text-foreground"
                   }`}
                 >
@@ -67,13 +67,13 @@ const Team = () => {
               />
               <div>
                 <div
-                  className={`text-[max(12px,0.78em)] font-medium uppercase tracking-wide ${
+                  className={`text-[max(12px,0.82em)] font-medium uppercase tracking-wide ${
                     i % 2 === 1 ? "text-foreground/60" : "text-brand"
                   }`}
                 >
                   создатель и соавтор курса
                 </div>
-                <div className="mt-1.5 font-display text-[1.15em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.3em]">
+                <div className="mt-1.5 font-display text-[1.1em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.3em]">
                   {COURSE}
                 </div>
               </div>

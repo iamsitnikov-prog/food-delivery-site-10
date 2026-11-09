@@ -46,7 +46,7 @@ const Contacts = () => {
               разобрать отчёт
             </Link>
           </div>
-          <p className="mt-6 max-w-[380px] text-[max(12px,0.86em)] text-cream-muted">
+          <p className="mt-6 max-w-[380px] text-[max(12px,0.94em)] text-cream-muted">
             Владеете сетью? Для&nbsp;вас индивидуальные условия.
           </p>
         </div>
@@ -66,7 +66,7 @@ const Contacts = () => {
                   </span>
                   <span>
                     <span className="block text-[max(12px,0.82em)] text-cream-muted">{c.label}</span>
-                    <span className="font-display text-[1.25em] font-semibold tracking-[-0.01em] md:text-[1.45em]">{c.value}</span>
+                    <span className="font-display text-[1.3em] font-semibold tracking-[-0.01em] md:text-[1.5em]">{c.value}</span>
                   </span>
                 </span>
                 <Icon name="ArrowUpRight" size={22} className="text-cream-muted transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand" />
@@ -94,7 +94,7 @@ const Contacts = () => {
       <div className="mt-8 md:mt-14 grid gap-8 border-t border-cream/25 pt-8 md:grid-cols-2">
         <nav aria-label="Услуги">
           <h2 className="text-[max(12px,0.82em)] uppercase tracking-wide text-cream-muted">услуги</h2>
-          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[max(12px,0.86em)]">
+          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[max(12px,0.94em)]">
             {SERVICE_PAGES.map((s) => (
               <li key={s.slug}>
                 <Link
@@ -110,7 +110,7 @@ const Contacts = () => {
 
         <nav aria-label="Города">
           <h2 className="text-[max(12px,0.82em)] uppercase tracking-wide text-cream-muted">города</h2>
-          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[max(12px,0.86em)]">
+          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-[max(12px,0.94em)]">
             {CITY_PAGES.map((c) => (
               <li key={c.slug}>
                 <Link
@@ -126,7 +126,7 @@ const Contacts = () => {
         </nav>
       </div>
 
-      <div className="mt-12 flex flex-col gap-6 border-t border-cream/25 pt-6 text-[max(12px,0.86em)] text-cream-muted md:flex-row md:items-center md:justify-between">
+      <div className="mt-12 flex flex-col gap-6 border-t border-cream/25 pt-6 text-[max(12px,0.94em)] text-cream-muted md:flex-row md:items-center md:justify-between">
         <a href={to("#top")} className="font-display text-[1.3em] font-semibold text-cream">
           agregatory<span className="font-normal text-cream-muted">.pro</span>
         </a>
@@ -171,7 +171,7 @@ const Contacts = () => {
         <span>© {new Date().getFullYear()} agregatory.pro</span>
       </div>
 
-      <div className="mt-6 space-y-2 text-[max(12px,0.78em)] leading-relaxed text-cream-muted/80">
+      <div className="mt-6 space-y-2 text-[max(12px,0.82em)] leading-relaxed text-cream-muted/80">
         <p>ИП Ситников Юрий Сергеевич, ИНН {SELLER_INN}{SELLER_OGRNIP ? `, ОГРНИП ${SELLER_OGRNIP}` : ""} · ИП Ковальчук Лилия Максимовна, ИНН 681601399981</p>
         <p>
           При создании сайта все партнёры дали согласие на размещение и публикацию персональных и коммерческих данных.

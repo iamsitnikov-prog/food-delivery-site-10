@@ -17,7 +17,7 @@ const Advantages = () => {
           преимущества
           <span className="block pl-[1.2em] text-brand">работы с&nbsp;нами</span>
         </h2>
-        <p className="max-w-[380px] text-[1.05em] leading-snug text-cream-muted">
+        <p className="max-w-[380px] text-[1.1em] leading-snug text-cream-muted">
           С нами вы&nbsp;сможете заработать на&nbsp;доставке и&nbsp;стать первыми в&nbsp;поиске с&nbsp;рейтингом выше&nbsp;4.8
         </p>
       </div>
@@ -47,10 +47,10 @@ const Advantages = () => {
                   0{i + 1}
                 </span>
               </div>
-              <h3 className="mt-7 font-display text-[1.35em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.6em]">
+              <h3 className="mt-7 font-display text-[1.3em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.5em]">
                 {item.title}
               </h3>
-              <p className={`mt-4 text-[0.95em] leading-snug ${light ? "text-foreground/80" : "text-cream-muted"}`}>
+              <p className={`mt-4 text-[0.94em] leading-snug ${light ? "text-foreground/80" : "text-cream-muted"}`}>
                 {item.text}
               </p>
             </article>

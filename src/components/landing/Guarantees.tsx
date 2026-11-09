@@ -30,7 +30,7 @@ const Guarantees = () => {
           наши
           <span className="block pl-[1.2em] text-muted-foreground">гарантии</span>
         </h2>
-        <p className="max-w-[380px] text-[1.05em] leading-snug">
+        <p className="max-w-[380px] text-[1.1em] leading-snug">
           Фиксируем результат в&nbsp;договоре, а&nbsp;не&nbsp;на&nbsp;словах. Вот&nbsp;за&nbsp;что мы&nbsp;отвечаем перед вами.
         </p>
       </div>
@@ -53,10 +53,10 @@ const Guarantees = () => {
               >
                 <Icon name={item.icon} size={28} />
               </span>
-              <h3 className="mt-7 font-display text-[1.45em] font-semibold leading-tight tracking-[-0.025em] md:text-[1.7em]">
+              <h3 className="mt-7 font-display text-[1.5em] font-semibold leading-tight tracking-[-0.025em] md:text-[1.8em]">
                 {item.t}
               </h3>
-              <p className={`mt-4 text-[0.95em] leading-snug ${light ? "text-foreground/80" : "text-cream-muted"}`}>
+              <p className={`mt-4 text-[0.94em] leading-snug ${light ? "text-foreground/80" : "text-cream-muted"}`}>
                 {item.d}
               </p>
             </article>

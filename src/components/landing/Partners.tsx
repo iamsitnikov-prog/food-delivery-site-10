@@ -10,10 +10,10 @@ const Partners = () => {
   return (
     <section id="partners" ref={ref} className="hidden scroll-mt-4 px-5 pb-10 md:block md:px-14 md:pb-28">
       <div className="reveal mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-        <h2 className="font-display text-[23px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[60px]">
+        <h2 className="font-display text-[24px] font-semibold leading-[.92] tracking-[-0.035em] md:text-[60px]">
           с кем работаем
         </h2>
-        <p className="max-w-[420px] text-[1.02em] leading-snug text-muted-foreground">
+        <p className="max-w-[420px] text-[1em] leading-snug text-muted-foreground">
           Сервисы, которые мы советуем клиентам и&nbsp;используем сами в&nbsp;работе с&nbsp;проектами.
         </p>
       </div>
@@ -26,10 +26,10 @@ const Partners = () => {
             className="reveal group relative flex flex-col overflow-hidden rounded-[24px] border border-foreground/10 bg-white p-5 pt-6 transition-transform duration-500 hover:-translate-y-1 md:p-7 md:pt-8"
           >
             <div className="flex items-center gap-3">
-              <PartnerLogo p={p} className="h-12 w-12 shrink-0 rounded-xl p-1.5 text-[1.4em]" />
+              <PartnerLogo p={p} className="h-12 w-12 shrink-0 rounded-xl p-1.5 text-[1.5em]" />
               <div className="min-w-0">
-                <span className="block font-display text-[1.4em] font-semibold leading-tight tracking-[-0.03em]">{p.name}</span>
-                <span className="mt-0.5 inline-flex items-center gap-1.5 text-[max(12px,0.8em)] text-foreground/60">
+                <span className="block font-display text-[1.5em] font-semibold leading-tight tracking-[-0.03em]">{p.name}</span>
+                <span className="mt-0.5 inline-flex items-center gap-1.5 text-[max(12px,0.82em)] text-foreground/60">
                   <Icon name={getSection(p.section).icon} size={14} />
                   {getSection(p.section).title}
                 </span>
@@ -45,7 +45,7 @@ const Partners = () => {
 
         <div className="reveal flex flex-col justify-between rounded-[28px] bg-pale p-4 md:p-8">
           <div>
-            <h3 className="font-display text-[1.5em] font-semibold leading-tight tracking-[-0.025em] md:text-[1.9em]">
+            <h3 className="font-display text-[1.5em] font-semibold leading-tight tracking-[-0.025em] md:text-[1.8em]">
               Все партнёры и&nbsp;полезные сайты
             </h3>
             <p className="mt-4 leading-relaxed text-foreground/75">

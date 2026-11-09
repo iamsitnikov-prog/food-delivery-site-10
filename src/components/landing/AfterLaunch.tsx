@@ -34,7 +34,7 @@ const AfterLaunch = () => {
           что дальше
           <span className="block pl-[1.2em] text-muted-foreground">после запуска</span>
         </h2>
-        <p className="max-w-[380px] text-[1.05em] leading-snug">
+        <p className="max-w-[380px] text-[1.1em] leading-snug">
           Мы&nbsp;не&nbsp;исчезаем после первого заказа. Ведём проект дальше: контроль, отчёты и&nbsp;связь каждый день.
         </p>
       </div>
@@ -58,10 +58,10 @@ const AfterLaunch = () => {
                 <Icon name={item.icon} size={22} />
               </span>
               <div>
-                <h3 className="font-display text-[1.3em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.55em]">
+                <h3 className="font-display text-[1.3em] font-semibold leading-tight tracking-[-0.02em] md:text-[1.5em]">
                   {item.t}
                 </h3>
-                <p className={`mt-3 text-[0.95em] leading-snug ${light ? "text-foreground/80" : "text-cream-muted"}`}>
+                <p className={`mt-3 text-[0.94em] leading-snug ${light ? "text-foreground/80" : "text-cream-muted"}`}>
                   {item.d}
                 </p>
               </div>

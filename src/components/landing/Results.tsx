@@ -50,7 +50,7 @@ const Results = () => {
             результаты
             <span className="block pl-[1.2em] text-brand">в&nbsp;цифрах</span>
           </h2>
-          <p className="max-w-[340px] text-[1.05em] leading-snug text-cream-muted lg:max-w-[340px]">
+          <p className="max-w-[340px] text-[1.1em] leading-snug text-cream-muted lg:max-w-[340px]">
             Настраиваем работу таким образом, чтобы гарантировать реальные результаты для&nbsp;вашего бизнеса.
           </p>
         </div>
@@ -58,9 +58,9 @@ const Results = () => {
         <div className="reveal flex flex-col items-center gap-3 border-y border-cream/25 py-6 text-center md:py-14">
           <span className="flex items-baseline gap-3 font-display font-semibold leading-[.85] tracking-[-0.045em] text-brand">
             <CountUp value={HERO_STAT.v} className="text-[28px] md:text-[130px]" />
-            <span className="text-[23px] md:text-[44px]">{HERO_STAT.unit}</span>
+            <span className="text-[24px] md:text-[44px]">{HERO_STAT.unit}</span>
           </span>
-          <p className="max-w-[420px] text-[1em] leading-snug text-cream-muted md:text-[1.15em]">{HERO_STAT.l}</p>
+          <p className="max-w-[420px] text-[1em] leading-snug text-cream-muted md:text-[1.1em]">{HERO_STAT.l}</p>
         </div>
 
         <div className="reveal mt-6 grid grid-cols-2 gap-x-4 gap-y-5 md:mt-14 md:gap-x-8 md:gap-y-9 lg:grid-cols-3">
@@ -73,7 +73,7 @@ const Results = () => {
                 value={s.v}
                 className="block font-display text-[24px] font-semibold leading-none tracking-[-0.04em] text-brand transition-transform duration-500 group-hover:-translate-y-1 md:text-[64px]"
               />
-              <p className="mt-3 max-w-[260px] text-[0.92em] leading-snug text-cream-muted">{s.l}</p>
+              <p className="mt-3 max-w-[260px] text-[0.94em] leading-snug text-cream-muted">{s.l}</p>
             </div>
           ))}
         </div>
@@ -97,10 +97,10 @@ const Results = () => {
                   <span>{c.tag}</span>
                   <span className={light ? "text-foreground/70" : "text-cream-muted"}>{c.city}</span>
                 </div>
-                <h3 className="mt-2 font-display text-[1.4em] font-semibold tracking-[-0.02em]">{c.name}</h3>
-                <div className="mt-6 text-[0.92em]">
+                <h3 className="mt-2 font-display text-[1.5em] font-semibold tracking-[-0.02em]">{c.name}</h3>
+                <div className="mt-6 text-[0.94em]">
                   <span
-                    className={`line-through ${
+                    className={`${/\d/.test(c.before) ? "line-through " : ""}${
                       light ? "text-foreground/70 decoration-foreground/60" : "text-cream-muted decoration-cream/40"
                     }`}
                   >
@@ -113,7 +113,7 @@ const Results = () => {
                   {c.after}
                 </span>
                 <p
-                  className={`mt-5 border-t pt-4 text-[max(12px,0.88em)] leading-snug ${
+                  className={`mt-5 border-t pt-4 text-[max(12px,0.94em)] leading-snug ${
                     light ? "border-foreground/20 text-foreground/80" : "border-cream/20 text-cream-muted"
                   }`}
                 >

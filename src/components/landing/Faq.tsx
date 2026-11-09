@@ -23,7 +23,7 @@ const Faq = () => {
         <Accordion type="single" collapsible defaultValue="item-0" className="reveal border-t border-primary/25">
           {FAQ.map((f, i) => (
             <AccordionItem key={f.q} value={`item-${i}`} className={`border-b border-primary/25 ${i >= 4 && !all ? "max-md:hidden" : ""}`}>
-              <AccordionTrigger className="py-6 text-left font-display text-[1.2em] font-semibold tracking-[-0.01em] hover:no-underline md:text-[1.45em]">
+              <AccordionTrigger className="py-6 text-left font-display text-[1.3em] font-semibold tracking-[-0.01em] hover:no-underline md:text-[1.5em]">
                 {f.q}
               </AccordionTrigger>
               <AccordionContent className="max-w-[640px] pb-6 text-[1em] leading-relaxed text-muted-foreground">

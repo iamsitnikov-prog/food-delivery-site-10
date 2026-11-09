@@ -19,7 +19,7 @@ const FreeAudit = () => {
               <Icon name="Gift" size={16} />
               бесплатно
             </span>
-            <h2 className="mt-5 md:mt-6 font-display text-[27px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[56px]">
+            <h2 className="mt-5 md:mt-6 font-display text-[28px] font-semibold leading-[.95] tracking-[-0.035em] md:text-[56px]">
               бесплатный анализ
               <span className="block text-brand">вашей точки</span>
             </h2>
@@ -34,7 +34,7 @@ const FreeAudit = () => {
               получить бесплатный анализ
               <Icon name="ArrowRight" size={18} />
             </a>
-            <p className="mt-4 text-[max(12px,0.86em)] text-cream-muted">результат пришлём в течение 2 рабочих дней</p>
+            <p className="mt-4 text-[max(12px,0.94em)] text-cream-muted">результат пришлём в течение 2 рабочих дней</p>
           </div>
 
           <div className="hidden md:block">
@@ -46,8 +46,8 @@ const FreeAudit = () => {
                     <Icon name={p.icon} size={20} />
                   </span>
                   <span>
-                    <b className="block text-[1.05em] font-semibold leading-tight">{p.t}</b>
-                    <span className="mt-1.5 block text-[max(12px,0.9em)] leading-snug text-foreground/75">{p.d}</span>
+                    <b className="block text-[1.1em] font-semibold leading-tight">{p.t}</b>
+                    <span className="mt-1.5 block text-[max(12px,0.94em)] leading-snug text-foreground/75">{p.d}</span>
                   </span>
                 </div>
               ))}

@@ -26,14 +26,14 @@ const Header = () => {
     <header className="relative z-20 flex items-center justify-between gap-3 md:gap-4 px-5 pt-4 md:px-14 md:pt-[22px]">
       <a
         href={to("#top")}
-        className="flex items-baseline gap-[2px] font-display text-[1.15em] font-semibold md:text-[1.3em] tracking-[-0.02em]"
+        className="flex items-baseline gap-[2px] font-display text-[1.1em] font-semibold md:text-[1.3em] tracking-[-0.02em]"
       >
         agregatory<span className="font-normal text-muted-foreground">.pro</span>
       </a>
 
       <nav
         aria-label="Разделы"
-        className="hidden items-center gap-3 md:gap-4 whitespace-nowrap text-[max(12px,0.88em)] xl:flex 2xl:gap-5 2xl:text-[max(12px,0.9em)]"
+        className="hidden items-center gap-3 md:gap-4 whitespace-nowrap text-[max(12px,0.94em)] xl:flex 2xl:gap-5 2xl:text-[max(12px,0.94em)]"
       >
         <div className="group relative">
           <button
@@ -56,7 +56,7 @@ const Header = () => {
                 <a
                   key={l.href}
                   href={l.href}
-                  className="flex items-center gap-2.5 border-b border-foreground/8 px-4 py-3.5 text-[0.95em] transition-colors last:border-b-0 hover:bg-foreground hover:text-brand"
+                  className="flex items-center gap-2.5 border-b border-foreground/8 px-4 py-3.5 text-[0.94em] transition-colors last:border-b-0 hover:bg-foreground hover:text-brand"
                 >
                   <Icon name={l.icon} size={16} />
                   {l.label}
@@ -118,7 +118,7 @@ const Header = () => {
               agregatory<span className="font-normal text-muted-foreground">.pro</span>
             </SheetTitle>
             {/* Полезное — первым блоком, плиткой в две колонки, чтобы всё меню помещалось на один экран */}
-            <p className="pb-2 pt-4 text-[12px] font-medium uppercase tracking-wide text-muted-foreground max-[360px]:pb-1.5 max-[360px]:pt-3">
+            <p className="pb-2 pt-4 text-[13px] font-medium uppercase tracking-wide text-muted-foreground max-[360px]:pb-1.5 max-[360px]:pt-3">
               полезное
             </p>
             <div className="grid grid-cols-2 gap-1.5">
@@ -134,7 +134,7 @@ const Header = () => {
                 </a>
               ))}
             </div>
-            <p className="pb-2 pt-4 text-[12px] font-medium uppercase tracking-wide text-muted-foreground max-[360px]:pb-1.5 max-[360px]:pt-3">
+            <p className="pb-2 pt-4 text-[13px] font-medium uppercase tracking-wide text-muted-foreground max-[360px]:pb-1.5 max-[360px]:pt-3">
               разделы
             </p>
             <nav className="grid grid-cols-2 gap-1.5">
@@ -143,7 +143,7 @@ const Header = () => {
                   key={n.href}
                   href={to(n.href)}
                   onClick={() => setOpen(false)}
-                  className="flex min-h-[40px] items-center rounded-xl border border-foreground/15 px-2.5 py-2 text-left font-display text-[14px] font-semibold leading-tight tracking-tight last:odd:col-span-2 max-[360px]:min-h-[36px] max-[360px]:py-1.5"
+                  className="flex min-h-[40px] items-center rounded-xl border border-foreground/15 px-2.5 py-2 text-left font-display text-[15px] font-semibold leading-tight tracking-tight last:odd:col-span-2 max-[360px]:min-h-[36px] max-[360px]:py-1.5"
                 >
                   {n.label}
                 </a>
@@ -165,7 +165,7 @@ const Header = () => {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={m.label}
-                    className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-xl border border-primary/30 text-[13px] font-medium max-[360px]:h-9 max-[360px]:gap-1 max-[360px]:text-[12px]"
+                    className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-xl border border-primary/30 text-[13px] font-medium max-[360px]:h-9 max-[360px]:gap-1 max-[360px]:text-[13px]"
                   >
                     <Icon name={m.icon} size={16} />
                     {m.label}

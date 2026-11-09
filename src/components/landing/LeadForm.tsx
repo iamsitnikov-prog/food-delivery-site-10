@@ -54,7 +54,7 @@ const ChipGroup = ({
   onChange: (v: string) => void;
 }) => (
   <div>
-    <p className="mb-2 text-[max(12px,0.86em)] text-cream-muted">{label}</p>
+    <p className="mb-2 text-[max(12px,0.94em)] text-cream-muted">{label}</p>
     <div className="flex flex-wrap gap-2">
       {options.map((o) => (
         <button
@@ -62,7 +62,7 @@ const ChipGroup = ({
           key={o}
           aria-pressed={value === o}
           onClick={() => onChange(value === o ? "" : o)}
-          className={`rounded-full border px-4 py-2 text-[max(12px,0.88em)] transition-colors ${
+          className={`rounded-full border px-4 py-2 text-[max(12px,0.94em)] transition-colors ${
             value === o
               ? "border-brand bg-brand text-foreground"
               : "border-cream/20 text-cream-muted hover:border-brand hover:text-cream"
@@ -168,7 +168,7 @@ const LeadForm = () => {
             оставьте
             <span className="block pl-[1.2em]">заявку</span>
           </h2>
-          <p className="mt-6 max-w-[420px] text-[1.15em] leading-[1.25]">
+          <p className="mt-6 max-w-[420px] text-[1.1em] leading-[1.25]">
             Заполните поля и&nbsp;выберите услугу. Увеличьте свою выручку уже&nbsp;в&nbsp;первую неделю.
           </p>
           <ul className="mt-8 space-y-3">
@@ -258,12 +258,12 @@ const LeadForm = () => {
               <ChipGroup label="Сколько точек?" options={POINTS} value={points} onChange={setPoints} />
 
               <div>
-                <p className="mb-2 text-[max(12px,0.86em)] text-cream-muted">Выберите услугу</p>
+                <p className="mb-2 text-[max(12px,0.94em)] text-cream-muted">Выберите услугу</p>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                   aria-label="Выберите услугу"
-                  className="h-12 w-full rounded-xl border border-cream/25 bg-transparent px-4 text-[0.95em] text-cream sm:hidden"
+                  className="h-12 w-full rounded-xl border border-cream/25 bg-transparent px-4 text-[0.94em] text-cream sm:hidden"
                 >
                   {STATUSES.map((s) => (
                     <option key={s} value={s} className="bg-surface text-cream">
@@ -277,7 +277,7 @@ const LeadForm = () => {
                       type="button"
                       key={s}
                       onClick={() => setStatus(s)}
-                      className={`rounded-full border px-4 py-2 text-[max(12px,0.88em)] transition-colors ${
+                      className={`rounded-full border px-4 py-2 text-[max(12px,0.94em)] transition-colors ${
                         status === s
                           ? "border-brand bg-brand text-foreground"
                           : "border-cream/20 text-cream-muted hover:border-brand hover:text-cream"
@@ -290,14 +290,14 @@ const LeadForm = () => {
               </div>
 
               <div>
-                <p className="mb-2 text-[max(12px,0.86em)] text-cream-muted">Как с вами связаться?</p>
+                <p className="mb-2 text-[max(12px,0.94em)] text-cream-muted">Как с вами связаться?</p>
                 <div className="flex flex-wrap gap-2">
                   {CHANNELS.map((c) => (
                     <button
                       type="button"
                       key={c}
                       onClick={() => setChannel(c)}
-                      className={`rounded-full border px-4 py-2 text-[max(12px,0.88em)] transition-colors ${
+                      className={`rounded-full border px-4 py-2 text-[max(12px,0.94em)] transition-colors ${
                         channel === c
                           ? "border-brand bg-brand text-foreground"
                           : "border-cream/20 text-cream-muted hover:border-brand hover:text-cream"
@@ -321,7 +321,7 @@ const LeadForm = () => {
                   py-1.5 расширяет область нажатия до удобной на телефоне. */}
               <label
                 htmlFor="lead-agree"
-                className="-my-1.5 flex cursor-pointer select-none items-start gap-3 py-1.5 text-[max(12px,0.86em)] leading-snug"
+                className="-my-1.5 flex cursor-pointer select-none items-start gap-3 py-1.5 text-[max(12px,0.94em)] leading-snug"
               >
                 <Checkbox
                   id="lead-agree"
@@ -348,11 +348,11 @@ const LeadForm = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex h-16 w-full items-center justify-center gap-2 rounded-xl bg-brand text-[1.06em] font-medium text-foreground transition-transform hover:-translate-y-0.5 disabled:opacity-70"
+                className="flex h-16 w-full items-center justify-center gap-2 rounded-xl bg-brand text-[1.1em] font-medium text-foreground transition-transform hover:-translate-y-0.5 disabled:opacity-70"
               >
                 {loading ? <Icon name="Loader2" size={20} className="animate-spin" /> : "оставить заявку"}
               </button>
-              <p className="text-center text-[max(12px,0.8em)] leading-snug text-cream-muted">
+              <p className="text-center text-[max(12px,0.82em)] leading-snug text-cream-muted">
                 Мы не служба поддержки Яндекс Еды. Номер поддержки для партнёров есть в&nbsp;кабинете Вендор.
               </p>
             </form>

@@ -27,9 +27,9 @@ export const PRICE_NOTE =
 
 const PriceTable = () => (
   <section className="px-5 pb-10 md:px-14 md:pb-16">
-    <h2 className="font-display text-[1.6em] font-semibold tracking-[-0.02em] md:text-[2.2em]">сколько стоит</h2>
+    <h2 className="font-display text-[1.5em] font-semibold tracking-[-0.02em] md:text-[2.2em]">сколько стоит</h2>
     <div className="mt-5 overflow-x-auto rounded-[24px] bg-surface text-cream">
-      <table className="w-full text-left text-[max(12px,0.95em)]">
+      <table className="w-full text-left text-[max(12px,0.94em)]">
         <thead className="text-cream-muted">
           <tr>
             <th scope="col" className="px-5 py-4 font-medium md:px-7">Что</th>
@@ -44,12 +44,12 @@ const PriceTable = () => (
                 <Link to={r.to} className="hover:text-brand">
                   {r.name}
                 </Link>
-                <span className="mt-1 block text-[0.92em] font-normal leading-snug text-cream-muted md:hidden">{r.kind}</span>
+                <span className="mt-1 block text-[0.94em] font-normal leading-snug text-cream-muted md:hidden">{r.kind}</span>
               </td>
               <td className="hidden px-5 py-4 text-cream-muted md:table-cell">{r.kind}</td>
               <td className="px-5 py-4 text-right align-top md:px-7 md:text-left">
                 <span className="block whitespace-nowrap font-display font-semibold text-brand md:inline">{r.price}</span>{" "}
-                <span className="text-[0.9em] text-cream-muted">{r.period}</span>
+                <span className="text-[0.94em] text-cream-muted">{r.period}</span>
               </td>
             </tr>
           ))}
