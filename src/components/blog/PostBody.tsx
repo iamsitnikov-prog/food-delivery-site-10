@@ -84,14 +84,15 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
 
       if (b.type === "summary")
         return (
-          <aside key={i} className="mt-8 rounded-[24px] bg-surface p-4 text-cream md:p-7">
-            <span className="inline-block rounded-lg bg-brand px-3 py-1.5 text-[max(12px,0.75em)] font-semibold uppercase tracking-wide text-foreground">
-              коротко
-            </span>
-            <ul className="mt-4 space-y-3">
-              {b.items.map((item) => (
-                <li key={item} className="flex gap-3 leading-relaxed text-cream/90">
-                  <Icon name="Check" size={19} className="mt-1 shrink-0 text-brand" />
+          <aside key={i} className="mt-8 overflow-hidden rounded-[24px] border border-primary/25">
+            <p className="bg-surface px-5 py-4 font-display font-semibold text-cream">Коротко</p>
+            <ul>
+              {b.items.map((item, n) => (
+                <li
+                  key={item}
+                  className={`flex gap-3 px-5 py-4 text-[0.95em] leading-snug text-foreground/85 ${n ? "border-t border-primary/20" : ""}`}
+                >
+                  <Icon name="Check" size={18} className="mt-0.5 shrink-0" />
                   <span className="min-w-0 break-words">{item}</span>
                 </li>
               ))}
@@ -101,30 +102,26 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
 
       if (b.type === "steps")
         return (
-          <figure key={i} className="mt-8">
+          <figure key={i} className="mt-8 overflow-hidden rounded-[24px] border border-primary/25">
             {b.title && (
-              <figcaption className="mb-3 text-[max(12px,0.82em)] font-medium uppercase tracking-wide text-foreground/60">
-                {b.title}
-              </figcaption>
+              <figcaption className="bg-surface px-5 py-4 font-display font-semibold text-cream">{b.title}</figcaption>
             )}
-            <ol className="flex flex-col gap-2 md:flex-row md:items-stretch md:gap-3">
+            <ol className="flex flex-col md:flex-row">
               {b.items.map((s, n) => (
-                <li key={s.title} className="flex min-w-0 flex-1 flex-col gap-2 md:flex-row md:items-stretch md:gap-3">
-                  <div className="min-w-0 flex-1 rounded-[20px] bg-surface p-4 text-cream md:p-5">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand font-display text-[0.95em] font-semibold text-foreground">
+                <li
+                  key={s.title}
+                  className={`min-w-0 flex-1 px-5 py-4 ${n ? "border-t border-primary/20 md:border-l md:border-t-0" : ""}`}
+                >
+                  <p className="flex items-center gap-2.5 font-medium leading-snug">
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-surface text-[max(12px,0.85em)] font-semibold text-brand">
                       {n + 1}
                     </span>
-                    <p className="mt-3 break-words font-display text-[1.1em] font-semibold leading-snug tracking-[-0.02em]">
-                      {s.title}
-                    </p>
-                    {s.text && <p className="mt-1.5 break-words text-[0.92em] leading-snug text-cream/75">{s.text}</p>}
-                  </div>
-                  {n < b.items.length - 1 && (
-                    <span className="flex shrink-0 items-center justify-center text-foreground/70" aria-hidden="true">
-                      <Icon name="ChevronDown" size={22} className="md:hidden" />
-                      <Icon name="ArrowRight" size={20} className="hidden md:block" />
-                    </span>
-                  )}
+                    <span className="min-w-0 break-words">{s.title}</span>
+                    {n < b.items.length - 1 && (
+                      <Icon name="ArrowRight" size={17} className="ml-auto hidden shrink-0 text-foreground/50 md:block" />
+                    )}
+                  </p>
+                  {s.text && <p className="mt-2 break-words text-[0.95em] leading-snug text-foreground/80">{s.text}</p>}
                 </li>
               ))}
             </ol>
@@ -133,11 +130,11 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
 
       if (b.type === "stat")
         return (
-          <aside key={i} className="mt-8 flex flex-col gap-2 rounded-[24px] bg-surface p-5 text-cream md:flex-row md:items-center md:gap-7 md:p-7">
-            <span className="shrink-0 font-display text-[2.4em] font-semibold leading-none tracking-[-0.03em] text-brand md:text-[3.2em]">
+          <aside key={i} className="mt-8 flex flex-col overflow-hidden rounded-[24px] border border-primary/25 md:flex-row md:items-stretch">
+            <span className="flex shrink-0 items-center bg-surface px-5 py-4 font-display text-[1.9em] font-semibold leading-none tracking-[-0.03em] text-brand md:px-7 md:text-[2.3em]">
               {b.value}
             </span>
-            <span className="min-w-0 break-words text-[1.02em] leading-snug text-cream/90">{b.text}</span>
+            <span className="flex min-w-0 items-center break-words px-5 py-4 text-[0.95em] leading-snug text-foreground/85">{b.text}</span>
           </aside>
         );
 
