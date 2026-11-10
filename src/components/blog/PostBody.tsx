@@ -84,14 +84,14 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
 
       if (b.type === "summary")
         return (
-          <aside key={i} className="mt-8 rounded-[24px] border border-primary/25 bg-pale p-4 md:p-7">
+          <aside key={i} className="mt-8 rounded-[24px] bg-surface p-4 text-cream md:p-7">
             <span className="inline-block rounded-lg bg-brand px-3 py-1.5 text-[max(12px,0.75em)] font-semibold uppercase tracking-wide text-foreground">
               коротко
             </span>
             <ul className="mt-4 space-y-3">
               {b.items.map((item) => (
-                <li key={item} className="flex gap-3 leading-relaxed text-foreground/90">
-                  <Icon name="Check" size={19} className="mt-1 shrink-0" />
+                <li key={item} className="flex gap-3 leading-relaxed text-cream/90">
+                  <Icon name="Check" size={19} className="mt-1 shrink-0 text-brand" />
                   <span className="min-w-0 break-words">{item}</span>
                 </li>
               ))}
@@ -110,17 +110,17 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
             <ol className="flex flex-col gap-2 md:flex-row md:items-stretch md:gap-3">
               {b.items.map((s, n) => (
                 <li key={s.title} className="flex min-w-0 flex-1 flex-col gap-2 md:flex-row md:items-stretch md:gap-3">
-                  <div className="min-w-0 flex-1 rounded-[20px] border border-primary/25 bg-pale p-4 md:p-5">
+                  <div className="min-w-0 flex-1 rounded-[20px] bg-surface p-4 text-cream md:p-5">
                     <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand font-display text-[0.95em] font-semibold text-foreground">
                       {n + 1}
                     </span>
                     <p className="mt-3 break-words font-display text-[1.1em] font-semibold leading-snug tracking-[-0.02em]">
                       {s.title}
                     </p>
-                    {s.text && <p className="mt-1.5 break-words text-[0.92em] leading-snug text-foreground/75">{s.text}</p>}
+                    {s.text && <p className="mt-1.5 break-words text-[0.92em] leading-snug text-cream/75">{s.text}</p>}
                   </div>
                   {n < b.items.length - 1 && (
-                    <span className="flex shrink-0 items-center justify-center text-foreground/50" aria-hidden="true">
+                    <span className="flex shrink-0 items-center justify-center text-foreground/70" aria-hidden="true">
                       <Icon name="ChevronDown" size={22} className="md:hidden" />
                       <Icon name="ArrowRight" size={20} className="hidden md:block" />
                     </span>
@@ -133,11 +133,11 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
 
       if (b.type === "stat")
         return (
-          <aside key={i} className="mt-8 flex flex-col gap-2 rounded-[24px] border border-primary/25 bg-pale p-5 text-foreground md:flex-row md:items-center md:gap-7 md:p-7">
-            <span className="shrink-0 font-display text-[2.4em] font-semibold leading-none tracking-[-0.03em] md:text-[3.2em]">
+          <aside key={i} className="mt-8 flex flex-col gap-2 rounded-[24px] bg-surface p-5 text-cream md:flex-row md:items-center md:gap-7 md:p-7">
+            <span className="shrink-0 font-display text-[2.4em] font-semibold leading-none tracking-[-0.03em] text-brand md:text-[3.2em]">
               {b.value}
             </span>
-            <span className="min-w-0 break-words text-[1.02em] leading-snug">{b.text}</span>
+            <span className="min-w-0 break-words text-[1.02em] leading-snug text-cream/90">{b.text}</span>
           </aside>
         );
 
