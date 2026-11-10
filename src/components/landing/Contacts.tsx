@@ -29,7 +29,7 @@ const Contacts = () => {
             <span className="block pl-[1.2em] text-brand">каждый день</span>
           </h2>
           <p className="mt-6 max-w-[380px] text-cream-muted">
-            Увеличьте свою выручку уже&nbsp;в&nbsp;первую неделю — просто оставьте заявку. Работаем с&nbsp;ресторанами по&nbsp;всей России и&nbsp;в&nbsp;странах СНГ, где есть Яндекс Еда.
+            Увеличьте свою выручку уже&nbsp;за&nbsp;7&nbsp;дней — просто оставьте заявку. Работаем с&nbsp;ресторанами по&nbsp;всей России и&nbsp;в&nbsp;странах СНГ, где есть Яндекс Еда.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a

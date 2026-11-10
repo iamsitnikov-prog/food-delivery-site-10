@@ -47,7 +47,7 @@ const Hero = () => {
           </h1>
           <div className="mt-5 flex animate-rise-delay md:mt-[34px] flex-col items-start gap-5 sm:gap-6 lg:flex-row lg:items-end lg:gap-10">
             <p className="max-w-[430px] leading-[1.25] text-[1em] md:text-[1.3em] text-left">
-              Заказы и&nbsp;выручка на&nbsp;Яндекс Еде уже&nbsp;с&nbsp;первой недели. Настраиваем вендор, акции, продвижение и&nbsp;лояльность, обучаем персонал.
+              Заказы и&nbsp;выручка на&nbsp;Яндекс Еде уже&nbsp;за&nbsp;7&nbsp;дней. Настраиваем вендор, акции, продвижение и&nbsp;лояльность, обучаем персонал.
             </p>
             <div className="flex flex-col items-start gap-2.5">
               <a
