@@ -56,6 +56,15 @@ const blocksToHtml = (blocks: any[]): string => {
         out.push(`<ul>${rows.join("")}</ul>`);
         break;
       }
+      case "summary":
+        out.push(`<p><strong>Коротко</strong></p><ul>${b.items.map((i: string) => `<li>${esc(clean(i))}</li>`).join("")}</ul>`);
+        break;
+      case "steps":
+        out.push(`${b.title ? `<p><strong>${esc(clean(b.title))}</strong></p>` : ""}<ol>${b.items.map((s: any) => `<li><strong>${esc(clean(s.title))}</strong>${s.text ? ` ${esc(clean(s.text))}` : ""}</li>`).join("")}</ol>`);
+        break;
+      case "stat":
+        out.push(`<p><strong>${esc(clean(b.value))}</strong> ${esc(clean(b.text))}</p>`);
+        break;
       case "offer":
         out.push(`<p><strong>${esc(clean(b.title))}</strong> ${esc(clean(b.text))} <a href="${esc(b.url.startsWith("/") ? SITE + b.url : b.url)}">${esc(clean(b.cta))}</a></p>`);
         break;

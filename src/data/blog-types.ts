@@ -6,6 +6,12 @@ export type PostBlock =
   | { type: "numbered"; items: string[] }
   | { type: "quote"; text: string }
   | { type: "table"; head: string[]; rows: string[][] }
+  /** «Коротко»: главное из статьи в 3–4 строках, ставится перед первым h2. */
+  | { type: "summary"; items: string[] }
+  /** Схема шагов: карточки с номерами и стрелками между ними. */
+  | { type: "steps"; title?: string; items: { title: string; text?: string }[] }
+  /** Плашка с одной крупной цифрой и пояснением. */
+  | { type: "stat"; value: string; text: string }
   | { type: "partner"; name: string; url: string; text: string; cta?: string; promo?: string }
   /** Предложение своей услуги внутри статьи: внутренняя ссылка, без «инструмента партнёра». */
   | { type: "offer"; title: string; text: string; url: string; cta: string; telegram?: boolean };
