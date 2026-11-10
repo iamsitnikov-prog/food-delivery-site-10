@@ -106,12 +106,12 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
             {b.title && (
               <figcaption className="bg-surface px-5 py-4 font-display font-semibold text-cream">{b.title}</figcaption>
             )}
-            {/* В ряд ставим не больше трёх шагов: четыре и пять в узкой колонке статьи сжимаются до столбика букв. */}
-            <ol className={`flex flex-col ${b.items.length <= 3 ? "md:flex-row" : ""}`}>
+            {/* В ряд ставим не больше трёх шагов: четыре и пять в узкой колонке статьи сжимаются до столбика букв. Ряд включаем с xl: на планшете колонка статьи слишком узкая и для трёх. */}
+            <ol className={`flex flex-col ${b.items.length <= 3 ? "xl:flex-row" : ""}`}>
               {b.items.map((s, n) => (
                 <li
                   key={s.title}
-                  className={`min-w-0 flex-1 px-5 py-4 ${n ? `border-t border-primary/20 ${b.items.length <= 3 ? "md:border-l md:border-t-0" : ""}` : ""}`}
+                  className={`min-w-0 flex-1 px-5 py-4 ${n ? `border-t border-primary/20 ${b.items.length <= 3 ? "xl:border-l xl:border-t-0" : ""}` : ""}`}
                 >
                   <p className="flex items-center gap-2.5 font-medium leading-snug">
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-surface text-[max(12px,0.85em)] font-semibold text-brand">
@@ -119,7 +119,7 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
                     </span>
                     <span className="min-w-0 break-words">{s.title}</span>
                     {n < b.items.length - 1 && b.items.length <= 3 && (
-                      <Icon name="ArrowRight" size={17} className="ml-auto hidden shrink-0 text-foreground/50 md:block" />
+                      <Icon name="ArrowRight" size={17} className="ml-auto hidden shrink-0 text-foreground/50 xl:block" />
                     )}
                   </p>
                   {s.text && <p className="mt-2 break-words text-[0.95em] leading-snug text-foreground/80">{s.text}</p>}
