@@ -15,5 +15,24 @@ Disallow: /*?draft=
 Disallow: /*?pp-shell=
 Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term&yclid&gclid&from&ysclid
 
+# Роботы нейросетей: поиск и ответы ChatGPT, Perplexity, Claude, Gemini.
+# Доступ открыт явно, чтобы сайт попадал в их ответы. Каждый робот читает только свой блок,
+# поэтому закрытые разделы повторены и здесь.
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: GPTBot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: Google-Extended
+Allow: /
+Disallow: /preview/
+Disallow: /dokumenty
+Disallow: /go/
+Disallow: /*?draft=
+Disallow: /*?pp-shell=
+
 Sitemap: https://agregatory.pro/sitemap.xml
 Sitemap: https://agregatory.pro/rss.xml
