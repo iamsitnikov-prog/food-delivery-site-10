@@ -1,4 +1,5 @@
 import Icon from "@/components/ui/icon";
+import { partnerGoByUrl } from "@/data/partners";
 import BuildersCalc, { BUILDERS } from "@/components/calc/BuildersCalc";
 
 const FEATURES: { key: "hasApp" | "hasLoyalty" | "hasCrm" | "forNetwork"; label: string }[] = [
@@ -189,7 +190,7 @@ const BuildersBlock = () => (
 
             {b.url && (
               <a
-                href={b.url}
+                href={partnerGoByUrl(b.url)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-5 inline-flex items-center gap-2 text-[max(12px,0.9em)] font-medium text-brand hover:underline"

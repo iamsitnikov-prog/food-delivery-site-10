@@ -20,6 +20,12 @@ const useContactGoals = () => {
       const href = link.getAttribute("href") || "";
       const goal = resolveGoal(href);
       if (goal) reachGoal(goal);
+      // Переход к партнёру: общая цель и отдельная по партнёру (partner_starter и т. д.).
+      const go = href.match(/^\/go\/([a-z0-9-]+)$/);
+      if (go) {
+        reachGoal("partner_click", { partner: go[1], page: window.location.pathname });
+        reachGoal(`partner_${go[1].replace(/-/g, "_")}`);
+      }
     };
     document.addEventListener("click", onClick);
     return () => {

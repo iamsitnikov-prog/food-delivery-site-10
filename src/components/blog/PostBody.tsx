@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import type { PostBlock } from "@/data/post-index";
 import Icon from "@/components/ui/icon";
 import { INTERLINKS } from "@/data/interlinks";
+import { partnerGoByUrl } from "@/data/partners";
 
 type Node = string | JSX.Element;
 
@@ -188,7 +189,7 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
                 </div>
               )}
               <a
-                href={b.url}
+                href={partnerGoByUrl(b.url)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-[0.95em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"

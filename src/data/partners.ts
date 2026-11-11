@@ -607,6 +607,12 @@ export const PARTNERS: Partner[] = [
 /** Переход на сайт партнёра через наш адрес: так считаем клики (api/go.php). */
 export const partnerGoUrl = (slug: string) => `/go/${slug}`;
 
+/** Ссылка на партнёра из статьи или сравнения: ведём через /go/<партнёр>, чтобы клик попал в счётчик и в цель Метрики. */
+export const partnerGoByUrl = (url: string) => {
+  const p = PARTNERS.find((x) => x.url === url);
+  return p ? partnerGoUrl(p.slug) : url;
+};
+
 export const getPartner = (slug: string) => PARTNERS.find((p) => p.slug === slug);
 
 /** Полезные сайты: официальные ресурсы, которые советуем ресторанам. Ведут сразу наружу. */
