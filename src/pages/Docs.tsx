@@ -343,19 +343,21 @@ const Docs = () => {
   const [authBusy, setAuthBusy] = useState(false);
   const [dadata, setDadata] = useState(false);
   const [user, setUser] = useState<DocsUser>(ALISA);
-  const [tk, setTk] = useState(""); // ключ шаблонов (выданный пин), сервер отдаёт его после входа
+  const [tk, setTk] = useState(""); // ключ шаблонов, сервер отдаёт его после входа
+  const [tplNew, setTplNew] = useState(false); // шаблоны уже лежат в закрытой папке хостинга
   const [mustChange, setMustChange] = useState(false);
   const [pinOpen, setPinOpen] = useState(false);
   const [pin1, setPin1] = useState("");
   const [pin2, setPin2] = useState("");
   const [pinErr, setPinErr] = useState("");
   const [pinBusy, setPinBusy] = useState(false);
-  type LoginResp = { dadata?: boolean; user?: DocsUser; tk?: string; must_change?: boolean };
+  type LoginResp = { dadata?: boolean; user?: DocsUser; tk?: string; must_change?: boolean; tpl_new?: boolean };
   const applyLogin = (d: LoginResp, k: string) => {
     setDadata(!!d.dadata);
     if (d.user) setUser(d.user);
     if (d.user?.id === "lilia") setDocType("consult");
     setTk(d.tk || k);
+    setTplNew(!!d.tpl_new);
     setMustChange(!!d.must_change);
     writeKey(k);
     setKey(k);
@@ -373,7 +375,7 @@ const Docs = () => {
   const savePin = async (e: React.FormEvent) => {
     e.preventDefault();
     setPinErr("");
-    if (!/^\d{4,8}$/.test(pin1)) return setPinErr("Пин-код: от 4 до 8 цифр");
+    if (!/^\d{6,8}$/.test(pin1)) return setPinErr("Пин-код: от 6 до 8 цифр");
     if (pin1 !== pin2) return setPinErr("Пин-коды не совпадают");
     setPinBusy(true);
     try {
@@ -862,7 +864,12 @@ const Docs = () => {
     if (!validate()) return;
     setBusy(true);
     try {
-      const enc = await fetch(`/api/docs/${user.tpl}${consult ? "consult" : kind}.docx.enc`, { cache: "no-store" }).then((r) => {
+      const tplName = consult ? "consult" : kind;
+      // после переезда шаблон отдаёт сервер и только вошедшему; до переезда он лежит рядом с сайтом
+      const enc = await (tplNew
+        ? fetch(`${API}?a=tpl&name=${tplName}`, { headers: { "X-Docs-Key": encodeURIComponent(key) }, cache: "no-store" })
+        : fetch(`/api/docs/${user.tpl}${tplName}.docx.enc`, { cache: "no-store" })
+      ).then((r) => {
         if (!r.ok) throw new Error("Шаблон не загрузился");
         return r.arrayBuffer();
       });
@@ -974,8 +981,8 @@ const Docs = () => {
       </h1>
       <p className="mt-3 text-cream-muted">
         {first
-          ? "Выданный пин-код временный. Придумай свой: от 4 до 8 цифр. Дальше входить будешь только по нему, старый перестанет работать."
-          : "От 4 до 8 цифр. Старый пин-код сразу перестанет работать."}
+          ? "Нужен новый пин-код: от 6 до 8 цифр. Дальше входить будешь только по нему, прежний перестанет работать."
+          : "От 6 до 8 цифр. Старый пин-код сразу перестанет работать."}
       </p>
       <Input
         type="password"
@@ -1011,7 +1018,7 @@ const Docs = () => {
           отмена
         </button>
       )}
-      <p className="mt-4 text-[max(12px,0.8em)] text-cream-muted">Забудешь пин-код: напиши Юрию, он сбросит его на выданный.</p>
+      <p className="mt-4 text-[max(12px,0.8em)] text-cream-muted">Забудешь пин-код: напиши боту заявок в личный чат команду /pin, он пришлёт временный.</p>
     </form>
   );
 
@@ -1796,7 +1803,7 @@ const Docs = () => {
               <div className="mt-4 rounded-[24px] bg-surface p-6 text-cream">
                 <h2 className="font-display text-[1.2em] font-semibold">пин-коды кабинетов</h2>
                 <p className="mt-1 text-[max(12px,0.8em)] text-cream-muted">
-                  Видно только вам. Если кто-то забыл свой пин, сбросьте: снова заработает выданный пин, и при входе его попросят придумать новый.
+                  Видно только вам. Если кто-то забыл свой пин, он пишет боту заявок в личный чат /pin и получает временный. Кнопка «сбросить» гасит нынешний пин, если им мог завладеть посторонний.
                 </p>
                 <ul className="mt-3 space-y-2 text-[0.9em]">
                   {pins.map((u) => (
@@ -1804,7 +1811,7 @@ const Docs = () => {
                       <span>
                         <b>{u.name}</b>
                         <span className="block text-[0.85em] text-cream-muted">
-                          {u.own ? `свой пин с ${new Date(u.at).toLocaleDateString("ru-RU")}` : "выданный пин, ещё не сменён"}
+                          {u.own ? `свой пин с ${new Date(u.at).toLocaleDateString("ru-RU")}` : "своего пин-кода нет"}
                         </span>
                       </span>
                       {u.own && u.id !== user.id && (
@@ -1815,7 +1822,7 @@ const Docs = () => {
                             fd.append("id", u.id);
                             api(key, "a=resetpin", { method: "POST", body: fd })
                               .then(() => {
-                                setPinsMsg(`${u.name}: пин сброшен на выданный`);
+                                setPinsMsg(`${u.name}: пин погашен, новый временный он получит у бота командой /pin`);
                                 loadPins();
                               })
                               .catch((e) => setPinsMsg((e as Error).message));
