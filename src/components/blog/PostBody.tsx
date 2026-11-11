@@ -179,21 +179,24 @@ const PostBody = ({ blocks, slug = "" }: { blocks: PostBlock[]; slug?: string })
               <span className="text-[max(12px,0.85em)] text-foreground/70">инструмент, который мы советуем</span>
             </div>
             <p className="mt-4 leading-relaxed text-foreground/85">{b.text}</p>
-            {b.promo && (
-              <div className="mt-4 mr-3 inline-flex items-center gap-3 rounded-xl bg-foreground px-4 py-3 align-middle">
-                <span className="text-[max(12px,0.78em)] uppercase tracking-wide text-brand/70">промокод</span>
-                <span className="font-display text-[1.1em] font-semibold text-brand">{b.promo}</span>
-              </div>
-            )}
-            <a
-              href={b.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-[0.95em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
-            >
-              {b.cta || `перейти в ${b.name}`}
-              <Icon name="ArrowUpRight" size={17} />
-            </a>
+            {/* Промокод и кнопка стоят в одном ряду одной высоты: раньше они были на разных отступах и «скакали». */}
+            <div className="mt-5 flex flex-wrap items-stretch gap-3">
+              {b.promo && (
+                <div className="flex items-center gap-3 rounded-xl bg-foreground px-4 py-3">
+                  <span className="text-[max(12px,0.78em)] uppercase tracking-wide text-brand/70">промокод</span>
+                  <span className="font-display text-[1.1em] font-semibold leading-none text-brand">{b.promo}</span>
+                </div>
+              )}
+              <a
+                href={b.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-[0.95em] font-medium text-primary-foreground transition-transform hover:-translate-y-0.5"
+              >
+                {b.cta || `перейти в ${b.name}`}
+                <Icon name="ArrowUpRight" size={17} />
+              </a>
+            </div>
           </aside>
         );
 
