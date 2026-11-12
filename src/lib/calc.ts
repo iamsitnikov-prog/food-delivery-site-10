@@ -159,7 +159,8 @@ const withVat = (net: number) =>
 export const BUSINESS_BASE_FEE_NET = 1333;
 export const BUSINESS_EXTRA_FEE_NET = 583;
 export const BUSINESS_BASE_FEE = withVat(BUSINESS_BASE_FEE_NET);
-export const BUSINESS_EXTRA_FEE = withVat(BUSINESS_EXTRA_FEE_NET);
+// Доплату за 4-й и следующие рестораны справка даёт без НДС (снимок 24.10.2026).
+export const BUSINESS_EXTRA_FEE = BUSINESS_EXTRA_FEE_NET;
 export const BUSINESS_BASE_COUNT = 3;
 
 export const SUBSCRIPTION_PLANS: {
@@ -176,7 +177,7 @@ export const SUBSCRIPTION_PLANS: {
   {
     value: "business",
     label: "Бизнес",
-    hint: "1,64% + НДС от суммы заказов (в расчёте 2,0%) плюс фиксированная часть: 1 333 ₽ + НДС за первые три ресторана и 583 ₽ + НДС за каждый следующий. Добавляется личный менеджер.",
+    hint: "1,64% + НДС от суммы заказов (в расчёте 2,0%) плюс фиксированная часть: 1 333 ₽ + НДС за первые три ресторана и 583 ₽ без НДС за каждый следующий. Добавляется личный менеджер.",
   },
 ];
 
