@@ -81,6 +81,7 @@ const BY_SERVICE: Record<string, string[]> = {
   "podklyuchenie-samovyvoza": ["avtomatizaciya", "dostavka"],
   "rabota-s-otmenami": ["avtomatizaciya"],
   "konsultatsiya-restoratora": ["dostavka", "analitika"],
+  "spetsialist-po-yandex-ede": ["analitika", "avtomatizaciya"],
 };
 
 const BY_TERM_GROUP: Record<string, string[]> = {

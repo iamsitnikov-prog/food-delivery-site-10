@@ -175,6 +175,14 @@ export const SERVICE_RESOURCES: Record<string, ResourceLink[]> = {
     CALC("model-dostavki", "Какая модель выгоднее", "Свои курьеры или курьеры сервиса"),
     COMPARE,
   ],
+  "spetsialist-po-yandex-ede": [
+    BLOG("agentstvo-po-prodvizheniyu-na-yandex-ede", "Агентство по продвижению на Яндекс Еде", "Когда нужно и как выбрать"),
+    BLOG("skolko-stoit-prodvizhenie-na-yandex-ede", "Сколько стоит продвижение на Яндекс Еде", "Все статьи расходов и расчёт"),
+    BLOG("menedzher-po-agregatoram", "Менеджер по агрегаторам", "Обязанности, KPI и аутсорс", "2026-12-15"),
+    BLOG("oshibki-restoranov-na-agregatorah", "Ошибки ресторанов на агрегаторах", "Что встречаем чаще всего"),
+    CALC("rentabelnost-zakaza", "Рентабельность заказа", "Начните с экономики одного заказа"),
+    GLOSSARY("drr", "Что такое ДРР", "Базовая метрика здоровья рекламы"),
+  ],
   "konsultatsiya-restoratora": [
     BLOG("chibbis-dlya-restorana", "Чиббис для ресторана", "Подключение и условия", "2026-10-15"),
     BLOG("agentstvo-po-prodvizheniyu-na-yandex-ede", "Агентство по продвижению на Яндекс Еде", "Когда нужно и как выбрать"),

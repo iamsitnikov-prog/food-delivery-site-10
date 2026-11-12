@@ -57,6 +57,7 @@ import {
   HOME_CASES,
   HOME_FAQ,
   HOME_ADVANTAGES,
+  HOME_SERVICE_LINKS,
 } from "../src/data/home";
 import { NAV, USEFUL_LINKS } from "../src/components/landing/nav-links";
 import { PAY_PRODUCTS, SELLER_INN, SELLER_OGRNIP, formatRub } from "../src/data/payments";
@@ -1433,7 +1434,7 @@ pages.push({
   // иначе поисковик обрезает хвост многоточием.
   title: "Продвижение ресторана в Яндекс Еде и Деливери | agregatory.pro",
   description:
-    "Подключаем и ведём рестораны на Яндекс Еде и Деливери: настройка вендора, контент, акции, рейтинг и поддержка 24/7. Первый заказ — максимум через 7 дней.",
+    "Продвижение на Яндекс Еде под ключ: подключаем и ведём рестораны, настраиваем вендор, меню, акции и рейтинг. Первый заказ максимум через 7 дней.",
   jsonLd: [
     {
       "@context": "https://schema.org",
@@ -1449,6 +1450,7 @@ pages.push({
 <p>Заказы и выручка на Яндекс Еде уже за 7 дней. Настраиваем вендор, акции, продвижение и лояльность, обучаем персонал. Первый заказ — максимум через 7 дней.</p>
 
 <h2 id="services">Наши услуги</h2>
+<p>Продвижение на Яндекс Еде под ключ: полный цикл запуска и продвижения вашего ресторана в доставке, от регистрации до лояльности гостей.</p>
 ${HOME_SERVICES.map(
     (sv) => `<h3>${esc(clean(sv.title))} — ${esc(clean(sv.short))}</h3>
 <p>${esc(clean(sv.text))}</p>
@@ -1457,6 +1459,7 @@ ${HOME_SERVICES.map(
 <p>Отдельные страницы услуг: ${SERVICE_PAGES.map(
     (sp) => `<a href="/uslugi/${sp.slug}">${esc(clean(sp.navLabel))}</a>`,
   ).join(" · ")}</p>
+<p>${HOME_SERVICE_LINKS.map((l) => `<a href="${l.to}">${esc(clean(l.label))}</a>`).join(" · ")}</p>
 
 <h2>Почему с нами выгодно</h2>
 <ul>${HOME_ADVANTAGES.map(

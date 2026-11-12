@@ -1,5 +1,5 @@
 import { SWIPE, SWIPE_ITEM } from "./swipe";
-import { HOME_SERVICES as SERVICES } from "@/data/home";
+import { HOME_SERVICES as SERVICES, HOME_SERVICE_LINKS } from "@/data/home";
 import { Link } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 import useReveal from "@/hooks/use-reveal";
@@ -16,7 +16,7 @@ const Services = () => {
           <span className="block pl-[1.2em] text-muted-foreground">услуги</span>
         </h2>
         <p className="max-w-[360px] text-[1.1em] leading-snug">
-          Обеспечиваем полный цикл запуска и&nbsp;продвижения вашего ресторана в&nbsp;доставке: от&nbsp;регистрации до&nbsp;лояльности гостей.
+          Продвижение на&nbsp;Яндекс Еде под&nbsp;ключ: полный цикл запуска и&nbsp;продвижения вашего ресторана в&nbsp;доставке, от&nbsp;регистрации до&nbsp;лояльности гостей.
         </p>
       </div>
 
@@ -92,6 +92,18 @@ const Services = () => {
         </Link>
         <span className="text-[0.94em] text-muted-foreground">подберём услуги под ваш ресторан</span>
       </div>
+
+      <nav aria-label="Отдельные услуги" className="reveal mt-6 flex flex-wrap gap-x-5 gap-y-2 text-[max(12px,0.94em)]">
+        {HOME_SERVICE_LINKS.map((l) => (
+          <Link
+            key={l.to}
+            to={l.to}
+            className="inline-flex min-h-[24px] items-center py-0.5 text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+          >
+            {l.label}
+          </Link>
+        ))}
+      </nav>
     </section>
   );
 };

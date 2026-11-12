@@ -10,15 +10,22 @@ const page = (phrase: string, to: string, slug: string): Interlink => ({ phrase,
 export const INTERLINKS: Interlink[] = [
   // Ссылки на услуги — длинные фразы, стоят первыми, чтобы выигрывать у коротких.
   page("аудит кабинета", "/uslugi/audit-kabineta", "svc-audit"),
+  page("аудит ресторана", "/uslugi/audit-kabineta", "svc-audit"),
+  page("настройка вендора", "/uslugi/nastroyka-vendora", "svc-vendor"),
+  page("настройку вендора", "/uslugi/nastroyka-vendora", "svc-vendor"),
   page("настройка кабинета", "/uslugi/nastroyka-vendora", "svc-vendor"),
   page("подключение к Яндекс Еде", "/uslugi/podklyuchenie-k-yandex-ede", "svc-podkl"),
   page("оспорить штраф", "/uslugi/shtrafy-i-uderzhaniya", "svc-shtrafy"),
   page("снизить ДРР", "/uslugi/snizhenie-drr", "svc-drr"),
   page("поднять рейтинг", "/uslugi/povyshenie-reytinga", "svc-reyting"),
   page("обучение персонала", "/uslugi/obuchenie-personala", "svc-obuch"),
+  page("специалист по Яндекс Еде", "/uslugi/spetsialist-po-yandex-ede", "svc-spets"),
+  page("менеджер по Яндекс Еде", "/uslugi/spetsialist-po-yandex-ede", "svc-spets"),
   page("консультаци", "/uslugi/konsultatsiya-restoratora", "svc-konsult"),
 
   // Статьи блога.
+  post("сколько стоит продвижение", "skolko-stoit-prodvizhenie-na-yandex-ede"),
+  post("стоимость продвижения", "skolko-stoit-prodvizhenie-na-yandex-ede"),
   post("услуги по продвижению", "uslugi-po-prodvizheniyu-servisa-yandex-eda"),
   post("раскрутк", "raskrutka-restorana-v-yandex-ede"),
   post("агентств", "agentstvo-po-prodvizheniyu-na-yandex-ede"),
