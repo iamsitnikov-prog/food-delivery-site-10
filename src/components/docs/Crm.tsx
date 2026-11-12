@@ -16,6 +16,7 @@ export type Lead = {
   phone: string;
   email: string;
   place: string;
+  city?: string;
   service: string;
   channel: string;
   comment: string;
@@ -189,7 +190,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
       if (!["all", "mine", "none"].includes(who) && l.owner !== who) return false;
       if (chan && channelOf(l.channel) !== chan) return false;
       if (!s) return true;
-      const hay = `${l.name} ${l.place} ${l.service} ${l.comment} ${l.email} № ${l.id}`.toLowerCase();
+      const hay = `${l.name} ${l.place} ${l.city || ""} ${l.service} ${l.comment} ${l.email} № ${l.id}`.toLowerCase();
       return hay.includes(s) || (sd.length >= 3 && l.phone.replace(/\D/g, "").includes(sd));
     });
   }, [items, q, who, me, chan]);
@@ -274,7 +275,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
           <Icon name="Search" size={16} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-cream-muted" />
           <Input
             className={`${field} w-full pl-10`}
-            placeholder="поиск: имя, телефон, заведение, № заявки"
+            placeholder="поиск: имя, телефон, заведение, город, № заявки"
             value={q}
             onChange={(e) => setQ(e.target.value)}
             aria-label="Поиск по заявкам"
@@ -508,7 +509,7 @@ const LeadCard = ({
       <span className="font-medium leading-snug">{l.name || "без имени"}</span>
       <span className="shrink-0 text-[max(12px,0.78em)] text-cream-muted">№ {l.id}</span>
     </div>
-    {l.place && <p className="mt-1 text-[0.92em] leading-snug">{l.place}</p>}
+    {(l.place || l.city) && <p className="mt-1 text-[0.92em] leading-snug">{[l.place, l.city].filter(Boolean).join(", ")}</p>}
     {l.service && <p className="mt-1 text-[max(12px,0.85em)] leading-snug text-cream-muted">{l.service}</p>}
     {l.status === "noanswer" && (
       <p className="mt-2 rounded-lg bg-amber-50 px-2.5 py-1.5 text-[max(12px,0.85em)] font-medium leading-snug text-amber-900">
@@ -606,6 +607,7 @@ const LeadPanel = ({
           <section className="docs-card rounded-[24px] bg-surface p-5 text-cream">
             <h2 className="font-display text-[1.5em] font-semibold leading-tight tracking-[-0.02em]">{l.name || "без имени"}</h2>
             {l.place && <p className="mt-1 text-[1.05em]">{l.place}</p>}
+            {l.city && <p className="mt-1 text-cream-muted">Город: {l.city}</p>}
             <div className="mt-4 flex flex-wrap gap-2">
               {tel && (
                 <a href={tel} className="inline-flex h-11 items-center gap-2 rounded-xl bg-brand px-4 font-medium text-foreground">
@@ -802,7 +804,7 @@ const AddLead = ({
   onClose: () => void;
   onAdded: (l: Lead) => void;
 }) => {
-  const [f, setF] = useState({ name: "", phone: "", place: "", service: "", channel: "", comment: "", owner: "" });
+  const [f, setF] = useState({ name: "", phone: "", place: "", city: "", service: "", channel: "", comment: "", owner: "" });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
@@ -839,7 +841,8 @@ const AddLead = ({
         <div className="mt-4 space-y-3">
           <Input className={`${field} w-full`} placeholder="имя" value={f.name} onChange={set("name")} aria-label="Имя" autoFocus />
           <Input className={`${field} w-full`} placeholder="телефон" inputMode="tel" value={f.phone} onChange={set("phone")} aria-label="Телефон" />
-          <Input className={`${field} w-full`} placeholder="заведение и город" value={f.place} onChange={set("place")} aria-label="Заведение" />
+          <Input className={`${field} w-full`} placeholder="заведение" value={f.place} onChange={set("place")} aria-label="Заведение" />
+          <Input className={`${field} w-full`} placeholder="город" value={f.city} onChange={set("city")} aria-label="Город" />
           <Input className={`${field} w-full`} placeholder="что нужно: сопровождение, аудит, консультация" value={f.service} onChange={set("service")} aria-label="Услуга" />
           <select value={f.channel} onChange={set("channel")} className="h-11 w-full rounded-xl border border-cream/20 px-3 text-cream" aria-label="Связь с клиентом">
             <option value="">связь: телефон</option>

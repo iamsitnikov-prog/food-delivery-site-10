@@ -75,11 +75,13 @@ const ChipGroup = ({
   </div>
 );
 
-const LeadForm = () => {
+// defaultCity: на страницах городов город подставляется сам, посетитель может его поправить.
+const LeadForm = ({ defaultCity = "" }: { defaultCity?: string }) => {
   const ref = useReveal<HTMLElement>();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [place, setPlace] = useState("");
+  const [city, setCity] = useState(defaultCity);
   const [status, setStatus] = useState(STATUSES[0]);
   const [channel, setChannel] = useState(CHANNELS[0]);
   const [onYandex, setOnYandex] = useState("");
@@ -95,7 +97,7 @@ const LeadForm = () => {
     const e: Errors = {};
     if (name.trim().length < 2) e.name = "Как к вам обращаться?";
     if (phone.replace(/\D/g, "").length !== 11) e.phone = "Введите номер полностью";
-    if (place.trim().length < 3) e.place = "Напишите название и город или ссылку на ресторан";
+    if (place.trim().length < 3) e.place = "Напишите название или ссылку на ресторан";
     if (!agree) e.agree = "Нужно согласие на обработку данных";
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -114,6 +116,7 @@ const LeadForm = () => {
           name,
           phone,
           place,
+          city: city.trim(),
           status,
           channel,
           onYandex,
@@ -148,6 +151,7 @@ const LeadForm = () => {
     setName("");
     setPhone("");
     setPlace("");
+    setCity(defaultCity);
     setComment("");
     setStatus(STATUSES[0]);
     setChannel(CHANNELS[0]);
@@ -246,12 +250,24 @@ const LeadForm = () => {
               <div>
                 <Input
                   className={`${field} ${errors.place ? "border-destructive" : ""}`}
-                  placeholder="Заведение и город или ссылка"
+                  placeholder="Заведение или ссылка"
                   value={place}
                   onChange={(e) => setPlace(e.target.value)}
                   aria-invalid={!!errors.place}
                 />
                 {errors.place && <p className="mt-1.5 text-[max(12px,0.82em)] text-destructive">{errors.place}</p>}
+              </div>
+              <div>
+                <Input
+                  className={field}
+                  placeholder="Город"
+                  aria-label="Город"
+                  name="city"
+                  autoComplete="address-level2"
+                  maxLength={80}
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                />
               </div>
 
               <ChipGroup label="Вы уже на Яндекс Еде?" options={ON_YANDEX} value={onYandex} onChange={setOnYandex} />

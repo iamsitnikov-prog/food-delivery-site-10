@@ -373,7 +373,13 @@ const SeoLanding = () => {
         subtitle="полезное"
       />
 
-      <LeadForm />
+      {/* На странице города город в форме подставляется сам; на страницах стран не подставляем. */}
+      <LeadForm
+        key={page.slug}
+        defaultCity={
+          page.kind === "city" && !["Казахстан", "Беларусь", "Узбекистан", "Армения"].includes(page.navLabel) ? page.navLabel : ""
+        }
+      />
       <Contacts />
     </main>
   );
