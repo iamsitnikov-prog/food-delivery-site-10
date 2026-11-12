@@ -39,6 +39,8 @@ import { getChecklistPage } from "../src/data/checklists";
 import { GLOSSARY, GLOSSARY_LETTERS, getTerm } from "../src/data/glossary";
 import { anchorId, buildToc } from "../src/lib/term-anchors";
 import { PEOPLE } from "../src/data/team";
+import { PEOPLE as TEAM_PEOPLE, COURSE as TEAM_COURSE } from "../src/data/team";
+import { HOME_PLANS, HOME_STATS, HOME_CASES, HOME_FAQ } from "../src/data/home";
 import {
   getCta,
   getExpertIndex,
@@ -1128,6 +1130,18 @@ const ORG = {
   description: "Продвижение ресторанов на агрегаторах доставки",
   telephone: "+7 931 002-82-22",
   areaServed: ["RU", "KZ", "BY", "UZ", "AM"],
+  // 13.11.2026: чтобы поисковики и нейросети, которые берут данные из поиска, понимали кто мы, что и почём
+  slogan: "Мы не сотрудники Яндекса, работаем на стороне ресторана",
+  knowsAbout: ["Яндекс Еда", "Деливери", "продвижение ресторана на агрегаторе", "настройка кабинета ресторана в Яндекс Еде", "снижение ДРР", "рейтинг ресторана", "акции и ставки в Яндекс Еде", "обучение персонала доставки"],
+  founder: PEOPLE.map((x) => ({ "@type": "Person", name: x.name, jobTitle: x.role })),
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Услуги agregatory.pro",
+    itemListElement: [
+      ...HOME_PLANS.map((x) => ({ "@type": "Offer", name: `Сопровождение ${x.name}`, price: x.price.replace(/\D/g, ""), priceCurrency: "RUB", description: x.period.replace("*", ""), url: `${SITE}/#pricing` })),
+      ...PAY_PRODUCTS.map((x) => ({ "@type": "Offer", name: x.title, price: String(x.price), priceCurrency: "RUB", description: x.note, url: `${SITE}/oplata` })),
+    ],
+  },
   sameAs: [
     "https://t.me/vnutri_edy_channel",
     "https://t.me/Kovalchuk_dostavka",
@@ -1578,6 +1592,88 @@ ${sitemapRoutes
 `;
 fs.writeFileSync(path.join(OUT, "sitemap.xml"), sitemap, "utf-8");
 console.log(`Sitemap: ${sitemapRoutes.length} страниц`);
+
+// --- Файлы для нейросетей (с 13.11.2026): /llms.txt и /llms-full.txt -------------------------
+// Открытые текстовые файлы в корне сайта: в меню их нет, но и ничего не скрыто (не «страница для роботов»).
+// Собираются из тех же данных, что и сайт, поэтому цены и услуги в них всегда совпадают с сайтом.
+{
+  const clean = (t: string) => String(t || "").replace(/ /g, " ").replace(/\s+/g, " ").trim();
+  const svc = SERVICE_PAGES.map((p) => ({ p, url: `${SITE}/uslugi/${p.slug}` }));
+  const cities = CITY_PAGES.map((p) => ({ p, url: `${SITE}/goroda/${p.slug}` }));
+  const posts = [...BLOG_POSTS].sort((a, b) => String(b.date || "").localeCompare(String(a.date || "")));
+  const plans = HOME_PLANS.map((x) => `- Тариф «${x.name}»: ${x.price} ${x.period.replace("*", "")}. ${clean(x.text)}. Входит: ${x.items.join(", ")}.`);
+  const once = PAY_PRODUCTS.map((x) => `- ${x.title}: ${formatRub(x.price)} (${x.note}).`);
+  const people = TEAM_PEOPLE.map((x) => `- ${x.name}: ${x.role}; опыт: ${x.exp}. ${x.facts.join("; ")}.`);
+  const head = [
+    "# agregatory.pro",
+    "",
+    "> Продвижение ресторанов на агрегаторе Яндекс Еда (и Деливери): подключение, настройка кабинета, меню и фото, акции и ставки, снижение ДРР, рейтинг, отмены и штрафы, обучение персонала. Мы не сотрудники Яндекса, работаем на стороне ресторана.",
+    "",
+    `Команда: Юрий Ситников и Лилия Ковальчук, авторы курса «${TEAM_COURSE}». Работаем онлайн с ресторанами по всей России, а также в Казахстане, Беларуси, Узбекистане и Армении. Работаем по договору.`,
+    "",
+    "Контакты: телефон +7 931 002-82-22, Telegram https://t.me/sitnikovy1, заявка на бесплатный экспресс-анализ: https://agregatory.pro/#free-audit",
+    "",
+    "## Цены",
+    ...plans,
+    "- Для сетей от 2 точек условия по коммерческому предложению.",
+    ...once,
+    "",
+  ];
+  const short = [
+    ...head,
+    "## Услуги",
+    ...svc.map(({ p, url }) => `- [${clean(p.h1)}](${url}): ${clean(p.lead)}`),
+    "",
+    "## Города и страны",
+    ...cities.map(({ p, url }) => `- [${clean(p.navLabel)}](${url})`),
+    "",
+    "## Полезное",
+    `- [Блог: разборы механик Яндекс Еды и кейсы](${SITE}/blog)`,
+    `- [Словарь терминов доставки](${SITE}/slovar)`,
+    `- [Калькуляторы: рентабельность, комиссия, ДРР](${SITE}/kalkulyatory)`,
+    `- [Чек-листы](${SITE}/chek-listy)`,
+    `- [Тесты](${SITE}/testy)`,
+    `- [Сравнение агрегаторов и конструкторов доставки](${SITE}/sravnenie-agregatorov)`,
+    "",
+    "## Подробнее",
+    `- [Полная версия для нейросетей: услуги, частые вопросы, кейсы](${SITE}/llms-full.txt)`,
+    "",
+  ];
+  const full = [
+    ...head,
+    "## Команда",
+    ...people,
+    "",
+    "## Цифры",
+    ...HOME_STATS.map((x) => `- ${x.v} ${x.l}`),
+    "",
+    "## Частые вопросы",
+    ...HOME_FAQ.flatMap((x) => [`### ${clean(x.q)}`, clean(x.a), ""]),
+    "## Кейсы",
+    ...HOME_CASES.map((x) => `- ${x.name} (${x.city}): было ${x.before}, стало ${x.after}. ${clean(x.what)}`),
+    "",
+    "## Услуги подробно",
+    ...svc.flatMap(({ p, url }) => [
+      `### ${clean(p.h1)}`,
+      `Страница: ${url}`,
+      ...(p.price ? [`Цена: ${[p.price.value, p.price.text].filter(Boolean).map(clean).join('. ')}`] : []),
+      clean(p.lead),
+      ...(p.bullets || []).map((b) => `- ${clean(b)}`),
+      ...(p.faq || []).flatMap((f) => [`Вопрос: ${clean(f.q)}`, `Ответ: ${clean(f.a)}`]),
+      "",
+    ]),
+    "## Города и страны",
+    ...cities.map(({ p, url }) => `- ${clean(p.navLabel)}: ${url}. ${clean(p.lead)}`),
+    "",
+    "## Статьи блога (свежие сверху)",
+    ...posts.map((x) => `- [${clean(x.title)}](${SITE}/blog/${x.slug})`),
+    "",
+  ];
+  const stamp = `\nОбновлено: ${todayISO()}\n`;
+  fs.writeFileSync(path.join(OUT, "llms.txt"), short.join("\n") + stamp, "utf-8");
+  fs.writeFileSync(path.join(OUT, "llms-full.txt"), full.join("\n") + stamp, "utf-8");
+  console.log(`llms.txt: ${short.length} строк, llms-full.txt: ${full.length} строк`);
+}
 
 // Серверная отрисовка страниц (см. src/entry-server.tsx). Собирается отдельно
 // в vite.config.ts; если её нет или страница не отрисовалась — страница
