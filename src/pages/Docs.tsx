@@ -865,15 +865,24 @@ const Docs = () => {
     setBusy(true);
     try {
       const tplName = consult ? "consult" : kind;
-      // после переезда шаблон отдаёт сервер и только вошедшему; до переезда он лежит рядом с сайтом
-      const enc = await (tplNew
-        ? fetch(`${API}?a=tpl&name=${tplName}`, { headers: { "X-Docs-Key": encodeURIComponent(key) }, cache: "no-store" })
-        : fetch(`/api/docs/${user.tpl}${tplName}.docx.enc`, { cache: "no-store" })
-      ).then((r) => {
-        if (!r.ok) throw new Error("Шаблон не загрузился");
-        return r.arrayBuffer();
-      });
-      const tpl = await decryptTemplate(enc, tk || key);
+      // С 12.11.2026 шаблоны всех кабинетов лежат в закрытой папке хостинга: берём только с сервера.
+      // Старого адреса рядом с сайтом больше нет (на нём и сломалось у открытой с ночи страницы).
+      // Страница открыта до переезда шаблонов: тихо входим заново, чтобы получить новый ключ шаблонов
+      let tplKey = tk || key;
+      if (!tplNew) {
+        const d = (await api(key, "a=login", { method: "POST" })) as LoginResp;
+        applyLogin(d, key);
+        tplKey = d.tk || key;
+      }
+      const r = await fetch(`${API}?a=tpl&name=${tplName}`, { headers: { "X-Docs-Key": encodeURIComponent(key) }, cache: "no-store" });
+      if (!r.ok) {
+        let why = "";
+        try { why = (await r.json()).error || ""; } catch { /* не JSON */ }
+        if (r.status === 401) why = "вход устарел, обновите страницу и введите пин-код";
+        throw new Error(`Шаблон не загрузился${why ? `: ${why}` : ` (ошибка ${r.status})`}`);
+      }
+      const enc = await r.arrayBuffer();
+      const tpl = await decryptTemplate(enc, tplKey);
       const blob = await renderDocx(tpl, data());
       const file = `Договор ${num.trim()} ${clientTitle}`.replace(/[\\/:*?"<>|«»]+/g, " ").replace(/\s+/g, " ").trim();
       setResult({ blob, file });
