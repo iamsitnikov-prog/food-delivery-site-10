@@ -7,6 +7,7 @@ import Icon from "@/components/ui/icon";
 import { toast } from "@/hooks/use-toast";
 import useReveal from "@/hooks/use-reveal";
 import { reachGoal } from "@/lib/metrika";
+import { sourcePayload } from "@/lib/attribution";
 
 const STATUSES = [
   "бесплатный анализ",
@@ -129,6 +130,7 @@ const LeadForm = ({ defaultCity = "" }: { defaultCity?: string }) => {
             .filter(Boolean)
             .join(". "),
           page: window.location.href,
+          src: await sourcePayload(),
         }),
       });
       if (!res.ok) throw new Error("failed");

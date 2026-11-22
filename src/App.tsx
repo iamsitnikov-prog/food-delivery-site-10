@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import useContactGoals from "@/hooks/use-contact-goals";
 import ScrollToTop from "@/components/ScrollToTop";
+import SourceTracker from "@/components/SourceTracker";
 import Index from "./pages/Index";
 
 const Privacy = lazy(() => import("./pages/Privacy"));
@@ -54,6 +55,7 @@ export const AppShell = ({ Router }: { Router: (p: { children: ReactNode }) => J
       <Sonner />
       <Router>
         <ScrollToTop />
+        <SourceTracker />
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
         <Routes>
           <Route path="/" element={<Index />} />

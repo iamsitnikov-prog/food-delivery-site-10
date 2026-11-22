@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { sourcePayload } from "@/lib/attribution";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -87,6 +88,7 @@ const Payment = () => {
           invoice: custom ? invoice : undefined,
           agree,
           page: window.location.href,
+          src: await sourcePayload(),
         }),
       });
       const data = await res.json().catch(() => ({}));

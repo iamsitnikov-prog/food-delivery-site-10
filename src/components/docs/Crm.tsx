@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import Icon from "@/components/ui/icon";
 import { reachGoal } from "@/lib/metrika";
+import { SourceBlock, SourcesReport, SrcChip, type Seo, type Src } from "./CrmSources";
 
 // Раздел «Заявки» в кабинете /dokumenty: все заявки с сайта (форма, чек-листы, оплаты)
 // и добавленные вручную. Лиля и Алиса распределяют их по статусам и между собой.
@@ -22,6 +23,7 @@ export type Lead = {
   comment: string;
   page: string;
   source: string;
+  src?: Src | null;
   amount: number;
   status: string;
   owner: string;
@@ -134,6 +136,11 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
   const [stagesOpen, setStagesOpen] = useState(false);
   const [addAfter, setAddAfter] = useState<string | null>(null); // этап, после которого вставить новый
   const [askReason, setAskReason] = useState<Lead | null>(null); // перевод в «Отказ»: сначала причина
+  const [reportOpen, setReportOpen] = useState(false); // «откуда заявки»
+  const [seo, setSeo] = useState<Seo | null>(null);
+  const [seoErr, setSeoErr] = useState("");
+  const [seoAsked, setSeoAsked] = useState(false);
+  const [origins, setOrigins] = useState<string[]>([]);
 
   const load = useCallback(
     async (quiet = false) => {
@@ -146,6 +153,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
         setUsers(d.users || []);
         setMe(d.me || null);
         setTgReady(!!d.tg_ready);
+        if (d.origins) setOrigins(d.origins);
         setErr("");
       } catch (e) {
         setErr((e as Error).message);
@@ -164,6 +172,18 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
     }, 60000);
     return () => clearInterval(t);
   }, [load]);
+
+  // Запросы из Вебмастера по страницам: подгружаем, когда открыли отчёт или карточку
+  useEffect(() => {
+    if (seoAsked || (!reportOpen && openLead === null)) return;
+    setSeoAsked(true);
+    call(docsKey, "a=seo")
+      .then((d) => {
+        setSeo(d.seo || null);
+        if (d.origins) setOrigins(d.origins);
+      })
+      .catch((e) => setSeoErr(`Запросы не загрузились: ${(e as Error).message}`));
+  }, [reportOpen, openLead, seoAsked, docsKey]);
 
   useEffect(() => {
     if (!toast) return;
@@ -203,7 +223,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
     return m;
   }, [visible, statuses]);
 
-  const update = async (id: number, patch: { status?: string; owner?: string; note?: string; reason?: string; channel?: string }) => {
+  const update = async (id: number, patch: { status?: string; owner?: string; note?: string; reason?: string; channel?: string; origin?: string }) => {
     const before = items;
     // сразу показываем изменение, сервер подтверждает
     setItems((xs) =>
@@ -307,6 +327,15 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
           className="inline-flex h-11 items-center gap-2 rounded-xl bg-surface px-4 font-medium text-cream docs-card"
         >
           <Icon name="ListChecks" size={16} /> этапы
+        </button>
+        <button
+          onClick={() => {
+            setReportOpen(true);
+            reachGoal("crm_sources");
+          }}
+          className="inline-flex h-11 items-center gap-2 rounded-xl bg-surface px-4 font-medium text-cream docs-card"
+        >
+          <Icon name="Compass" size={16} /> откуда заявки
         </button>
         <button
           onClick={() => load()}
@@ -415,6 +444,16 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
         ))}
       </div>
 
+      {reportOpen && (
+        <SourcesReport
+          items={items}
+          statuses={statuses}
+          seo={seo}
+          seoErr={seoErr}
+          onOpenLead={(id) => setOpenLead(id)}
+          onClose={() => setReportOpen(false)}
+        />
+      )}
       {lead && (
         <LeadPanel
           l={lead}
@@ -428,6 +467,8 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
           onStatus={(st) => moveTo(lead, st)}
           onReason={() => setAskReason(lead)}
           onContract={() => onContract(lead)}
+          seo={seo}
+          origins={origins}
         />
       )}
       {askReason && (
@@ -458,6 +499,7 @@ const Crm = ({ docsKey, openId, onContract }: Props) => {
         <AddLead
           docsKey={docsKey}
           users={users}
+          origins={origins}
           onClose={() => setAdding(false)}
           onAdded={(l) => {
             setItems((xs) => [l, ...xs]);
@@ -523,6 +565,7 @@ const LeadCard = ({
     )}
     <div className="mt-3 flex flex-wrap items-center gap-1.5 text-[max(12px,0.78em)]">
       <ChannelBadge c={channelOf(l.channel)} />
+      <SrcChip s={l.src} />
       <span className="text-cream-muted">{when(l.created)}</span>
       {l.source !== "форма" && <span className="rounded-full bg-cream/[0.07] px-2 py-0.5">{l.source}</span>}
       {l.amount > 0 && <span className="rounded-full bg-green-100 px-2 py-0.5 text-green-800">{l.amount.toLocaleString("ru-RU")} ₽</span>}
@@ -552,6 +595,8 @@ const LeadPanel = ({
   onStatus,
   onReason,
   onContract,
+  seo,
+  origins,
 }: {
   l: Lead;
   statuses: Status[];
@@ -560,10 +605,12 @@ const LeadPanel = ({
   meId: string;
   dot: (id: string) => string;
   onClose: () => void;
-  onUpdate: (p: { status?: string; owner?: string; note?: string; channel?: string }) => Promise<boolean>;
+  onUpdate: (p: { status?: string; owner?: string; note?: string; channel?: string; origin?: string }) => Promise<boolean>;
   onStatus: (status: string) => void;
   onReason: () => void;
   onContract: () => void;
+  seo: Seo | null;
+  origins: string[];
 }) => {
   const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
@@ -696,6 +743,8 @@ const LeadPanel = ({
             </dl>
           </section>
 
+          <SourceBlock l={l} seo={seo} origins={origins} onOrigin={(o) => onUpdate({ origin: o })} />
+
           {!l.owner && meId && (
             <button
               onClick={() => onUpdate({ owner: meId, ...(l.status === "new" ? { status: "work" } : {}) })}
@@ -798,13 +847,15 @@ const AddLead = ({
   users,
   onClose,
   onAdded,
+  origins,
 }: {
   docsKey: string;
   users: User[];
+  origins: string[];
   onClose: () => void;
   onAdded: (l: Lead) => void;
 }) => {
-  const [f, setF] = useState({ name: "", phone: "", place: "", city: "", service: "", channel: "", comment: "", owner: "" });
+  const [f, setF] = useState({ name: "", phone: "", place: "", city: "", service: "", channel: "", comment: "", owner: "", origin: "" });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
@@ -859,6 +910,14 @@ const AddLead = ({
             placeholder="комментарий"
             className="w-full rounded-xl border border-cream/20 bg-cream/5 px-4 py-3 text-cream placeholder:text-cream-muted/60 focus:outline-none focus:ring-1 focus:ring-brand"
           />
+          <select value={f.origin} onChange={set("origin")} className="h-11 w-full rounded-xl border border-cream/20 px-3 text-cream" aria-label="Откуда клиент">
+            <option value="">откуда клиент: не знаем</option>
+            {origins.map((o) => (
+              <option key={o} value={o}>
+                откуда: {o}
+              </option>
+            ))}
+          </select>
           <select value={f.owner} onChange={set("owner")} className="h-11 w-full rounded-xl border border-cream/20 px-3 text-cream" aria-label="Ответственная">
             <option value="">ответственная: пока никто</option>
             {users.map((u) => (

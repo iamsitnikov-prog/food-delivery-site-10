@@ -84,6 +84,11 @@ import {
   Wrench,
   X,
   Zap,
+  Compass,
+  Link,
+  Tag,
+  PenLine,
+  MousePointerClick,
 } from 'lucide-react';
 
 const ICONS: Record<string, React.FC<LucideProps>> = {
@@ -170,6 +175,11 @@ const ICONS: Record<string, React.FC<LucideProps>> = {
   X,
   Zap,
   ChevronLeft,
+  Compass,
+  Link,
+  Tag,
+  PenLine,
+  MousePointerClick,
 };
 
 interface IconProps extends LucideProps {

@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import Icon from "@/components/ui/icon";
 import { toast } from "@/hooks/use-toast";
 import { reachGoal } from "@/lib/metrika";
+import { sourcePayload } from "@/lib/attribution";
 import type { ChecklistPage } from "@/data/checklists";
 
 const LEAD_URL = "/api/lead.php";
@@ -78,6 +79,7 @@ const ChecklistDownload = ({ page }: { page: ChecklistPage }) => {
           channel: "Telegram",
           comment: `Чек-лист: ${page.navLabel} (/chek-listy/${page.slug})`,
           page: window.location.href,
+          src: await sourcePayload(),
         }),
       });
       if (!res.ok) throw new Error("failed");
