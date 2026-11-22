@@ -107,8 +107,8 @@ export const TAX_MODES: { value: TaxMode; label: string; hint: string }[] = [
   },
   {
     value: "osno",
-    label: "ОСНО 20%",
-    hint: "Налог на прибыль 20% с разницы между доходами и расходами.",
+    label: "ОСНО 25%",
+    hint: "Налог на прибыль 25% (ставка с 2025 года) с разницы между доходами и расходами.",
   },
   { value: "none", label: "Не учитывать", hint: "Расчёт без налога на прибыль." },
 ];
@@ -771,8 +771,8 @@ export const calculate = (input: CalcInput): CalcResult => {
     taxNote =
       "Фиксированная стоимость патента. Важно: продажа через агрегатор обычно не подпадает под патент — проверьте применимость с бухгалтером.";
   } else if (input.taxMode === "osno") {
-    taxAmount = Math.max(profitBeforeTax, 0) * 0.2;
-    taxLabel = "Налог на прибыль 20%";
+    taxAmount = Math.max(profitBeforeTax, 0) * 0.25;
+    taxLabel = "Налог на прибыль 25%";
     taxNote = "Налог на прибыль с разницы между доходами и расходами. НДС считается отдельно.";
   }
 
