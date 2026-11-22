@@ -115,6 +115,8 @@ type Page = {
   jsonLd?: unknown[];
   /** Служебная страница: не индексировать и не класть в карту сайта. */
   noindex?: boolean;
+  /** Своя картинка для соцсетей и Яндекс Бизнеса (обложка статьи), иначе общая. */
+  ogImage?: string;
 };
 
 const blocksToText = (blocks: any[]): string => {
@@ -255,17 +257,26 @@ const serviceOfferLd = (p: { slug: string; kind: string; h1: string; description
   ];
 };
 
+// Обложки статей: public/og/blog/<slug>.jpg, рисуются scripts/blog-covers.
+const blogCover = (slug: string) =>
+  fs.existsSync(path.join(process.cwd(), "public", "og", "blog", `${slug}.jpg`))
+    ? `${SITE}/og/blog/${slug}.jpg`
+    : undefined;
+
 for (const p of BLOG_POSTS) {
+  const cover = blogCover(p.slug);
   pages.push({
     route: `/blog/${p.slug}`,
     title: p.title,
     description: p.description,
+    ogImage: cover,
     jsonLd: [
       {
         "@context": "https://schema.org",
         "@type": "Article",
         headline: clean(p.h1),
         description: clean(p.description),
+        ...(cover ? { image: cover } : {}),
         datePublished: p.date,
         dateModified: p.date,
         author: { "@type": "Organization", name: "agregatory.pro", url: SITE },
@@ -1363,11 +1374,13 @@ const render = (p: Page, app = "") => {
 <meta property="og:title" content="${esc(p.title)}"/>
 <meta property="og:description" content="${esc(p.description)}"/>
 <meta property="og:url" content="${url}"/>
-<meta property="og:image" content="${OG}"/>
+<meta property="og:image" content="${p.ogImage || OG}"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="${esc(p.title)}"/>
 <meta name="twitter:description" content="${esc(p.description)}"/>
-<meta name="twitter:image" content="${OG}"/>
+<meta name="twitter:image" content="${p.ogImage || OG}"/>
 <meta name="theme-color" content="#FFD600"/>
 ${ldTags}
 <!--

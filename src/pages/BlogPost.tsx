@@ -70,6 +70,7 @@ const BlogPost = () => {
         description: post.description,
         datePublished: post.date,
         dateModified: post.date,
+        ...(brief?.cover ? { image: `https://agregatory.pro/og/blog/${brief.slug}.jpg` } : {}),
         author: PEOPLE.map((p) => ({
           "@type": "Person",
           name: p.name,
@@ -112,6 +113,7 @@ const BlogPost = () => {
     jsonLd,
     ogType: "article",
     publishedTime: post?.date,
+    ogImage: brief?.cover ? `https://agregatory.pro/og/blog/${brief.slug}.jpg` : undefined,
   });
 
   if (!brief) return <PageNotFound />;

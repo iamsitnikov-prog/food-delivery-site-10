@@ -1,0 +1,96 @@
+<!doctype html><html><head><meta charset=utf-8><link rel=stylesheet href=base.css><style>
+.l{position:absolute;left:64px;top:56px;width:590px;bottom:110px;display:flex;flex-direction:column}
+h1{font-weight:600;font-size:82px;line-height:.98;letter-spacing:-.03em;margin-top:34px}
+.sub{font-size:30px;line-height:1.2;margin-top:22px;color:var(--m);font-weight:500}
+.logo{position:absolute;left:64px;bottom:50px}
+.card{position:absolute;right:56px;top:56px;bottom:56px;width:440px;background:var(--c);border-radius:28px;padding:34px 36px 30px;box-shadow:0 24px 60px rgba(35,17,11,.18);display:flex;flex-direction:column}
+.body{flex:1;display:flex;flex-direction:column;justify-content:center}
+.cap{font-size:22px;font-weight:500;color:var(--m);line-height:1.25}
+.cap b,.hint b{color:var(--d);font-weight:600}
+b.r,.r{color:#C8341F}
+.hint{font-size:20px;color:var(--m);line-height:1.3;border-top:2px dashed #E3D6C8;padding-top:16px;font-weight:500}
+/* bars */
+.brow{margin:12px 0}
+.lab{display:flex;justify-content:space-between;align-items:baseline;font-size:22px;font-weight:500;gap:12px}
+.lab .v{font-size:48px;font-weight:600;letter-spacing:-.03em;white-space:nowrap}
+.bar{height:20px;border-radius:10px;background:#EFE6DC;margin-top:8px;overflow:hidden}
+.bar div{height:100%;border-radius:10px}
+/* lines */
+.stack{display:flex;height:24px;border-radius:12px;overflow:hidden;margin:0 0 12px;gap:3px}
+.ln{display:flex;justify-content:space-between;align-items:center;font-size:23px;font-weight:500;padding:14px 0;border-bottom:1.5px solid #EFE3D5;gap:14px}
+.ln span{display:flex;align-items:center;gap:12px}.ln i{width:14px;height:14px;border-radius:4px;display:block;flex:none}
+.ln b{font-weight:600;text-align:right;max-width:58%}.ln span{flex:1 1 auto;min-width:0}
+.tot{display:flex;justify-content:space-between;align-items:baseline;margin-top:18px;font-size:22px;font-weight:600;gap:12px}
+.tot b{font-size:44px;letter-spacing:-.03em;white-space:nowrap}.tot b.w{font-size:28px;letter-spacing:-.01em}
+/* stat */
+.big{font-size:100px;font-weight:600;letter-spacing:-.045em;line-height:1;margin-top:6px}
+.big.m{font-size:80px}.big.s{font-size:64px}
+.bt{font-size:23px;line-height:1.28;font-weight:500;margin-top:12px}
+.mini{margin-top:20px}
+.mini .ln{font-size:20px;padding:10px 0}
+.mini .ln:last-child{border-bottom:0}
+/* check / steps */
+.it{display:flex;gap:16px;align-items:center;font-size:24px;font-weight:500;line-height:1.2;padding:12px 0;border-bottom:1.5px solid #EFE3D5}
+.it:last-child{border-bottom:0}
+.ck{flex:none;width:34px;height:34px;border-radius:50%;background:var(--y);display:flex;align-items:center;justify-content:center}
+.ck svg{width:18px;height:18px}
+.no{background:#F6D4CE}
+.num{flex:none;width:36px;height:36px;border-radius:10px;background:var(--d);color:var(--y);font-weight:600;font-size:20px;display:flex;align-items:center;justify-content:center}
+/* swap */
+.sw{border-radius:16px;padding:16px 18px;font-size:23px;font-weight:500;line-height:1.25}
+.sw small{display:block;font-size:17px;color:var(--m);margin-bottom:6px;font-weight:500}
+.sw.f{background:#fff;color:#8A6A5C}.sw s{text-decoration-color:#C8341F;text-decoration-thickness:2px}
+.sw.t{background:var(--y);font-weight:600}
+.arrow{text-align:center;font-size:28px;margin:8px 0;color:var(--m)}
+/* split */
+.sp h4{font-size:18px;text-transform:uppercase;letter-spacing:.06em;color:var(--m);margin:4px 0 4px;font-weight:600}
+.sp .it{padding:7px 0;font-size:21px;border:0}.sp .ck{width:28px;height:28px}
+/* months */
+.mo{display:flex;align-items:flex-end;gap:8px;height:220px;margin-top:10px}
+.mo div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:15px;font-weight:600;color:var(--m);gap:8px}
+.mo i{display:block;width:100%;border-radius:7px 7px 3px 3px}
+/* abc */
+.abc{display:flex;gap:16px;align-items:center;padding:14px 0;border-bottom:1.5px solid #EFE3D5;font-size:21px;font-weight:500;line-height:1.25}
+.abc:last-child{border:0}
+.abc b{flex:none;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:600}
+</style></head><body>
+<div class=l><div><div class=pill><i></i><span id=tag></span></div></div><h1 id=t></h1><div class=sub id=s></div></div>
+<div class=logo>agregatory<span>.pro</span></div>
+<div class=card id=card></div>
+<script>
+const CK='<svg viewBox="0 0 20 20"><path d="M4 10.5l4 4 8-9" fill="none" stroke="#23110B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const NO='<svg viewBox="0 0 20 20"><path d="M5 5l10 10M15 5L5 15" fill="none" stroke="#C8341F" stroke-width="3" stroke-linecap="round"/></svg>';
+const COL={d:'var(--d)',y:'var(--y)',r:'#C8341F'};
+function ty(v){if(!v)return v;v=v.replace(/<br>/g,' ');
+ v=v.replace(/(?<=^|[ \u00a0(«])([А-Яа-яЁёA-Za-z]{1,2}|для|без|при|или|что|как|под|над|про|его|её) /g,'$1\u00a0').replace(/Яндекс /g,'Яндекс\u00a0');
+ v=v.replace(/(\d)\s(?=\d{3}\b)/g,'$1\u00a0').replace(/(\d)\s(₽|%|°C|км|кг|мм|дня|дней|дн\.|раб\.|минут|часа|часов|заказов|г\b)/g,'$1\u00a0$2').replace(/\s—/g,'\u00a0—');return v}
+function render(x){x=JSON.parse(JSON.stringify(x));x.title=ty(x.title);x.sub=ty(x.sub);const C=x.card;['cap','hint','t','from','to'].forEach(k=>C[k]=ty(C[k]));['items','yes','no'].forEach(k=>C[k]&&(C[k]=C[k].map(ty)));(C.rows||[]).forEach(r=>{r.l=ty(r.l);r.v=ty(r.v)});if(C.total){C.total.l=ty(C.total.l);C.total.v=ty(C.total.v)}
+ document.getElementById('tag').textContent=x.tag[0].toUpperCase()+x.tag.slice(1);
+ const t=document.getElementById('t');t.innerHTML=x.title;
+ document.getElementById('s').innerHTML=x.sub;
+ const c=x.card;let h='';
+ const cap=c.cap?`<div class=cap>${c.cap}</div>`:'';
+ const hint=c.hint?`<div class=hint>${c.hint}</div>`:'';
+ if(c.type=='bars'){h=cap+'<div class=body>'+c.rows.map(r=>`<div class=brow><div class=lab><span>${r.l}</span><span class=v>${r.v}</span></div><div class=bar><div style="width:${r.w}%;background:${COL[r.c]}"></div></div></div>`).join('')+'</div>'+hint}
+ else if(c.type=='lines'){
+  let st='';if(c.stack){const all=[...c.rows,c.total];st='<div class=stack>'+all.map(r=>`<div style="flex:${parseFloat(r.v.replace(/\s/g,''))};background:${r.c}"></div>`).join('')+'</div>'}
+  h=cap+'<div class=body>'+st+c.rows.map(r=>`<div class=ln><span>${r.c?`<i style="background:${r.c}"></i>`:''}${r.l}</span><b>${r.v}</b></div>`).join('')+(c.total?`<div class=tot><span>${c.total.l}</span><b class="${/[а-яё]{3,}/i.test(c.total.v.replace(/раб|дн|минут|час|мес|нед|млн|км/g,''))?'w':''}">${c.total.v}</b></div>`:'')+'</div>'+hint}
+ else if(c.type=='stat'){const L=c.v.length;h=cap+`<div class=body><div class="big ${L>7?'s':L>5?'m':''}">${c.v}</div><div class=bt>${c.t}</div>`+(c.rows?'<div class=mini>'+c.rows.map(r=>`<div class=ln><span>${r.l}</span><b>${r.v}</b></div>`).join('')+'</div>':'')+'</div>'+hint}
+ else if(c.type=='check'){h=cap+'<div class=body>'+c.items.map(i=>`<div class=it><span class=ck>${CK}</span><span>${i}</span></div>`).join('')+'</div>'+hint}
+ else if(c.type=='steps'){h=cap+'<div class=body>'+c.items.map((i,n)=>`<div class=it><span class=num>${n+1}</span><span>${i}</span></div>`).join('')+'</div>'+hint}
+ else if(c.type=='swap'){h=cap+`<div class=body><div class="sw f"><small>Было</small><s>${c.from}</s></div><div class=arrow>↓</div><div class="sw t"><small>Стало</small>${c.to}</div></div>`+hint}
+ else if(c.type=='split'){h='<div class="body sp"><h4>Можно</h4>'+c.yes.map(i=>`<div class=it><span class=ck>${CK}</span><span>${i}</span></div>`).join('')+'<h4 style="margin-top:12px">Нельзя</h4>'+c.no.map(i=>`<div class=it><span class="ck no">${NO}</span><span>${i}</span></div>`).join('')+'</div>'+hint}
+ else if(c.type=='months'){const v=[92,86,80,66,52,44,44,48,58,74,86,100],m='ЯФМАМИИАСОНД';
+  h=`<div class=cap>Спрос на доставку по месяцам,<br>схема по исследованию Чиббис</div><div class=body><div class=mo>`+v.map((x,i)=>`<div><i style="height:${x*1.7}px;background:${x>=80?'var(--y)':x<=50?'#E3D6C8':'#F4C95A'}"></i>${m[i]}</div>`).join('')+`</div></div><div class=hint>Январские праздники: <b>+32%</b> заказов<br>год к году, по данным Яндекс Еды</div>`}
+ else if(c.type=='abc'){h=`<div class=cap>ABC-анализ меню:</div><div class=body>`+[['A','var(--y)','Основная выручка: защищать и продвигать'],['B','#F4E3B0','Средний вклад: зона роста'],['C','#EFE6DC','Почти не продаются: кандидаты на вывод']].map(r=>`<div class=abc><b style="background:${r[1]}">${r[0]}</b><span>${r[2]}</span></div>`).join('')+`</div><div class=hint>Самое продаваемое и самое прибыльное<br>блюдо обычно разные</div>`}
+ const card=document.getElementById('card');card.innerHTML=h;
+ const tb=card.querySelector('.tot b');if(tb){let f=parseFloat(getComputedStyle(tb).fontSize);const tot=card.querySelector('.tot');while(tot.scrollWidth>tot.clientWidth+1&&f>22){f-=2;tb.style.fontSize=f+'px'}}
+ card.querySelectorAll('.lab').forEach(l=>{const v=l.querySelector('.v');let f=48;while(l.scrollWidth>l.clientWidth+1&&f>30){f-=2;v.style.fontSize=f+'px'}});
+ // fit title
+ let fs=82;t.style.fontSize=fs+'px';
+ const fits=()=>{const lh=fs*.98;return t.scrollWidth<=590 && t.offsetHeight<=lh*3+2};
+ while(!fits()&&fs>48){fs-=2;t.style.fontSize=fs+'px';t.style.letterSpacing=(fs>70?-.03:-.025)+'em'}
+ // card overflow check
+ return {fs, over: card.scrollHeight>card.clientHeight+1, sub: document.getElementById('s').offsetHeight, l: document.querySelector('.l').scrollHeight};
+}
+</script></body></html>

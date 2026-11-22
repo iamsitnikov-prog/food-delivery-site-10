@@ -23,6 +23,8 @@ export type PostBrief = {
   tag: string;
   isNew?: boolean;
   pinned?: boolean;
+  /** Есть своя обложка /og/blog/<slug>.jpg для соцсетей и Яндекс Бизнеса. */
+  cover?: boolean;
 };
 
 /** Статьи с будущей датой отфильтрует visiblePosts — здесь список полный,

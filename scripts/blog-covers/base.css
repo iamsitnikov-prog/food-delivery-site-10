@@ -1,0 +1,11 @@
+@font-face{font-family:YS;src:url(../../public/fonts/ys-text-400.woff2);font-weight:400}
+@font-face{font-family:YS;src:url(../../public/fonts/ys-text-500.woff2);font-weight:500}
+@font-face{font-family:YS;src:url(../../public/fonts/ys-text-600.woff2);font-weight:600}
+:root{--y:#FFD900;--d:#23110B;--c:#FFF9F3;--p:#FFEE99;--m:#5A3F33}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1200px;height:630px;overflow:hidden}
+body{font-family:YS,Arial,sans-serif;color:var(--d);background:var(--y);position:relative;-webkit-font-smoothing:antialiased}
+.pill{display:inline-flex;align-items:center;gap:10px;background:var(--d);color:var(--y);font-weight:500;font-size:22px;padding:9px 20px 10px;border-radius:999px}
+.pill i{width:9px;height:9px;border-radius:50%;background:var(--y);display:block}
+.logo{font-weight:600;font-size:26px;letter-spacing:-.3px}
+.logo span{opacity:.55}

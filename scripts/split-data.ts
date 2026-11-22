@@ -109,6 +109,8 @@ const postIndex = BLOG_POSTS.map((p) => ({
   tag: p.tag,
   isNew: p.isNew,
   pinned: p.pinned,
+  // Есть своя обложка public/og/blog/<slug>.jpg (рисует scripts/blog-covers).
+  cover: fs.existsSync(path.join(ROOT, "public", "og", "blog", `${p.slug}.jpg`)) || undefined,
 }));
 
 for (const p of BLOG_POSTS) {
